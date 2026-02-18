@@ -1,0 +1,1 @@
+{"name":"lancedb-indexer","version":"1.0.0","type":"module","dependencies":{"@lancedb/lancedb":"^0.26.2"}}

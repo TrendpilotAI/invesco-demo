@@ -1,0 +1,202 @@
+[
+  {
+    "projects": [
+      "NarrativeReactor",
+      "Second-Opinion"
+    ],
+    "sharedDeps": 1,
+    "sharedPatterns": [
+      "jwt-auth",
+      "job-queue",
+      "scheduled-tasks",
+      "caching"
+    ],
+    "crossRefs": 0
+  },
+  {
+    "projects": [
+      "NarrativeReactor",
+      "Trendpilot"
+    ],
+    "sharedDeps": 2,
+    "sharedPatterns": [
+      "webhooks",
+      "middleware",
+      "job-queue",
+      "scheduled-tasks",
+      "caching"
+    ],
+    "crossRefs": 5
+  },
+  {
+    "projects": [
+      "NarrativeReactor",
+      "doc-pipeline"
+    ],
+    "sharedDeps": 1,
+    "sharedPatterns": [
+      "webhooks",
+      "caching"
+    ],
+    "crossRefs": 0
+  },
+  {
+    "projects": [
+      "NarrativeReactor",
+      "flip-my-era"
+    ],
+    "sharedDeps": 1,
+    "sharedPatterns": [
+      "webhooks",
+      "middleware",
+      "jwt-auth",
+      "job-queue",
+      "scheduled-tasks",
+      "caching"
+    ],
+    "crossRefs": 0
+  },
+  {
+    "projects": [
+      "NarrativeReactor",
+      "forwardlane-website"
+    ],
+    "sharedDeps": 0,
+    "sharedPatterns": [],
+    "crossRefs": 8
+  },
+  {
+    "projects": [
+      "NarrativeReactor",
+      "mission-control"
+    ],
+    "sharedDeps": 0,
+    "sharedPatterns": [
+      "webhooks",
+      "scheduled-tasks"
+    ],
+    "crossRefs": 0
+  },
+  {
+    "projects": [
+      "Second-Opinion",
+      "Trendpilot"
+    ],
+    "sharedDeps": 1,
+    "sharedPatterns": [
+      "rate-limiting",
+      "job-queue",
+      "scheduled-tasks",
+      "caching"
+    ],
+    "crossRefs": 6
+  },
+  {
+    "projects": [
+      "Second-Opinion",
+      "flip-my-era"
+    ],
+    "sharedDeps": 10,
+    "sharedPatterns": [
+      "jwt-auth",
+      "rate-limiting",
+      "job-queue",
+      "scheduled-tasks",
+      "caching"
+    ],
+    "crossRefs": 0
+  },
+  {
+    "projects": [
+      "Second-Opinion",
+      "forwardlane-website"
+    ],
+    "sharedDeps": 2,
+    "sharedPatterns": [],
+    "crossRefs": 8
+  },
+  {
+    "projects": [
+      "Trendpilot",
+      "doc-pipeline"
+    ],
+    "sharedDeps": 0,
+    "sharedPatterns": [
+      "webhooks",
+      "caching"
+    ],
+    "crossRefs": 0
+  },
+  {
+    "projects": [
+      "Trendpilot",
+      "fast-browser-search"
+    ],
+    "sharedDeps": 0,
+    "sharedPatterns": [
+      "caching"
+    ],
+    "crossRefs": 1
+  },
+  {
+    "projects": [
+      "Trendpilot",
+      "flip-my-era"
+    ],
+    "sharedDeps": 1,
+    "sharedPatterns": [
+      "webhooks",
+      "middleware",
+      "rate-limiting",
+      "job-queue",
+      "scheduled-tasks",
+      "caching"
+    ],
+    "crossRefs": 8
+  },
+  {
+    "projects": [
+      "Trendpilot",
+      "forwardlane-website"
+    ],
+    "sharedDeps": 0,
+    "sharedPatterns": [],
+    "crossRefs": 8
+  },
+  {
+    "projects": [
+      "Trendpilot",
+      "mission-control"
+    ],
+    "sharedDeps": 0,
+    "sharedPatterns": [
+      "webhooks",
+      "scheduled-tasks"
+    ],
+    "crossRefs": 0
+  },
+  {
+    "projects": [
+      "doc-pipeline",
+      "flip-my-era"
+    ],
+    "sharedDeps": 0,
+    "sharedPatterns": [
+      "webhooks",
+      "caching"
+    ],
+    "crossRefs": 0
+  },
+  {
+    "projects": [
+      "flip-my-era",
+      "mission-control"
+    ],
+    "sharedDeps": 0,
+    "sharedPatterns": [
+      "webhooks",
+      "scheduled-tasks"
+    ],
+    "crossRefs": 0
+  }
+]
