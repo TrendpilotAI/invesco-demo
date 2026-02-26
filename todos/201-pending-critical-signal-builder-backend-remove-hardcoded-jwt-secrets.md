@@ -3,7 +3,7 @@
 **Project:** signal-builder-backend  
 **Priority:** CRITICAL  
 **Estimated Effort:** 1 hour  
-**Status:** pending  
+**Status:** ✅ DONE — committed e50ece6, 2026-02-26  
 **Dependencies:** none  
 
 ---
