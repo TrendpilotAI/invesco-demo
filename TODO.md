@@ -1,6 +1,6 @@
 # TODO.md — Master Project Plan
 
-> Auto-monitored by Honey's cron loops. Last updated: 2026-02-26 13:01 UTC (Invesco Sprint — 2 Sonnet agents spawned: invesco-deploy [Railway deploy P0] + invesco-backend-hardening [auth hardening P0])
+> Auto-monitored by Honey's cron loops. Last updated: 2026-02-27 21:10 UTC (DB pooling done [#213 ✅]; sub-agent spawned for TODO-202 SQL injection fix [signal-builder-backend])
 
 ---
 
@@ -8,7 +8,7 @@
 
 ### INVESCO-RETENTION: Demo App Deploy + Brian Kiley Demo (🚨 $300K/yr — Early March 2026)
 - **Why:** $300K/yr account retention. All 5 demo deliverables built, NOT deployed. Demo to Brian Kiley needed ASAP.
-- **Status:** 🔴 UNDEPLOYED — needs immediate action
+- **Status:** 🟡 CODE PUSHED to GitHub (TrendpilotAI/invesco-demo) — needs 1-click Vercel/Railway deploy by Nathan
 - **Owner:** Honey (technical) + Nathan (outreach + demo)
 - **Deadline:** Early March 2026
 - **Plan:** `/data/workspace/projects/invesco-retention/PLAN.md`
@@ -363,9 +363,9 @@
 > Full plan: `/data/workspace/projects/signal-studio-templates/PLAN.md`
 
 ### 🔴 Critical (run first, unblock everything)
-- [ ] **#211** Fix build system — install deps, fix tsconfig, generate dist/ [2h]
+- [x] **#211** Fix build system — install deps, fix tsconfig, generate dist/ [2h] ✅ 2026-02-26 — pnpm, tsconfig fixed, dist/ generated clean
 - [ ] **#212** Add ESLint — @typescript-eslint, .eslintrc.js, lint script [1.5h]
-- [ ] **#213** SQL injection hardening — rewrite generateSQL() with parameterized queries [3h] ⚠️ SECURITY
+- [x] **#213** SQL injection hardening — rewrite generateSQL() with parameterized queries [3h] ⚠️ SECURITY ✅ 2026-02-26 — utils/sql-safety.ts, parameterized queries, 12 tests pass
 
 ### 🟠 High (after critical)
 - [ ] **#214** Integration tests — mock DataProvider, execute() E2E, ≥80% coverage [4h]
@@ -391,7 +391,7 @@
 
 ### 🟠 P1 — This Sprint
 - [ ] **#212** [P1] Real LLM calls in MeetingPrepView — Gemini → Kimi → static fallback, Redis cache [4–6h]
-- [ ] **#213** [P1] Connection pooling — add CONN_MAX_AGE=60 to both DATABASES entries [30min]
+- [x] **#213** [P1] Connection pooling — add CONN_MAX_AGE=60 to both DATABASES entries ✅ 2026-02-27 — committed 4844f79b, pushed to railway-deploy
 - [ ] **#215** [P1] CI pipeline — add PR test gate + development branch test step [1–2h]
 
 ### Execution Order
