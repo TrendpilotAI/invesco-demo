@@ -1,0 +1,79 @@
+# Honey AI — Reaction Definitions
+# Matched against events flowing through the Redis event bus.
+# Patterns use fnmatch glob syntax.
+
+reactions:
+  # ── Service Health ─────────────────────────────────────────
+  - name: service_down_alert
+    match:
+      channel: "honey.service.health"
+      event: "service_down"
+    cooldown: 300  # 5 min between alerts for same match
+    actions:
+      - type: log
+        params:
+          level: error
+          message: "🔴 Service DOWN: {service} (was {previous})"
+      - type: notify_human
+        params:
+          channel: telegram
+          message: "🔴 Service DOWN: {service} (was {previous})"
+
+  - name: service_recovered
+    match:
+      channel: "honey.service.health"
+      event: "service_up"
+    cooldown: 0
+    actions:
+      - type: log
+        params:
+          level: info
+          message: "🟢 Service RECOVERED: {service}"
+      - type: notify_human
+        params:
+          channel: telegram
+          message: "🟢 Service recovered: {service}"
+
+  # ── Agent Failures ─────────────────────────────────────────
+  - name: agent_failed_alert
+    match:
+      channel: "honey.agent.failed"
+      event: "*"
+    cooldown: 60
+    actions:
+      - type: log
+        params:
+          level: error
+          message: "💀 Agent failed: {event}"
+      - type: notify_human
+        params:
+          channel: telegram
+          message: "💀 Agent failed: {event} — check logs"
+
+  # ── Cron Failures ──────────────────────────────────────────
+  - name: cron_failed_alert
+    match:
+      channel: "honey.cron.failed"
+      event: "*"
+    cooldown: 120
+    actions:
+      - type: log
+        params:
+          level: error
+          message: "⏰ Cron job failed: {event}"
+      - type: notify_human
+        params:
+          channel: telegram
+          message: "⏰ Cron job failed: {event}"
+
+  # ── Cron Success (silent log) ──────────────────────────────
+  - name: cron_completed_log
+    match:
+      channel: "honey.cron.completed"
+      event: "*"
+    cooldown: 0
+    actions:
+      - type: log
+        params:
+          level: info
+          message: "✅ Cron completed: {event}"

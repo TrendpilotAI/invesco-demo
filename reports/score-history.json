@@ -1,0 +1,392 @@
+[
+  {
+    "date": "2026-02-18",
+    "scores": {
+      "flipmyera": {
+        "total": 6.5,
+        "categories": {
+          "ux_design": 6.5,
+          "capabilities": 7,
+          "code_quality": 6,
+          "performance": 7,
+          "ease_of_use": 6,
+          "production_readiness": 6.5,
+          "x_factor": 7
+        }
+      },
+      "secondopinion": {
+        "total": 7.3,
+        "categories": {
+          "ux_design": 7.5,
+          "capabilities": 8,
+          "code_quality": 7,
+          "performance": 7,
+          "ease_of_use": 7.5,
+          "production_readiness": 6,
+          "x_factor": 8
+        }
+      },
+      "narrativereactor": {
+        "total": 5.35,
+        "categories": {
+          "ux_design": 5,
+          "capabilities": 7,
+          "code_quality": 6,
+          "performance": 5,
+          "ease_of_use": 5,
+          "production_readiness": 3,
+          "x_factor": 6
+        }
+      },
+      "trendpilot": {
+        "total": 6.2,
+        "categories": {
+          "ux_design": 6,
+          "capabilities": 7,
+          "code_quality": 7,
+          "performance": 5,
+          "ease_of_use": 6,
+          "production_readiness": 6,
+          "x_factor": 6
+        }
+      },
+      "railway-saas": {
+        "total": 6.6,
+        "categories": {
+          "ux_design": 6.5,
+          "capabilities": 7,
+          "code_quality": 6.5,
+          "performance": 6,
+          "ease_of_use": 7.5,
+          "production_readiness": 6.5,
+          "x_factor": 6
+        }
+      }
+    }
+  },
+  {
+    "date": "2026-02-18",
+    "scores": {
+      "flipmyera": {
+        "total": 6.65,
+        "categories": {
+          "ux_design": null,
+          "capabilities": null,
+          "code_quality": null,
+          "performance": null,
+          "ease_of_use": null,
+          "production_readiness": null,
+          "x_factor": null
+        }
+      },
+      "secondopinion": {
+        "total": 7.1,
+        "categories": {
+          "ux_design": null,
+          "capabilities": null,
+          "code_quality": null,
+          "performance": null,
+          "ease_of_use": null,
+          "production_readiness": null,
+          "x_factor": null
+        }
+      },
+      "narrativereactor": {
+        "total": 5.35,
+        "categories": {
+          "ux_design": null,
+          "capabilities": null,
+          "code_quality": null,
+          "performance": null,
+          "ease_of_use": null,
+          "production_readiness": null,
+          "x_factor": null
+        }
+      },
+      "trendpilot": {
+        "total": 5.05,
+        "categories": {
+          "ux_design": null,
+          "capabilities": null,
+          "code_quality": null,
+          "performance": null,
+          "ease_of_use": null,
+          "production_readiness": null,
+          "x_factor": null
+        }
+      },
+      "railway-saas": {
+        "total": 6.75,
+        "categories": {
+          "ux_design": null,
+          "capabilities": null,
+          "code_quality": null,
+          "performance": null,
+          "ease_of_use": null,
+          "production_readiness": null,
+          "x_factor": null
+        }
+      }
+    }
+  },
+  {
+    "date": "2026-02-19",
+    "scores": {
+      "flipmyera": {
+        "total": 6.65,
+        "categories": {
+          "ux_design": 7,
+          "capabilities": 7,
+          "code_quality": 7,
+          "performance": 6,
+          "ease_of_use": 6,
+          "production_readiness": 7,
+          "x_factor": 6
+        }
+      },
+      "secondopinion": {
+        "total": 6.6,
+        "categories": {
+          "ux_design": 6,
+          "capabilities": 7,
+          "code_quality": 7,
+          "performance": 5,
+          "ease_of_use": 7,
+          "production_readiness": 6,
+          "x_factor": 8
+        }
+      },
+      "narrativereactor": {
+        "total": 4.6,
+        "categories": {
+          "ux_design": 3,
+          "capabilities": 6,
+          "code_quality": 6,
+          "performance": 5,
+          "ease_of_use": 3,
+          "production_readiness": 4,
+          "x_factor": 5
+        }
+      },
+      "trendpilot": {
+        "total": 5.55,
+        "categories": {
+          "ux_design": 3,
+          "capabilities": 6,
+          "code_quality": 8,
+          "performance": 7,
+          "ease_of_use": 4,
+          "production_readiness": 5,
+          "x_factor": 6
+        }
+      },
+      "railway-saas": {
+        "total": 4.5,
+        "categories": {
+          "ux_design": 5,
+          "capabilities": 4,
+          "code_quality": 5,
+          "performance": 5,
+          "ease_of_use": 5,
+          "production_readiness": 4,
+          "x_factor": 3
+        }
+      }
+    }
+  },
+  {
+    "date": "2026-02-20",
+    "scores": {
+      "flipmyera": {
+        "total": 6.65,
+        "categories": {
+          "ux_design": 7,
+          "capabilities": 7,
+          "code_quality": 7,
+          "performance": 6,
+          "ease_of_use": 6,
+          "production_readiness": 7,
+          "x_factor": 6
+        }
+      },
+      "secondopinion": {
+        "total": 6.6,
+        "categories": {
+          "ux_design": 6,
+          "capabilities": 7,
+          "code_quality": 7,
+          "performance": 5,
+          "ease_of_use": 7,
+          "production_readiness": 6,
+          "x_factor": 8
+        }
+      },
+      "narrativereactor": {
+        "total": 4.6,
+        "categories": {
+          "ux_design": 3,
+          "capabilities": 6,
+          "code_quality": 6,
+          "performance": 5,
+          "ease_of_use": 3,
+          "production_readiness": 4,
+          "x_factor": 5
+        }
+      },
+      "trendpilot": {
+        "total": 5.55,
+        "categories": {
+          "ux_design": 3,
+          "capabilities": 6,
+          "code_quality": 8,
+          "performance": 7,
+          "ease_of_use": 4,
+          "production_readiness": 5,
+          "x_factor": 6
+        }
+      },
+      "railway-saas": {
+        "total": 4.5,
+        "categories": {
+          "ux_design": 5,
+          "capabilities": 4,
+          "code_quality": 5,
+          "performance": 5,
+          "ease_of_use": 5,
+          "production_readiness": 4,
+          "x_factor": 3
+        }
+      }
+    }
+  },
+  {
+    "date": "2026-02-20",
+    "scores": {
+      "flipmyera": {
+        "total": 6.8,
+        "categories": {
+          "ux_design": 7,
+          "capabilities": 7,
+          "code_quality": 7,
+          "performance": 6,
+          "ease_of_use": 6,
+          "production_readiness": 7,
+          "x_factor": 6
+        }
+      },
+      "secondopinion": {
+        "total": 6.5,
+        "categories": {
+          "ux_design": 6,
+          "capabilities": 7,
+          "code_quality": 6,
+          "performance": 5,
+          "ease_of_use": 7,
+          "production_readiness": 5,
+          "x_factor": 7
+        }
+      },
+      "narrativereactor": {
+        "total": 5.4,
+        "categories": {
+          "ux_design": 4,
+          "capabilities": 6,
+          "code_quality": 6,
+          "performance": 4,
+          "ease_of_use": 4,
+          "production_readiness": 4,
+          "x_factor": 7
+        }
+      },
+      "trendpilot": {
+        "total": 5.8,
+        "categories": {
+          "ux_design": 4,
+          "capabilities": 6,
+          "code_quality": 7,
+          "performance": 5,
+          "ease_of_use": 5,
+          "production_readiness": 5,
+          "x_factor": 6
+        }
+      },
+      "railway-saas": {
+        "total": 4.6,
+        "categories": {
+          "ux_design": 4,
+          "capabilities": 4,
+          "code_quality": 5,
+          "performance": 5,
+          "ease_of_use": 4,
+          "production_readiness": 4,
+          "x_factor": 4
+        }
+      }
+    }
+  },
+  {
+    "date": "2026-02-22",
+    "scores": {
+      "flipmyera": {
+        "total": 6.8,
+        "categories": {
+          "ux_design": 7,
+          "capabilities": 7,
+          "code_quality": 7,
+          "performance": 6,
+          "ease_of_use": 6,
+          "production_readiness": 7,
+          "x_factor": 7
+        }
+      },
+      "secondopinion": {
+        "total": 7.2,
+        "categories": {
+          "ux_design": 8,
+          "capabilities": 8,
+          "code_quality": 7,
+          "performance": 6,
+          "ease_of_use": 7,
+          "production_readiness": 6,
+          "x_factor": 8
+        }
+      },
+      "narrativereactor": {
+        "total": 4.8,
+        "categories": {
+          "ux_design": 3,
+          "capabilities": 6,
+          "code_quality": 6,
+          "performance": 5,
+          "ease_of_use": 4,
+          "production_readiness": 4,
+          "x_factor": 6
+        }
+      },
+      "trendpilot": {
+        "total": 5.7,
+        "categories": {
+          "ux_design": 5,
+          "capabilities": 6,
+          "code_quality": 7,
+          "performance": 5,
+          "ease_of_use": 5,
+          "production_readiness": 6,
+          "x_factor": 5
+        }
+      },
+      "railway-saas": {
+        "total": 5.6,
+        "categories": {
+          "ux_design": 5,
+          "capabilities": 6,
+          "code_quality": 5,
+          "performance": 6,
+          "ease_of_use": 6,
+          "production_readiness": 7,
+          "x_factor": 5
+        }
+      }
+    }
+  }
+]

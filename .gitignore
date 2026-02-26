@@ -1,0 +1,38 @@
+# Embedded git repos (managed separately)
+projects/
+repos/
+FossFLOW/
+automaton/
+front-end-ai/
+generative-ai/
+ghidra-mcp/
+skills/claw-conductor/
+
+# Virtual environments
+.venv/
+venv/
+
+# Large/binary files
+*.png
+*.jpg
+*.jpeg
+*.mp4
+*.wav
+*.mp3
+
+# Caches
+__pycache__/
+node_modules/
+.cache/
+
+# LanceDB (large binary data)
+.lancedb-sessions/
+
+# Logs
+logs/
+*.log
+
+# Orchestrator state
+.orchestrator/
+.orchestrator-v2/
+.orgo/

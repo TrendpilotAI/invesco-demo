@@ -1,0 +1,130 @@
+# Browser Use Cloud SDK
+
+## Install
+- Python: `pip install browser-use-sdk`
+- TypeScript: `npm install browser-use-sdk`
+
+## Setup
+Set `BROWSER_USE_API_KEY` env var, or pass `api_key`/`apiKey` to the constructor.
+Get a key at https://cloud.browser-use.com/settings?tab=api-keys
+
+## Python SDK
+
+```python
+from browser_use_sdk import AsyncBrowserUse
+from pydantic import BaseModel
+
+client = AsyncBrowserUse()
+
+# Run a task (await for result)
+result = await client.run("Find the top HN post")  # -> TaskResult[str]
+print(result.output)  # str
+print(result.id)      # task ID
+print(result.status)  # "finished"
+
+# Structured output
+class Product(BaseModel):
+    name: str
+    price: float
+
+result = await client.run("Get product info from amazon.com/dp/...", output_schema=Product)
+print(result.output)  # Product(name=..., price=...)
+
+# Stream steps (async for)
+async for step in client.run("Go to google.com and search for 'browser use'"):
+    print(f"[{step.number}] {step.next_goal} — {step.url}")
+```
+
+### run() parameters
+All optional keyword arguments:
+- `session_id: str` — reuse an existing session
+- `llm: str` — model override (default: Browser Use LLM)
+- `start_url: str` — initial page URL
+- `max_steps: int` — max agent steps (default 100)
+- `output_schema: type[BaseModel]` — Pydantic model for structured output (alias: `schema`)
+- `secrets: dict[str, str]` — domain-specific credentials
+- `allowed_domains: list[str]` — restrict agent to these domains
+- `session_settings: SessionSettings` — proxy, profile, browser config
+- `flash_mode: bool` — faster but less careful
+- `thinking: bool` — extended reasoning
+- `vision: bool | str` — vision/screenshot mode
+- `highlight_elements: bool` — highlight interactive elements
+- `system_prompt_extension: str` — append to system prompt
+- `judge: bool` — enable quality judge
+- `skill_ids: list[str]` — skills to use
+- `op_vault_id: str` — 1Password vault ID for 2FA/credentials
+- `metadata: dict[str, str]` — custom metadata
+
+### Resources
+
+```python
+# Sessions — reusable browser environments
+session = await client.sessions.create(proxy_country_code="us")
+result1 = await client.run("Log into example.com", session_id=session.id)
+result2 = await client.run("Now click settings", session_id=session.id)
+await client.sessions.stop(session.id)
+
+# Profiles — persistent login state (cookies, localStorage)
+profile = await client.profiles.create(name="my-profile")
+session = await client.sessions.create(profile_id=profile.id)
+
+# Files
+url_info = await client.files.session_url(session_id, file_name="input.pdf", content_type="application/pdf", size_bytes=1024)
+output = await client.files.task_output(task_id, file_id)
+
+# Browser API — direct CDP access
+browser = await client.browsers.create(proxy_country_code="de")
+# Connect via browser.cdp_url with Playwright/Puppeteer/Selenium
+
+# Skills — turn websites into APIs
+skill = await client.skills.create(goal="Extract product data from Amazon", agent_prompt="...")
+result = await client.skills.execute(skill.id, parameters={"url": "..."})
+
+# Marketplace
+skills = await client.marketplace.list()
+result = await client.marketplace.execute(skill_id, parameters={...})
+
+# Billing
+account = await client.billing.account()
+```
+
+## TypeScript SDK
+
+```typescript
+import { BrowserUse } from "browser-use-sdk";
+import { z } from "zod";
+
+const client = new BrowserUse();
+const result = await client.run("Find the top HN post");
+console.log(result.output);
+
+// Structured output (Zod)
+const Product = z.object({ name: z.string(), price: z.number() });
+const typed = await client.run("Get product info", { schema: Product });
+
+// Stream steps
+for await (const step of client.run("Go to google.com")) {
+  console.log(`[${step.number}] ${step.nextGoal}`);
+}
+
+// Resources: client.tasks, client.sessions, client.profiles,
+// client.browsers, client.files, client.skills, client.marketplace, client.billing
+```
+
+### run() options (second argument)
+- `sessionId`, `llm`, `startUrl`, `maxSteps`, `schema` (Zod)
+- `secrets`, `allowedDomains`, `sessionSettings`
+- `flashMode`, `thinking`, `vision`, `highlightElements`
+- `systemPromptExtension`, `judge`, `skillIds`, `opVaultId`
+- `timeout` (ms, default 300000), `interval` (ms, default 2000)
+
+## Key concepts
+- **Task**: text prompt → agent browses → returns output
+- **Session**: stateful browser. Auto-created by default, or create manually for follow-up tasks
+- **Profile**: persistent browser state (cookies, localStorage). Survives across sessions
+- **Profile Sync**: upload local cookies to cloud: `curl -fsSL https://browser-use.com/profile.sh | sh`
+- **Proxies**: set `proxy_country_code` on session. 195+ countries. CAPTCHAs handled automatically
+- **Stealth**: on by default. Anti-detect, CAPTCHA solving, ad blocking
+- **Browser Use LLM**: default model, optimized for browser tasks. 15× cheaper
+- **Vision**: agent can take screenshots. Enable with `vision=True`
+- **1Password**: auto-fill passwords and 2FA/TOTP codes with `op_vault_id`

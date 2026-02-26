@@ -1,0 +1,642 @@
+{
+  "summary": {
+    "total_projects": 5,
+    "total_services": 39,
+    "crashed_or_failed": 8,
+    "stale_services": 14,
+    "no_deployments": 1,
+    "redundant_database_groups": 2,
+    "duplicate_project_suspects": 1
+  },
+  "issues": {
+    "crashed_or_failed": [
+      {
+        "project": "Hypebase AI",
+        "service": ".",
+        "service_id": "00193edb-8a6c-4c0e-88f4-9ad9405911ee",
+        "status": "CRASHED",
+        "deployed_at": "2026-02-24T00:51:57.002Z",
+        "days_ago": 0
+      },
+      {
+        "project": "Ultrafone",
+        "service": "Ultrafone",
+        "service_id": "ea81b370-b55d-4aac-896c-23d8a86522f5",
+        "status": "FAILED",
+        "deployed_at": "2026-02-20T22:42:29.008Z",
+        "days_ago": 3
+      },
+      {
+        "project": "Hypebase-ai",
+        "service": "Hypebase-ai",
+        "service_id": "04c10316-9bbe-46f0-bcd1-9a9b3442094e",
+        "status": "FAILED",
+        "deployed_at": "2026-01-07T20:24:05.597Z",
+        "days_ago": 47
+      },
+      {
+        "project": "OpenClaw AI + n8n + Tailscale",
+        "service": "Agent Ops Center",
+        "service_id": "3a012d0a-d8a4-427c-b7fc-4294c9272d8d",
+        "status": "FAILED",
+        "deployed_at": "2026-02-24T03:52:59.472Z",
+        "days_ago": 0
+      },
+      {
+        "project": "ForwardLane Signal Studio",
+        "service": "New Design",
+        "service_id": "9644ecb1-98d0-4eca-9b0b-cbfeb68e7e68",
+        "status": "FAILED",
+        "deployed_at": "2026-02-22T16:07:11.078Z",
+        "days_ago": 1
+      },
+      {
+        "project": "ForwardLane Signal Studio",
+        "service": "Celery Beat",
+        "service_id": "ae49df4b-b0ee-47b8-8857-2b324947756a",
+        "status": "FAILED",
+        "deployed_at": "2026-02-23T23:32:14.007Z",
+        "days_ago": 0
+      },
+      {
+        "project": "ForwardLane Signal Studio",
+        "service": "Entity Extraction",
+        "service_id": "f7d1861d-bd56-46ec-b841-4e28e0569d68",
+        "status": "FAILED",
+        "deployed_at": "2026-02-24T03:13:51.203Z",
+        "days_ago": 0
+      },
+      {
+        "project": "ForwardLane Signal Studio",
+        "service": "Celery Worker",
+        "service_id": "fad2a0f8-04d3-4382-b08a-6d070ca91630",
+        "status": "FAILED",
+        "deployed_at": "2026-02-23T23:32:14.194Z",
+        "days_ago": 0
+      }
+    ],
+    "stale_services": [
+      {
+        "project": "Hypebase AI",
+        "service": "VectorDB",
+        "service_id": "36654cfe-e7fc-43a4-bdda-9a24001ebc44",
+        "deployed_at": "2026-01-13T03:12:44.069Z",
+        "days_ago": 42,
+        "status": "SUCCESS"
+      },
+      {
+        "project": "Hypebase AI",
+        "service": "Meilisearch",
+        "service_id": "563ba19c-0291-4622-9dc4-22f97d92da7b",
+        "deployed_at": "2026-01-13T03:12:44.071Z",
+        "days_ago": 42,
+        "status": "SUCCESS"
+      },
+      {
+        "project": "Hypebase AI",
+        "service": "MongoDB",
+        "service_id": "a38dcdb3-41a0-49c8-abc6-16fd3069290f",
+        "deployed_at": "2026-01-13T03:12:44.061Z",
+        "days_ago": 42,
+        "status": "SUCCESS"
+      },
+      {
+        "project": "Hypebase AI",
+        "service": "FalkorDB",
+        "service_id": "c342ffd9-b05b-49ec-a189-4ba6dd7add33",
+        "deployed_at": "2026-01-02T18:01:18.548Z",
+        "days_ago": 52,
+        "status": "SLEEPING"
+      },
+      {
+        "project": "Ultrafone",
+        "service": "Redis-jbi5",
+        "service_id": "385e47fd-dd72-4fa8-aea7-d1addfbf4d4e",
+        "deployed_at": "2026-01-14T22:46:08.813Z",
+        "days_ago": 40,
+        "status": "SUCCESS"
+      },
+      {
+        "project": "Ultrafone",
+        "service": "Postgres-ATOx",
+        "service_id": "3a3ac4c1-a8fd-4c8f-998f-e8aa84203d71",
+        "deployed_at": "2026-01-14T22:45:42.595Z",
+        "days_ago": 40,
+        "status": "SUCCESS"
+      },
+      {
+        "project": "Ultrafone",
+        "service": "Postgres-09RY",
+        "service_id": "504ae53c-f40f-4f30-a7b9-0e98415b17ae",
+        "deployed_at": "2026-01-14T22:46:55.412Z",
+        "days_ago": 40,
+        "status": "SUCCESS"
+      },
+      {
+        "project": "Ultrafone",
+        "service": "Postgres-Wq5P",
+        "service_id": "7b0a8b58-ce86-4e7a-9ecb-3f25cda99d71",
+        "deployed_at": "2026-01-14T22:46:36.649Z",
+        "days_ago": 40,
+        "status": "SUCCESS"
+      },
+      {
+        "project": "Ultrafone",
+        "service": "Redis-I90J",
+        "service_id": "92c9dc6e-8c9a-40bd-ad7a-71c56d6f6fea",
+        "deployed_at": "2026-01-14T22:46:46.663Z",
+        "days_ago": 40,
+        "status": "SUCCESS"
+      },
+      {
+        "project": "Ultrafone",
+        "service": "Redis-rfwD",
+        "service_id": "bdc6b85b-25f7-4272-922d-9b0313d5d25f",
+        "deployed_at": "2026-01-14T22:52:33.854Z",
+        "days_ago": 40,
+        "status": "SUCCESS"
+      },
+      {
+        "project": "Ultrafone",
+        "service": "Redis-MqUf",
+        "service_id": "ddfa0c64-8255-46c6-af9d-646976c8a160",
+        "deployed_at": "2026-01-12T00:27:13.930Z",
+        "days_ago": 43,
+        "status": "SUCCESS"
+      },
+      {
+        "project": "Ultrafone",
+        "service": "Postgres",
+        "service_id": "ecfd4682-5425-46e1-a728-aabdd8dec21f",
+        "deployed_at": "2026-01-08T16:36:57.154Z",
+        "days_ago": 46,
+        "status": "SUCCESS"
+      },
+      {
+        "project": "Ultrafone",
+        "service": "Postgres-dW-g",
+        "service_id": "f5bf4a9d-21f5-486b-9dd5-ac3d5f6c031a",
+        "deployed_at": "2026-01-12T00:27:05.350Z",
+        "days_ago": 43,
+        "status": "SUCCESS"
+      },
+      {
+        "project": "Hypebase-ai",
+        "service": "Hypebase-ai",
+        "service_id": "04c10316-9bbe-46f0-bcd1-9a9b3442094e",
+        "deployed_at": "2026-01-07T20:24:05.597Z",
+        "days_ago": 47,
+        "status": "FAILED"
+      }
+    ],
+    "no_deployments": [
+      {
+        "project": "Ultrafone",
+        "service": "Redis",
+        "service_id": "5c2c1d79-4ac8-405a-95a2-c6aff06aa88d"
+      }
+    ],
+    "duplicate_suspects": [
+      {
+        "project_a": "Hypebase AI",
+        "project_b": "Hypebase-ai",
+        "reason": "Similar names (both start with 'hypebase')"
+      }
+    ],
+    "redundant_databases": [
+      {
+        "project": "Ultrafone",
+        "type": "Redis",
+        "count": 4,
+        "services": [
+          "Redis-jbi5",
+          "Redis-I90J",
+          "Redis-rfwD",
+          "Redis-MqUf"
+        ],
+        "recommendation": "Consolidate 4 Redis \u2192 1"
+      },
+      {
+        "project": "Ultrafone",
+        "type": "Postgres",
+        "count": 5,
+        "services": [
+          "Postgres-ATOx",
+          "Postgres-09RY",
+          "Postgres-Wq5P",
+          "Postgres",
+          "Postgres-dW-g"
+        ],
+        "recommendation": "Consolidate 5 Postgres \u2192 1-2"
+      }
+    ],
+    "known_issues": [
+      {
+        "project": "Hypebase-ai",
+        "service": "Hypebase-ai",
+        "note": "Duplicate project of Hypebase AI"
+      },
+      {
+        "project": "ForwardLane Signal Studio",
+        "service": "Entity Extraction",
+        "note": "Known failure \u2014 NLP model deployment issues"
+      }
+    ]
+  },
+  "projects": [
+    {
+      "id": "0013046d-6ebc-41b6-8921-4b95612b73cd",
+      "name": "Hypebase AI",
+      "environments": [
+        "production",
+        "staging"
+      ],
+      "services": [
+        {
+          "id": "00193edb-8a6c-4c0e-88f4-9ad9405911ee",
+          "name": ".",
+          "latest_deployment": {
+            "id": "0abca224-970a-4958-a8f2-24ddbb5bb05d",
+            "status": "CRASHED",
+            "created_at": "2026-02-24T00:51:57.002Z"
+          }
+        },
+        {
+          "id": "1bd3d410-fafd-41c3-8f88-81685ab3f57b",
+          "name": "LibreChat",
+          "latest_deployment": {
+            "id": "edb9cce4-4673-4883-8026-7411809e9a61",
+            "status": "SUCCESS",
+            "created_at": "2026-02-20T03:53:09.582Z"
+          }
+        },
+        {
+          "id": "36654cfe-e7fc-43a4-bdda-9a24001ebc44",
+          "name": "VectorDB",
+          "latest_deployment": {
+            "id": "7dae4f0c-4ad6-4fd8-8902-2ca1a4335c0c",
+            "status": "SUCCESS",
+            "created_at": "2026-01-13T03:12:44.069Z"
+          }
+        },
+        {
+          "id": "47a192f5-daee-4d03-8335-ed070d804239",
+          "name": "hypebase-ai",
+          "latest_deployment": {
+            "id": "6e5a3c10-2e89-403c-884b-7030f6d2b219",
+            "status": "SUCCESS",
+            "created_at": "2026-02-06T22:34:56.386Z"
+          }
+        },
+        {
+          "id": "563ba19c-0291-4622-9dc4-22f97d92da7b",
+          "name": "Meilisearch",
+          "latest_deployment": {
+            "id": "55f5692b-7783-4d8d-87ce-302d337f45ed",
+            "status": "SUCCESS",
+            "created_at": "2026-01-13T03:12:44.071Z"
+          }
+        },
+        {
+          "id": "76461d35-ecf6-4191-92fd-9497cd8a732c",
+          "name": "RAG API \ud83d\udcda",
+          "latest_deployment": {
+            "id": "5de17da0-6d5b-4b28-993d-7298b1109278",
+            "status": "SUCCESS",
+            "created_at": "2026-01-30T04:40:54.987Z"
+          }
+        },
+        {
+          "id": "a38dcdb3-41a0-49c8-abc6-16fd3069290f",
+          "name": "MongoDB",
+          "latest_deployment": {
+            "id": "2ba9e792-2c7f-4517-8e28-0c87b28f1b83",
+            "status": "SUCCESS",
+            "created_at": "2026-01-13T03:12:44.061Z"
+          }
+        },
+        {
+          "id": "c342ffd9-b05b-49ec-a189-4ba6dd7add33",
+          "name": "FalkorDB",
+          "latest_deployment": {
+            "id": "63f8d5a3-d971-40e9-b4a7-9e21b43cb386",
+            "status": "SLEEPING",
+            "created_at": "2026-01-02T18:01:18.548Z"
+          }
+        }
+      ]
+    },
+    {
+      "id": "468e87b0-cd80-4f9d-853a-fcfdd1b2b74b",
+      "name": "Ultrafone",
+      "environments": [
+        "production"
+      ],
+      "services": [
+        {
+          "id": "385e47fd-dd72-4fa8-aea7-d1addfbf4d4e",
+          "name": "Redis-jbi5",
+          "latest_deployment": {
+            "id": "59b3284e-634f-424b-8dd5-0b82132802df",
+            "status": "SUCCESS",
+            "created_at": "2026-01-14T22:46:08.813Z"
+          }
+        },
+        {
+          "id": "3a3ac4c1-a8fd-4c8f-998f-e8aa84203d71",
+          "name": "Postgres-ATOx",
+          "latest_deployment": {
+            "id": "747dac84-9bad-4167-b0c3-7c1095225b07",
+            "status": "SUCCESS",
+            "created_at": "2026-01-14T22:45:42.595Z"
+          }
+        },
+        {
+          "id": "504ae53c-f40f-4f30-a7b9-0e98415b17ae",
+          "name": "Postgres-09RY",
+          "latest_deployment": {
+            "id": "4ecc83aa-7aff-47f3-ae2a-831cca21e1ba",
+            "status": "SUCCESS",
+            "created_at": "2026-01-14T22:46:55.412Z"
+          }
+        },
+        {
+          "id": "5c2c1d79-4ac8-405a-95a2-c6aff06aa88d",
+          "name": "Redis",
+          "latest_deployment": null
+        },
+        {
+          "id": "62a1edab-ba9a-4c0b-a858-72186ace1b7c",
+          "name": "ultrafone-app",
+          "latest_deployment": {
+            "id": "135680d3-e5fa-444e-84ab-a6873108f1b0",
+            "status": "SUCCESS",
+            "created_at": "2026-02-20T04:16:41.439Z"
+          }
+        },
+        {
+          "id": "7b0a8b58-ce86-4e7a-9ecb-3f25cda99d71",
+          "name": "Postgres-Wq5P",
+          "latest_deployment": {
+            "id": "c87600df-d13a-4dfb-9937-86ec812e4a47",
+            "status": "SUCCESS",
+            "created_at": "2026-01-14T22:46:36.649Z"
+          }
+        },
+        {
+          "id": "92c9dc6e-8c9a-40bd-ad7a-71c56d6f6fea",
+          "name": "Redis-I90J",
+          "latest_deployment": {
+            "id": "40627109-a67d-4d23-b8fe-d0a4333f4d5b",
+            "status": "SUCCESS",
+            "created_at": "2026-01-14T22:46:46.663Z"
+          }
+        },
+        {
+          "id": "bdc6b85b-25f7-4272-922d-9b0313d5d25f",
+          "name": "Redis-rfwD",
+          "latest_deployment": {
+            "id": "685dbdbb-fdbf-4192-b148-d530be10f3c6",
+            "status": "SUCCESS",
+            "created_at": "2026-01-14T22:52:33.854Z"
+          }
+        },
+        {
+          "id": "ddfa0c64-8255-46c6-af9d-646976c8a160",
+          "name": "Redis-MqUf",
+          "latest_deployment": {
+            "id": "a10525ec-4200-4f88-a819-24fda92393d7",
+            "status": "SUCCESS",
+            "created_at": "2026-01-12T00:27:13.930Z"
+          }
+        },
+        {
+          "id": "ea81b370-b55d-4aac-896c-23d8a86522f5",
+          "name": "Ultrafone",
+          "latest_deployment": {
+            "id": "3b1faa25-8d95-4304-96ef-0a75c92a91fd",
+            "status": "FAILED",
+            "created_at": "2026-02-20T22:42:29.008Z"
+          }
+        },
+        {
+          "id": "ecfd4682-5425-46e1-a728-aabdd8dec21f",
+          "name": "Postgres",
+          "latest_deployment": {
+            "id": "4fd21aa4-825d-49c5-a131-da65959a18ee",
+            "status": "SUCCESS",
+            "created_at": "2026-01-08T16:36:57.154Z"
+          }
+        },
+        {
+          "id": "f5bf4a9d-21f5-486b-9dd5-ac3d5f6c031a",
+          "name": "Postgres-dW-g",
+          "latest_deployment": {
+            "id": "90be3b36-fbc1-4bbc-8333-2d414993e717",
+            "status": "SUCCESS",
+            "created_at": "2026-01-12T00:27:05.350Z"
+          }
+        }
+      ]
+    },
+    {
+      "id": "4c6bda60-83e3-4eec-bbae-07ef83574ce7",
+      "name": "Hypebase-ai",
+      "environments": [
+        "production"
+      ],
+      "services": [
+        {
+          "id": "04c10316-9bbe-46f0-bcd1-9a9b3442094e",
+          "name": "Hypebase-ai",
+          "latest_deployment": {
+            "id": "448aefa2-4e83-41d7-ba7d-732ad963cb02",
+            "status": "FAILED",
+            "created_at": "2026-01-07T20:24:05.597Z"
+          }
+        }
+      ]
+    },
+    {
+      "id": "90f53968-9390-4200-8c85-e1a49d65e196",
+      "name": "OpenClaw AI + n8n + Tailscale",
+      "environments": [
+        "production"
+      ],
+      "services": [
+        {
+          "id": "3a012d0a-d8a4-427c-b7fc-4294c9272d8d",
+          "name": "Agent Ops Center",
+          "latest_deployment": {
+            "id": "63904795-b8a7-49ec-a3b6-534ab2999d0c",
+            "status": "FAILED",
+            "created_at": "2026-02-24T03:52:59.472Z"
+          }
+        },
+        {
+          "id": "61deb454-f29e-47bf-b832-c69bb0849685",
+          "name": "Postgres",
+          "latest_deployment": {
+            "id": "fc59323f-40e2-45b5-9c95-d4a128e78171",
+            "status": "SUCCESS",
+            "created_at": "2026-02-19T10:58:21.021Z"
+          }
+        },
+        {
+          "id": "6d30e361-6a7c-4010-a765-e6aba0e0770f",
+          "name": "openclaw-railway-template",
+          "latest_deployment": {
+            "id": "fe1f358f-caae-40ee-8223-4bcccc92511a",
+            "status": "SUCCESS",
+            "created_at": "2026-02-24T06:01:19.614Z"
+          }
+        },
+        {
+          "id": "7ef24a30-7836-4fbe-ab71-ecc0e5ffb484",
+          "name": "Redis",
+          "latest_deployment": {
+            "id": "87a577c6-92c2-411b-b80c-61dd8ae48901",
+            "status": "SUCCESS",
+            "created_at": "2026-02-19T10:58:22.236Z"
+          }
+        },
+        {
+          "id": "8aa51783-fa2e-4acb-a077-86b44b1286df",
+          "name": "Temporal",
+          "latest_deployment": {
+            "id": "702fa8b3-d29b-47c0-9261-0e1ce6be73f3",
+            "status": "SUCCESS",
+            "created_at": "2026-02-20T03:35:24.979Z"
+          }
+        },
+        {
+          "id": "96ec68f3-f1a1-48d1-a172-cb7ba79f0df4",
+          "name": "Postiz",
+          "latest_deployment": {
+            "id": "77e041c0-044e-4840-872b-24479d68e42f",
+            "status": "SUCCESS",
+            "created_at": "2026-02-20T03:37:25.106Z"
+          }
+        },
+        {
+          "id": "9a8e0654-d249-4f2c-9745-13b9a8f6a7cc",
+          "name": "Primary",
+          "latest_deployment": {
+            "id": "06b55d9f-9d0a-438f-954f-4029fb20d20b",
+            "status": "SUCCESS",
+            "created_at": "2026-02-20T03:36:38.462Z"
+          }
+        },
+        {
+          "id": "c23eae97-65a5-4a34-84ea-ae96a500f0ab",
+          "name": "Worker",
+          "latest_deployment": {
+            "id": "255c5700-25f2-47c0-b57c-6dfc17d5858e",
+            "status": "SUCCESS",
+            "created_at": "2026-02-20T03:55:46.659Z"
+          }
+        }
+      ]
+    },
+    {
+      "id": "b4441cc7-31bb-420f-8e78-f1a3ca6bca9e",
+      "name": "ForwardLane Signal Studio",
+      "environments": [
+        "production"
+      ],
+      "services": [
+        {
+          "id": "196ed607-9967-4f69-9ca8-5ab89afe0b3d",
+          "name": "Django Backend",
+          "latest_deployment": {
+            "id": "5b5c22a4-f807-4e28-94ac-15bb02cd7d22",
+            "status": "SUCCESS",
+            "created_at": "2026-02-23T23:32:14.088Z"
+          }
+        },
+        {
+          "id": "19ec4ea6-6b4d-4e5e-a62d-b13f94e64034",
+          "name": "Postgres Default",
+          "latest_deployment": {
+            "id": "da6f1a47-a813-4f77-a839-316ac3073700",
+            "status": "SUCCESS",
+            "created_at": "2026-02-22T05:26:06.610Z"
+          }
+        },
+        {
+          "id": "4538677c-0867-483f-9a00-d046b3167671",
+          "name": "Signal Studio",
+          "latest_deployment": {
+            "id": "30eb5aad-e477-432e-8a53-857d4a672bbd",
+            "status": "SUCCESS",
+            "created_at": "2026-02-23T23:09:51.202Z"
+          }
+        },
+        {
+          "id": "657117cd-868a-4a93-be43-bfd6826099ec",
+          "name": "Signal Builder API",
+          "latest_deployment": {
+            "id": "f9264460-bff8-4462-9c4d-cd68dac70d06",
+            "status": "SUCCESS",
+            "created_at": "2026-02-23T22:58:19.745Z"
+          }
+        },
+        {
+          "id": "83684944-8f46-4862-b46c-62104f99a3af",
+          "name": "Postgres Analytical",
+          "latest_deployment": {
+            "id": "a491b6fb-a603-4ed6-98ae-c88f55bd1d3c",
+            "status": "SUCCESS",
+            "created_at": "2026-02-22T05:26:07.501Z"
+          }
+        },
+        {
+          "id": "9644ecb1-98d0-4eca-9b0b-cbfeb68e7e68",
+          "name": "New Design",
+          "latest_deployment": {
+            "id": "16a7bdcc-8760-4feb-a218-148dffcb20e3",
+            "status": "FAILED",
+            "created_at": "2026-02-22T16:07:11.078Z"
+          }
+        },
+        {
+          "id": "ae49df4b-b0ee-47b8-8857-2b324947756a",
+          "name": "Celery Beat",
+          "latest_deployment": {
+            "id": "666083db-4ce7-4654-bfd7-16afbe3a43ad",
+            "status": "FAILED",
+            "created_at": "2026-02-23T23:32:14.007Z"
+          }
+        },
+        {
+          "id": "bbe96ba1-f43a-4f0e-90fe-ed8403843ff3",
+          "name": "Redis",
+          "latest_deployment": {
+            "id": "8fa3d5a2-9b83-4f60-9c0d-a7ea73c2557c",
+            "status": "SUCCESS",
+            "created_at": "2026-02-22T05:25:44.983Z"
+          }
+        },
+        {
+          "id": "f7d1861d-bd56-46ec-b841-4e28e0569d68",
+          "name": "Entity Extraction",
+          "latest_deployment": {
+            "id": "653d6ed4-2138-4975-b2a1-81fcfdc8dc65",
+            "status": "FAILED",
+            "created_at": "2026-02-24T03:13:51.203Z"
+          }
+        },
+        {
+          "id": "fad2a0f8-04d3-4382-b08a-6d070ca91630",
+          "name": "Celery Worker",
+          "latest_deployment": {
+            "id": "aa59fd02-57a4-4779-8804-0dc0bf804bad",
+            "status": "FAILED",
+            "created_at": "2026-02-23T23:32:14.194Z"
+          }
+        }
+      ]
+    }
+  ],
+  "generated_at": "2026-02-24T06:29:04.541098+00:00"
+}

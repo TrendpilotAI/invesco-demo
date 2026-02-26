@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "skills": {
+    "youtube-transcript": {
+      "version": "1.0.1",
+      "installedAt": 1771285320521
+    },
+    "demo-video": {
+      "version": "1.0.0",
+      "installedAt": 1771290109693
+    },
+    "remotion-video-toolkit": {
+      "version": "1.4.0",
+      "installedAt": 1771290114369
+    },
+    "video-agent": {
+      "version": "1.2.1",
+      "installedAt": 1771290118494
+    },
+    "seo-optimizer": {
+      "version": "0.1.0",
+      "installedAt": 1771333681125
+    },
+    "web-perf": {
+      "version": "1.0.0",
+      "installedAt": 1771333683957
+    },
+    "on-page-seo-auditor": {
+      "version": "2.0.0",
+      "installedAt": 1771333861591
+    },
+    "seo-competitor-analysis": {
+      "version": "1.0.0",
+      "installedAt": 1771333863716
+    }
+  }
+}

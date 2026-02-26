@@ -1,0 +1,52 @@
+{
+  "project": "Railway SaaS",
+  "date": "2026-02-18",
+  "scores": {
+    "ux_design": 6,
+    "capabilities": 7,
+    "code_quality": 7,
+    "performance": 6,
+    "ease_of_use": 8,
+    "production_readiness": 7,
+    "x_factor": 6
+  },
+  "weighted_total": 6.75,
+  "summary": "A solid SaaS starter template that covers the essential bases — auth, payments, API keys, admin panel, and Railway deployment. The architecture is clean and idiomatic Next.js App Router with proper separation of concerns. However, it's a template, not a product: no tests, limited UI polish, no loading states or optimistic updates, and the frontend is functional rather than beautiful. It would save a developer 2-3 days of boilerplate setup, which is genuinely valuable, but it's not something you'd ship as-is to paying customers.",
+  "strengths": [
+    "Complete auth flow with GitHub + Google OAuth, JWT sessions, and role-based access (middleware + admin check)",
+    "Well-structured Stripe integration — checkout, portal, webhooks with proper signature verification and email notifications on plan changes",
+    "Clean Prisma schema with proper relations, cascading deletes, and composite unique constraints for usage tracking",
+    "Production-ready Docker setup with multi-stage build, non-root user, and standalone output",
+    "Railway-specific config (railway.json with health checks, auto-migrate on deploy, restart policy)",
+    "Redis-backed rate limiting with proper 429 responses and rate limit headers",
+    "API key management system with generation, revocation, and usage tracking per endpoint",
+    "Excellent README with clear setup instructions, env var table, and one-click deploy button",
+    "Graceful provider handling — conditionally includes OAuth providers based on env vars present",
+    "AI chat widget included as a bonus feature via OpenClaw integration"
+  ],
+  "weaknesses": [
+    "Zero test files — jest is configured but no tests exist, undermining the 'production-ready' claim",
+    "No loading/skeleton states on dashboard pages — server components just block until data loads",
+    "Landing page is generic startup template fare — dark gradient + pricing cards, nothing memorable",
+    "No error boundaries beyond a basic error.tsx — no per-section error handling or retry logic",
+    "No CI/CD configuration (no GitHub Actions, no lint-on-push, no test pipeline)",
+    "Tailwind classes are inlined everywhere with no component library or design system extraction",
+    "No accessibility considerations — no aria labels, no keyboard navigation, no skip links, no focus management",
+    "No responsive testing evident — basic md: breakpoints but no mobile-first thinking",
+    "Usage tracking aggregates by date but no charts/visualizations in the dashboard — just raw numbers",
+    "Admin panel is read-only — can view users but can't change roles, ban users, or manage subscriptions",
+    ".next build artifacts committed to repo (31K+ files in .next/)"
+  ],
+  "recommendations": [
+    "Add at least integration tests for Stripe webhook handler and auth flows — these are the riskiest paths",
+    "Extract reusable UI components (Card, Button, Badge, Nav) instead of repeating Tailwind classes",
+    "Add GitHub Actions workflow for lint + type-check + test on PR",
+    "Add .next to .gitignore and remove the committed build artifacts",
+    "Add loading.tsx files for dashboard routes to show skeletons during server rendering",
+    "Add a simple chart library (recharts or similar) for the usage dashboard",
+    "Make admin panel actionable — role changes, plan overrides, user suspension",
+    "Add CSRF protection and security headers (Content-Security-Policy, etc.)",
+    "Add keyboard accessibility and aria labels to interactive elements",
+    "Consider adding a /docs or /api-docs page since this is an API-key-based product"
+  ]
+}

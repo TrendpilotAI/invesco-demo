@@ -1,0 +1,19 @@
+{
+  "name": "@openclaw/monitoring",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "healthcheck": "tsx src/healthcheck.ts",
+    "metrics": "tsx src/metrics.ts",
+    "alerts": "tsx src/alerting.ts",
+    "dashboard": "tsx src/dashboard-data.ts",
+    "check-all": "tsx src/run-all.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vitest": "^1.6.1"
+  }
+}

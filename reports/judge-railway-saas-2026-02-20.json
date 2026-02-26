@@ -1,0 +1,67 @@
+{
+  "project": "Railway SaaS Template",
+  "date": "2026-02-20",
+  "summary": "Lightweight SaaS starter template on Next.js 15 with Stripe, NextAuth, Prisma, Redis, and Resend. Only 31 source files and 3 tests — this is a template, not a product. Clean for what it is but very early-stage. Good bones, needs flesh.",
+  "weighted_total": 4.6,
+  "scores": {
+    "ux_design": {
+      "score": 4,
+      "commentary": "Next.js app with dashboard and admin pages. Custom fonts (Geist). Error and 404 pages present. Chat widget included. But extremely minimal — 3 pages total (home, dashboard, admin). No component library beyond basic Providers.",
+      "strengths": ["Custom Geist fonts", "Error and 404 pages", "Chat widget for support"],
+      "weaknesses": ["Only 3 pages", "No design system", "Minimal UI components", "No responsive design evidence"]
+    },
+    "capabilities": {
+      "score": 4,
+      "commentary": "Stripe billing, NextAuth authentication, Redis caching, email via Resend, analytics module, admin page, dashboard. These are the right building blocks for SaaS but each is minimal. Chat widget is a nice touch.",
+      "strengths": ["Stripe integration", "NextAuth with Prisma adapter", "Redis caching", "Email templates via Resend"],
+      "weaknesses": ["Each integration is minimal/starter-level", "No real features beyond auth + billing", "Admin page likely bare", "No user settings or profile"]
+    },
+    "code_quality": {
+      "score": 5,
+      "commentary": "Clean lib/ directory with well-separated concerns (auth, prisma, redis, stripe, email, analytics). Middleware for route protection. Only 3 test files — barely any coverage. TypeScript throughout. Prisma for DB.",
+      "strengths": ["Clean separation of concerns in lib/", "Middleware for route protection", "TypeScript throughout", "Prisma schema management"],
+      "weaknesses": ["Only 3 test files", "No component tests", "31 source files — very thin", "No shared types"]
+    },
+    "performance": {
+      "score": 5,
+      "commentary": "Next.js 15 provides good defaults (SSR, code splitting). Redis for caching. Geist fonts are small. But so little code that performance isn't really testable. No monitoring.",
+      "strengths": ["Next.js 15 built-in optimizations", "Redis caching layer", "Minimal bundle (few dependencies)"],
+      "weaknesses": ["Too thin to meaningfully evaluate", "No performance monitoring", "No CDN configuration"]
+    },
+    "ease_of_use": {
+      "score": 4,
+      "commentary": "As a template, ease of use means: how easy is it to fork and build on? Clean structure helps. But no documentation, no setup guide, no .env.example visible. A developer would need to reverse-engineer the required env vars.",
+      "strengths": ["Clean project structure", "Standard Next.js patterns"],
+      "weaknesses": ["No setup documentation", "No .env.example", "No contribution guide", "No architecture overview"]
+    },
+    "production_readiness": {
+      "score": 4,
+      "commentary": "CI pipeline exists. Prisma migrations. NextAuth + middleware for auth. But: no error monitoring, no logging, no health check endpoint (ironic — there's a health test but unclear if endpoint exists), minimal test coverage.",
+      "strengths": ["CI pipeline", "Auth middleware", "Prisma migrations"],
+      "weaknesses": ["No error monitoring", "No logging framework", "3 tests is insufficient", "No deployment documentation"]
+    },
+    "x_factor": {
+      "score": 4,
+      "commentary": "SaaS templates are a dime a dozen. This one has Railway-specific value (optimized for Railway deployment) but doesn't stand out otherwise. Needs a unique hook — maybe Railway-specific features like service management, usage monitoring, or one-click deploys.",
+      "strengths": ["Railway-optimized deployment", "Solid tech stack choices"],
+      "weaknesses": ["Undifferentiated from hundreds of SaaS templates", "No Railway-specific features beyond hosting", "Too thin to be useful without significant work"]
+    }
+  },
+  "recommendations": [
+    "Add comprehensive README with setup instructions",
+    "Create .env.example with all required variables",
+    "Add Railway-specific features (service dashboard, usage monitoring) to differentiate",
+    "Increase test coverage — at least cover auth and billing flows",
+    "Add API routes for common SaaS patterns (webhooks, API keys, team management)"
+  ],
+  "feature_inventory": [
+    {"feature": "Stripe Billing", "status": "partial", "has_tests": true},
+    {"feature": "NextAuth Authentication", "status": "complete", "has_tests": false},
+    {"feature": "Redis Caching", "status": "partial", "has_tests": true},
+    {"feature": "Email (Resend)", "status": "partial", "has_tests": false},
+    {"feature": "Admin Dashboard", "status": "partial", "has_tests": false},
+    {"feature": "User Dashboard", "status": "partial", "has_tests": false},
+    {"feature": "Chat Widget", "status": "partial", "has_tests": false},
+    {"feature": "Analytics", "status": "partial", "has_tests": false}
+  ]
+}

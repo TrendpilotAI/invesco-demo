@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="refresh" content="60">
+<title>OpenClaw Infrastructure Dashboard</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0d1117;color:#c9d1d9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;padding:2rem}
+h1{color:#58a6ff;margin-bottom:.5rem;font-size:1.8rem}
+.subtitle{color:#8b949e;margin-bottom:2rem;font-size:.9rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin-bottom:2rem}
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1.2rem;position:relative}
+.card h3{font-size:1rem;margin-bottom:.5rem}
+.card .url{color:#8b949e;font-size:.75rem;word-break:break-all}
+.card .tests{color:#8b949e;font-size:.8rem;margin-top:.4rem}
+.badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:.75rem;font-weight:600;margin-left:.5rem}
+.badge.green{background:#238636;color:#fff}
+.badge.red{background:#da3633;color:#fff}
+.badge.yellow{background:#9e6a03;color:#fff}
+.badge.blue{background:#1f6feb;color:#fff}
+.section-title{color:#58a6ff;font-size:1.2rem;margin:1.5rem 0 .8rem;border-bottom:1px solid #30363d;padding-bottom:.4rem}
+.stats{display:flex;gap:2rem;flex-wrap:wrap;margin-bottom:2rem}
+.stat{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1rem 1.5rem;text-align:center}
+.stat .num{font-size:2rem;font-weight:700;color:#58a6ff}
+.stat .label{color:#8b949e;font-size:.8rem}
+.infra{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1.2rem;margin-top:1rem}
+.infra h3{color:#58a6ff;margin-bottom:.6rem}
+.infra ul{list-style:none;padding:0}
+.infra li{color:#8b949e;font-size:.85rem;padding:2px 0}
+.infra li strong{color:#c9d1d9}
+footer{color:#484f58;font-size:.75rem;margin-top:2rem;text-align:center}
+</style>
+</head>
+<body>
+<h1>🐻 OpenClaw Infrastructure Dashboard</h1>
+<p class="subtitle">Auto-refreshes every 60s · Railway Cloud · Last checked: 2026-02-17 05:36 UTC</p>
+
+<div class="stats">
+  <div class="stat"><div class="num">4</div><div class="label">Batches Done</div></div>
+  <div class="stat"><div class="num">21</div><div class="label">Agents Completed</div></div>
+  <div class="stat"><div class="num">560</div><div class="label">Total Tests</div></div>
+  <div class="stat"><div class="num">7</div><div class="label">Services</div></div>
+</div>
+
+<div class="section-title">Live Services</div>
+<div class="grid">
+  <div class="card">
+    <h3>🤖 OpenClaw <span class="badge green">Running</span></h3>
+    <div class="url">Agent runtime · Claude Opus 4</div>
+  </div>
+  <div class="card">
+    <h3>⚡ n8n <span class="badge green">Online</span></h3>
+    <div class="url">https://primary-production-4244.up.railway.app</div>
+    <div class="tests">HTTP 200 · Workflow automation</div>
+  </div>
+  <div class="card">
+    <h3>📱 Postiz <span class="badge red">Down (502)</span></h3>
+    <div class="url">https://postiz-production-6189.up.railway.app</div>
+    <div class="tests">HTTP 502 · Social media scheduler</div>
+  </div>
+  <div class="card">
+    <h3>🌐 FlipMyEra <span class="badge green">Deployed</span></h3>
+    <div class="url">https://flipmyera.com</div>
+    <div class="tests">183 tests · Netlify · HTTP 200</div>
+  </div>
+</div>
+
+<div class="section-title">Built Projects</div>
+<div class="grid">
+  <div class="card">
+    <h3>🎬 NarrativeReactor <span class="badge blue">Built</span></h3>
+    <div class="tests">122 tests passing</div>
+    <div class="url">Modal GPU · Cloud Function · Firestore · React</div>
+  </div>
+  <div class="card">
+    <h3>📊 Trendpilot <span class="badge blue">Built</span></h3>
+    <div class="tests">133 tests passing</div>
+    <div class="url">Trend aggregation · News/RSS/Reddit</div>
+  </div>
+  <div class="card">
+    <h3>🏥 Second-Opinion <span class="badge yellow">Building</span></h3>
+    <div class="tests">Tests: pending</div>
+    <div class="url">Firebase deployment · Competition entry</div>
+  </div>
+</div>
+
+<div class="section-title">Infrastructure</div>
+<div class="infra">
+  <h3>Railway Services</h3>
+  <ul>
+    <li><strong>Postgres:</strong> postgres.railway.internal:5432/railway</li>
+    <li><strong>Redis:</strong> redis.railway.internal:6379</li>
+    <li><strong>n8n:</strong> primary-production-4244.up.railway.app</li>
+    <li><strong>Postiz:</strong> postiz-production-6189.up.railway.app</li>
+  </ul>
+</div>
+
+<footer>OpenClaw · Overnight Sprint Batch 5 · Agent 26 · Infrastructure</footer>
+</body>
+</html>

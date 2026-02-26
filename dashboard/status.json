@@ -1,0 +1,17 @@
+{
+  "lastUpdated": "2026-02-17T05:36:00.000Z",
+  "services": {
+    "openclaw": { "status": "running", "url": null },
+    "n8n": { "status": "online", "url": "https://primary-production-4244.up.railway.app", "httpCode": 200 },
+    "postiz": { "status": "down", "url": "https://postiz-production-6189.up.railway.app", "httpCode": 502 },
+    "narrativeReactor": { "status": "built", "tests": 122 },
+    "trendpilot": { "status": "built", "tests": 133 },
+    "secondOpinion": { "status": "built", "tests": "pending" },
+    "flipMyEra": { "status": "deployed", "tests": 183, "url": "https://flipmyera.com", "httpCode": 200 }
+  },
+  "overnightSprint": {
+    "batchesCompleted": 4,
+    "agentsCompleted": 21,
+    "totalTests": 560
+  }
+}
