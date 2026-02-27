@@ -16,9 +16,9 @@
   - [x] 211 — Vercel Deploy (P0, XS, BLOCKS ALL) → `todos/211-pending-p0-invesco-retention-vercel-deploy.md`
   - [x] 212 — Demo Recordings / Loom (P0, S) → `todos/212-pending-p0-invesco-retention-demo-recordings-loom.md`
   - [ ] 213 — Push-to-Salesforce Simulation (P1, S) → `todos/213-pending-p1-invesco-retention-push-to-salesforce-simulation.md`
-  - [ ] 214 — Invesco Branding in SF Chrome (P1, XS) → `todos/214-pending-p1-invesco-retention-invesco-branding.md`
+  - [x] 214 — Invesco Branding in SF Chrome (P1, XS) → `todos/214-pending-p1-invesco-retention-invesco-branding.md` ✅ 2026-02-27
   - [ ] 215 — Skeleton Loaders / AI Animation (P1, S) → `todos/215-pending-p1-invesco-retention-skeleton-loaders.md`
-  - [ ] 216 — Demo Reset Button (P1, XS) → `todos/216-pending-p1-invesco-retention-demo-reset.md`
+  - [x] 216 — Demo Reset Button (P1, XS) → `todos/216-pending-p1-invesco-retention-demo-reset.md` ✅ 2026-02-27
   - [ ] 217 — Support Model Polish (P1, XS-S) → `todos/217-pending-p1-invesco-retention-support-model-polish.md`
   - [ ] 218 — Leave-Behind Package (P1, S) → `todos/218-pending-p1-invesco-retention-leave-behind-package.md`
 - **Critical path:** Deploy (211) → Email Megan+Craig → Dry Run → Brian Demo → Pilot signed
