@@ -1,10 +1,14 @@
 # TODO.md — Master Project Plan
 
-> Auto-monitored by Honey's cron loops. Last updated: 2026-02-27 05:01 UTC (invesco-sprint cron: spawned 3 Sonnet agents for TODO-213 Push-to-SF, TODO-214 Branding, TODO-215 Skeletons, TODO-216 Demo Reset)
+> Auto-monitored by Honey's cron loops. Last updated: 2026-02-27 08:03 UTC (daily-judge-swarm: 14 Judge Agents spawned for top 15 repos — BRAINSTORM.md / PLAN.md / AUDIT.md files being generated in each project. Trendpilot judge deferred due to gateway concurrency limits — will retry.)
 
 ---
 
-## 🔴 P0 — Critical / Revenue-Impacting
+## 🔴 P0 — Critical /Revenue-Impacting
+
+> Daily Judge Swarm (2026-02-27 08:11 UTC): Judge agents produced 14 BRAINSTORM.md, 15 PLAN.md, and 16 AUDIT.md files across projects. Planning agents created 181 TODO files (see /data/workspace/todos/). Trendpilot judge required a retry but completed; cleanup agent ran to prune stale orchestrator state. Continued: review high-priority TODOs listed below and attack P0 items (Invesco demo deploy). 
+
+
 
 ### INVESCO-RETENTION: Demo App Deploy + Brian Kiley Demo (🚨 $300K/yr — Early March 2026)
 - **Why:** $300K/yr account retention. All 5 demo deliverables built, NOT deployed. Demo to Brian Kiley needed ASAP.
@@ -15,12 +19,12 @@
 - **TODOs Created:**
   - [x] 211 — Vercel Deploy (P0, XS, BLOCKS ALL) → `todos/211-pending-p0-invesco-retention-vercel-deploy.md`
   - [x] 212 — Demo Recordings / Loom (P0, S) → `todos/212-pending-p0-invesco-retention-demo-recordings-loom.md`
-  - [ ] 213 — Push-to-Salesforce Simulation (P1, S) → `todos/213-pending-p1-invesco-retention-push-to-salesforce-simulation.md`
+  - [x] 213 — Push-to-Salesforce Simulation (P1, S) → `todos/213-pending-p1-invesco-retention-push-to-salesforce-simulation.md` ✅ 2026-02-27
   - [x] 214 — Invesco Branding in SF Chrome (P1, XS) → `todos/214-pending-p1-invesco-retention-invesco-branding.md` ✅ 2026-02-27
   - [x] 215 — Skeleton Loaders / AI Animation (P1, S) → `todos/215-pending-p1-invesco-retention-skeleton-loaders.md` ✅ 2026-02-27
   - [x] 216 — Demo Reset Button (P1, XS) → `todos/216-pending-p1-invesco-retention-demo-reset.md` ✅ 2026-02-27
-  - [ ] 217 — Support Model Polish (P1, XS-S) → `todos/217-pending-p1-invesco-retention-support-model-polish.md`
-  - [ ] 218 — Leave-Behind Package (P1, S) → `todos/218-pending-p1-invesco-retention-leave-behind-package.md`
+  - [x] 217 — Support Model Polish (P1, XS-S) → `todos/217-pending-p1-invesco-retention-support-model-polish.md` ✅ 2026-02-27
+  - [x] 218 — Leave-Behind Package (P1, S) → `todos/218-pending-p1-invesco-retention-leave-behind-package.md` ✅ 2026-02-27
 - **Critical path:** Deploy (211) → Email Megan+Craig → Dry Run → Brian Demo → Pilot signed
 
 
@@ -401,3 +405,110 @@
 4. #214 (tests) — after auth + LLM implemented
 5. #215 (CI) — after tests exist
 
+
+---
+
+## Signal Studio — Judge v2 (2026-02-27)
+> Revenue=8 | Strategic=9 | Security=CRITICAL | Urgency=9 (Invesco)
+> Brainstorm: `/data/workspace/projects/signal-studio/BRAINSTORM.md`
+> Plan: `/data/workspace/projects/signal-studio/PLAN.md`
+> Audit: `/data/workspace/projects/signal-studio/AUDIT.md`
+
+### 🔴 P0 — Security (Invesco Blocker)
+- [x] **#219** [CRITICAL] Auth middleware.ts — protect all API routes from public access [2h] ✅ 2026-02-27 — middleware.ts created, 401 on all /api/* without Bearer token, skips in DEMO mode, commit 261526c
+- [ ] **#220** [HIGH] Bundle optimization — remove duplicate reactflow, lazy load @xenova [2h]
+- [ ] **Untracked** [CRITICAL] Rate limit LLM proxy routes — prevent cost blowout [2h]
+- [x] **Untracked** [CRITICAL] Upgrade next@16.0.10 → 16.0.11 (DoS CVE patch) [30min] ✅ 2026-02-27 — commit ef184e2
+
+### 🟠 P1 — This Sprint
+- [ ] **#218** [HIGH] E2E Playwright tests for Easy Button + Salesforce embed [3h]
+- [ ] **Untracked** [HIGH] Parameterize Oracle SQL queries — injection risk in `/api/oracle/query` [2h]
+- [ ] **Untracked** [HIGH] Add Sentry error tracking for Invesco production [1h]
+
+### 🟡 P2 — Next Sprint
+- [ ] **Untracked** [MEDIUM] Add Bitbucket Pipelines CI test gate on PR [2h]
+- [ ] **Untracked** [MEDIUM] Replace 16 console.log calls with structured logger [1h]
+- [ ] **Untracked** [MEDIUM] Signal Alerts — email/webhook on threshold cross [M]
+
+---
+
+## signal-builder-backend (ForwardLane Core API)
+> Revenue=8 | Strategic=9 | Completeness=7 | Urgency=7
+> Brainstorm: `/data/workspace/projects/signal-builder-backend/BRAINSTORM.md`
+> Plan: `/data/workspace/projects/signal-builder-backend/PLAN.md`
+> Audit: `/data/workspace/projects/signal-builder-backend/AUDIT.md`
+
+### 🔴 High Priority
+- [ ] **#219** [HIGH] Upgrade FastAPI 0.92→0.115, SQLAlchemy, asyncpg, alembic [4h]
+- [ ] **#219** [HIGH] Add /health endpoint + Sentry error tracking [3h]
+
+### 🟠 Medium Priority
+- [ ] **#220** [MEDIUM] Redis caching for signal-to-SQL translation (PropertiesMap, SignalNodesTree) [4h]
+- [ ] **#220** [MEDIUM] Test coverage for analytical_db and schema_builder modules [6h]
+
+### 🟡 Low Priority
+- [ ] **#221** [LOW] Replace Flask admin with starlette-admin (remove dual-framework) [8h]
+
+## signalhaus-website
+*AI consultancy marketing site — Nathan's SignalHaus business*
+
+### 🔴 Critical (Ship ASAP — every day offline = missed leads)
+- [ ] **#221** [CRITICAL] Fix contact form backend — wire up Resend API route [2h]
+- [ ] **#222** [CRITICAL] Deploy to Vercel with signalhaus.ai custom domain [1h]
+
+### 🟠 High Priority
+- [ ] **#223** [HIGH] Fix contact page metadata bug (use client + metadata conflict) [0.5h]
+- [ ] **#224** [HIGH] Add Calendly booking embed to contact page [1h]
+
+### 🟡 Medium Priority
+- [ ] **#225** [MEDIUM] Add Google Analytics 4 tracking + conversion events [1h]
+- [ ] [MEDIUM] Add testimonials/case studies section to homepage [2h]
+- [ ] [MEDIUM] Publish 3+ SEO blog posts targeting AI consulting keywords [6h]
+- [ ] [MEDIUM] Add spam protection (Cloudflare Turnstile) to contact form [1h]
+
+
+## Signal Studio Frontend (signal-studio-frontend) — Added 2026-02-27
+
+- [ ] [P0] Fix auth token injection in apiClient — ALL API calls currently unauthenticated (TODO-221)
+- [ ] [P0] Build signal canvas/builder UI with React Flow (TODO-222)
+- [ ] [P1] Real-time signal run status via Supabase Realtime (TODO-223)
+- [ ] [P1] Error boundaries + loading/empty states on all pages (TODO-224)
+- [ ] [P1] GitHub Actions CI — lint + typecheck + jest (TODO-227)
+- [ ] [P2] Wire dark mode Zustand state to document.documentElement (TODO-225)
+- [ ] [P2] Jest + React Testing Library test suite (TODO-226)
+- [ ] [P3] Signal scheduling UI (cron builder component)
+- [ ] [P3] Sentry error monitoring integration
+- [ ] [P3] CSP + security headers in next.config.ts
+
+## core-entityextraction (2026-02-27)
+- [ ] [P0] Add PostgreSQL connection pooling to persistence.py — critical prod stability (TODO-228)
+- [ ] [P0] Add X-API-Key authentication middleware — all endpoints currently open (TODO-229)
+- [ ] [P0] Remove dead Flask code from services/ and controllers/ — 7 files never imported (TODO-230)
+- [ ] [P1] Add pytest test suite — zero tests currently exist (TODO-233)
+- [ ] [P1] Cache compiled regex patterns — rebuilt on every request today (TODO-232)
+
+## NarrativeReactor — AI Content Generation Platform (added 2026-02-27)
+
+- [ ] [CRITICAL] Fix auth bypass — API_KEY unset disables all auth (TODO-224)
+- [ ] [P1] Add Docker multi-stage build + Railway deployment config (TODO-223)
+- [ ] [P1] Add Redis caching for LLM flows, brand profiles, trend data (TODO-225)
+- [ ] [P1] Set up GitHub Actions CI/CD — PR gate + auto-deploy on merge (TODO-226)
+- [ ] [P1] Expand vitest coverage from ~2 services to 70%+ overall (TODO-228)
+- [ ] [P2] Add Zod env validation at startup — prevent silent missing-var failures (TODO-229)
+- [ ] [P2] Add pino structured logging with request correlation IDs (TODO-230)
+- [ ] [P2] Consolidate blotatoPublisher + publisher into unified adapter pattern (TODO-227)
+
+## signal-builder-frontend — Security + Quality + Performance (added 2026-02-27)
+
+- [ ] [P1-CRITICAL] Remove .env from git tracking + add prod guard for dev auth (TODO-228)
+- [ ] [P1-CRITICAL] Eliminate `any` types in RTK Query API layer — 76 instances (TODO-229)
+- [ ] [P1-CRITICAL] Zero test coverage on builder.lib.ts — unit tests needed urgently (TODO-231)
+- [ ] [P1] Add Sentry error tracking — replace 4x console.error TODO placeholders (TODO-230)
+- [ ] [P1] Add typecheck + test gates to Bitbucket CI pipeline (TODO-232)
+- [ ] [P1] Route-level code splitting + memoize FlowNode/RightBar + RTK cache tags (TODO-233)
+- [ ] [P1] Dependency audit: uuidv4 deprecated, react-scripts CVEs, compose-function stale (TODO-234)
+- [ ] [P1] Fix 11x @ts-ignore suppressors + resolve circular imports in Redux (TODO-235)
+- [ ] [P2] MSW integration tests for RTK Query endpoints (TODO-236)
+- [ ] [P2] DRY: consolidate REPEATING_FILTER_VALUE_PROCESSING + replace JSON.parse deep clones (TODO-237)
+- [ ] [P2] Signal Templates Library feature in Catalog module (TODO-238)
+- [ ] [P2] Nginx CSP headers + security headers + move auth token off localStorage (TODO-239)
