@@ -1,6 +1,6 @@
 # TODO.md — Master Project Plan
 
-> Auto-monitored by Honey's cron loops. Last updated: 2026-02-27 21:10 UTC (DB pooling done [#213 ✅]; sub-agent spawned for TODO-202 SQL injection fix [signal-builder-backend])
+> Auto-monitored by Honey's cron loops. Last updated: 2026-02-27 05:01 UTC (invesco-sprint cron: spawned 3 Sonnet agents for TODO-213 Push-to-SF, TODO-214 Branding, TODO-215 Skeletons, TODO-216 Demo Reset)
 
 ---
 
@@ -315,7 +315,7 @@
 
 - [x] **[TODO-200]** Fix CORS wildcard — replace `allow_origins=["*"]` with `settings.CORS_ALLOWED_ORIGINS` env var · _1h_ · `200-pending-critical-...-fix-cors-wildcard.md`
 - [x] **[TODO-201]** Remove hardcoded JWT secrets — `AUTH_SECRET_KEY` defaults to `"very_secure_secret"` · _1h_ · ✅ 2026-02-26 — `_require_secret()` validator, fails fast if missing/weak, test suite added, committed e50ece6
-- [ ] **[TODO-202]** Fix EXPLAIN SQL injection in `is_sql_code_correct()` — add `sqlglot` validation + read-only transaction + statement_timeout · _2h_ · `202-pending-critical-...-fix-explain-sql-injection.md`
+- [x] **[TODO-202]** Fix EXPLAIN SQL injection in `is_sql_code_correct()` — add `sqlglot` validation + read-only transaction + statement_timeout · _2h_ · ✅ 2026-02-27 — sql_validator.py + read-only txn + 15 tests, commit 141c1b1
 
 ### 🟠 HIGH — Phase 2 (After security fixes)
 
