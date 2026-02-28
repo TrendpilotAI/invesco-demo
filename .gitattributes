@@ -1,2 +1,1 @@
--e tools/lancedb/node_modules/
-node_modules/
+tools/lancedb/node_modules/**
