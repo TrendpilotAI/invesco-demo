@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { checkService, checkAll, type ServiceConfig, type HealthResult } from "../healthcheck.js";
+import { checkService, type HealthResult } from "../healthcheck.js";
 import { MetricsStore } from "../metrics.js";
 import { AlertManager, formatTelegramMessage, formatTelegramDigest } from "../alerting.js";
 import { buildDashboard } from "../dashboard-data.js";
@@ -66,41 +66,60 @@ describe("MetricsStore", () => {
 // --- Alerting tests ---
 
 describe("AlertManager", () => {
-  it("fires alert when service is down", () => {
+  const makeResult = (status: HealthResult["status"], ms = 100): HealthResult => ({
+    service: "svc", url: "https://x.com", status,
+    httpCode: status === "down" ? null : 200,
+    responseTimeMs: ms, checkedAt: new Date().toISOString(),
+    error: status === "down" ? "timeout" : undefined,
+  });
+
+  it("fires 'down' alert when service first goes down", () => {
     const mgr = new AlertManager();
-    const result: HealthResult = {
-      service: "svc", url: "https://x.com", status: "down",
-      httpCode: null, responseTimeMs: 0, checkedAt: new Date().toISOString(),
-      error: "timeout",
-    };
-    const alert = mgr.evaluate(result);
-    expect(alert).not.toBeNull();
-    expect(alert!.type).toBe("down");
+    const alerts = mgr.evaluate(makeResult("down"));
+    expect(alerts).toHaveLength(1);
+    expect(alerts[0].type).toBe("down");
   });
 
-  it("respects cooldown — no duplicate alerts within window", () => {
-    const mgr = new AlertManager({ cooldownMs: 60000 });
-    const result: HealthResult = {
-      service: "svc", url: "https://x.com", status: "down",
-      httpCode: null, responseTimeMs: 0, checkedAt: new Date().toISOString(),
-    };
-    const first = mgr.evaluate(result);
-    const second = mgr.evaluate(result);
-    expect(first).not.toBeNull();
-    expect(second).toBeNull();
+  it("deduplicates — no duplicate 'down' alerts within dedupe window", () => {
+    const mgr = new AlertManager({ dedupeWindowMs: 60_000 });
+    const first  = mgr.evaluate(makeResult("down"));
+    const second = mgr.evaluate(makeResult("down"));
+    expect(first).toHaveLength(1);
+    expect(second).toHaveLength(0); // still in dedupe window
   });
 
-  it("fires recovery alert bypassing cooldown", () => {
-    const mgr = new AlertManager({ cooldownMs: 999999 });
-    const down: HealthResult = {
-      service: "svc", url: "https://x.com", status: "down",
-      httpCode: null, responseTimeMs: 0, checkedAt: new Date().toISOString(),
-    };
-    const up: HealthResult = { ...down, status: "healthy", httpCode: 200 };
-    mgr.evaluate(down);
-    const recovery = mgr.evaluate(up);
-    expect(recovery).not.toBeNull();
-    expect(recovery!.type).toBe("recovered");
+  it("fires escalation alert after escalationMs while still down", () => {
+    // Use tiny windows to force escalation immediately
+    const mgr = new AlertManager({ dedupeWindowMs: 0, escalationMs: 0 });
+    mgr.evaluate(makeResult("down"));  // first down
+    const second = mgr.evaluate(makeResult("down"));
+    expect(second.some((a) => a.type === "escalation")).toBe(true);
+  });
+
+  it("fires recovery alert when service comes back up", () => {
+    const mgr = new AlertManager({ dedupeWindowMs: 999_999 });
+    mgr.evaluate(makeResult("down"));
+    const alerts = mgr.evaluate(makeResult("healthy"));
+    expect(alerts.some((a) => a.type === "recovered")).toBe(true);
+  });
+
+  it("fires slow alert for degraded response time", () => {
+    const mgr = new AlertManager({ responseTimeThresholdMs: 100 });
+    const alerts = mgr.evaluate(makeResult("healthy", 9999));
+    expect(alerts.some((a) => a.type === "slow")).toBe(true);
+  });
+
+  it("evaluateTask detects FAILED transition", () => {
+    const mgr = new AlertManager();
+    const alerts = mgr.evaluateTask("my-job", "FAILED");
+    expect(alerts.some((a) => a.type === "task_failed")).toBe(true);
+  });
+
+  it("evaluateTask detects recovery from FAILED → SUCCESS", () => {
+    const mgr = new AlertManager({ dedupeWindowMs: 0 });
+    mgr.evaluateTask("my-job", "FAILED");
+    const recovery = mgr.evaluateTask("my-job", "SUCCESS");
+    expect(recovery.some((a) => a.type === "task_recovered")).toBe(true);
   });
 });
 
@@ -109,8 +128,23 @@ describe("AlertManager", () => {
 describe("formatTelegramMessage", () => {
   it("formats alert as HTML", () => {
     const msg = formatTelegramMessage({ service: "svc", type: "down", message: "🔴 svc is DOWN", timestamp: 0 });
-    expect(msg).toContain("<b>Service Alert</b>");
+    expect(msg).toContain("<b>🚨 Service Alert</b>");
     expect(msg).toContain("🔴 svc is DOWN");
+  });
+});
+
+describe("formatTelegramDigest", () => {
+  it("returns operational message for empty alerts", () => {
+    expect(formatTelegramDigest([])).toContain("operational");
+  });
+  it("lists all alerts", () => {
+    const alerts = [
+      { service: "a", type: "down" as const, message: "🔴 a DOWN", timestamp: 0 },
+      { service: "b", type: "slow" as const, message: "🟡 b SLOW", timestamp: 0 },
+    ];
+    const msg = formatTelegramDigest(alerts);
+    expect(msg).toContain("2 Alert(s)");
+    expect(msg).toContain("🔴 a DOWN");
   });
 });
 

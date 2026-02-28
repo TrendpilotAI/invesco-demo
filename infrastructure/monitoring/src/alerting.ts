@@ -1,86 +1,203 @@
 import type { HealthResult } from "./healthcheck.js";
+import type { AlertStateManager } from "./alert-state.js";
 
 export interface Alert {
   service: string;
-  type: "down" | "slow" | "recovered";
+  type: "down" | "slow" | "recovered" | "task_failed" | "task_recovered" | "escalation";
   message: string;
   timestamp: number;
 }
 
 export interface AlertConfig {
+  /** Response time threshold before a "slow" alert fires (ms). Default 5000 */
   responseTimeThresholdMs: number;
-  cooldownMs: number;
+  /** Deduplication window — don't re-alert for same issue within this ms. Default 30 min */
+  dedupeWindowMs: number;
+  /** Escalation — re-alert if service stays down longer than this ms. Default 15 min */
+  escalationMs: number;
 }
 
 const DEFAULT_CONFIG: AlertConfig = {
   responseTimeThresholdMs: 5000,
-  cooldownMs: 60 * 60 * 1000, // 1 hour
+  dedupeWindowMs: 30 * 60 * 1000,   // 30 minutes
+  escalationMs:   15 * 60 * 1000,   // 15 minutes
 };
 
 export class AlertManager {
-  private lastAlertTime: Map<string, number> = new Map();
-  private lastStatus: Map<string, HealthResult["status"]> = new Map();
   private config: AlertConfig;
-  private sentAlerts: Alert[] = [];
+  private stateManager: AlertStateManager | null;
+  /** In-memory fallback when no stateManager provided */
+  private memState: Map<string, {
+    lastStatus: string | null;
+    lastAlertSentAt: number | null;
+    downSince: number | null;
+    escalatedAt: number | null;
+    taskLastResult: string | null;
+  }> = new Map();
 
-  constructor(config: Partial<AlertConfig> = {}) {
+  constructor(config: Partial<AlertConfig> = {}, stateManager?: AlertStateManager) {
     this.config = { ...DEFAULT_CONFIG, ...config };
+    this.stateManager = stateManager ?? null;
   }
 
-  evaluate(result: HealthResult): Alert | null {
-    const prev = this.lastStatus.get(result.service);
-    this.lastStatus.set(result.service, result.status);
+  // ── State helpers ─────────────────────────────────────────────────────────
 
-    let alert: Alert | null = null;
+  private getState(service: string) {
+    if (this.stateManager) return this.stateManager.get(service);
+    if (!this.memState.has(service)) {
+      this.memState.set(service, { lastStatus: null, lastAlertSentAt: null, downSince: null, escalatedAt: null, taskLastResult: null });
+    }
+    return this.memState.get(service)!;
+  }
 
+  private patchState(service: string, patch: Partial<{
+    lastStatus: string | null;
+    lastAlertSentAt: number | null;
+    downSince: number | null;
+    escalatedAt: number | null;
+  }>) {
+    if (this.stateManager) {
+      this.stateManager.set(service, patch);
+      return;
+    }
+    const cur = this.getState(service);
+    Object.assign(cur, patch);
+  }
+
+  // ── Cooldown helpers ──────────────────────────────────────────────────────
+
+  private inDedupe(service: string): boolean {
+    const { lastAlertSentAt } = this.getState(service);
+    if (lastAlertSentAt == null) return false;
+    return Date.now() - lastAlertSentAt < this.config.dedupeWindowMs;
+  }
+
+  private markAlertSent(service: string): void {
+    this.patchState(service, { lastAlertSentAt: Date.now() });
+  }
+
+  // ── Core evaluation ───────────────────────────────────────────────────────
+
+  evaluate(result: HealthResult): Alert[] {
+    const now = Date.now();
+    const svc = result.service;
+    const state = this.getState(svc);
+    const prevStatus = state.lastStatus;
+    const alerts: Alert[] = [];
+
+    // ── Down transition ───────────────────────────────────────────────────
     if (result.status === "down") {
-      alert = {
-        service: result.service, type: "down",
-        message: `🔴 ${result.service} is DOWN${result.error ? `: ${result.error}` : ""} (HTTP ${result.httpCode ?? "N/A"})`,
-        timestamp: Date.now(),
-      };
-    } else if (result.responseTimeMs > this.config.responseTimeThresholdMs) {
-      alert = {
-        service: result.service, type: "slow",
-        message: `🟡 ${result.service} is SLOW: ${result.responseTimeMs}ms (threshold: ${this.config.responseTimeThresholdMs}ms)`,
-        timestamp: Date.now(),
-      };
-    } else if (prev === "down" && result.status === "healthy") {
-      alert = {
-        service: result.service, type: "recovered",
-        message: `🟢 ${result.service} has RECOVERED (${result.responseTimeMs}ms)`,
-        timestamp: Date.now(),
-      };
-      // Recovery alerts bypass cooldown
-      this.lastAlertTime.set(result.service, Date.now());
-      this.sentAlerts.push(alert);
-      return alert;
+      if (prevStatus !== "down") {
+        // First time going down
+        this.patchState(svc, { downSince: now, escalatedAt: null });
+        if (!this.inDedupe(svc)) {
+          alerts.push({
+            service: svc, type: "down",
+            message: `🔴 <b>${svc}</b> is DOWN${result.error ? `: ${result.error}` : ""} (HTTP ${result.httpCode ?? "N/A"})`,
+            timestamp: now,
+          });
+          this.markAlertSent(svc);
+        }
+      } else {
+        // Still down — check escalation
+        const downSince = state.downSince ?? now;
+        const downDurationMs = now - downSince;
+        const lastEscalated = state.escalatedAt ?? state.lastAlertSentAt ?? 0;
+
+        if (downDurationMs >= this.config.escalationMs &&
+            now - lastEscalated >= this.config.escalationMs) {
+          const downMin = Math.round(downDurationMs / 60000);
+          alerts.push({
+            service: svc, type: "escalation",
+            message: `🚨 <b>${svc}</b> STILL DOWN (${downMin}min)${result.error ? `: ${result.error}` : ""}`,
+            timestamp: now,
+          });
+          this.patchState(svc, { escalatedAt: now });
+        }
+      }
     }
 
-    if (!alert) return null;
+    // ── Recovery ──────────────────────────────────────────────────────────
+    else if (prevStatus === "down" && result.status !== "down") {
+      const downSince = state.downSince ?? now;
+      const downDurationMs = now - downSince;
+      const downMin = Math.round(downDurationMs / 60000);
+      alerts.push({
+        service: svc, type: "recovered",
+        message: `🟢 <b>${svc}</b> RECOVERED after ${downMin}min (${result.responseTimeMs}ms)`,
+        timestamp: now,
+      });
+      this.patchState(svc, { downSince: null, escalatedAt: null });
+      this.markAlertSent(svc);
+    }
 
-    // Cooldown check
-    const lastTime = this.lastAlertTime.get(result.service) ?? 0;
-    if (Date.now() - lastTime < this.config.cooldownMs) return null;
+    // ── Slow ──────────────────────────────────────────────────────────────
+    else if (result.responseTimeMs > this.config.responseTimeThresholdMs && result.status !== "down") {
+      if (!this.inDedupe(svc)) {
+        alerts.push({
+          service: svc, type: "slow",
+          message: `🟡 <b>${svc}</b> SLOW: ${result.responseTimeMs}ms (threshold: ${this.config.responseTimeThresholdMs}ms)`,
+          timestamp: now,
+        });
+        this.markAlertSent(svc);
+      }
+    }
 
-    this.lastAlertTime.set(result.service, Date.now());
-    this.sentAlerts.push(alert);
-    return alert;
+    // Update last status
+    this.patchState(svc, { lastStatus: result.status });
+
+    return alerts;
   }
 
   evaluateAll(results: HealthResult[]): Alert[] {
-    return results.map((r) => this.evaluate(r)).filter((a): a is Alert => a !== null);
+    return results.flatMap((r) => this.evaluate(r));
   }
 
-  getSentAlerts(): Alert[] {
-    return this.sentAlerts;
+  /**
+   * Evaluate a task result string (e.g. "SUCCESS" | "FAILED").
+   * Fires on transitions and deduplicates within window.
+   */
+  evaluateTask(service: string, result: string): Alert[] {
+    const now = Date.now();
+    const state = this.getState(service) as any;
+    const prev: string | null = state.taskLastResult ?? null;
+    const alerts: Alert[] = [];
+
+    if (prev !== result) {
+      if (result.toUpperCase().includes("FAIL") || result.toUpperCase().includes("ERROR")) {
+        if (!this.inDedupe(service)) {
+          alerts.push({
+            service, type: "task_failed",
+            message: `❌ <b>${service}</b> task FAILED (was: ${prev ?? "unknown"}, now: ${result})`,
+            timestamp: now,
+          });
+          this.markAlertSent(service);
+        }
+      } else if (prev?.toUpperCase().includes("FAIL") || prev?.toUpperCase().includes("ERROR")) {
+        alerts.push({
+          service, type: "task_recovered",
+          message: `✅ <b>${service}</b> task RECOVERED (${prev} → ${result})`,
+          timestamp: now,
+        });
+        this.markAlertSent(service);
+      }
+    }
+
+    if (this.stateManager) {
+      this.stateManager.set(service, { taskLastResult: result });
+    } else {
+      (this.getState(service) as any).taskLastResult = result;
+    }
+
+    return alerts;
   }
 }
 
-// Telegram message formatter
+// ── Formatters ───────────────────────────────────────────────────────────────
+
 export function formatTelegramMessage(alert: Alert): string {
   return [
-    `<b>Service Alert</b>`,
+    `<b>🚨 Service Alert</b>`,
     ``,
     alert.message,
     ``,
