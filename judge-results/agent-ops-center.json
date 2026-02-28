@@ -1,0 +1,72 @@
+[
+  {
+    "title": "Add WebSocket-Based Real-Time Updates",
+    "problem": "Dashboard relies on polling (15s for telemetry, 10s for agents) creating unnecessary API calls, stale data windows. Users see data up to 15 seconds old.",
+    "approach": "Implement SSE or WebSocket connections via Next.js API route. Server pushes updates only when state changes. Use event emitter on backend triggered on file-system watch of orchestrator state files.",
+    "priority": "high",
+    "effort": 3
+  },
+  {
+    "title": "Persistent Storage with SQLite Instead of JSON Files",
+    "problem": "Orchestrator stores tasks, blackboard, swarms as flat JSON files with race conditions, doesn't scale past ~1000 tasks, no transactional guarantees.",
+    "approach": "Replace JSON with better-sqlite3. Create tables for tasks, swarms, blackboard_entries with indexes. Wrap mutations in transactions. Add pagination to GET endpoint.",
+    "priority": "high",
+    "effort": 4
+  },
+  {
+    "title": "Authentication and Access Control",
+    "problem": "Dashboard and all API routes are completely unauthenticated. Anyone can view status, dispatch tasks, modify blackboard.",
+    "approach": "Add middleware-based auth with Bearer token. Store hashed ADMIN_TOKEN in env vars. Add minimal login page with httpOnly cookie. Protect all API routes.",
+    "priority": "high",
+    "effort": 2
+  },
+  {
+    "title": "Historical Telemetry Dashboard with Time-Series Charts",
+    "problem": "History state only stores data for current session (max 30 points). No way to see uptime trends, latency degradation, or when services went down.",
+    "approach": "Persist telemetry snapshots server-side in SQLite. Add /api/telemetry/history endpoint with time range queries. Build Recharts-based time-series view.",
+    "priority": "high",
+    "effort": 5
+  },
+  {
+    "title": "Alerting System with Telegram/Discord Notifications",
+    "problem": "No push notifications when service goes down or task fails. Must be actively watching dashboard.",
+    "approach": "Add alerting system that triggers on service status change. Integrate with Telegram/Discord webhooks. Add severity levels and escalation rules.",
+    "priority": "high",
+    "effort": 3
+  },
+  {
+    "title": "Task Dependencies and DAG Scheduling",
+    "problem": "All tasks run independently with no dependency tracking. Can't express 'task B should run after task A completes' or handle partial failures in chains.",
+    "approach": "Add task dependency system with DAG (directed acyclic graph). Implement 'run_after' field referencing parent task ID. Add status propagation (blocked/running/completed/failed).",
+    "priority": "medium",
+    "effort": 4
+  },
+  {
+    "title": "Resource Usage Monitoring (CPU/Memory per Service)",
+    "problem": "Railway provides no native resource monitoring. Can't see CPU/memory trends or detect memory leaks without external tools.",
+    "approach": "Add Railway Metrics API integration. Store resource snapshots alongside health checks. Add resource trend charts. Alert on unusual patterns.",
+    "priority": "medium",
+    "effort": 3
+  },
+  {
+    "title": "Automated Rollback on Failed Deploy",
+    "problem": "When a deployment fails, manual intervention needed to rollback or fix. No automated recovery mechanism.",
+    "approach": "Add health check before marking deployment success. If service doesn't become healthy within 5min, auto-trigger rollback via Railway API.",
+    "priority": "medium",
+    "effort": 3
+  },
+  {
+    "title": "Self-Healing Automation Scripts",
+    "problem": "Currently manual intervention needed for common issues like restarting failed workers, clearing stuck queues.",
+    "approach": "Add configurable healing actions (restart service, clear cache, run migration). Trigger automatically based on health check patterns.",
+    "priority": "medium",
+    "effort": 4
+  },
+  {
+    "title": "Mobile-Optimized Dashboard View",
+    "problem": "Dashboard not responsive enough for mobile. Can't monitor infrastructure on the go.",
+    "approach": "Add mobile-first responsive design. Show critical status indicators prominently. Add touch-friendly interactions.",
+    "priority": "low",
+    "effort": 3
+  }
+]

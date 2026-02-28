@@ -472,7 +472,7 @@
 ## Signal Studio Frontend (signal-studio-frontend) — Added 2026-02-27
 
 - [x] [P0] Fix auth token injection in apiClient — ALL API calls currently unauthenticated (TODO-221) ✅ commit e3c9a66 (signal-builder-frontend)
-- [ ] [P0] Build signal canvas/builder UI with React Flow (TODO-222)
+- [x] [P0] Build signal canvas/builder UI with React Flow (TODO-222) ✅ 2026-02-28 — SignalCanvas at /canvas, 3 custom node types (ConditionNode, FilterNode, OutputNode), drag-and-drop palette, mobile-responsive, Run Signal stub with toast, 6 passing tests; commit 4281bd8 (signal-studio)
 - [ ] [P1] Real-time signal run status via Supabase Realtime (TODO-223)
 - [ ] [P1] Error boundaries + loading/empty states on all pages (TODO-224)
 - [ ] [P1] GitHub Actions CI — lint + typecheck + jest (TODO-227)
@@ -486,7 +486,7 @@
 - [x] [P0] Add PostgreSQL connection pooling to persistence.py — critical prod stability (TODO-228) ✅ already in repo (aebdc62)
 - [x] [P0] Add X-API-Key authentication middleware — all endpoints currently open (TODO-229) ✅ already in repo (10586df)
 - [x] [P0] Remove dead Flask code from services/ and controllers/ — 7 files never imported (TODO-230) ✅ already in repo (5933da4)
-- [ ] [P1] Add pytest test suite — zero tests currently exist (TODO-233)
+- [x] [P1] Add pytest test suite — zero tests currently exist (TODO-233) ✅ 2026-02-28 — 30/30 tests passing, committed + pushed
 - [ ] [P1] Cache compiled regex patterns — rebuilt on every request today (TODO-232)
 
 ## NarrativeReactor — AI Content Generation Platform (added 2026-02-27)
@@ -544,9 +544,9 @@
 - [ ] [P2] Wire library into Signal Studio Django backend
 
 ## signal-builder-frontend (added 2026-02-28)
-- [ ] [P0] Sentry integration — error monitoring, React Router + canvas error boundary → TODO 323
-- [ ] [P0] Fix deprecated deps — replace uuidv4 with crypto.randomUUID(), patch CVEs → TODO 324
-- [ ] [P0] Test coverage for Redux slices (builder + auth) — 80% target → TODO 325
+- [x] [P0] Sentry integration — error monitoring, React Router + canvas error boundary → TODO 323 ✅ DONE 2026-02-28
+- [x] [P0] Fix deprecated deps — replace uuidv4 with crypto.randomUUID(), patch CVEs → TODO 324 ✅ DONE 2026-02-28
+- [x] [P0] Test coverage for Redux slices (builder + auth) — 80% target → TODO 325 ✅ DONE 2026-02-28
 - [ ] [P1] Vite migration from CRA+craco — faster dev/build, depends on TODO 324 → TODO 326
 - [ ] [P1] Bundle optimization — lodash-es, lazy loading, 30%+ size reduction → TODO 327
 - [ ] [P1] Playwright E2E tests — auth, signal creation, onboarding flows → TODO 328

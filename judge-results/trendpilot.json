@@ -1,0 +1,72 @@
+[
+  {
+    "title": "Replace In-Memory/File Storage with Supabase-Backed Persistence",
+    "problem": "Project has Prisma + Supabase but uses in-memory stores (JSON files). Data lost on restart. Supabase infrastructure is dead code.",
+    "approach": "Refactor stores to use Supabase db.ts layer. Replace file reads/writes with topics.list()/topics.bulkCreate(). Create tables for tenants, themes, teams.",
+    "priority": "high",
+    "effort": 5
+  },
+  {
+    "title": "Add Real AI/LLM-Powered Content Generation",
+    "problem": "Zero AI integration despite 'AI-powered' branding. Digest generator just creates HTML table. Sentiment uses keyword approach.",
+    "approach": "Integrate OpenAI/Anthropic for AI-generated newsletters. Replace keyword sentiment with LLM. Use embeddings for clustering. Add LLM service abstraction.",
+    "priority": "high",
+    "effort": 5
+  },
+  {
+    "title": "Implement Actual Email Sending Pipeline",
+    "problem": "Email digest generates HTML but never sends. No SMTP despite env vars. NotificationDispatcher is no-op.",
+    "approach": "Integrate Resend or SendGrid. Wire to scheduler. Implement email queue with retry. Add double opt-in. Add click tracking.",
+    "priority": "high",
+    "effort": 4
+  },
+  {
+    "title": "Add Authentication to API Routes",
+    "problem": "authGuard and apiKeyAuth middleware exist but never applied. All endpoints unauthenticated. Critical security gap.",
+    "approach": "Apply authGuard to all /api/* routes. Add RBAC. Implement tenant-scoping. Add CORS. Write auth integration tests.",
+    "priority": "high",
+    "effort": 4
+  },
+  {
+    "title": "Add Rate Limiting and Abuse Protection",
+    "problem": "No rate limiting. Vulnerable to abuse on digest generation, subscriber signup, API endpoints.",
+    "approach": "Add rate limiting middleware. Limit per tenant. Use Redis for distributed rate limiting.",
+    "priority": "high",
+    "effort": 3
+  },
+  {
+    "title": "Implement Multi-Tenant Isolation",
+    "problem": "No tenant isolation. One tenant's data could leak to another.",
+    "approach": "Add tenant_id to all queries. Implement row-level security. Add tenant context to all service calls.",
+    "priority": "high",
+    "effort": 4
+  },
+  {
+    "title": "Add Comprehensive Test Suite",
+    "problem": "No visible test coverage. Critical paths untested.",
+    "approach": "Add Vitest. Write tests for critical flows: subscriber signup, digest generation, API auth.",
+    "priority": "medium",
+    "effort": 5
+  },
+  {
+    "title": "Implement Webhook System for Events",
+    "problem": "No webhook support. Can't trigger external actions on events.",
+    "approach": "Add webhook registration. Support events: subscriber.added, digest.sent, link.clicked. Add retry logic.",
+    "priority": "medium",
+    "effort": 3
+  },
+  {
+    "title": "Add Analytics Dashboard",
+    "problem": "No analytics on subscriber growth, digest performance, engagement.",
+    "approach": "Build analytics dashboard. Track: subscribers, open rates, click rates, top links. Visualize trends.",
+    "priority": "medium",
+    "effort": 4
+  },
+  {
+    "title": "Implement Content Scheduling",
+    "problem": "No scheduling. Digests sent immediately on trigger.",
+    "approach": "Add scheduling system. Allow specifying send time. Implement queue for scheduled sends. Add timezone support.",
+    "priority": "medium",
+    "effort": 3
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "title": "Implement Real-Time Call Approval via Redis Pub/Sub",
+    "problem": "_wait_for_approval is placeholder that just sleeps 30s and returns False. High-priority leads never forwarded in real-time.",
+    "approach": "Implement Redis pub/sub. Publish approval request to channel, subscribe and await response. Add /api/calls/{call_id}/approve endpoint. Wire WebSocket to close the loop.",
+    "priority": "high",
+    "effort": 2
+  },
+  {
+    "title": "Replace Hardcoded 'nathan' User ID with Multi-Tenant Auth",
+    "problem": "System hardcoded to user_id='nathan' throughout. Blocks multi-tenancy or SaaS path.",
+    "approach": "Extract user_id from Twilio phone number mapping. Create phone_number_owners table. On incoming call, look up To number to resolve owner.",
+    "priority": "high",
+    "effort": 3
+  },
+  {
+    "title": "Bridge call_handler.py and receptionist.py",
+    "problem": "Two separate call handling paths that are never connected. Production path does greeting→forward via TwiML, AI receptionist sits unused.",
+    "approach": "When release_ai_receptionist flag is ON, route audio through Pipecat pipeline. Use media stream handler: Deepgram STT → Groq LLM → ElevenLabs/Fish TTS → send audio back.",
+    "priority": "high",
+    "effort": 5
+  },
+  {
+    "title": "Add Caller Reputation Database and Known Contact Whitelist",
+    "problem": "handle_known_contact() is TODO. check_caller_history() returns hardcoded empty results. Repeat callers get full interrogation every time.",
+    "approach": "Build reputation system on caller model. Update on call completion: call count, disposition, trust score. In classify(), check caller table first — auto-classify if ≥3 non-blocked calls.",
+    "priority": "high",
+    "effort": 3
+  },
+  {
+    "title": "Implement Voicemail Transcription and Smart Notifications",
+    "problem": "Voicemail creates raw audio file but no transcription. No smart notification routing based on caller classification.",
+    "approach": "Add Deepgram transcription to voicemail. Send transcript via preferred channel (Telegram/email). Add smart routing based on caller trust score.",
+    "priority": "high",
+    "effort": 3
+  },
+  {
+    "title": "Add Calendar Integration for Smart Scheduling",
+    "problem": "No calendar integration. Can't check availability or schedule callbacks.",
+    "approach": "Integrate Google Calendar API. Check availability before forwarding. Offer callback scheduling for out-of-office times.",
+    "priority": "medium",
+    "effort": 4
+  },
+  {
+    "title": "Implement CRM Integration (Salesforce, HubSpot)",
+    "problem": "No CRM integration. Call data stays in system.",
+    "approach": "Integrate with Salesforce/HubSpot. Push caller data and call records. Update contact records with call disposition.",
+    "priority": "medium",
+    "effort": 4
+  },
+  {
+    "title": "Add Call Analytics Dashboard",
+    "problem": "No analytics on call volumes, classifications, conversion rates.",
+    "approach": "Build analytics dashboard. Track: call volume over time, classification breakdown, forward rate, avg call duration. Visualize with charts.",
+    "priority": "medium",
+    "effort": 3
+  },
+  {
+    "title": "Implement Multi-Language Support",
+    "problem": "Only English support. Limits use for international businesses.",
+    "approach": "Add multilingual LLM support (Groq already multilingual). Add language detection. Allow user to set preferred languages.",
+    "priority": "medium",
+    "effort": 3
+  },
+  {
+    "title": "Add Call Recording and Playback UI",
+    "problem": "Call recordings exist but no UI to review them.",
+    "approach": "Add recordings tab in dashboard. Allow playback. Add transcription display alongside recording.",
+    "priority": "low",
+    "effort": 2
+  }
+]

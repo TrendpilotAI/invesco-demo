@@ -1,0 +1,72 @@
+[
+  {
+    "title": "Upgrade Pydantic v1 → v2 and FastAPI to Latest",
+    "problem": "Pins Pydantic 1.10.13 (EOL) and FastAPI 0.92.0 (over 2 years old). Uses from_orm and class Config: orm_mode = True (v1-only patterns).",
+    "approach": "Use bump-pydantic codemod to auto-migrate. Convert orm_mode → model_config, from_orm → model_validate. Upgrade FastAPI to 0.115+. Run test suite after each module.",
+    "priority": "high",
+    "effort": 8
+  },
+  {
+    "title": "Add Rate Limiting and API Abuse Protection",
+    "problem": "No rate limiting on any endpoint. Signal validation triggers expensive Celery tasks. Auth endpoints have no brute-force protection.",
+    "approach": "Install slowapi. Add global rate limit (100 req/min per IP). Apply stricter limits to compute-heavy endpoints (5/min for validate, 10/min for publish). Use Redis for counters.",
+    "priority": "high",
+    "effort": 2
+  },
+  {
+    "title": "Fix Critical CVEs in aiohttp and Dependencies",
+    "problem": "aiohttp 3.8.6 has multiple CVEs. passlib 1.7.4 unmaintained. psycopg2 outdated. pip-audit exists but not running in CI.",
+    "approach": "Upgrade aiohttp to 3.11+, asyncpg, psycopg2. Add pip-audit to CI with --strict. Replace passlib with bcrypt directly.",
+    "priority": "high",
+    "effort": 2
+  },
+  {
+    "title": "Add Test Coverage for Untested Critical Modules",
+    "problem": "~40-50% of critical logic untested. schema_builder, translators, analytical_db have zero tests despite complex logic.",
+    "approach": "Priority 1: Add tests for translators - test sort_calculations_by_dependency, translate, find_join_on_columns. Target 80% coverage on translator.",
+    "priority": "high",
+    "effort": 10
+  },
+  {
+    "title": "Implement Redis Caching for Validator Hot Paths",
+    "problem": "TODO comments flag uncached DB calls in validator hot paths. Repeated validation queries hit DB unnecessarily.",
+    "approach": "Add Redis caching for validator queries. Cache schema, group filters, ordering configs with TTL. Implement cache invalidation on schema changes.",
+    "priority": "high",
+    "effort": 4
+  },
+  {
+    "title": "Add Comprehensive API Documentation",
+    "problem": "No API docs. OpenAPI schema generated but no interactive docs. Developers need clear API reference.",
+    "approach": "Add Swagger UI at /docs. Add ReDoc at /redoc. Add request/response examples. Document error codes and rate limits.",
+    "priority": "medium",
+    "effort": 3
+  },
+  {
+    "title": "Implement WebSocket for Real-Time Signal Updates",
+    "problem": "Clients must poll for signal status updates. No real-time updates when signals are validated or published.",
+    "approach": "Add WebSocket endpoint for signal updates. Push status changes to connected clients. Add heartbeat/ping-pong for connection health.",
+    "priority": "medium",
+    "effort": 4
+  },
+  {
+    "title": "Add GraphQL API Layer",
+    "problem": "Only REST API exists. Clients need flexible queries for complex signal hierarchies and relationships.",
+    "approach": "Add GraphQL with strawberry or Ariadne. Define schema for signals, users, schemas. Add query optimization with dataloaders.",
+    "priority": "medium",
+    "effort": 6
+  },
+  {
+    "title": "Implement Comprehensive Audit Logging",
+    "problem": "No audit trail for signal changes, user actions, schema modifications.",
+    "approach": "Add audit log table. Track all CRUD operations with user, timestamp, before/after values. Add audit query endpoint for admins.",
+    "priority": "medium",
+    "effort": 3
+  },
+  {
+    "title": "Add Performance Monitoring and Tracing",
+    "problem": "No APM or tracing. Hard to debug slow requests or identify bottlenecks.",
+    "approach": "Add OpenTelemetry or Sentry. Instrument all endpoints. Add latency histograms and error rate dashboards.",
+    "priority": "medium",
+    "effort": 4
+  }
+]

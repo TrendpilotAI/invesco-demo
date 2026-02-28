@@ -1,0 +1,72 @@
+[
+  {
+    "title": "Replace In-Memory State with Persistent Database",
+    "problem": "contentPipeline, agentComm, campaigns, approvalWorkflow use in-memory Maps/arrays wiped on restart. Draft content, campaign state, approval queues all vanish.",
+    "approach": "Introduce SQLite or PostgreSQL. Create shared data-access layer with typed repositories for each domain. Migrate all Map-based stores.",
+    "priority": "high",
+    "effort": 5
+  },
+  {
+    "title": "Add Structured Error Handling and Observability",
+    "problem": "Routes swallow error context with bare try/catch. No error classification, request tracing, or structured logging. Hard to debug in production.",
+    "approach": "Create centralized error-handling middleware with classification. Add request ID middleware. Integrate structured logging. Add OpenTelemetry tracing.",
+    "priority": "high",
+    "effort": 4
+  },
+  {
+    "title": "Implement Authentication & Authorization Beyond API Key",
+    "problem": "API protected by single static API key. No users, roles, or permissions. Approval workflow can't track WHO approved. No dashboard auth.",
+    "approach": "Add JWT-based authentication. Implement RBAC (admin/editor/viewer). Add user context to approval workflow. Protect dashboard with session auth.",
+    "priority": "high",
+    "effort": 5
+  },
+  {
+    "title": "Extract 889-Line Route File into Domain Routers",
+    "problem": "src/routes/index.ts is 889 lines - massive monolith. Hard to navigate, test, apply different middleware, or have multiple devs work without conflicts.",
+    "approach": "Split into domain routers: routes/content.ts, routes/social.ts, routes/media.ts, routes/approval.ts. Create routes/index.ts that imports and mounts each.",
+    "priority": "high",
+    "effort": 4
+  },
+  {
+    "title": "Add Comprehensive Test Coverage",
+    "problem": "No visible test suite. Critical flows like content generation, social posting, approval workflow have no tests.",
+    "approach": "Set up Vitest. Write unit tests for services, integration tests for API routes. Add CI pipeline with test coverage requirements.",
+    "priority": "high",
+    "effort": 6
+  },
+  {
+    "title": "Implement Webhook System for External Integrations",
+    "problem": "No webhook support. Can't trigger external actions on content approval, campaign completion, or cost thresholds.",
+    "approach": "Add webhook registration system. Support events: content.approved, content.rejected, campaign.completed, cost.threshold. Add retry logic.",
+    "priority": "medium",
+    "effort": 3
+  },
+  {
+    "title": "Add Cost Controls and Budget Alerts",
+    "problem": "Cost tracker exists but no spending limits or alerts. No way to cap costs per user or campaign.",
+    "approach": "Add budget limits per user/campaign. Implement spending alerts at 50%/80%/100%. Add circuit breaker for runaway AI costs.",
+    "priority": "medium",
+    "effort": 3
+  },
+  {
+    "title": "Implement Rate Limiting",
+    "problem": "No rate limiting on endpoints. AI generation endpoints could be abused for cost escalation.",
+    "approach": "Add rate limiting middleware. Apply per-user limits on AI generation. Use Redis for distributed rate limiting.",
+    "priority": "medium",
+    "effort": 2
+  },
+  {
+    "title": "Add Dashboard with Analytics",
+    "problem": "No admin dashboard to view content, campaigns, costs, and performance metrics.",
+    "approach": "Build admin dashboard. Show content status, campaign performance, cost analytics, user activity. Add filtering and search.",
+    "priority": "medium",
+    "effort": 5
+  },
+  {
+    "title": "Implement Content Versioning and History",
+    "problem": "No versioning for content. Can't see revision history or rollback to previous versions.",
+    "approach": "Add content versioning. Store revision history. Implement rollback capability. Add diff view for versions.",
+    "priority": "medium",
+    "effort": 3
+  }
+]

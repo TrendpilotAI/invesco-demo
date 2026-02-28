@@ -1,0 +1,72 @@
+[
+  {
+    "title": "Add Case Studies / Social Proof Section with Real Metrics",
+    "problem": "Site mentions Fortune 500 clients but lacks dedicated case studies with concrete outcomes. Social proof badges are text-only placeholders.",
+    "approach": "Create /case-studies page with 3-4 case studies following Problem → Solution → Results format. Add real client logos. Add testimonial carousel.",
+    "priority": "high",
+    "effort": 3
+  },
+  {
+    "title": "Implement Blog as Scalable Content System with MDX",
+    "problem": "Blog has single hardcoded article with future date. Each post requires new page.tsx — doesn't scale. No RSS, tags, reading progress.",
+    "approach": "Migrate to MDX-based blog with frontmatter. Use next-mdx-remote with content directory. Add dynamic [slug] routing, tag filtering, RSS feed.",
+    "priority": "high",
+    "effort": 4
+  },
+  {
+    "title": "Add Animations, Micro-Interactions, and Visual Polish",
+    "problem": "Site is clean but static. Every section loads at once with no motion. For premium consultancy, feels like template.",
+    "approach": "Add Framer Motion for scroll-triggered animations. Add gradient mesh to hero. Replace 'NS' placeholder with real headshot. Add hover microinteractions.",
+    "priority": "high",
+    "effort": 3
+  },
+  {
+    "title": "SEO Improvements: Structured Data, Dynamic Sitemap, Blog Schema",
+    "problem": "Sitemap is static XML. No Article schema on blog posts, no FAQ schema, no BreadcrumbList. Calendly script uses raw <script> tag.",
+    "approach": "Generate sitemap dynamically using Next.js sitemap.ts. Add Article structured data to blog posts. Add FAQPage schema. Replace Calendly with next/script.",
+    "priority": "high",
+    "effort": 3
+  },
+  {
+    "title": "Add Interactive ROI Calculator",
+    "problem": "No interactive elements that demonstrate value. Prospects can't estimate their potential ROI or time savings.",
+    "approach": "Build ROI calculator: inputs (employees, hourly rate, current process hours/week). Output: estimated annual savings, payback period.",
+    "priority": "high",
+    "effort": 3
+  },
+  {
+    "title": "Implement Lead Capture with Nurture Sequence",
+    "problem": "Only contact form exists. No lead magnet (ebook, checklist), no email capture, no automated nurture sequence.",
+    "approach": "Add email capture with lead magnet (AI Implementation Checklist). Integrate with email service. Set up automated nurture sequence.",
+    "priority": "high",
+    "effort": 4
+  },
+  {
+    "title": "Add Services Deep-Dive Pages",
+    "problem": "Services listed on homepage but no dedicated pages with detailed descriptions, pricing tiers, deliverables.",
+    "approach": "Create individual pages for each service: /services/ai-consulting, /services/data-integration, /services/agent-training. Include case study teasers.",
+    "priority": "medium",
+    "effort": 4
+  },
+  {
+    "title": "Add Team Page and About Section",
+    "problem": "Only founder placeholder 'NS' exists. No team page or company story.",
+    "approach": "Add team page with roles and photos. Add company story/About page with mission, values, and approach.",
+    "priority": "medium",
+    "effort": 2
+  },
+  {
+    "title": "Implement Pricing Page with Clear Tiers",
+    "problem": "No dedicated pricing page. Service pricing is unclear.",
+    "approach": "Create /pricing page with tiered packages (Starter, Growth, Enterprise). Include what's included, timeline, ROI guarantee.",
+    "priority": "medium",
+    "effort": 2
+  },
+  {
+    "title": "Add Webhooks for Contact Form to Enable Multi-Step Journeys",
+    "problem": "Contact form submits to Resend but no webhook for tracking in analytics or triggering follow-up actions.",
+    "approach": "Add webhook that fires on form submission. Track in analytics. Trigger automated Slack notification. Enable CRM integration.",
+    "priority": "medium",
+    "effort": 2
+  }
+]

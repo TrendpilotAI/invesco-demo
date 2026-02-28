@@ -1,0 +1,72 @@
+[
+  {
+    "title": "Fix conftest.py Bug: Missing Function Call Parentheses",
+    "problem": "is_wealthbox_adapter_enabled referenced as variable instead of called as function(). Wealthbox adapter tests never ignored regardless of config.",
+    "approach": "Change to if not is_wealthbox_adapter_enabled(): Add unit test validating adapter-enabled checks.",
+    "priority": "high",
+    "effort": 0.25
+  },
+  {
+    "title": "Upgrade Python from 3.9 to 3.11/3.12",
+    "problem": "Python 3.9 reached EOL. No security patches, missing performance improvements, can't use modern language features.",
+    "approach": "Update .python-version, Pipfile, Dockerfile. Run test suite. Adopt Python 3.11+ features. Target 3.12.",
+    "priority": "high",
+    "effort": 3
+  },
+  {
+    "title": "Hardcoded Secret Key in Base Settings",
+    "problem": "SECRET_KEY hardcoded in base.py. Critical security vulnerability. DEBUG defaults to True exposing stack traces.",
+    "approach": "Move SECRET_KEY to env var with django-environ. Add startup check. Change DEBUG default to False.",
+    "priority": "high",
+    "effort": 1
+  },
+  {
+    "title": "Replace Raw psycopg2 SQL with Django ORM",
+    "problem": "analytical/views.py uses raw psycopg2 connections. Fragile, hard to test, bypasses Django connection pooling.",
+    "approach": "Replace with Django connections. Create shared query_utils.py. Break easy_button/views.py into separate modules.",
+    "priority": "medium",
+    "effort": 5
+  },
+  {
+    "title": "Add Structured API Versioning and OpenAPI Schema Validation",
+    "problem": "Single v1 namespace. URL patterns mix re_path with path inconsistently. Swagger uses AllowAny.",
+    "approach": "Add /api/v2/ namespace. Standardize path() usage. Add proper permission classes. Add API versioning strategy.",
+    "priority": "medium",
+    "effort": 4
+  },
+  {
+    "title": "Add Rate Limiting to Public Endpoints",
+    "problem": "No rate limiting on public endpoints. Easy button and analytical endpoints vulnerable to abuse.",
+    "approach": "Add django-ratelimit. Configure limits per endpoint. Add Redis-backed rate limiting for production.",
+    "priority": "medium",
+    "effort": 2
+  },
+  {
+    "title": "Implement Comprehensive Test Suite",
+    "problem": "Test coverage unknown. Critical paths need coverage.",
+    "approach": "Add pytest with coverage. Write tests for critical paths. Add CI pipeline with coverage requirements.",
+    "priority": "medium",
+    "effort": 8
+  },
+  {
+    "title": "Add Monitoring and Observability",
+    "problem": "No APM or tracing. Hard to debug production issues.",
+    "approach": "Add Sentry for error tracking. Add OpenTelemetry. Add latency histograms.",
+    "priority": "medium",
+    "effort": 3
+  },
+  {
+    "title": "Refactor Massive easy_button/views.py (1544 lines)",
+    "problem": "1544-line view file. Unmaintainable, hard to test, merge conflicts.",
+    "approach": "Split into domain modules: easy_button/views/dashboard.py, easy_button/views/territory.py, etc.",
+    "priority": "medium",
+    "effort": 4
+  },
+  {
+    "title": "Add Database Indexes for Query Performance",
+    "problem": "No visible indexes on frequently queried columns. Slow queries.",
+    "approach": "Add indexes on frequently filtered columns. Analyze slow queries. Add Django migrations for indexes.",
+    "priority": "medium",
+    "effort": 2
+  }
+]

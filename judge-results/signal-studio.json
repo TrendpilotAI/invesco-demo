@@ -1,0 +1,72 @@
+[
+  {
+    "title": "Replace localStorage Signal Persistence with Server-Side Storage",
+    "problem": "Signal data stored in browser localStorage, making it ephemeral, per-device. AI chat endpoint can't access localStorage from edge runtime and falls back to hardcoded sample data.",
+    "approach": "Create PostgreSQL-backed signal repository with REST API. Replace localStorage with API calls to /api/signals. Update AI chat tools to query real signal service.",
+    "priority": "high",
+    "effort": 5
+  },
+  {
+    "title": "Consolidate Duplicate Rate Limiting Implementations",
+    "problem": "Two separate rate limiter files (lib/rate-limiter.ts and lib/rate-limit.ts) with different APIs and defaults. Creates confusion and inconsistent limits.",
+    "approach": "Delete rate-limiter.ts, standardize on LRU-cache version. Create middleware wrapper for Next.js API routes. Add per-route configuration.",
+    "priority": "high",
+    "effort": 2
+  },
+  {
+    "title": "Implement Proper Authentication and Session Management",
+    "problem": "Login calls useAuth() but authentication is client-side only. No middleware protecting API routes. Any unauthenticated user can hit /api/* endpoints.",
+    "approach": "Add Next.js middleware validating JWT tokens. Implement server-side session verification. Add CSRF protection. Create withAuth() wrapper for API routes.",
+    "priority": "high",
+    "effort": 5
+  },
+  {
+    "title": "Add Error Boundaries and Loading States Across All Pages",
+    "problem": "Only signal-library has error.tsx and loading.tsx. Other pages (/analytics, /agent, /admin, /oracle-ml, etc) have no error boundaries. Errors crash entire app.",
+    "approach": "Create shared ErrorBoundary with retry. Add error.tsx and loading.tsx to every route. Implement global error boundary in layout.tsx.",
+    "priority": "high",
+    "effort": 3
+  },
+  {
+    "title": "Extract Hardcoded API URLs and Add Environment Validation",
+    "problem": "easy-button page hardcodes production Railway URL. Not all files use lib/constants.ts. No startup validation for required env vars.",
+    "approach": "Audit files for hardcoded URLs, replace with constants.ts. Add startup validation for required env vars with clear error messages.",
+    "priority": "high",
+    "effort": 2
+  },
+  {
+    "title": "Implement Comprehensive E2E Test Suite",
+    "problem": "Only signal-library has Playwright tests. No E2E coverage for critical flows like login → dashboard → signal creation, or oracle-ml query → chart rendering.",
+    "approach": "Set up Playwright with CI. Write tests for critical paths: auth flow, signal creation, data queries, chart rendering. Add visual regression tests.",
+    "priority": "high",
+    "effort": 5
+  },
+  {
+    "title": "Add TypeScript Strict Mode and Fix Type Errors",
+    "problem": "Multiple files have @ts-ignore or any types. No strict null checks. Type errors in signals/signal-helpers.ts, lib/db/oracle.ts, and api routes.",
+    "approach": "Enable strict mode in tsconfig.json. Replace @ts-ignore with proper types. Add strict null checks. Fix type errors in key files.",
+    "priority": "medium",
+    "effort": 4
+  },
+  {
+    "title": "Optimize Bundle Size and Add Code Splitting",
+    "problem": "Large bundle size. No route-based code splitting for heavy pages like /visual-builder (React Flow) and /analytics (Recharts).",
+    "approach": "Implement React.lazy() for heavy routes. Lazy load Recharts and React Flow. Add bundle analyzer. Target <500KB initial JS.",
+    "priority": "medium",
+    "effort": 3
+  },
+  {
+    "title": "Implement Caching Strategy with Stale-While-Revalidate",
+    "problem": "No caching for API responses. Every page load refetches all data even when nothing changed. Slow perceived performance.",
+    "approach": "Add SWR or React Query for client-side caching. Implement stale-while-revalidate for API routes. Add cache headers.",
+    "priority": "medium",
+    "effort": 3
+  },
+  {
+    "title": "Add Accessibility Audit and Fixes",
+    "problem": "No aria labels on interactive elements. Poor color contrast in some components. No keyboard navigation for some features.",
+    "approach": "Run axe-core audit. Add aria labels, roles, focus management. Fix color contrast issues. Ensure full keyboard navigation.",
+    "priority": "medium",
+    "effort": 3
+  }
+]
