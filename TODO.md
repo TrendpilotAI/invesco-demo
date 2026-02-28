@@ -26,7 +26,7 @@
   - [x] 217 — Support Model Polish (P1, XS-S) → `todos/217-pending-p1-invesco-retention-support-model-polish.md` ✅ 2026-02-27
   - [x] 218 — Leave-Behind Package (P1, S) → `todos/218-pending-p1-invesco-retention-leave-behind-package.md` ✅ 2026-02-27
 - **Critical path:** Deploy (211) → Email Megan+Craig → Dry Run → Brian Demo → Pilot signed
-  - [ ] 320 — Error Boundary Components (P0, S) → `todos/320-pending-p0-invesco-retention-error-boundaries.md` — protect all 4 demo views from runtime crashes during live demo
+  - [x] 320 — Error Boundary Components (P0, S) → `todos/320-pending-p0-invesco-retention-error-boundaries.md` — protect all 4 demo views from runtime crashes during live demo ✅ DONE 2026-02-28 13:07 UTC (commit cf64cda, pushed)
   - [x] 321 — GitHub Repo Privacy Check (P0, XS) → ✅ 2026-02-28 — Repo is PUBLIC. Scanned for sensitive data: "Marcus Thompson" is synthetic demo data (not a real person). No real advisor names (Brian Kiley, Craig Lieb, Megan) in source. Invesco references are appropriate demo framing. Risk assessed as LOW — demo content is generic enough. No action required beyond documenting.
 
 
@@ -330,7 +330,7 @@
 ### 🟡 HIGH — Phase 3 (Parallel, after 203)
 
 - [x] **[TODO-204]** Signal versioning — `signal_versions` table, snapshot on publish, rollback endpoint, diff · _8h_ · ✅ 2026-02-28 — commit 0285a39, pushed Bitbucket
-- [ ] **[TODO-205]** Dry-run preview — `POST /signals/{id}/preview` returns sample rows + generated SQL without publishing · _6h_ · `205-pending-high-...-add-dry-run-execution.md`
+- [x] **[TODO-205]** Dry-run preview — `POST /signals/{id}/preview` returns sample rows + generated SQL without publishing · _6h_ · `205-pending-high-...-add-dry-run-execution.md` ✅ 2026-02-28
 - [ ] **[TODO-206]** Audit log — append-only `audit_events` table, fire-and-forget writes on all mutations, admin query endpoint · _8h_ · `206-pending-high-...-add-audit-log.md`
 
 ---
@@ -532,8 +532,8 @@
 - [ ] 331: Signal webhooks / event system (medium)
 
 ## signal-studio-data-provider (added 2026-02-28)
-- [ ] [P0] Fix JWT SQL injection in supabase_provider.py → TODO 311
-- [ ] [P0] Fix Snowflake sync connector blocking asyncio event loop → TODO 312
+- [x] [P0] Fix JWT SQL injection in supabase_provider.py → TODO 311 ✅ FIXED (commit 98ee5a7, local) — needs manual Bitbucket push
+- [x] [P0] Fix Snowflake sync connector blocking asyncio event loop → TODO 312 ✅ FIXED (commit 98ee5a7, local) — needs manual Bitbucket push
 - [ ] [P1] Fix table-name SQL injection in write_back() across all providers → TODO 313
 - [ ] [P1] Add asyncpg connection pooling to SupabaseProvider → TODO 314
 - [ ] [P1] Add GitHub Actions CI pipeline (pytest + ruff + mypy + pip-audit) → TODO 315
