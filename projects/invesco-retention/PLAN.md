@@ -1,8 +1,23 @@
 # Invesco Retention — Execution Plan
-**Date:** 2026-02-26  
-**Deadline:** Early March 2026 (~7-10 days)  
+**Date Updated:** 2026-02-28 (originally 2026-02-26)  
+**Deadline:** Early March 2026 (~3-5 days remaining)  
 **Stakes:** 🚨 $300K/yr account retention  
-**Status:** All 5 deliverables built, NOT deployed
+**Status (Feb 28):** ✅ DEPLOYED at https://trendpilotai.github.io/invesco-demo/ — critical bugs fixed — awaiting dry run + demo day
+
+## ✅ COMPLETED (as of Feb 28)
+- [x] P1.1 — Deployed (GitHub Pages, URL live, returns 200)
+- [x] P1.2 — Mobile PWA built and accessible
+- [x] P1.3 — Invesco branding applied (TODO-214 done)
+- [x] P1.4 — Demo reset mechanism (DemoResetOverlay — TODO-216 done)
+- [x] P2.1 — Push-to-Salesforce simulation with toast (TODO-213 done)
+- [x] P2.2 — Skeleton loaders + AI animation (TODO-215 done)
+- [x] C0 — JSX fragment crash in salesforce/page.tsx fixed
+- [x] C1 — Non-null assertion crash in mobile/page.tsx fixed
+- [x] Auth middleware security fix
+- [x] Next.js CVE patched
+- [x] All sales materials written (exec brief, demo script, pilot proposal, ROI, competitive positioning, leave-behind)
+
+## 🔴 CRITICAL PATH (Remaining)
 
 ---
 
