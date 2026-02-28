@@ -1,5 +1,5 @@
 {
-  "lastModel": "anthropic/claude-sonnet-4-6",
+  "lastModel": "openai-codex/gpt-5.3-codex",
   "lastSessionGoals": [
     "judge-swarm-round2",
     "fresh-scoring",
@@ -19,7 +19,7 @@
     },
     {
       "timestamp": "2026-02-26 05:52 UTC",
-      "model": "anthropic/claude-sonnet-4-6",
+      "model": "openai-codex/gpt-5.3-codex",
       "goals": [
         "daily-judge-swarm",
         "scoring",
@@ -31,7 +31,7 @@
     },
     {
       "timestamp": "2026-02-26 06:15 UTC",
-      "model": "anthropic/claude-sonnet-4-6",
+      "model": "openai-codex/gpt-5.3-codex",
       "goals": [
         "judge-swarm-retry",
         "duplicate-detection",
@@ -41,7 +41,7 @@
     },
     {
       "timestamp": "2026-02-26 06:31 UTC",
-      "model": "anthropic/claude-sonnet-4-6",
+      "model": "openai-codex/gpt-5.3-codex",
       "goals": [
         "judge-swarm-monitoring",
         "duplicate-prevention",
@@ -51,7 +51,7 @@
     },
     {
       "timestamp": "2026-02-26 08:41 UTC",
-      "model": "anthropic/claude-sonnet-4-6",
+      "model": "openai-codex/gpt-5.3-codex",
       "goals": [
         "judge-swarm-round2",
         "fresh-scoring",

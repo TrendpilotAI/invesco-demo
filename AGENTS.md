@@ -30,10 +30,10 @@ Present the user with a quick session setup prompt:
 
 Last session used: {lastModel}
 Quick picks:
-  💡 Strategy/Analysis → claude-opus-4-6
-  🔧 Engineering/Code → claude-sonnet-4-5
+  💡 Strategy/Analysis → openai-codex/gpt-5.3-codex
+  🔧 Engineering/Code → openai-codex/gpt-5.3-codex
   💬 Quick chat/tasks → deepseek/deepseek-chat
-  🔥 Complex reasoning → anthropic/claude-opus-4-6
+  🔥 Complex reasoning → openai-codex/gpt-5.3-codex
 
 Reply with your goals, or just say "go" to keep {lastModel}.
 ```

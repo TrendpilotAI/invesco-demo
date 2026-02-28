@@ -17,7 +17,7 @@
 - **Deadline:** Early March 2026
 - **Plan:** `/data/workspace/projects/invesco-retention/PLAN.md`
 - **TODOs Created:**
-  - [x] 211 — Vercel Deploy (P0, XS, BLOCKS ALL) → `todos/211-pending-p0-invesco-retention-vercel-deploy.md`
+  - [x] 211 — Vercel Deploy (P0, XS, BLOCKS ALL) → ✅ LIVE at https://trendpilotai.github.io/invesco-demo/ (GitHub Pages) 2026-02-27
   - [x] 212 — Demo Recordings / Loom (P0, S) → `todos/212-pending-p0-invesco-retention-demo-recordings-loom.md`
   - [x] 213 — Push-to-Salesforce Simulation (P1, S) → `todos/213-pending-p1-invesco-retention-push-to-salesforce-simulation.md` ✅ 2026-02-27
   - [x] 214 — Invesco Branding in SF Chrome (P1, XS) → `todos/214-pending-p1-invesco-retention-invesco-branding.md` ✅ 2026-02-27
@@ -136,7 +136,7 @@
 - [x] Add package.json + tsconfig to signal-studio-templates ✅ 2026-02-26 — repo: TrendpilotAI/signal-studio-templates commit 26eed90
 - [x] Create index.ts entry point (re-exports schema, engine, templates, API router) ✅
 - [x] Add Jest test suite — 6 tests: count=20, unique IDs, all 5 categories=4 templates each ✅
-- [ ] Wire template gallery route in signal-studio (/templates) — import ALL_TEMPLATES, render TemplateGallery component
+- [x] Wire template gallery route in signal-studio (/templates) — import ALL_TEMPLATES, render TemplateGallery component ✅ 2026-02-27 — /app/templates/page.tsx created, 20 templates, search+filters, detail modal, commit 12ee450
 - [ ] Harden SQL generation — parameterized queries, injection protection
 - [ ] Custom template persistence (save user-defined templates to DB)
 - [ ] CI/CD pipeline for template package
@@ -323,11 +323,11 @@
 
 ### 🟠 HIGH — Phase 2 (After security fixes)
 
-- [ ] **[TODO-203]** Pin all Pipfile wildcards — `fastapi-jwt-auth`, `uvicorn`, `pydantic`, `celery`, `redis`, `pandas` et al. + add `pip-audit` to CI · _2h_ · `203-pending-high-...-pin-pipfile-dependencies.md`
+- [x] **[TODO-203]** Pin all Pipfile wildcards — `fastapi-jwt-auth`, `uvicorn`, `pydantic`, `celery`, `redis`, `pandas` et al. + add `pip-audit` to CI · _2h_ · ✅ 2026-02-28 — pinned 19 packages + 10 dev packages to Pipfile.lock versions, added pip-audit dev dep + `audit` script, commit c9445f3, pushed Bitbucket + GitHub
 
 ### 🟡 HIGH — Phase 3 (Parallel, after 203)
 
-- [ ] **[TODO-204]** Signal versioning — `signal_versions` table, snapshot on publish, rollback endpoint, diff · _8h_ · `204-pending-high-...-add-signal-versioning.md`
+- [ ] **[TODO-204]** Signal versioning — `signal_versions` table, snapshot on publish, rollback endpoint, diff · _8h_ · `204-pending-high-...-add-signal-versioning.md` 🤖 Sub-agent dispatched 2026-02-28 05:04 UTC
 - [ ] **[TODO-205]** Dry-run preview — `POST /signals/{id}/preview` returns sample rows + generated SQL without publishing · _6h_ · `205-pending-high-...-add-dry-run-execution.md`
 - [ ] **[TODO-206]** Audit log — append-only `audit_events` table, fire-and-forget writes on all mutations, admin query endpoint · _8h_ · `206-pending-high-...-add-audit-log.md`
 
@@ -394,9 +394,9 @@
 - [x] **#214** [P0] Pytest tests — easy_button/_clean_sql security tests ✅ easy_button/tests/test_clean_sql.py (13 tests), commit bb777cc0
 
 ### 🟠 P1 — This Sprint
-- [ ] **#212** [P1] Real LLM calls in MeetingPrepView — Gemini → Kimi → static fallback, Redis cache [4–6h]
+- [x] **#212** [P1] Real LLM calls in MeetingPrepView — Gemini→Kimi→static fallback, Redis cache ✅ 2026-02-27
 - [x] **#213** [P1] Connection pooling — add CONN_MAX_AGE=60 to both DATABASES entries ✅ 2026-02-27 — committed 4844f79b, pushed to railway-deploy
-- [ ] **#215** [P1] CI pipeline — add PR test gate + development branch test step [1–2h]
+- [x] **#215** [P1] CI pipeline — PR test gate + development branch already implemented in bitbucket-pipelines.yml ✅ verified 2026-02-28
 
 ### Execution Order
 1. #213 (pooling) — settings change, zero risk, immediate production benefit
@@ -417,12 +417,12 @@
 ### 🔴 P0 — Security (Invesco Blocker)
 - [x] **#219** [CRITICAL] Auth middleware.ts — protect all API routes from public access [2h] ✅ 2026-02-27 — middleware.ts created, 401 on all /api/* without Bearer token, skips in DEMO mode, commit 261526c
 - [ ] **#220** [HIGH] Bundle optimization — remove duplicate reactflow, lazy load @xenova [2h]
-- [ ] **Untracked** [CRITICAL] Rate limit LLM proxy routes — prevent cost blowout [2h]
+- [x] **Untracked** [CRITICAL] Rate limit LLM proxy routes — prevent cost blowout [2h] ✅ commit 3650d4b (signal-studio)
 - [x] **Untracked** [CRITICAL] Upgrade next@16.0.10 → 16.0.11 (DoS CVE patch) [30min] ✅ 2026-02-27 — commit ef184e2
 
 ### 🟠 P1 — This Sprint
 - [ ] **#218** [HIGH] E2E Playwright tests for Easy Button + Salesforce embed [3h]
-- [ ] **Untracked** [HIGH] Parameterize Oracle SQL queries — injection risk in `/api/oracle/query` [2h]
+- [x] **Untracked** [HIGH] Parameterize Oracle SQL queries — injection risk in `/api/oracle/query` [2h] ✅ commit 3650d4b (signal-studio)
 - [ ] **Untracked** [HIGH] Add Sentry error tracking for Invesco production [1h]
 
 ### 🟡 P2 — Next Sprint
@@ -440,7 +440,7 @@
 
 ### 🔴 High Priority
 - [ ] **#219** [HIGH] Upgrade FastAPI 0.92→0.115, SQLAlchemy, asyncpg, alembic [4h]
-- [ ] **#219** [HIGH] Add /health endpoint + Sentry error tracking [3h]
+- [x] **#219** [HIGH] Add /health endpoint + Sentry error tracking [3h] ✅ 2026-02-28 — commit 70c94e1, pushed Bitbucket + GitHub
 
 ### 🟠 Medium Priority
 - [ ] **#220** [MEDIUM] Redis caching for signal-to-SQL translation (PropertiesMap, SignalNodesTree) [4h]
@@ -453,15 +453,15 @@
 *AI consultancy marketing site — Nathan's SignalHaus business*
 
 ### 🔴 Critical (Ship ASAP — every day offline = missed leads)
-- [ ] **#221** [CRITICAL] Fix contact form backend — wire up Resend API route [2h]
-- [ ] **#222** [CRITICAL] Deploy to Vercel with signalhaus.ai custom domain [1h]
+- [x] **#221** [CRITICAL] Fix contact form backend — wire up Resend API route [2h] ✅ done 2026-02-27
+- [ ] **#222** [CRITICAL] Deploy to Vercel with signalhaus.ai custom domain [1h] — vercel.json committed (10f3f68); Nathan just needs to import repo in Vercel UI + set NEXT_PUBLIC_GA_MEASUREMENT_ID + RESEND_API_KEY env vars
 
 ### 🟠 High Priority
-- [ ] **#223** [HIGH] Fix contact page metadata bug (use client + metadata conflict) [0.5h]
-- [ ] **#224** [HIGH] Add Calendly booking embed to contact page [1h]
+- [x] **#223** [HIGH] Fix contact page metadata bug (use client + metadata conflict) ✅ 2026-02-27 — split into ContactForm.tsx (client) + page.tsx (server with metadata export), commit aa240d6
+- [x] **#224** [HIGH] Add Calendly booking embed to contact page ✅ 2026-02-27 — Calendly inline widget added above contact form, commit aa240d6
 
 ### 🟡 Medium Priority
-- [ ] **#225** [MEDIUM] Add Google Analytics 4 tracking + conversion events [1h]
+- [x] **#225** [MEDIUM] Add Google Analytics 4 tracking + conversion events [1h] ✅ done 2026-02-27 — GoogleAnalytics.tsx component + gtag.ts helpers + layout.tsx wired, commit 10f3f68
 - [ ] [MEDIUM] Add testimonials/case studies section to homepage [2h]
 - [ ] [MEDIUM] Publish 3+ SEO blog posts targeting AI consulting keywords [6h]
 - [ ] [MEDIUM] Add spam protection (Cloudflare Turnstile) to contact form [1h]
@@ -469,7 +469,7 @@
 
 ## Signal Studio Frontend (signal-studio-frontend) — Added 2026-02-27
 
-- [ ] [P0] Fix auth token injection in apiClient — ALL API calls currently unauthenticated (TODO-221)
+- [x] [P0] Fix auth token injection in apiClient — ALL API calls currently unauthenticated (TODO-221) ✅ commit e3c9a66 (signal-builder-frontend)
 - [ ] [P0] Build signal canvas/builder UI with React Flow (TODO-222)
 - [ ] [P1] Real-time signal run status via Supabase Realtime (TODO-223)
 - [ ] [P1] Error boundaries + loading/empty states on all pages (TODO-224)
@@ -481,15 +481,15 @@
 - [ ] [P3] CSP + security headers in next.config.ts
 
 ## core-entityextraction (2026-02-27)
-- [ ] [P0] Add PostgreSQL connection pooling to persistence.py — critical prod stability (TODO-228)
-- [ ] [P0] Add X-API-Key authentication middleware — all endpoints currently open (TODO-229)
-- [ ] [P0] Remove dead Flask code from services/ and controllers/ — 7 files never imported (TODO-230)
+- [x] [P0] Add PostgreSQL connection pooling to persistence.py — critical prod stability (TODO-228) ✅ already in repo (aebdc62)
+- [x] [P0] Add X-API-Key authentication middleware — all endpoints currently open (TODO-229) ✅ already in repo (10586df)
+- [x] [P0] Remove dead Flask code from services/ and controllers/ — 7 files never imported (TODO-230) ✅ already in repo (5933da4)
 - [ ] [P1] Add pytest test suite — zero tests currently exist (TODO-233)
 - [ ] [P1] Cache compiled regex patterns — rebuilt on every request today (TODO-232)
 
 ## NarrativeReactor — AI Content Generation Platform (added 2026-02-27)
 
-- [ ] [CRITICAL] Fix auth bypass — API_KEY unset disables all auth (TODO-224)
+- ✅ [CRITICAL] Fix auth bypass — API_KEY unset disables all auth (TODO-224) — done 2026-02-27
 - [ ] [P1] Add Docker multi-stage build + Railway deployment config (TODO-223)
 - [ ] [P1] Add Redis caching for LLM flows, brand profiles, trend data (TODO-225)
 - [ ] [P1] Set up GitHub Actions CI/CD — PR gate + auto-deploy on merge (TODO-226)
@@ -500,7 +500,7 @@
 
 ## signal-builder-frontend — Security + Quality + Performance (added 2026-02-27)
 
-- [ ] [P1-CRITICAL] Remove .env from git tracking + add prod guard for dev auth (TODO-228)
+- [x] [P1-CRITICAL] Remove .env from git tracking + add prod guard for dev auth (TODO-228) ✅ 2026-02-27 — git rm --cached .env, .env.example added, commit 23305f5
 - [ ] [P1-CRITICAL] Eliminate `any` types in RTK Query API layer — 76 instances (TODO-229)
 - [ ] [P1-CRITICAL] Zero test coverage on builder.lib.ts — unit tests needed urgently (TODO-231)
 - [ ] [P1] Add Sentry error tracking — replace 4x console.error TODO placeholders (TODO-230)

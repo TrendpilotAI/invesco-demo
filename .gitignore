@@ -36,3 +36,5 @@ logs/
 .orchestrator/
 .orchestrator-v2/
 .orgo/
+-e core-entityextraction
+signal-studio
