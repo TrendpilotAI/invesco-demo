@@ -1,9 +1,9 @@
-# TODO 206 — Add Audit Log (HIGH)
+# TODO 206 — Add Audit Log (HIGH) [STATUS: done]
 
 **Project:** signal-builder-backend  
 **Priority:** HIGH  
 **Estimated Effort:** 8 hours  
-**Status:** pending  
+**Status:** ✅ DONE 2026-02-28 — commit 9a7a717  
 **Dependencies:** 200, 201, 203 (security baseline must be in place; audit log records who did what)
 
 ---

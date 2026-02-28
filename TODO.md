@@ -331,7 +331,7 @@
 
 - [x] **[TODO-204]** Signal versioning — `signal_versions` table, snapshot on publish, rollback endpoint, diff · _8h_ · ✅ 2026-02-28 — commit 0285a39, pushed Bitbucket
 - [x] **[TODO-205]** Dry-run preview — `POST /signals/{id}/preview` returns sample rows + generated SQL without publishing · _6h_ · `205-pending-high-...-add-dry-run-execution.md` ✅ 2026-02-28
-- [ ] **[TODO-206]** Audit log — append-only `audit_events` table, fire-and-forget writes on all mutations, admin query endpoint · _8h_ · `206-pending-high-...-add-audit-log.md`
+- [x] **[TODO-206]** Audit log — append-only `audit_events` table, fire-and-forget writes on all mutations, admin query endpoint · _8h_ · ✅ DONE 2026-02-28 — commit 9a7a717, pushed Bitbucket
 
 ---
 
@@ -516,14 +516,14 @@
 - [ ] [P2] Nginx CSP headers + security headers + move auth token off localStorage (TODO-239)
 
 ## SignalHaus Website (added by Judge Agent v2)
-- [ ] 315: Contact API security — rate limiting + Zod validation (P0)
+- [x] 315: Contact API security — rate limiting + Zod validation (P0) ✅ 2026-02-28 — in-memory 5req/IP/15min, input validation (name/email/company/budget/message), XSS guard, commit b074064
 - [ ] 316: Testimonials & case studies page (P1)
 - [ ] 317: JSON-LD structured data for SEO (P1)
 - [ ] 318: Newsletter signup + HubSpot CRM integration (P1)
 - [ ] 319: E2E tests with Playwright (P2)
 
 ## signal-builder-backend (ForwardLane)
-- [ ] 325: Fix silent exception in signal delete endpoint (critical)
+- [x] 325: Fix silent exception in signal delete endpoint (critical) ✅ 2026-02-28 — commit 823abdd: raises DBNotFoundException on rowcount=0 (was silent), logs WebServiceException warning (was swallowed), 3 unit tests added
 - [ ] 326: Run pip-audit + fix CVEs + add to CI (critical)
 - [ ] 327: Add API rate limiting with slowapi (high)
 - [ ] 328: Pydantic v2 + FastAPI upgrade (high)
