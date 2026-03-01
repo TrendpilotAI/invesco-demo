@@ -1,0 +1,167 @@
+{
+  "name": "Marketing Agent Specialist",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "marketing-agent",
+        "responseMode": "last_node",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [100, 300],
+      "webhookId": "marketing-agent"
+    },
+    {
+      "parameters": {
+        "jsCode": "const prompt = $json.prompt;\nconst context = $json.context || {};\n\n// Prompt templates for each agent type\nconst prompts = {\n  design_system: {\n    role: \"Apple Principal Designer\",\n    task: `Build a complete design system for ${context.brand || '[BRAND]'}. Include:\n- Color system (primary, semantic, dark mode, contrast, usage)\n- Typography (9 levels, responsive scale, accessibility)\n- 12-column grid, 8px spacing\n- 30+ components with states, anatomy, usage, accessibility, code specs\n- Patterns, design tokens JSON, principles, do's/don'ts, dev guide`\n  },\n  brand_identity: {\n    role: \"Creative Director at Pentagram\",\n    task: `Build a complete brand identity for ${context.company || '[COMPANY]'}, a ${context.industry || '[INDUSTRY]'} brand targeting ${context.audience || '[AUDIENCE]'}. Include:\n- Brand strategy (story, archetype, voice matrix, messaging hierarchy)\n- 3 logo directions + variations + usage rules\n- Full color system (Hex, Pantone, CMYK, RGB + rationale)\n- Typography, imagery style\n- Brand applications\n- 20-page brand book structure`\n  },\n  ui_ux_pattern: {\n    role: \"Senior Apple UI Designer\",\n    task: `Design a full UI for ${context.app_type || '[APP TYPE]'} based on ${context.persona || '[PERSONA]'}. Follow Apple HIG.\n- Hierarchy, layout patterns, navigation, gestures, platform rules\n- 8 core screens with wireframes, components, interactions\n- Empty/error/loading states\n- Buttons, forms, cards, data viz\n- Accessibility (WCAG, VoiceOver, Dynamic Type)\n- Micro-interactions, responsive behavior`\n  },\n  marketing_assets: {\n    role: \"Creative Director at a top agency\",\n    task: `Build a full campaign asset library for ${context.product || '[PRODUCT]'}.\n- Google Ads, Meta/TikTok ads\n- Email sequences (welcome, promo, nurture, re-engagement)\n- Landing page copy, social posts\n- Sales enablement materials, content marketing outlines\n- Exact copy, visual direction, CTA, A/B tests`\n  },\n  figma_specs: {\n    role: \"Figma Design Ops Specialist\",\n    task: `Convert ${context.design_description || '[DESIGN DESCRIPTION]'} into Figma-ready specs.\n- Frame structure, grids, constraints, responsive rules\n- Auto-layout details (direction, padding, spacing, alignment, resizing)\n- Component architecture with variants and properties\n- Design tokens (colors, text, effects)\n- Prototype flows with triggers and animations\n- Dev handoff setup (CSS, exports, naming)\n- Accessibility notes`\n  },\n  design_critique: {\n    role: \"Apple Design Director\",\n    task: `Critique ${context.design || '[DESIGN]'}.\n- Evaluate via Nielsen's 10 heuristics (score 1-5 with examples)\n- Visual hierarchy, typography, color, usability, strategic alignment\n- Cognitive load, accessibility (WCAG), interaction clarity\n- Prioritized fixes (Critical, Important, Polish)\n- 2 alternative redesign directions`\n  },\n  design_trends: {\n    role: \"frog Design Researcher\",\n    task: `Analyze 2026 trends for ${context.industry || '[INDUSTRY]'}.\n- 5 macro trends with definition, visuals, origin, adoption phase, brand examples\n- Competitor 2x2 map with white space insights\n- User expectation shifts, platform evolution (iOS, Material, Web)\n- Strategic recommendations, 6-month roadmap\n- Detailed mood board specs`\n  },\n  accessibility_audit: {\n    role: \"Apple Accessibility Specialist\",\n    task: `Audit ${context.design || '[DESIGN]'} against WCAG 2.2 AA.\n- Perceivable (alt text, captions, color contrast, text resize)\n- Operable (keyboard, focus, navigation, motion)\n- Understandable (language, errors, help)\n- Robust (markup, ARIA), mobile (orientation, input, reach)\n- Cognitive accessibility (reading level, consistency, flashing, time limits)\n- Pass/fail checklist, violations, remediation`\n  },\n  design_to_code: {\n    role: \"Vercel Design Engineer\",\n    task: `Convert ${context.design || '[DESIGN]'} into production-ready frontend code using ${context.tech_stack || '[TECH STACK]'}.\n- Component hierarchy, props, state, data flow\n- Copy-paste code, responsive layout\n- ARIA/accessibility, error/loading states, animations\n- Styling (CSS/Tailwind with design tokens, dark mode, breakpoints)\n- Asset optimization, performance tips, testing strategy, documentation`\n  }\n};\n\n// Determine which prompt to use\nlet selectedPrompt = prompt;\nif (!prompts[prompt] && context.agent_type) {\n  selectedPrompt = context.agent_type;\n}\n\nconst promptConfig = prompts[selectedPrompt] || prompts.design_system;\n\nreturn {\n  prompt_type: selectedPrompt,\n  role: promptConfig.role,\n  task: promptConfig.task,\n  context: context,\n  original_input: $json\n};"
+      },
+      "id": "parse-input",
+      "name": "Parse Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [300, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "gpt-4"
+            },
+            {
+              "name": "messages",
+              "value": "={{ [{ \"role\": \"system\", \"content\": \"You are \" + $json.role + \". \" + $json.task + \"\\n\\nProvide a comprehensive, publish-ready deliverable. Be specific, actionable, and educational in your response.\" }, { \"role\": \"user\", \"content\": $json.context.user_input || \"Please proceed with the task.\" }] }}"
+            },
+            {
+              "name": "temperature",
+              "value": 0.7
+            },
+            {
+              "name": "max_tokens",
+              "value": 4000
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "openai-call",
+      "name": "OpenAI GPT-4",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = $json.response;\nconst promptType = $json.prompt_type;\nconst timestamp = new Date().toISOString();\n\n// Format response based on prompt type\nlet formattedResponse = {\n  success: true,\n  timestamp,\n  prompt_type: promptType,\n  response: response.choices?.[0]?.message?.content || response,\n  metadata: {\n    model: response.model,\n    usage: response.usage\n  }\n};\n\nreturn formattedResponse;"
+      },
+      "id": "format-response",
+      "name": "Format Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [700, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $json;\n\n// Error handling\nif (input.error || !input.response) {\n  return {\n    success: false,\n    error: input.error || 'No response from AI',\n    timestamp: new Date().toISOString()\n  };\n}\n\n// Pass through successful response\nreturn input;"
+      },
+      "id": "error-handler",
+      "name": "Error Handler",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "responseBody": "={{ $json }}"
+      },
+      "id": "respond-webhook",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1100, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Parse Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Input": {
+      "main": [
+        [
+          {
+            "node": "OpenAI GPT-4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI GPT-4": {
+      "main": [
+        [
+          {
+            "node": "Format Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Response": {
+      "main": [
+        [
+          {
+            "node": "Error Handler",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Handler": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": ["marketing", "design", "ai", "agent"],
+  "trigger": "webhook",
+  "updatedAt": "2026-02-28T23:30:00.000Z",
+  "versionId": "1"
+}

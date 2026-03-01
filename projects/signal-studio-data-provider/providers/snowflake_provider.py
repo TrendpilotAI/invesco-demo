@@ -3,9 +3,19 @@
 from __future__ import annotations
 
 import asyncio
+import re
 import time
 from functools import lru_cache
 from typing import Any
+
+_SAFE_IDENTIFIER_RE = re.compile(r'^[A-Za-z_][A-Za-z0-9_]*$')
+
+
+def _validate_identifier(name: str) -> str:
+    """Raise ValueError if *name* is not a safe SQL identifier."""
+    if not _SAFE_IDENTIFIER_RE.match(name):
+        raise ValueError(f"Unsafe SQL identifier: {name!r}")
+    return name
 
 import pandas as pd
 
@@ -158,6 +168,10 @@ class SnowflakeProvider:
 
     def _write_back_sync(self, table: str, data: list[dict[str, Any]]) -> int:
         columns = list(data[0].keys())
+        # TODO-313: Validate identifiers to prevent SQL injection via table/column names
+        _validate_identifier(table)
+        for col in columns:
+            _validate_identifier(col)
         placeholders = ", ".join(["%s"] * len(columns))
         col_str = ", ".join(columns)
         sql = f"INSERT INTO {table} ({col_str}) VALUES ({placeholders})"
