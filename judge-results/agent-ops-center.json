@@ -1,72 +1,127 @@
-[
-  {
-    "title": "Add WebSocket-Based Real-Time Updates",
-    "problem": "Dashboard relies on polling (15s for telemetry, 10s for agents) creating unnecessary API calls, stale data windows. Users see data up to 15 seconds old.",
-    "approach": "Implement SSE or WebSocket connections via Next.js API route. Server pushes updates only when state changes. Use event emitter on backend triggered on file-system watch of orchestrator state files.",
-    "priority": "high",
-    "effort": 3
-  },
-  {
-    "title": "Persistent Storage with SQLite Instead of JSON Files",
-    "problem": "Orchestrator stores tasks, blackboard, swarms as flat JSON files with race conditions, doesn't scale past ~1000 tasks, no transactional guarantees.",
-    "approach": "Replace JSON with better-sqlite3. Create tables for tasks, swarms, blackboard_entries with indexes. Wrap mutations in transactions. Add pagination to GET endpoint.",
-    "priority": "high",
-    "effort": 4
-  },
-  {
-    "title": "Authentication and Access Control",
-    "problem": "Dashboard and all API routes are completely unauthenticated. Anyone can view status, dispatch tasks, modify blackboard.",
-    "approach": "Add middleware-based auth with Bearer token. Store hashed ADMIN_TOKEN in env vars. Add minimal login page with httpOnly cookie. Protect all API routes.",
-    "priority": "high",
-    "effort": 2
-  },
-  {
-    "title": "Historical Telemetry Dashboard with Time-Series Charts",
-    "problem": "History state only stores data for current session (max 30 points). No way to see uptime trends, latency degradation, or when services went down.",
-    "approach": "Persist telemetry snapshots server-side in SQLite. Add /api/telemetry/history endpoint with time range queries. Build Recharts-based time-series view.",
-    "priority": "high",
-    "effort": 5
-  },
-  {
-    "title": "Alerting System with Telegram/Discord Notifications",
-    "problem": "No push notifications when service goes down or task fails. Must be actively watching dashboard.",
-    "approach": "Add alerting system that triggers on service status change. Integrate with Telegram/Discord webhooks. Add severity levels and escalation rules.",
-    "priority": "high",
-    "effort": 3
-  },
-  {
-    "title": "Task Dependencies and DAG Scheduling",
-    "problem": "All tasks run independently with no dependency tracking. Can't express 'task B should run after task A completes' or handle partial failures in chains.",
-    "approach": "Add task dependency system with DAG (directed acyclic graph). Implement 'run_after' field referencing parent task ID. Add status propagation (blocked/running/completed/failed).",
-    "priority": "medium",
-    "effort": 4
-  },
-  {
-    "title": "Resource Usage Monitoring (CPU/Memory per Service)",
-    "problem": "Railway provides no native resource monitoring. Can't see CPU/memory trends or detect memory leaks without external tools.",
-    "approach": "Add Railway Metrics API integration. Store resource snapshots alongside health checks. Add resource trend charts. Alert on unusual patterns.",
-    "priority": "medium",
-    "effort": 3
-  },
-  {
-    "title": "Automated Rollback on Failed Deploy",
-    "problem": "When a deployment fails, manual intervention needed to rollback or fix. No automated recovery mechanism.",
-    "approach": "Add health check before marking deployment success. If service doesn't become healthy within 5min, auto-trigger rollback via Railway API.",
-    "priority": "medium",
-    "effort": 3
-  },
-  {
-    "title": "Self-Healing Automation Scripts",
-    "problem": "Currently manual intervention needed for common issues like restarting failed workers, clearing stuck queues.",
-    "approach": "Add configurable healing actions (restart service, clear cache, run migration). Trigger automatically based on health check patterns.",
-    "priority": "medium",
-    "effort": 4
-  },
-  {
-    "title": "Mobile-Optimized Dashboard View",
-    "problem": "Dashboard not responsive enough for mobile. Can't monitor infrastructure on the go.",
-    "approach": "Add mobile-first responsive design. Show critical status indicators prominently. Add touch-friendly interactions.",
-    "priority": "low",
-    "effort": 3
+{
+  "project": "agent-ops-center",
+  "analyzedAt": "2025-07-17T00:00:00Z",
+  "summary": "A Next.js 15 dashboard for monitoring Railway-hosted infrastructure and orchestrating AI agent tasks. The app has two pages: a main telemetry dashboard and an agent orchestrator. It reads/writes state from local JSON files on disk and polls Railway's GraphQL API for deploy statuses. While the UI is polished, the app has significant security vulnerabilities, no authentication, no persistent backend, and limited operational value beyond a read-only status board.",
+  "improvements": [
+    {
+      "id": 1,
+      "title": "Add Authentication & Authorization",
+      "problem": "The app has zero authentication. Anyone with the URL can view all infrastructure status, Railway service IDs, internal URLs, and — critically — dispatch agent tasks via POST /api/agents. This is a full-access control plane exposed to the internet with no auth layer.",
+      "solution": "Implement authentication using NextAuth.js or Clerk. Add a simple API key/bearer token check on all API routes at minimum. Use middleware in Next.js to protect all routes. Add RBAC so only Nathan can dispatch tasks and manage agents. Consider IP allowlisting as an additional layer.",
+      "revenueImpact": "medium",
+      "securityRisk": "high",
+      "userExperienceImprovement": "medium",
+      "effortDays": 3,
+      "priority": "MUST"
+    },
+    {
+      "id": 2,
+      "title": "Replace File-Based State with a Real Database",
+      "problem": "Agent tasks, blackboard, and swarm state are stored in local JSON files at /data/workspace/.orchestrator/. This is fragile — concurrent writes can corrupt data, there's no transaction safety, no query capability, and state is lost if the container is redeployed on Railway (ephemeral filesystem). The telemetry API also reads files from /data/workspace/memory/ which won't exist on a deployed container.",
+      "solution": "Use the existing Postgres instances (already running on Railway) to store orchestrator state, task history, and telemetry snapshots. Add Prisma or Drizzle as an ORM. This enables historical queries, concurrent access, and survives redeploys. For the Railway-deployed version, the filesystem-based approach simply won't work.",
+      "revenueImpact": "high",
+      "securityRisk": "medium",
+      "userExperienceImprovement": "high",
+      "effortDays": 5,
+      "priority": "MUST"
+    },
+    {
+      "id": 3,
+      "title": "Implement Real Agent Execution (Not Just State Tracking)",
+      "problem": "The 'Dispatch Task' and 'Create Swarm' features only write task records to a JSON file. They never actually execute anything — no subprocess is spawned, no API call is made to an LLM, no agent is started. The orchestrator is purely a CRUD state tracker that looks like a real orchestration engine but isn't. Users dispatching tasks get a false sense that work is happening.",
+      "solution": "Wire up the dispatch action to actually call LLM APIs (OpenAI, Anthropic, etc.) or trigger OpenClaw subagent sessions via its API. Implement a task queue (using Redis + BullMQ, since Redis is already available) that processes dispatched tasks asynchronously. Add webhook callbacks or SSE for real-time task status updates back to the dashboard.",
+      "revenueImpact": "high",
+      "securityRisk": "low",
+      "userExperienceImprovement": "high",
+      "effortDays": 8,
+      "priority": "MUST"
+    },
+    {
+      "id": 4,
+      "title": "Add Historical Telemetry & Alerting",
+      "problem": "Telemetry data is only fetched live and displayed in-memory — there's no historical record. The 'history' state in the React component only lives for the current browser session (max 30 data points). There are no alerts when services go down. You have to be actively watching the dashboard to notice problems.",
+      "solution": "Store each telemetry poll result in Postgres with a timestamp. Build a time-series view showing uptime/latency trends over hours/days/weeks. Add alerting via webhook (Telegram, Discord, Slack, or email) when a service transitions from alive→down or latency exceeds thresholds. Add an uptime percentage calculation over 24h/7d/30d periods.",
+      "revenueImpact": "high",
+      "securityRisk": "low",
+      "userExperienceImprovement": "high",
+      "effortDays": 5,
+      "priority": "SHOULD"
+    },
+    {
+      "id": 5,
+      "title": "Secure Railway Token & Hardcoded Secrets",
+      "problem": "The Railway project ID and environment ID are hardcoded in the telemetry route source code. While the Railway token itself uses an env var, the fallback is an empty string which means the deploy status silently returns 'unknown' without warning. More critically, if this repo is pushed to a public GitHub, the Railway IDs and all service URLs are exposed.",
+      "solution": "Move all Railway IDs, environment IDs, and service definitions to environment variables or a configuration file that's .gitignored. Add runtime validation that fails loudly if RAILWAY_TOKEN is missing. Remove the hardcoded service URL list and fetch it dynamically from Railway's API (they have a services query). Add a .env.example file documenting required vars.",
+      "revenueImpact": "low",
+      "securityRisk": "high",
+      "userExperienceImprovement": "low",
+      "effortDays": 2,
+      "priority": "MUST"
+    },
+    {
+      "id": 6,
+      "title": "Remove Stray Unrelated Files (Medical AI Notebook)",
+      "problem": "There's a 137KB Jupyter notebook 'second-opinion-multi-model-medical-ai-consensus.ipynb' in the project root that has nothing to do with the Agent Ops Center. This is a code hygiene issue, increases Docker image size, and if it contains any sensitive medical/API data it's a data leak risk when the image is deployed.",
+      "solution": "Remove the notebook from this project. If it belongs to another project, move it to the appropriate directory. Add a .dockerignore that excludes *.ipynb, .git, and other non-essential files. Review the Dockerfile to ensure only necessary files are copied into the build context.",
+      "revenueImpact": "low",
+      "securityRisk": "medium",
+      "userExperienceImprovement": "low",
+      "effortDays": 0.5,
+      "priority": "MUST"
+    },
+    {
+      "id": 7,
+      "title": "Add Cost Tracking & Budget Controls for Agent Operations",
+      "problem": "The data model includes 'estimatedCost' on tasks and 'totalEstimatedCost' in the summary, but the value is always 0 and never calculated. There's no visibility into how much agent operations cost. Without cost tracking, it's impossible to optimize the 'maximum throughput at minimum cost' north star goal from SOUL.md.",
+      "solution": "Implement token counting and cost estimation based on model pricing (track input/output tokens per task). Add a cost dashboard showing spend per model, per task, per day. Implement budget caps — e.g., auto-pause dispatching if daily spend exceeds $X. Show cost-per-task on the task cards. Add a cost-efficiency metric (value delivered / tokens consumed).",
+      "revenueImpact": "high",
+      "securityRisk": "low",
+      "userExperienceImprovement": "medium",
+      "effortDays": 4,
+      "priority": "SHOULD"
+    },
+    {
+      "id": 8,
+      "title": "Add WebSocket/SSE for Real-Time Updates Instead of Polling",
+      "problem": "Both the dashboard and agents page use setInterval polling (15s and 10s respectively). This creates unnecessary load, has up to 15s latency for status changes, and causes the UI to flash/re-render entirely on each poll. The 'Live' indicator in the header is misleading — it's polling, not streaming.",
+      "solution": "Implement Server-Sent Events (SSE) for the telemetry endpoint to push updates when service status changes. Use React's useSyncExternalStore or a small event-source hook. Fall back to polling if SSE connection drops. This gives true real-time updates, reduces server load, and eliminates the jarring full-data refresh every 15 seconds.",
+      "revenueImpact": "low",
+      "securityRisk": "low",
+      "userExperienceImprovement": "high",
+      "effortDays": 3,
+      "priority": "COULD"
+    },
+    {
+      "id": 9,
+      "title": "Add Service Dependency Graph & Incident Correlation",
+      "problem": "Services are displayed as flat cards with no relationship context. In reality, the frontend depends on Django backend, which depends on Postgres and Redis, which the Celery workers also depend on. When Postgres goes down, every dependent service will show as down — but the dashboard can't tell you the root cause. It also doesn't show which services talk to each other.",
+      "solution": "Build a dependency graph visualization (using D3 or a simple directed graph layout). Define service dependencies in the config. When multiple services go down simultaneously, identify the root cause (the deepest common dependency that's down). Add an incident timeline that groups correlated failures. This turns the dashboard from a status board into a diagnostic tool.",
+      "revenueImpact": "medium",
+      "securityRisk": "low",
+      "userExperienceImprovement": "high",
+      "effortDays": 6,
+      "priority": "COULD"
+    },
+    {
+      "id": 10,
+      "title": "Add Mobile Responsiveness & PWA Support",
+      "problem": "The dashboard uses a 4-column grid layout that will break on mobile. The agents page similarly uses fixed layouts. The header controls are tightly packed and will overflow on small screens. For an ops dashboard, mobile access during incidents is critical — if Nathan gets a Telegram alert at 2am, he needs to check the dashboard from his phone.",
+      "solution": "Audit all grid layouts for responsive breakpoints (the main page partially does this with grid-cols-2 md:grid-cols-4, but the header doesn't). Add a PWA manifest and service worker for offline caching of the last known state. Add installability so it can be added to the phone's home screen. Make the header stack vertically on mobile. Consider a condensed mobile view that prioritizes the health percentage and down services.",
+      "revenueImpact": "medium",
+      "securityRisk": "low",
+      "userExperienceImprovement": "high",
+      "effortDays": 3,
+      "priority": "SHOULD"
+    }
+  ],
+  "metadata": {
+    "techStack": ["Next.js 15", "React 19", "TypeScript", "Tailwind CSS 4", "Recharts", "Lucide React"],
+    "deployment": "Railway (Docker)",
+    "pages": 2,
+    "apiRoutes": 2,
+    "linesOfCode": "~850 (source files only)",
+    "externalDependencies": ["Railway GraphQL API"],
+    "criticalIssueCount": 4,
+    "totalEffortDays": 39.5
   }
-]
+}

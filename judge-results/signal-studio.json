@@ -1,72 +1,175 @@
-[
-  {
-    "title": "Replace localStorage Signal Persistence with Server-Side Storage",
-    "problem": "Signal data stored in browser localStorage, making it ephemeral, per-device. AI chat endpoint can't access localStorage from edge runtime and falls back to hardcoded sample data.",
-    "approach": "Create PostgreSQL-backed signal repository with REST API. Replace localStorage with API calls to /api/signals. Update AI chat tools to query real signal service.",
-    "priority": "high",
-    "effort": 5
-  },
-  {
-    "title": "Consolidate Duplicate Rate Limiting Implementations",
-    "problem": "Two separate rate limiter files (lib/rate-limiter.ts and lib/rate-limit.ts) with different APIs and defaults. Creates confusion and inconsistent limits.",
-    "approach": "Delete rate-limiter.ts, standardize on LRU-cache version. Create middleware wrapper for Next.js API routes. Add per-route configuration.",
-    "priority": "high",
-    "effort": 2
-  },
-  {
-    "title": "Implement Proper Authentication and Session Management",
-    "problem": "Login calls useAuth() but authentication is client-side only. No middleware protecting API routes. Any unauthenticated user can hit /api/* endpoints.",
-    "approach": "Add Next.js middleware validating JWT tokens. Implement server-side session verification. Add CSRF protection. Create withAuth() wrapper for API routes.",
-    "priority": "high",
-    "effort": 5
-  },
-  {
-    "title": "Add Error Boundaries and Loading States Across All Pages",
-    "problem": "Only signal-library has error.tsx and loading.tsx. Other pages (/analytics, /agent, /admin, /oracle-ml, etc) have no error boundaries. Errors crash entire app.",
-    "approach": "Create shared ErrorBoundary with retry. Add error.tsx and loading.tsx to every route. Implement global error boundary in layout.tsx.",
-    "priority": "high",
-    "effort": 3
-  },
-  {
-    "title": "Extract Hardcoded API URLs and Add Environment Validation",
-    "problem": "easy-button page hardcodes production Railway URL. Not all files use lib/constants.ts. No startup validation for required env vars.",
-    "approach": "Audit files for hardcoded URLs, replace with constants.ts. Add startup validation for required env vars with clear error messages.",
-    "priority": "high",
-    "effort": 2
-  },
-  {
-    "title": "Implement Comprehensive E2E Test Suite",
-    "problem": "Only signal-library has Playwright tests. No E2E coverage for critical flows like login → dashboard → signal creation, or oracle-ml query → chart rendering.",
-    "approach": "Set up Playwright with CI. Write tests for critical paths: auth flow, signal creation, data queries, chart rendering. Add visual regression tests.",
-    "priority": "high",
-    "effort": 5
-  },
-  {
-    "title": "Add TypeScript Strict Mode and Fix Type Errors",
-    "problem": "Multiple files have @ts-ignore or any types. No strict null checks. Type errors in signals/signal-helpers.ts, lib/db/oracle.ts, and api routes.",
-    "approach": "Enable strict mode in tsconfig.json. Replace @ts-ignore with proper types. Add strict null checks. Fix type errors in key files.",
-    "priority": "medium",
-    "effort": 4
-  },
-  {
-    "title": "Optimize Bundle Size and Add Code Splitting",
-    "problem": "Large bundle size. No route-based code splitting for heavy pages like /visual-builder (React Flow) and /analytics (Recharts).",
-    "approach": "Implement React.lazy() for heavy routes. Lazy load Recharts and React Flow. Add bundle analyzer. Target <500KB initial JS.",
-    "priority": "medium",
-    "effort": 3
-  },
-  {
-    "title": "Implement Caching Strategy with Stale-While-Revalidate",
-    "problem": "No caching for API responses. Every page load refetches all data even when nothing changed. Slow perceived performance.",
-    "approach": "Add SWR or React Query for client-side caching. Implement stale-while-revalidate for API routes. Add cache headers.",
-    "priority": "medium",
-    "effort": 3
-  },
-  {
-    "title": "Add Accessibility Audit and Fixes",
-    "problem": "No aria labels on interactive elements. Poor color contrast in some components. No keyboard navigation for some features.",
-    "approach": "Run axe-core audit. Add aria labels, roles, focus management. Fix color contrast issues. Ensure full keyboard navigation.",
-    "priority": "medium",
-    "effort": 3
+{
+  "project": "Signal Studio Platform",
+  "description": "Financial intelligence platform for ForwardLane — signal library, AI chat, visual signal builder, Oracle/Snowflake database integration, and Salesforce-embeddable 'Easy Button'. Next.js 16 frontend + Django backend + FastAPI signal-builder backend.",
+  "repos_analyzed": [
+    "/data/workspace/repos/signal-studio (Next.js frontend)",
+    "/data/workspace/repos/signal-studio-backend (Django/DRF backend)",
+    "/data/workspace/repos/signal-builder-backend (FastAPI signal engine)"
+  ],
+  "judged_at": "2026-02-28T23:30:00Z",
+  "improvements": [
+    {
+      "rank": 1,
+      "title": "Fix Critical SQL Injection Vulnerabilities Across All Data Providers",
+      "problem": "Multiple critical SQL injection vectors exist: (1) SupabaseProvider interpolates JWT tokens directly into SQL SET statements, (2) SnowflakeProvider, SupabaseProvider, and OracleProvider all construct SQL by interpolating caller-supplied table names, column names, and identifiers without validation in write_back, vector_search, and cortex_complete, (3) signal-builder-backend's EXPLAIN endpoint passes user-influenced SQL without sanitization. These are actively exploitable in a financial data platform handling adviser/client PII and AUM data.",
+      "solution": "1. Replace all f-string SQL interpolation with parameterized queries. 2. For SupabaseProvider JWT injection: use dollar-quoted literals or parameterized SET. 3. For identifier injection: create an allowlist validator that checks table/column names against a schema registry (regex: /^[a-zA-Z_][a-zA-Z0-9_]*$/). 4. For the EXPLAIN endpoint: parse with sqlglot/sqlparse to reject non-SELECT statements before execution. 5. Add a security integration test suite that attempts injection on every data provider.",
+      "revenue_impact": "high",
+      "security_risk": "high",
+      "ux_improvement": "low",
+      "effort_days": 5,
+      "priority": "MUST",
+      "related_todos": [
+        "015-pending-critical-signal-studio-data-provider-fix-sql-injection-supabase-jwt",
+        "018-pending-critical-signal-studio-data-provider-fix-identifier-injection-write-back",
+        "202-pending-critical-signal-builder-backend-fix-explain-sql-injection",
+        "213-pending-critical-signal-studio-templates-sql-injection-hardening"
+      ]
+    },
+    {
+      "rank": 2,
+      "title": "Implement Proper RBAC and Admin Route Protection",
+      "problem": "The frontend has 10+ admin API routes (/api/admin/users, /api/admin/permissions, /api/admin/pipeline, etc.) but there is no role-based access control (RBAC) enforcement. The middleware only checks for token presence, not user roles. Any authenticated user can hit admin endpoints. The auth system stores tokens in localStorage (XSS-vulnerable). The backend JWT access tokens have a 24-hour expiry with no token blacklisting on logout — a stolen token stays valid for a full day against financial data.",
+      "solution": "1. Add role/permission claims to JWT tokens on the Django backend. 2. Create a withAdminAuth() wrapper (extending withAuth) that verifies admin role before allowing access. 3. Move token storage from localStorage to httpOnly cookies (eliminates XSS token theft). 4. Reduce JWT expiry to 15-30 minutes with refresh token rotation. 5. Add token blacklisting on logout (Redis-backed). 6. Add RBAC middleware checks for admin, analyst, and viewer roles.",
+      "revenue_impact": "high",
+      "security_risk": "high",
+      "ux_improvement": "medium",
+      "effort_days": 8,
+      "priority": "MUST",
+      "related_todos": [
+        "210-pending-p1-signal-studio-auth-rbac-invite-guard",
+        "212-pending-critical-signal-studio-middleware-auth-protection",
+        "221-pending-p0-signal-studio-frontend-auth-token-injection",
+        "001-pending-high-signal-studio-securty-auth"
+      ]
+    },
+    {
+      "rank": 3,
+      "title": "Add Observability: Structured Logging, APM, and Error Tracking",
+      "problem": "The entire platform has zero observability infrastructure. All three repos use console.error/console.log for error handling — no Sentry, Datadog, New Relic, or any APM. API errors return generic messages to the client but aren't tracked, aggregated, or alerted on. The signal-builder-backend has documented cases of silent error swallowing (e.g., signal delete failures are caught and ignored with a TODO comment). For a production financial platform, this means bugs, outages, and data issues go completely undetected until a customer complains.",
+      "solution": "1. Add Sentry to both the Next.js frontend (client + server) and FastAPI backend — captures unhandled exceptions, slow transactions, and breadcrumbs automatically. 2. Replace all console.error in API routes with structured logging (e.g., pino for Next.js, loguru is already in signal-builder but needs consistent usage). 3. Add health check dashboards: /api/health should report backend connectivity, DB pool status, and cache availability. 4. Create Slack/Telegram alerting for error spikes. 5. Track LLM API costs and latency per tenant. Estimated: $29/mo Sentry Team plan covers all three services.",
+      "revenue_impact": "medium",
+      "security_risk": "medium",
+      "ux_improvement": "medium",
+      "effort_days": 4,
+      "priority": "MUST",
+      "related_todos": [
+        "013-pending-high-signal-builder-backend-sentry-error-tracking"
+      ]
+    },
+    {
+      "rank": 4,
+      "title": "Fix Async Blocking in Snowflake/Oracle Data Providers",
+      "problem": "SnowflakeProvider and OracleProvider declare all methods as async def but internally call synchronous blocking functions (snowflake.connector.connect(), cursor.execute(), pool.acquire()) directly on the event loop. Under any concurrent load, a single slow Snowflake query (common: 3-15 seconds) freezes the entire FastAPI event loop, making ALL concurrent API requests unresponsive. This is a production-blocking performance bug that directly impacts user experience — when one user runs a complex signal, all other users experience hangs.",
+      "solution": "1. Wrap all synchronous blocking calls in asyncio.to_thread() (Python 3.9+) or loop.run_in_executor(). 2. For SnowflakeProvider: use snowflake-connector-python's async support or run blocking calls in a ThreadPoolExecutor. 3. For OracleProvider: use python-oracledb's async thin-mode (available since v2.0). 4. Add query timeout limits (30s default, configurable per org). 5. Add connection pool health monitoring. 6. Enforce the max_query_cost guardrail that's defined in OrgConfig but never checked.",
+      "revenue_impact": "high",
+      "security_risk": "low",
+      "ux_improvement": "high",
+      "effort_days": 5,
+      "priority": "MUST",
+      "related_todos": [
+        "014-pending-critical-signal-studio-data-provider-fix-async-blocking-snowflake-oracle",
+        "017-pending-critical-signal-studio-data-provider-enforce-max-query-cost-guardrail"
+      ]
+    },
+    {
+      "rank": 5,
+      "title": "Upgrade Outdated Dependencies with Known CVEs",
+      "problem": "The signal-builder-backend has critically outdated dependencies: FastAPI 0.92 (current: 0.115+), Pydantic v1 (EOL — v2 is current), aiohttp 3.8.6 (multiple known CVEs including request smuggling and denial-of-service). The frontend uses Next.js 16 which is very new but has 80+ dependencies. The Django backend uses Pipfile with unpinned sub-dependencies. For a financial platform handling PII and AUM data, running known-vulnerable HTTP libraries is an audit finding that could block enterprise deals.",
+      "solution": "1. Run pip-audit on signal-builder-backend (already in dev deps) and npm audit on signal-studio. 2. Priority upgrades: aiohttp → 3.10+, pydantic → v2 (breaking change — budget 2 days for migration), FastAPI → 0.115+. 3. Pin all transitive dependencies with lock files. 4. Add Dependabot/Renovate to all three repos for automated PRs. 5. Add pip-audit and npm audit to CI pipeline as blocking checks.",
+      "revenue_impact": "medium",
+      "security_risk": "high",
+      "ux_improvement": "low",
+      "effort_days": 6,
+      "priority": "MUST",
+      "related_todos": [
+        "007-pending-high-signal-builder-backend-pin-pipfile-deps"
+      ]
+    },
+    {
+      "rank": 6,
+      "title": "Increase Test Coverage from ~20% to 80% on Critical Paths",
+      "problem": "The frontend has only 19 test files covering basic component rendering and utility functions — no E2E tests pass, no auth flow tests, no signal CRUD integration tests. The signal-builder-backend has 143 test files but documented ~40-50% coverage gaps in critical modules: schema_builder (zero tests), analytical_db (self-documented as needing tests), translators (complex NL→SQL with no unit tests), and all error/exception paths. The Django backend test coverage is unknown. For a financial platform, untested signal translation logic means incorrect financial signals could be generated and acted upon.",
+      "solution": "1. Add Playwright E2E tests for the 3 critical user flows: login → signal library → signal detail, visual builder → create signal → validate → publish, Easy Button → Salesforce embed → meeting prep. 2. Add integration tests for all BFF proxy routes (mock backend, verify auth forwarding). 3. For signal-builder-backend: prioritize schema_builder and translator unit tests (these are the core revenue-generating logic). 4. Set up coverage gates in CI: 80% on new code, 60% overall minimum. 5. Add contract tests between frontend BFF and backend APIs.",
+      "revenue_impact": "medium",
+      "security_risk": "medium",
+      "ux_improvement": "medium",
+      "effort_days": 12,
+      "priority": "SHOULD",
+      "related_todos": [
+        "318-pending-high-signal-studio-templates-test-coverage-80pct",
+        "328-pending-medium-signal-builder-frontend-playwright-e2e-tests",
+        "216-pending-high-signal-studio-invesco-easy-button-test-suite",
+        "214-pending-high-signal-studio-templates-integration-tests",
+        "102-pending-P1-signal-studio-templates-engine-tests"
+      ]
+    },
+    {
+      "rank": 7,
+      "title": "Productize the Easy Button as an Embeddable Revenue Module",
+      "problem": "The 'Easy Button' (1,335 lines) is the most differentiated feature — a Salesforce-embeddable meeting prep and signal viewer for financial advisers. However, it's currently a monolithic single-page component with hardcoded signal templates, no configuration API, no tenant customization, no usage tracking, and no embed analytics. The Salesforce embed flow exists but has no integration tests. This is the primary revenue driver for enterprise deals (Invesco, etc.) but is treated as a demo feature rather than a productized offering.",
+      "solution": "1. Extract Easy Button into a configurable embeddable widget with a tenant config API (branding, signal selection, data sources). 2. Add embed analytics: track views, interactions, signal activations, meeting prep generations per adviser per org — this data is gold for proving ROI to enterprise clients. 3. Create an embed SDK (JavaScript snippet) that clients can drop into Salesforce, Dynamics, or any CRM. 4. Add org-specific signal template management (CRUD via admin panel). 5. Build a 'time-to-value' dashboard showing how quickly advisers get insights after deployment.",
+      "revenue_impact": "high",
+      "security_risk": "low",
+      "ux_improvement": "high",
+      "effort_days": 15,
+      "priority": "SHOULD",
+      "related_todos": [
+        "218-pending-med-signal-studio-e2e-salesforce-embed-tests",
+        "104-pending-P2-signal-studio-templates-frontend-integration"
+      ]
+    },
+    {
+      "rank": 8,
+      "title": "Replace Hardcoded Analytics with Real Data Pipeline",
+      "problem": "The Analytics page (/analytics) displays entirely hardcoded/fake data: '128 Total Signals', '1,842 Active Clients', '12% from last month' — all static JSX. No API calls, no real data. The Signal Library uses localStorage for signal persistence on the frontend. There's a disconnect: the backend has real signal data, client rankings, and portfolio data, but the frontend analytics page is a static mockup. Enterprise clients doing due diligence will immediately notice the analytics are fake.",
+      "solution": "1. Create /api/analytics/summary endpoint that aggregates real signal counts, active users, signal activation rates from the Django backend. 2. Wire up the analytics page to real API endpoints. 3. Add time-series charts using real signal performance data (the backend already has historical client ranking data). 4. Remove localStorage signal persistence — use the backend's signal CRUD APIs (already exist via signal-builder-backend). 5. Add date range selectors and export functionality that works with real data.",
+      "revenue_impact": "high",
+      "security_risk": "low",
+      "ux_improvement": "high",
+      "effort_days": 8,
+      "priority": "SHOULD",
+      "related_todos": [
+        "006-pending-p1-signal-studio-signal-backend-persistence"
+      ]
+    },
+    {
+      "rank": 9,
+      "title": "Add Multi-Tenant Rate Limiting and Cost Controls",
+      "problem": "The frontend middleware has basic IP-based rate limiting (20 req/min for LLM routes) using an in-memory store, but: (1) it resets on every deployment/restart, (2) it's per-IP not per-tenant (a large org sharing a VPN IP could be collectively throttled), (3) the signal-builder-backend has NO rate limiting at all — auth endpoints are open to brute force, compute-heavy signal validation has no limits. (4) LLM costs (OpenAI GPT-4o calls) are unmetered per tenant — one heavy user could rack up thousands in API costs. (5) The Snowflake max_query_cost guardrail is defined in config but never enforced.",
+      "solution": "1. Replace in-memory rate limiter with Redis-backed rate limiting (the Django backend already has Redis). 2. Implement per-tenant rate limiting (keyed by org_id from JWT claims, not IP). 3. Add slowapi middleware to signal-builder-backend for all routes. 4. Implement LLM cost tracking per org: log token usage per request, aggregate daily/monthly, alert at 80% of budget. 5. Enforce max_query_cost in SnowflakeProvider. 6. Add a tenant billing dashboard showing LLM spend, query costs, and API usage.",
+      "revenue_impact": "medium",
+      "security_risk": "medium",
+      "ux_improvement": "low",
+      "effort_days": 6,
+      "priority": "SHOULD",
+      "related_todos": [
+        "011-pending-high-signal-builder-backend-rate-limiting-middleware",
+        "017-pending-critical-signal-studio-data-provider-enforce-max-query-cost-guardrail"
+      ]
+    },
+    {
+      "rank": 10,
+      "title": "Consolidate and Clean Up Documentation / Dead Code",
+      "problem": "The signal-studio repo root contains 40+ markdown files (PR descriptions, implementation notes, phase completion reports, branch notes) — many are stale artifacts from development sprints that were never cleaned up. There are redundant/duplicate pages: signal-studio vs signal-builder vs visual-builder all appear to serve similar purposes. The repo contains test scripts (check-admin-table-access.js, test-oracle-connection.js, show-accessible-objects.js) and SQL files (grant-admin-tables-to-signalstudio.sql) committed to the repo that contain infrastructure details. The signal-builder-backend has one-time migration scripts still in the codebase. This creates confusion for new developers and increases the attack surface (infrastructure details in version control).",
+      "solution": "1. Archive all PR/implementation/phase markdown files to a docs/archive/ folder or delete them — they exist in git history. 2. Remove infrastructure SQL files from the repo (move to a private ops repo or 1Password). 3. Delete one-time scripts from signal-builder-backend. 4. Consolidate the signal-studio/signal-builder/visual-builder pages into a single coherent flow. 5. Create a proper docs/ site with architecture diagrams, API documentation (auto-generated from OpenAPI specs), and deployment guides. 6. Add a CONTRIBUTING.md with clear development setup instructions.",
+      "revenue_impact": "low",
+      "security_risk": "low",
+      "ux_improvement": "medium",
+      "effort_days": 3,
+      "priority": "COULD",
+      "related_todos": [
+        "018-pending-medium-signal-builder-backend-api-documentation"
+      ]
+    }
+  ],
+  "summary": {
+    "total_improvements": 10,
+    "must_count": 5,
+    "should_count": 4,
+    "could_count": 1,
+    "total_effort_days": 72,
+    "critical_security_items": 3,
+    "high_revenue_impact_items": 5,
+    "key_insight": "Signal Studio has strong product-market fit (financial signal intelligence for advisers/wholesalers) and good architectural bones (BFF pattern, CSRF protection, rate limiting foundations). However, it has critical security vulnerabilities (SQL injection in 4+ locations, no RBAC, localStorage token storage) that would fail any enterprise security audit. The 'Easy Button' Salesforce embed is the strongest revenue differentiator but is under-invested as a product. The analytics page with fake data undermines credibility. Fix the 5 MUST items (security + observability + async blocking) before any new enterprise deal, then invest in productizing the Easy Button."
   }
-]
+}

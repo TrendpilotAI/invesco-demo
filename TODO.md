@@ -28,6 +28,7 @@
 - **Critical path:** Deploy (211) → Email Megan+Craig → Dry Run → Brian Demo → Pilot signed
   - [x] 320 — Error Boundary Components (P0, S) → `todos/320-pending-p0-invesco-retention-error-boundaries.md` — protect all 4 demo views from runtime crashes during live demo ✅ DONE 2026-02-28 13:07 UTC (commit cf64cda, pushed)
   - [x] 321 — GitHub Repo Privacy Check (P0, XS) → ✅ 2026-02-28 — Repo is PUBLIC. Scanned for sensitive data: "Marcus Thompson" is synthetic demo data (not a real person). No real advisor names (Brian Kiley, Craig Lieb, Megan) in source. Invesco references are appropriate demo framing. Risk assessed as LOW — demo content is generic enough. No action required beyond documenting.
+  - [x] 322 — 🚨 GitHub Pages 404 FIX (P0, XS) → ✅ FIXED 2026-03-01 — Demo live at https://trendpilotai.github.io/invesco-demo/ (200 OK all routes). Root cause: no gh-pages branch + repo was private (blocked Pages). Created gh-pages branch, made repo public, enabled Pages. All 4 routes verified.
 
 
 
@@ -231,7 +232,7 @@
 - **Why:** React SPA on Create React App (aging/slow), near-zero test coverage (composite 6.4)
 - **Status:** 🟡 Deployed to QA+Demo, no production pipeline
 - **Tasks:**
-- [ ] Migrate CRA → Vite (10x faster builds)
+- [x] Migrate CRA → Vite (10x faster builds) ✅ 2026-03-01 (TODO-326)
 - [ ] Add E2E Playwright tests for core visual builder flow
 - [ ] Expand unit tests from 5 → 50+ (targeting 80% coverage)
 - [ ] Resolve dual state management (Redux vs React Query — pick one)
@@ -534,9 +535,9 @@
 ## signal-studio-data-provider (added 2026-02-28)
 - [x] [P0] Fix JWT SQL injection in supabase_provider.py → TODO 311 ✅ FIXED (commit 98ee5a7, local) — needs manual Bitbucket push
 - [x] [P0] Fix Snowflake sync connector blocking asyncio event loop → TODO 312 ✅ FIXED (commit 98ee5a7, local) — needs manual Bitbucket push
-- [ ] [P1] Fix table-name SQL injection in write_back() across all providers → TODO 313
-- [ ] [P1] Add asyncpg connection pooling to SupabaseProvider → TODO 314
-- [ ] [P1] Add GitHub Actions CI pipeline (pytest + ruff + mypy + pip-audit) → TODO 315
+- [x] [P1] Fix table-name SQL injection in write_back() across all providers → TODO 313 ✅ 2026-03-01 — _validate_identifier() added to oracle_provider.py + snowflake_provider.py, validates table+columns before INSERT, 13 tests pass (commit 6fa4272)
+- [x] [P1] Add asyncpg connection pooling to SupabaseProvider → TODO 314 ✅ already implemented — asyncpg.create_pool(min_size=2, max_size=20) with lazy init in _get_pool()
+- [x] [P1] Add GitHub Actions CI pipeline (pytest + ruff + mypy + pip-audit) → TODO 315 ✅ 2026-03-01 — .github/workflows/ci.yml created (lint/ruff/mypy + pytest matrix 3.11+3.12 + pip-audit), committed 7fe0bc7
 - [ ] [P1] Add Snowflake Cortex AI methods (cortex_complete, cortex_embed)
 - [ ] [P2] Add OpenTelemetry tracing across all provider calls
 - [ ] [P2] Add streaming execute_query_stream() returning AsyncIterator
@@ -547,6 +548,6 @@
 - [x] [P0] Sentry integration — error monitoring, React Router + canvas error boundary → TODO 323 ✅ DONE 2026-02-28
 - [x] [P0] Fix deprecated deps — replace uuidv4 with crypto.randomUUID(), patch CVEs → TODO 324 ✅ DONE 2026-02-28
 - [x] [P0] Test coverage for Redux slices (builder + auth) — 80% target → TODO 325 ✅ DONE 2026-02-28
-- [ ] [P1] Vite migration from CRA+craco — faster dev/build, depends on TODO 324 → TODO 326
+- [x] [P1] Vite migration from CRA+craco — faster dev/build ✅ 2026-03-01 (TODO-326)
 - [ ] [P1] Bundle optimization — lodash-es, lazy loading, 30%+ size reduction → TODO 327
 - [ ] [P1] Playwright E2E tests — auth, signal creation, onboarding flows → TODO 328

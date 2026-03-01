@@ -1,72 +1,112 @@
 [
   {
-    "title": "Fix Critical SEO & Accessibility Issues",
-    "problem": "The landing page uses <h3> instead of <h1> for the hero heading, there's no proper heading hierarchy, and era-related keywords are missing from body text. The E2E audit scored only 66% (25/38 tests passing).",
-    "approach": "1) Change the hero heading from <h3> to <h1> in HeroGallery.tsx. 2) Audit all pages for proper heading hierarchy. 3) Add semantic HTML text content with target keywords. 4) Add aria-labels and alt text. 5) Implement JSON-LD for Product and FAQ schemas. 6) Fix the 10 SEO landing pages with unique meta descriptions.",
-    "priority": "high",
-    "effort": 3
+    "id": 1,
+    "title": "Wire Stripe Checkout & Kill Billing Stubs",
+    "problem": "The `billing.ts` module contains entirely stubbed Stripe functions (createCheckoutSession, cancelSubscription, reportMeteredUsage) that log to console and return fake URLs. The `create-checkout` and `stripe-portal` edge functions exist and work, but the client-side billing module never calls them. Credit pack purchases and subscription upgrades silently fail in production — meaning zero revenue from in-app purchases. The `StripeClient` in `src/core/integrations/stripe/client.ts` uses `redirectToCheckout` with hardcoded line items instead of server-created sessions, which is the deprecated Stripe flow.",
+    "solution": "1) Delete `src/modules/subscriptions/billing.ts` stubs entirely. 2) Update all purchase flows (Credits page, PlanSelector, UpgradePlan) to call the `create-checkout` edge function via `supabase.functions.invoke('create-checkout', { body: { plan, stripePriceId } })`. 3) Update `StripeClient.redirectToCheckout()` to use the session URL returned by the edge function (redirect pattern) instead of client-side `stripe.redirectToCheckout()`. 4) Verify `stripe-webhook` handles `checkout.session.completed` to credit user accounts. 5) Add E2E test for the full purchase funnel with Stripe test mode.",
+    "revenue_impact": "high",
+    "security_risk": "medium",
+    "ux_improvement": "high",
+    "effort_days": 3,
+    "priority": "MUST"
   },
   {
-    "title": "Migrate API Keys from Client-Side to Edge Functions",
-    "problem": "The .env file exposes VITE_GROQ_API_KEY and VITE_OPENAI_API_KEY as client-side environment variables (VITE_ prefix means bundled into browser JS). Critical security vulnerability.",
-    "approach": "1) Create Supabase Edge Functions as API proxies. 2) Move secret keys to server-side only. 3) Implement rate limiting in edge functions. 4) Remove VITE_ prefix keys from client code. 5) Update ai.ts to call edge functions.",
-    "priority": "high",
-    "effort": 5
+    "id": 2,
+    "title": "Remove Client-Side API Key Exposure (OpenAI & Groq)",
+    "problem": "The README still documents `VITE_OPENAI_API_KEY` and `VITE_GROQ_API_KEY` as required env vars. While `env.ts` now returns `undefined` for these (security fix applied), the `vite-env.d.ts` still declares them as typed env vars, `env.example` still lists them, and any developer following the README will set them — causing the keys to be bundled into the client JS. The `test/setup.ts` mocks these keys, reinforcing the pattern. If any code path still reads `import.meta.env.VITE_OPENAI_API_KEY` directly (bypassing the getter), the key leaks.",
+    "solution": "1) Remove `VITE_OPENAI_API_KEY` and `VITE_GROQ_API_KEY` from `vite-env.d.ts` type declarations. 2) Remove them from `env.example`, `.env.example`, and `README.md`. 3) Run `grep -r 'VITE_OPENAI_API_KEY\\|VITE_GROQ_API_KEY' src/` and eliminate ALL references including test mocks. 4) Add a Vite plugin or build-time check that fails the build if any `VITE_OPENAI_` or `VITE_GROQ_` env var is set. 5) Update README to document edge function architecture: all AI calls go through Supabase edge functions (groq-api, groq-storyline, stream-chapters, runware-proxy).",
+    "revenue_impact": "low",
+    "security_risk": "high",
+    "ux_improvement": "low",
+    "effort_days": 1,
+    "priority": "MUST"
   },
   {
-    "title": "Fix Authentication Memory Leaks and Race Conditions",
-    "problem": "HIGH severity memory leak in ClerkAuthContext.tsx (useEffect lacks cleanup) and race conditions in user profile sync. Causes stale data and crashes.",
-    "approach": "1) Add AbortController to async operations. 2) Return proper cleanup from useEffect. 3) Add useRef flags to prevent state updates after unmount. 4) Add React Query caching for profile data. 5) Wrap context in useMemo.",
-    "priority": "high",
-    "effort": 4
+    "id": 3,
+    "title": "Fix Credit System Server-Side Enforcement",
+    "problem": "Credit deduction logic has multiple vulnerabilities: 1) The `credits-validate` edge function reserves credits but the reservation-to-deduction flow lacks atomic transaction guarantees — a user could trigger multiple concurrent generations between reservation and completion. 2) The `groq-storyline` function charges `STORYLINE_GENERATION_CREDITS = 2` but there's no coordination with `credits-validate`'s reservation system — they're two separate credit deduction paths. 3) No idempotency on the client side means double-clicking 'Generate' creates duplicate charges. 4) Credit balance checks happen in both client and server with no single source of truth.",
+    "solution": "1) Unify credit deduction into a single server-side path: `credits-validate` reserves → generation runs → on success credits are committed (or released on failure). Use Postgres `SELECT ... FOR UPDATE` in a transaction. 2) Remove `STORYLINE_GENERATION_CREDITS` deduction from `groq-storyline` — let `credits-validate` handle all credit accounting. 3) Add idempotency keys to generation requests (hash of user_id + story_params + 30s window). 4) Add a `credit_transactions` table with `reservation_id`, `status` (reserved/committed/released), and `expires_at` for auto-release of stale reservations. 5) Client shows optimistic UI but server is authoritative.",
+    "revenue_impact": "high",
+    "security_risk": "high",
+    "ux_improvement": "medium",
+    "effort_days": 4,
+    "priority": "MUST"
   },
   {
-    "title": "Implement Proper Test Coverage (Currently <5%)",
-    "problem": "Only a handful of test files exist despite 274 source files. Critical paths — auth, payment/webhooks, story generation, credit deduction — have zero test coverage.",
-    "approach": "1) Set up MSW for API mocking. 2) Write unit tests for credit deduction, billing calculations. 3) Write integration tests for auth lifecycle and payment flows.",
-    "priority": "high",
-    "effort": 5
+    "id": 4,
+    "title": "Consolidate Duplicate Creator Module & Dead Code",
+    "problem": "Two parallel modules exist: `src/modules/creator/` (4 files, ~400 LOC) and `src/modules/creators/` (6 files, evolved versions). App.tsx imports from `creators/` — the `creator/` module is orphaned dead code. Additionally, 5 social engagement components (CreationStreak, FriendshipBracelet, StoryGallery, EraProgressTracker, MonthlyChallenge) ship with `// TODO: API Integration` — they render UI with mock data but promise real functionality. The `email/index.ts` is a console-log stub that silently pretends to send emails. `TestCredits` page is accessible in production routing.",
+    "solution": "1) Verify `creator/` is orphaned: `grep -r 'modules/creator[^s]' src/`. If clean, delete the entire directory. 2) Either wire the 5 social components to Supabase tables (user_streaks, friend_bracelets, challenges) or hide them behind a feature flag so users don't see broken promises. 3) Delete `src/modules/email/index.ts` — route all emails through the `brevo-email` edge function exclusively. 4) Guard `TestCredits` route with `import.meta.env.DEV`. 5) Replace 25 `console.log` statements with the existing `logger.ts` utility. Net reduction: ~800 LOC of dead/stub code.",
+    "revenue_impact": "low",
+    "security_risk": "low",
+    "ux_improvement": "medium",
+    "effort_days": 2,
+    "priority": "SHOULD"
   },
   {
-    "title": "Optimize Bundle Size (Currently 2.1MB+)",
-    "problem": "The production bundle is 2.1MB+ (way above the 500KB target). Large dependencies: framer-motion (150KB), @hello-pangea/dnd (120KB), supabase-js (400KB). Slow load times hurt mobile teen users.",
-    "approach": "1) Analyze with bundle analyzer. 2) Implement code splitting with React.lazy(). 3) Replace framer-motion with CSS animations. 4) Lazy load Supabase client. 5) Tree-shake unused lodash functions.",
-    "priority": "medium",
-    "effort": 3
+    "id": 5,
+    "title": "Implement Test Coverage for Payment & Auth Critical Paths",
+    "problem": "46 test files exist across 344 source files (~13% file coverage), but critical paths have zero tests: `create-checkout` (handles real money), `stripe-portal` (subscription management), `customer-portal` (billing access), `webhook-retry-processor` (reliability), `admin-credits` (privilege escalation risk). 15 of 20 edge functions are untested. The payment flow (checkout → webhook → credit grant) has no integration test — a regression here means lost revenue with no alert.",
+    "solution": "1) Write integration tests for the payment critical path: mock Stripe webhook events → verify `stripe-webhook` correctly credits user accounts, creates `webhook_events` records for idempotency, and handles edge cases (duplicate events, missing metadata). 2) Write unit tests for `create-checkout`: valid/invalid plans, missing auth, customer lookup. 3) Test `admin-credits`: verify it rejects non-admin users (privilege escalation). 4) Add MSW handlers for Stripe API in the frontend test suite. 5) Set a CI gate: payment/auth tests must pass before deploy. Target: 80% coverage on edge functions that handle money or auth.",
+    "revenue_impact": "medium",
+    "security_risk": "medium",
+    "ux_improvement": "low",
+    "effort_days": 5,
+    "priority": "MUST"
   },
   {
-    "title": "Implement Offline Mode with Service Worker",
-    "problem": "No service worker means no offline support. Teens often have spotty connectivity at school/venues. Can't generate stories without internet.",
-    "approach": "1) Add Vite PWA plugin with workbox. 2) Cache static assets and API responses. 3) Implement offline story queue (store locally, sync when online). 4) Add offline indicator UI.",
-    "priority": "medium",
-    "effort": 4
+    "id": 6,
+    "title": "Reduce Bundle Size from 2.1MB to <500KB",
+    "problem": "Production bundle is 2.1MB+ (max chunk 468KB after code-splitting work). The target audience is teens on mobile with potentially spotty connections. Key bloat sources: framer-motion (~150KB), 50+ Radix UI packages (many unused like menubar, context-menu, hover-card), OpenTelemetry suite (~200KB, overkill for a consumer app), full groq-sdk bundled client-side (should only be in edge functions), recharts (~180KB, used only on admin pages). Initial page load for a teen on 3G could take 8+ seconds.",
+    "solution": "1) Run `npx vite-bundle-visualizer` to get exact breakdown. 2) Replace `framer-motion` with CSS animations + `@starting-style` for the 3-4 animations actually used (page transitions, card reveals). 3) Remove unused Radix packages: audit which of the 30+ Radix imports are actually rendered. 4) Remove `@opentelemetry/*` from the client bundle — use a lightweight error reporter (Sentry already included) or move telemetry to edge functions. 5) Lazy-load `recharts` only on admin routes. 6) Remove `groq-sdk` from client dependencies (all Groq calls go through edge functions). 7) Lazy-load `Gallery` and `ImageReview` pages (currently eagerly loaded). Target: <400KB initial load, <800KB total with all lazy chunks.",
+    "revenue_impact": "medium",
+    "security_risk": "low",
+    "ux_improvement": "high",
+    "effort_days": 3,
+    "priority": "SHOULD"
   },
   {
-    "title": "Add Real-Time Collaboration Features",
-    "problem": "The product is single-user focused. No way to share stories with friends or collaborate on era selections. Missed viral loop opportunity.",
-    "approach": "1) Add Supabase real-time subscriptions for story sharing. 2) Create share links with view-only access. 3) Add friend list and activity feed. 4) Implement collaborative era voting.",
-    "priority": "medium",
-    "effort": 5
+    "id": 7,
+    "title": "Add Social Sharing & Viral Loop for TikTok/Instagram",
+    "problem": "The app generates beautiful era-themed ebooks but has no frictionless sharing mechanism. The `tiktok-auth` and `tiktok-share-analytics` edge functions exist but aren't wired to the UI. There's no 'Share to Instagram Story' or 'Share to TikTok' button after generation. The sharing module exists (`src/modules/sharing/`) but lacks platform-specific share cards with preview images. For a product targeting Swifties (the most socially-active fandom), missing social sharing is leaving massive organic growth on the table.",
+    "solution": "1) After ebook generation, show a 'Share Your Era' screen with: Instagram Story template (9:16 card with cover art + era theme), TikTok share (video snippet of cover reveal), Twitter/X card, and copy link. 2) Wire the `tiktok-auth` edge function to the onboarding flow for creators who want analytics. 3) Generate OG images dynamically per story (the `dynamic-og-tags` todo already exists) so shared links show rich previews. 4) Add a public gallery page where shared stories are browsable (social proof + SEO). 5) Implement referral tracking: if someone signs up from a shared story link, credit the referrer (the `referral` module already exists as scaffold).",
+    "revenue_impact": "high",
+    "security_risk": "low",
+    "ux_improvement": "high",
+    "effort_days": 5,
+    "priority": "SHOULD"
   },
   {
-    "title": "Fix Credit System Race Conditions",
-    "problem": "Credit deduction happens client-side before API call. Users can manipulate this by intercepting requests. Also no idempotency key for story generation — double-clicking could double-charge.",
-    "approach": "1) Move credit deduction to server-side edge function. 2) Add database transaction with SELECT FOR UPDATE. 3) Add idempotency keys to story generation. 4) Implement credit balance verification before each generation.",
-    "priority": "high",
-    "effort": 2
+    "id": 8,
+    "title": "Implement Dynamic OG Tags & SEO Landing Page Quality",
+    "problem": "10 SEO landing pages exist (ErasTourEbook, SwiftieBirthdayPresents, etc.) but they're all static React components with no evidence of unique meta descriptions, proper heading hierarchy, or JSON-LD schema markup. The hero section uses `<h3>` instead of `<h1>`. Since this is a SPA on Netlify with client-side routing, search engine crawlers see the same `index.html` shell for every page — no SSR or prerendering means SEO pages are effectively invisible to Google. Dynamic OG tags for individual stories don't exist, so shared links show generic FlipMyEra branding instead of the actual story cover.",
+    "solution": "1) Add Netlify prerendering (netlify-plugin-prerender) or switch SEO pages to static HTML generation at build time. 2) Use `react-helmet-async` (already installed) to set unique `<title>`, `<meta description>`, and OG tags per SEO page. 3) Fix heading hierarchy: `<h1>` for hero, `<h2>` for sections. 4) Add JSON-LD schema markup: `Product` for ebook creation, `FAQPage` for FAQ, `WebApplication` for the app. 5) Create a Supabase edge function that generates dynamic OG images for shared stories (story title + cover art + era theme). 6) Implement a dynamic sitemap (`/sitemap.xml`) listing all SEO pages + public stories. 7) Add canonical URLs to prevent duplicate content.",
+    "revenue_impact": "high",
+    "security_risk": "low",
+    "ux_improvement": "medium",
+    "effort_days": 4,
+    "priority": "SHOULD"
   },
   {
-    "title": "Implement Proper Error Boundaries and Recovery",
-    "problem": "No React error boundaries. A single component crash (e.g., malformed API response) takes down the entire app. No graceful degradation.",
-    "approach": "1) Add ErrorBoundary components around major sections. 2) Implement retry logic with exponential backoff. 3) Add fallback UI for failed components. 4) Log errors to Sentry/console.",
-    "priority": "medium",
-    "effort": 2
+    "id": 9,
+    "title": "Add Error Boundaries, Offline Resilience & Loading States",
+    "problem": "No React error boundaries exist — a single component crash (malformed API response, failed image load) takes down the entire app with a white screen. No service worker means zero offline capability. The target audience (teens) frequently has spotty connectivity at school, concerts, and public transit. Story generation is a multi-minute process with no recovery if the connection drops mid-stream. Loading states are inconsistent: some pages use `PageLoader`, some use `DashboardSkeleton`, some have no loading state.",
+    "solution": "1) Add `<ErrorBoundary>` components around: story generator, ebook viewer, checkout flow, and each admin page. Show friendly 'Something went wrong' UI with retry button. 2) Add Vite PWA plugin (`vite-plugin-pwa`) with Workbox for: caching static assets, caching completed stories for offline reading, queuing story generation requests when offline. 3) Implement story generation recovery: save generation state to localStorage, detect reconnection, resume or retry. 4) Standardize loading states: use Suspense boundaries consistently with skeleton components that match the target layout. 5) Add Sentry integration (already in dependencies) with proper error boundary reporting.",
+    "revenue_impact": "medium",
+    "security_risk": "low",
+    "ux_improvement": "high",
+    "effort_days": 4,
+    "priority": "SHOULD"
   },
   {
-    "title": "Add Analytics and Funnel Tracking",
-    "problem": "No proper analytics setup. Can't track conversion funnel: landing → signup → credit purchase → story generation. Missing data for growth optimization.",
-    "approach": "1) Add PostHog or Plausible for privacy-friendly analytics. 2) Track key events: pageview, signup, credit purchase, story generation. 3) Create dashboard for funnel visualization. 4) Set up conversion goals.",
-    "priority": "medium",
-    "effort": 3
+    "id": 10,
+    "title": "Implement Print-on-Demand Physical Book Fulfillment",
+    "problem": "FlipMyEra generates digital ebooks at $2.99 each, but the Swiftie demographic spends $50-300+/year on physical merchandise and collectibles. There's an existing todo for print-on-demand (todo #227) but no implementation. A physical book — a hardcover era-themed storybook with AI illustrations — would command $19.99-$39.99 and transform FlipMyEra from a digital novelty into a gift-worthy product. This is the single highest-leverage revenue unlock: 5-10x per-unit revenue with the same generation pipeline.",
+    "solution": "1) Integrate with Lulu Direct API (print-on-demand, no inventory risk): generate PDF with jsPDF (already a dependency), submit to Lulu for printing, ship to customer. 2) Add 'Order Physical Book' upsell after ebook generation — show mockup of the printed book with the user's cover art. 3) Create print-ready PDF template: proper margins, bleed, spine width calculation based on page count, CMYK color conversion for cover art. 4) Price at $24.99 (cost ~$8-12 via Lulu, ~$13-17 margin). 5) Add gift option: ship to a different address with gift message (Swifties love gifting). 6) Track with PostHog: measure upsell conversion rate from digital → physical. Target: 15% of digital buyers upgrade to physical = massive ARPU boost.",
+    "revenue_impact": "high",
+    "security_risk": "low",
+    "ux_improvement": "medium",
+    "effort_days": 7,
+    "priority": "COULD"
   }
 ]

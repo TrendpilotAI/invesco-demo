@@ -1,72 +1,102 @@
 [
   {
-    "title": "Add Case Studies / Social Proof Section with Real Metrics",
-    "problem": "Site mentions Fortune 500 clients but lacks dedicated case studies with concrete outcomes. Social proof badges are text-only placeholders.",
-    "approach": "Create /case-studies page with 3-4 case studies following Problem → Solution → Results format. Add real client logos. Add testimonial carousel.",
-    "priority": "high",
-    "effort": 3
+    "title": "Add Trust Signals: Real Logos, Headshots, and Named Testimonials",
+    "problem": "Social proof badges are text-only divs (\"Harvard Alumni\", \"AWS Partner\") — no actual logos. Founder section uses a placeholder \"NS\" instead of a real headshot. Testimonials use initials and generic titles (\"SVP of Operations\", \"Fortune 500 Wealth Manager\") with no names or photos. For a consultancy selling $25K–$100K+ engagements, this reads as unverified and template-like. Enterprise buyers are trained to spot this and it erodes trust at the decision point.",
+    "solution": "1. Replace text badges with actual logo images (SVGs preferred) in a grayscale-to-color hover treatment. 2. Add a professional headshot for Nathan (even a LinkedIn-quality photo beats a monogram). 3. Where clients allow, add real names, company logos, and LinkedIn profiles to testimonials. Where anonymity is required, add industry-specific stock imagery and more specific titles. 4. Add a \"Featured In\" press section if any media coverage exists (WEF, Techstars coverage, etc.).",
+    "priority": "MUST",
+    "effort_days": 2,
+    "revenue_impact": "high",
+    "security_risk": "low",
+    "ux_improvement": "high"
   },
   {
-    "title": "Implement Blog as Scalable Content System with MDX",
-    "problem": "Blog has single hardcoded article with future date. Each post requires new page.tsx — doesn't scale. No RSS, tags, reading progress.",
-    "approach": "Migrate to MDX-based blog with frontmatter. Use next-mdx-remote with content directory. Add dynamic [slug] routing, tag filtering, RSS feed.",
-    "priority": "high",
-    "effort": 4
+    "title": "Implement Conversion Tracking, GA4 Events, and Form Submission Webhooks",
+    "problem": "Google Analytics is loaded but only tracks pageviews — no custom events for CTA clicks, form submissions, ROI calculator completions, Calendly bookings, or email gate unlocks. The contact form API route sends an email via Resend but has no webhook to a CRM, Slack, or analytics pipeline. The ROI calculator fires a Formspree submission for email capture but there's no tracking of which step users drop off at. You're flying blind on funnel performance — the most expensive problem for a lead-gen site.",
+    "solution": "1. Add GA4 event tracking for: all CTA button clicks (with labels), contact form submission, ROI calculator step progression + completion, email gate unlock, Calendly embed interaction. 2. Add a webhook from the contact API route to Slack (instant notification) and optionally a CRM (HubSpot, Pipedrive). 3. Instrument the ROI calculator with step-level analytics to identify drop-off points. 4. Add UTM parameter capture in the contact form to attribute leads to channels. 5. Consider adding a Meta Pixel / LinkedIn Insight Tag for paid retargeting.",
+    "priority": "MUST",
+    "effort_days": 3,
+    "revenue_impact": "high",
+    "security_risk": "low",
+    "ux_improvement": "medium"
   },
   {
-    "title": "Add Animations, Micro-Interactions, and Visual Polish",
-    "problem": "Site is clean but static. Every section loads at once with no motion. For premium consultancy, feels like template.",
-    "approach": "Add Framer Motion for scroll-triggered animations. Add gradient mesh to hero. Replace 'NS' placeholder with real headshot. Add hover microinteractions.",
-    "priority": "high",
-    "effort": 3
+    "title": "Add Animations, Visual Polish, and Hero Differentiation",
+    "problem": "Every section loads simultaneously with no motion, transitions, or visual hierarchy beyond font size. The hero is plain text on a dark background — no gradient, no illustration, no particle effect, no video. For a company selling AI sophistication, the site feels like a well-organized template but doesn't convey technical depth or premium positioning. The dark theme with indigo accents is clean but indistinguishable from hundreds of AI agency sites built with the same Tailwind palette.",
+    "solution": "1. Add Framer Motion for scroll-triggered fade-in/slide-up animations on all card grids, stats counters, and testimonials. 2. Add an animated gradient mesh or subtle 3D orb to the hero section. 3. Add animated number counters for the stats section (count from 0 to final value on scroll). 4. Add hover micro-interactions on service cards (subtle scale, border glow). 5. Consider a short looping video or animated diagram showing the agent pipeline. 6. Add a custom cursor effect or subtle parallax to signal craft.",
+    "priority": "SHOULD",
+    "effort_days": 4,
+    "revenue_impact": "medium",
+    "security_risk": "low",
+    "ux_improvement": "high"
   },
   {
-    "title": "SEO Improvements: Structured Data, Dynamic Sitemap, Blog Schema",
-    "problem": "Sitemap is static XML. No Article schema on blog posts, no FAQ schema, no BreadcrumbList. Calendly script uses raw <script> tag.",
-    "approach": "Generate sitemap dynamically using Next.js sitemap.ts. Add Article structured data to blog posts. Add FAQPage schema. Replace Calendly with next/script.",
-    "priority": "high",
-    "effort": 3
+    "title": "Dynamic Sitemap, Blog Schema, FAQ Schema, and BreadcrumbList",
+    "problem": "The sitemap is a static XML file in /public that doesn't include blog posts, the ROI calculator page, or case studies. There's no Article structured data on blog posts, no FAQ schema, no BreadcrumbList, and no HowTo schema on the ROI calculator. Blog post dates are in the future (2026), which looks odd to crawlers and users. The Calendly widget script is loaded with a raw <script> tag instead of Next.js Script component, missing performance optimization. RSS feed exists but there's no <link> tag in the document head for auto-discovery.",
+    "solution": "1. Replace the static sitemap.xml with a dynamic Next.js sitemap.ts that auto-includes all blog posts and pages. 2. Add Article JSON-LD to each blog post page. 3. Add FAQPage schema to the pricing page (common questions about plans). 4. Add BreadcrumbList schema to all subpages. 5. Fix blog post dates to realistic past/present dates. 6. Replace the Calendly <script> with next/script (strategy='lazyOnload'). 7. Add RSS auto-discovery <link> in layout.tsx head. 8. Add HowTo schema to the ROI calculator page.",
+    "priority": "MUST",
+    "effort_days": 3,
+    "revenue_impact": "high",
+    "security_risk": "low",
+    "ux_improvement": "medium"
   },
   {
-    "title": "Add Interactive ROI Calculator",
-    "problem": "No interactive elements that demonstrate value. Prospects can't estimate their potential ROI or time savings.",
-    "approach": "Build ROI calculator: inputs (employees, hourly rate, current process hours/week). Output: estimated annual savings, payback period.",
-    "priority": "high",
-    "effort": 3
+    "title": "Add Lead Magnet Email Capture with Nurture Sequence",
+    "problem": "The only lead capture mechanisms are the contact form and the ROI calculator email gate. There's no lead magnet (downloadable checklist, whitepaper, framework PDF) to capture emails from prospects who aren't ready to book a call. The ROI calculator email gate sends data to Formspree but there's no automated follow-up sequence. Most B2B consultancy prospects need 5–7 touchpoints before converting — the site currently offers one (contact form) and hopes for the best.",
+    "solution": "1. Create a high-value lead magnet: \"Enterprise AI Implementation Checklist\" or \"The 90-Day AI Roadmap Template\" — a PDF that demonstrates expertise and primes for a sales conversation. 2. Add an email capture component (sticky banner or exit-intent modal) offering the lead magnet. 3. Integrate with an email platform (ConvertKit, Loops, or Resend's broadcast feature) to set up a 5-email nurture sequence: Day 0: lead magnet delivery, Day 3: case study highlight, Day 7: common AI pitfalls, Day 14: ROI framework, Day 21: soft CTA to book a call. 4. Add the lead magnet offer to blog post footers (replacing or augmenting the current CTA).",
+    "priority": "MUST",
+    "effort_days": 5,
+    "revenue_impact": "high",
+    "security_risk": "low",
+    "ux_improvement": "medium"
   },
   {
-    "title": "Implement Lead Capture with Nurture Sequence",
-    "problem": "Only contact form exists. No lead magnet (ebook, checklist), no email capture, no automated nurture sequence.",
-    "approach": "Add email capture with lead magnet (AI Implementation Checklist). Integrate with email service. Set up automated nurture sequence.",
-    "priority": "high",
-    "effort": 4
+    "title": "Fix Security Issues: Calendly XSS Vector, CSRF on Contact Form, Missing CSP",
+    "problem": "1. The Calendly widget is loaded via a raw <script> tag with no integrity hash or CSP allowlisting — a supply chain attack vector. 2. The contact form API has rate limiting and input validation (good), but no CSRF token verification — an attacker could forge submissions from external sites. 3. There are no Content Security Policy (CSP) headers configured — any injected script (XSS) would execute freely. 4. The in-memory rate limiter resets on server restart and doesn't work in multi-instance deployments (Vercel functions are stateless, so every cold start resets the store). 5. The ROI calculator sends data to Formspree (third-party) with user email + business metrics — no privacy notice or consent disclosure.",
+    "solution": "1. Move Calendly script to next/script with strategy='lazyOnload' and add Subresource Integrity (SRI) if available, or load via the embed API. 2. Implement CSRF protection: either use a double-submit cookie pattern or add a server-generated token to the form. 3. Add CSP headers via next.config.js (at minimum: default-src 'self', script-src 'self' with hashes for inline scripts, connect-src for API endpoints). 4. Replace the in-memory rate limiter with a Vercel KV / Upstash Redis store that persists across cold starts. 5. Add a privacy notice near the ROI calculator email form disclosing that data is sent to a third-party (Formspree), or replace Formspree with the site's own /api/contact route.",
+    "priority": "MUST",
+    "effort_days": 4,
+    "revenue_impact": "low",
+    "security_risk": "high",
+    "ux_improvement": "low"
   },
   {
-    "title": "Add Services Deep-Dive Pages",
-    "problem": "Services listed on homepage but no dedicated pages with detailed descriptions, pricing tiers, deliverables.",
-    "approach": "Create individual pages for each service: /services/ai-consulting, /services/data-integration, /services/agent-training. Include case study teasers.",
-    "priority": "medium",
-    "effort": 4
+    "title": "Add Individual Service Deep-Dive Pages with SEO-Targeted Content",
+    "problem": "All six services are listed on a single /services page with short descriptions. There are no individual pages like /services/ai-strategy, /services/data-integration, etc. This means: 1. Each service can't rank independently for its target keyword. 2. There's no room for detailed methodology, process diagrams, or service-specific case studies. 3. Internal linking opportunities are lost (blog posts can't link to specific service pages). 4. Paid campaigns can't send traffic to service-specific landing pages.",
+    "solution": "1. Create individual pages for each of the 6 services: /services/ai-strategy, /services/data-integration, /services/workflow-automation, /services/rapid-prototyping, /services/ai-product-design, /services/fractional-cto. 2. Each page should include: detailed methodology/process (3-step or 4-step), deliverables list, timeline, relevant case study excerpt, FAQ section (for FAQ schema), and a CTA. 3. Update internal links from the homepage service cards, blog posts, and footer to point to individual service pages. 4. Add the new pages to the dynamic sitemap.",
+    "priority": "SHOULD",
+    "effort_days": 5,
+    "revenue_impact": "high",
+    "security_risk": "low",
+    "ux_improvement": "medium"
   },
   {
-    "title": "Add Team Page and About Section",
-    "problem": "Only founder placeholder 'NS' exists. No team page or company story.",
-    "approach": "Add team page with roles and photos. Add company story/About page with mission, values, and approach.",
-    "priority": "medium",
-    "effort": 2
+    "title": "Improve Mobile UX: Navigation Overflow, Touch Targets, Performance",
+    "problem": "The header has 7 navigation links + a CTA button. On desktop this is fine, but the mobile hamburger menu is a simple column list with no visual hierarchy. The contact form works on mobile but the Calendly embed at 700px fixed height creates a scroll-within-scroll problem on small screens. The ROI calculator slider inputs are difficult to use on touch devices (small thumb target). There's no loading state or skeleton for the Calendly widget (it shows a blank box until the external script loads). Badge text wraps awkwardly on small screens.",
+    "solution": "1. Redesign mobile nav with grouped sections (primary actions vs. secondary), and add a prominent CTA at the bottom. 2. Make the Calendly embed responsive — use their popup widget on mobile instead of inline, or set a min-height that adapts to viewport. 3. Increase ROI calculator slider thumb size on mobile (minimum 44x44px touch target per WCAG). Add +/- buttons as an alternative to slider on mobile. 4. Add a skeleton loader for the Calendly embed. 5. Stack badges into 2-3 columns on mobile instead of wrapping a flex row. 6. Test and optimize Largest Contentful Paint (LCP) — the hero text should paint fast but the Calendly + GA scripts may block interactivity.",
+    "priority": "SHOULD",
+    "effort_days": 3,
+    "revenue_impact": "medium",
+    "security_risk": "low",
+    "ux_improvement": "high"
   },
   {
-    "title": "Implement Pricing Page with Clear Tiers",
-    "problem": "No dedicated pricing page. Service pricing is unclear.",
-    "approach": "Create /pricing page with tiered packages (Starter, Growth, Enterprise). Include what's included, timeline, ROI guarantee.",
-    "priority": "medium",
-    "effort": 2
+    "title": "Add Client Onboarding Portal or Self-Service Assessment Tool",
+    "problem": "The current conversion path is: browse site → book a call (Calendly) or fill a form. There's no self-service option for prospects who want to explore deeper before talking to a human. The ROI calculator is a good start but it's generic — it doesn't assess the prospect's actual AI readiness or recommend specific services based on their situation. Enterprise buyers often want to qualify the vendor as much as the vendor qualifies them.",
+    "solution": "1. Build an \"AI Readiness Assessment\" — a 10-question diagnostic that evaluates the prospect's data maturity, team capabilities, current automation level, and strategic goals. 2. Generate a personalized scorecard with: readiness score (1-100), top 3 recommended services, estimated timeline, suggested pricing tier, and specific case study matches. 3. Gate the detailed scorecard behind email capture (same pattern as ROI calculator). 4. Auto-send results to the contact API so Nathan gets a lead with rich context before the call. This replaces cold-call discovery with warm, data-rich conversations.",
+    "priority": "COULD",
+    "effort_days": 6,
+    "revenue_impact": "high",
+    "security_risk": "low",
+    "ux_improvement": "high"
   },
   {
-    "title": "Add Webhooks for Contact Form to Enable Multi-Step Journeys",
-    "problem": "Contact form submits to Resend but no webhook for tracking in analytics or triggering follow-up actions.",
-    "approach": "Add webhook that fires on form submission. Track in analytics. Trigger automated Slack notification. Enable CRM integration.",
-    "priority": "medium",
-    "effort": 2
+    "title": "Add Privacy Policy, Terms of Service, and Cookie Consent",
+    "problem": "There is no privacy policy page, no terms of service, and no cookie consent mechanism. Google Analytics is loaded unconditionally (GDPR/CCPA violation for EU/CA visitors). The contact form collects personal data (name, email, company) with no link to a privacy policy. The ROI calculator sends personal data to Formspree (a third-party processor) without disclosure. This creates: 1. Legal liability under GDPR, CCPA, and other privacy regulations. 2. Trust erosion for enterprise buyers who check for these pages during vendor due diligence. 3. Potential for GA data to be unusable if consent is retroactively challenged.",
+    "solution": "1. Add /privacy and /terms pages with standard B2B consultancy language covering data collection, processing, third-party services (Resend, Formspree, Google Analytics, Calendly), and contact details for data requests. 2. Implement a cookie consent banner that blocks GA until consent is given (use a lightweight library like cookie-consent-banner or build a simple one). 3. Add a privacy policy link to the contact form and ROI calculator email gate. 4. Add links to privacy/terms in the footer. 5. Consider moving to cookieless analytics (Plausible, Fathom) to eliminate the consent requirement entirely while still getting useful data.",
+    "priority": "MUST",
+    "effort_days": 3,
+    "revenue_impact": "medium",
+    "security_risk": "high",
+    "ux_improvement": "medium"
   }
 ]
