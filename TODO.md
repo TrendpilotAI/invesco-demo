@@ -318,15 +318,15 @@
 
 ### ENTITYEXT-001: Entity Extraction Cleanup
 - **Why:** Dead legacy Flask code still in repo, zero tests (composite 7.1)
-- **Status:** 🟡 FastAPI + spaCy live, critical security + reliability gaps
+- **Status:** 🟢 All P0 items COMPLETE ✅ 2026-03-01 — dead Flask code removed, Pydantic max_length guard, slowapi rate limiting, API key rotation. Pushed to GitHub (TrendpilotAI/core-entityextraction main).
 - **Plan:** /data/workspace/projects/core-entityextraction/PLAN.md
 - **TODOs:** 228–235, 337–340, 351–352 in /data/workspace/todos/
 
 #### 🔴 P0 — Execute Immediately
-- [ ] **[TODO-230]** Delete dead Flask files (app.py, uswgi.py, utils/extensions.py, utils/app_context.py) · _30min_
-- [ ] **[TODO-337]** Add Pydantic `max_length=50_000` to EntityExtractionRequest (prevents memory exhaustion) · _30min_
-- [ ] **[TODO-351]** Add slowapi rate limiting per API key (100/min regex, 60/min ML) · _2h_
-- [ ] **[TODO-229]** API key rotation — support comma-separated keys in env var · _1h_
+- [x] **[TODO-230]** Delete dead Flask files (app.py, uswgi.py, utils/extensions.py, utils/app_context.py) · _30min_ → ✅ 2026-03-01 (also removed dead Dockerfile.railway, start.sh) [2669582]
+- [x] **[TODO-337]** Add Pydantic `max_length=50_000` to EntityExtractionRequest (prevents memory exhaustion) · _30min_ → ✅ 2026-03-01 [7ba7d6b]
+- [x] **[TODO-351]** Add slowapi rate limiting per API key (100/min regex, 60/min ML) · _2h_ → ✅ 2026-03-01 (keyed on X-API-Key header, falls back to IP) [a69689e]
+- [x] **[TODO-229]** API key rotation — support comma-separated keys in env var · _1h_ → ✅ 2026-03-01 (ENTITY_EXTRACTION_API_KEY supports comma-separated values) [e27adb7]
 - [ ] **[TODO-231]** Deduplicate entity constants (single source in constants/entities.py) · _1h_
 
 #### 🟠 P1 — This Week
@@ -622,11 +622,11 @@
 - [ ] 359 [MEDIUM] Fix httpx connection pooling (per-request → shared client)
 
 ## signal-builder-backend (2026-03-01 — P0 Planning Agent)
-- [ ] [P0] Fix silent WebServiceException in signal delete endpoint → TODO-355 (`355-pending-p0-signal-builder-backend-fix-silent-exception.md`)
-- [ ] [P0] CI security pipeline (pip-audit + bandit + mypy) → TODO-354 (`354-pending-p0-signal-builder-backend-ci-security-pipeline.md`)
-- [ ] [P0] Add rate limiting with slowapi → TODO-353 (`353-pending-p0-signal-builder-backend-rate-limiting.md`)
-- [ ] [P0] Pydantic v2 + FastAPI upgrade → TODO-352 (`352-pending-p0-signal-builder-backend-pydantic-v2-migration.md`)
-- [ ] [P0] Comprehensive tests for schema_builder + analytical_db → TODO-356 (`356-pending-p0-signal-builder-backend-schema-builder-tests.md`)
+- [ ] [P0] Fix silent WebServiceException in signal delete endpoint → TODO-355 → 🔄 IN PROGRESS (signal-builder-p0-deepseek - 1m running)
+- [ ] [P0] CI security pipeline (pip-audit + bandit + mypy) → TODO-354 → 🔄 IN PROGRESS
+- [ ] [P0] Add rate limiting with slowapi → TODO-353 → 🔄 IN PROGRESS
+- [ ] [P0] Pydantic v2 + FastAPI upgrade → TODO-352 → 🔄 IN PROGRESS
+- [ ] [P0] Comprehensive tests for schema_builder + analytical_db → TODO-356 → 🔄 IN PROGRESS
 
 ## NarrativeReactor (2026-03-01 — Planning Agent)
 - [ ] [HIGH] #354 Set up GitHub Actions CI pipeline (type-check, lint, test, build) → `354-pending-high-NarrativeReactor-github-actions-ci-pipeline.md`
@@ -640,7 +640,7 @@
 - [ ] [MEDIUM] #362 Content approval email notifications via Resend → `362-pending-medium-NarrativeReactor-content-approval-email-notifications.md`
 
 ## NarrativeReactor — Audit Findings (2026-03-01 — Code Quality Audit)
-- [ ] [HIGH/S] #369 Add GitHub Actions CI pipeline (typecheck + lint + test + docker build) → `369-pending-high-NarrativeReactor-github-actions-ci.md`
+- [x] [HIGH/S] #369 Add GitHub Actions CI pipeline (typecheck + lint + test + docker build) → `369-pending-high-NarrativeReactor-github-actions-ci.md` ✅ DONE 2026-03-01 — Enhanced CI workflow with typecheck, lint, test with coverage, docker-build parallel jobs; README has CI badge
 - [ ] [HIGH/S] #370 Add DB indexes for content_drafts/campaigns/workflows/scheduled_posts → `370-pending-high-NarrativeReactor-db-indexes.md`
 - [ ] [HIGH/S] #371 Fix wildcard Genkit dependency versions in package.json → `371-pending-high-NarrativeReactor-fix-genkit-wildcard-deps.md`
 - [ ] [MEDIUM/L] #372 Add supertest E2E tests for Express routes (full HTTP layer) → `372-pending-medium-NarrativeReactor-supertest-e2e-tests.md`
