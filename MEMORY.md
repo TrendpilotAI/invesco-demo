@@ -95,6 +95,31 @@ This is not a feature — this is core identity. Every future decision filters t
 - **9 cron jobs**: All with self-healing hooks, using Grok 3 Mini (light) + Codex 5.3 (heavy)
 - **Known issues**: Kimi K2.5 + MiniMax blocked at gateway level (provider adapter missing)
 
+## Data Waterfall Pipeline — Lead Enrichment (2026-07)
+Built a multi-provider enrichment system for Signal Studio at `signal-studio-backend/enrichment/`.
+
+**What it does:** Accepts a contact (email/name/company/LinkedIn) and waterfalls through 7 providers in cost-priority order until required fields are satisfied.
+
+**Providers (priority order):** Hunter → FindyMail → Icypeas → QuickEnrich → Forager → Wiza → LeadIQ
+
+**Key features:**
+- Pluggable provider architecture (add new providers with one file + registry entry)
+- Two-tier caching (Redis + DB, 30-day TTL)
+- Short-circuit when required fields are filled (saves API cost)
+- Batch enrichment via Celery tasks with webhook callbacks
+- Full audit logging (every provider call logged with response time + cost)
+- Admin panel for managing providers, API keys, priorities, and rate limits
+- Celery tasks for cache cleanup and daily usage reset
+
+**Endpoints:**
+- `POST /api/v1/enrichment/` — Single contact enrichment
+- `POST /api/v1/enrichment/batch/` — Batch enrichment (async)
+- `GET /api/v1/enrichment/stats/` — Pipeline statistics
+
+**Docs:** `/data/workspace/docs/data-waterfall-architecture.md` + `/data/workspace/docs/lead-enrichment-providers-research.md`
+
+**Status:** Code complete, needs API keys configured in ProviderConfig admin to activate.
+
 ## Vision: Private AI Network
 Nathan wants to build a **private AI mesh** on Railway — multiple open-source AI instances (not just me) all on the same private network. The idea:
 - Honey + other specialized AI agents as "colleagues"
