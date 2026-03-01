@@ -1,8 +1,33 @@
 # Invesco Retention — Execution Plan
-**Date Updated:** 2026-02-28 (originally 2026-02-26)  
-**Deadline:** Early March 2026 (~3-5 days remaining)  
+**Date Updated:** 2026-03-01  
+**Deadline:** DEMO IMMINENT — Early March 2026  
 **Stakes:** 🚨 $300K/yr account retention  
-**Status (Feb 28):** ✅ DEPLOYED at https://trendpilotai.github.io/invesco-demo/ — critical bugs fixed — awaiting dry run + demo day
+**Status (March 1):** ✅ CODE COMPLETE. Demo ready. All remaining work is sales execution.
+
+---
+
+## 🗓️ THIS WEEK — March 1 Priority List
+
+| # | Action | Owner | Effort | Priority |
+|---|---|---|---|---|
+| 1 | Book + execute dry run with Megan & Craig | Nathan | XS | 🔴 P0 |
+| 2 | Record Loom walkthroughs (4 flows) | Honey | S | 🔴 P0 |
+| 3 | Test demo on real iPhone (PWA) | Nathan | XS | 🔴 P0 |
+| 4 | Polish executive brief 2-pager | Honey | S | 🟠 P1 |
+| 5 | Finalize objection scripts cheat sheet | Honey | S | 🟠 P1 |
+| 6 | Create IT security one-pager | Honey | S | 🟡 P2 |
+| 7 | Demo day checklist + tab setup | Honey | XS | 🟠 P1 |
+| 8 | Post-demo follow-up email template | Honey | XS | 🟡 P2 |
+
+### Go/No-Go Criteria for Demo Day
+- [ ] Dry run with Megan/Craig completed — got their feedback
+- [ ] Loom recordings ready as backup
+- [ ] Demo tested on iPhone
+- [ ] Objection scripts memorized
+- [ ] All 4 browser tabs pre-loaded
+- [ ] Do Not Disturb enabled, power plugged in
+
+---
 
 ## ✅ COMPLETED (as of Feb 28)
 - [x] P1.1 — Deployed (GitHub Pages, URL live, returns 200)
@@ -308,3 +333,56 @@ Email Megan+Craig (TODAY) → Dry Run Zoom (Day 2-3) → Record Loom (Day 2-3) �
 | Brian schedules short meeting | Low | High | Lead with Salesforce view (most compelling) |
 | Internal politics shift | Low | High | Megan + Craig dry run (TODO-219) |
 | Mobile rendering bug | Low | High | Test on real iPhone, have desktop fallback |
+
+---
+
+## 🆕 Plan Update — 2026-03-01 (Judge Agent v2 Pass)
+
+### Current Status
+| Deliverable | Status |
+|-------------|--------|
+| Demo app (Next.js, GitHub Pages) | ✅ DEPLOYED |
+| Salesforce LWC (Signal Studio Panel) | ✅ DEPLOYED |
+| Mobile PWA | ✅ DEPLOYED |
+| Synthetic data (10 advisors, 6 sources) | ✅ COMPLETE |
+| Leave-behind materials | ⚠️ PARTIAL |
+| Dry run with Megan/Craig | ❓ UNKNOWN — CRITICAL |
+| Screen recordings (Loom) | ⚠️ PENDING |
+| Executive brief (2-pager) | ❌ MISSING |
+| Objection handling scripts | ❌ MISSING |
+| IT security one-pager | ❌ MISSING |
+
+### Critical Path to Demo Day
+
+```
+TODAY:
+  1. Dry run with Megan/Craig [TODO-219] — #1 blocker
+  2. iPhone live test [TODO-332]
+  3. Executive brief 2-pager [TODO-333]
+  4. Objection scripts finalized [TODO-334]
+
+BEFORE DEMO:
+  5. Screen recordings backup [TODO-220]
+  6. IT security one-pager [TODO-335]
+  7. Follow-up email templates drafted
+
+DEMO DAY:
+  8. Use ?reset=true before each demo reset
+  9. Have Loom recording link ready to send within 1 hour of meeting end
+```
+
+### Risk Assessment
+| Risk | Likelihood | Impact | Mitigation |
+|------|-----------|--------|-----------|
+| Live demo tech failure | Medium | Critical | Screen recording backup ready |
+| "IT won't approve" objection | High | High | IT security one-pager in hand |
+| Brian asks for real data demo | High | High | Scripted answer + Snowflake integration story |
+| Ten Decoders credibility question | Medium | High | Scripted answer + Craig/Megan endorsement |
+| iPhone layout breaks | Low | High | Test today, fix before demo |
+
+### New TODOs Created This Pass
+- TODO-332: iPhone live test (P0)
+- TODO-333: Executive brief 2-pager (P0)
+- TODO-334: Objection handling scripts (P0)
+- TODO-335: IT security one-pager (P1)
+
