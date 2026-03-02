@@ -629,8 +629,8 @@
 - [ ] [P2] Complete settings page → TODO 347
 - [ ] [P1] Security headers CSP/HSTS → TODO 349
 - [ ] [P2] Bundle size optimization → TODO 350
-- [ ] [P0] Wire all pages to real TanStack Query hooks (replace mocks) → TODO-411
-- [ ] [P0] Visual node graph builder with React Flow → TODO-412
+- [ ] [P0] Wire all pages to real TanStack Query hooks (replace mocks) → TODO-411 🤖 agent spawned 2026-03-02 13:01 UTC
+- [ ] [P0] Visual node graph builder with React Flow → TODO-412 🤖 agent spawned 2026-03-02 13:01 UTC
 - [ ] [P1] Tests + CI/CD (Vitest + Playwright + GitHub Actions) → TODO-413
 - [ ] [P1] Fix dark mode CSS (toggle works, visuals broken) → TODO-414
 
