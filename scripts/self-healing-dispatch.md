@@ -20,8 +20,10 @@ For each failed service, spawn THREE parallel sub-agents:
 Read /data/workspace/scripts/agents/debug-agent.md for your role.
 FAILED SERVICE: {name} | HTTP {code} | URL: {url} | Railway Service ID: {service_id}
 Diagnose the root cause. Check the source code in /data/workspace/projects/{project_dir}/. 
-Check Railway deploy logs via API. Find the bug, fix it, push to GitHub.
-Report what you found and fixed.
+Check Railway deploy logs via API. Find the bug, fix it.
+Before committing, run: bash /data/workspace/scripts/quality-gate/quality-check.sh .
+If it fails, fix the issues and re-run until it passes. Do not commit failing code.
+Push to GitHub. Report what you found and fixed.
 ```
 
 **Agent 2: Ops Agent** (model: openai-codex/gpt-5.3-codex)

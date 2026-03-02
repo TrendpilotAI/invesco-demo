@@ -120,6 +120,19 @@ Built a multi-provider enrichment system for Signal Studio at `signal-studio-bac
 
 **Status:** Code complete, needs API keys configured in ProviderConfig admin to activate.
 
+## FUNDAMENTAL LEARNING: Quality Over Quantity (2026-03-01)
+**The system was a mile wide and an inch deep.** 350+ TODO files, zero CI pipelines, zero git hooks, agents pushing to main. Critical self-review revealed we were obsessively planning and barely closing loops.
+
+**New principles (Nathan-approved):**
+- **CLI-first, MCP-never** — unless no CLI exists AND requires persistent state AND called >10x/session
+- **One script quality gate** — `quality-check.sh` runs secrets/lint/tests/security/coverage before every commit
+- **Coverage ratchet** — start at current coverage, can only go up, never fixed 70% on day 1
+- **Stop generating plans, start closing loops** — verified, tested, secure code through automated pipelines
+- **Self-critique before shipping** — first draft of quality gate was overengineered theater. Rebuilt as single pragmatic script.
+- **Every failure from quality-check.sh must be a real issue** — no false positives, no theater
+
+**Key files:** `/scripts/quality-gate/quality-check.sh`, `/docs/CRITICAL-REVIEW-2026-03-01.md`
+
 ## Vision: Private AI Network
 Nathan wants to build a **private AI mesh** on Railway — multiple open-source AI instances (not just me) all on the same private network. The idea:
 - Honey + other specialized AI agents as "colleagues"

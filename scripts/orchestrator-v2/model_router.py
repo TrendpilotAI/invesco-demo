@@ -21,11 +21,13 @@ DATABASE_URL = os.environ.get(
 )
 
 # ── Routing Table ──────────────────────────────────────────────
+DEFAULT_MODEL = "anthropic/claude-opus-4-6"
+
 ROUTING_TABLE = [
     # (task_type, complexity, context_threshold, model)
-    {"task_type": "heavy_coding",   "complexity": "high", "context": "any",   "model": "openai-codex/gpt-5.3-codex"},
-    {"task_type": "small_coding",   "complexity": "low",  "context": "small", "model": "x-ai/grok-code-fast-1"},
-    {"task_type": "analysis",       "complexity": "any",  "context": "large", "model": "google/gemini-3-flash-preview"},
+    {"task_type": "heavy_coding",   "complexity": "high", "context": "any",   "model": "anthropic/claude-opus-4-6"},
+    {"task_type": "small_coding",   "complexity": "low",  "context": "small", "model": "deepseek/deepseek-chat"},
+    {"task_type": "analysis",       "complexity": "any",  "context": "large", "model": "anthropic/claude-opus-4-6"},
     {"task_type": "orchestration",  "complexity": "high", "context": "any",   "model": "anthropic/claude-opus-4-6"},
     {"task_type": "swarm",          "complexity": "any",  "context": "any",   "model": "kimi/kimi-k2.5"},
     {"task_type": "lightweight",    "complexity": "low",  "context": "small", "model": "deepseek/deepseek-chat"},
@@ -142,7 +144,7 @@ def route(profile: TaskProfile) -> str:
                 best_model = model
         return best_model
 
-    return candidates[0]
+    return candidates[0] if candidates else DEFAULT_MODEL
 
 
 def route_simple(description: str, context_tokens: int = 0) -> str:

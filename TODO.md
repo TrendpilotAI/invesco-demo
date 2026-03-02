@@ -327,7 +327,7 @@
 - [x] **[TODO-337]** Add Pydantic `max_length=50_000` to EntityExtractionRequest (prevents memory exhaustion) · _30min_ → ✅ 2026-03-01 [7ba7d6b]
 - [x] **[TODO-351]** Add slowapi rate limiting per API key (100/min regex, 60/min ML) · _2h_ → ✅ 2026-03-01 (keyed on X-API-Key header, falls back to IP) [a69689e]
 - [x] **[TODO-229]** API key rotation — support comma-separated keys in env var · _1h_ → ✅ 2026-03-01 (ENTITY_EXTRACTION_API_KEY supports comma-separated values) [e27adb7]
-- [ ] **[TODO-231]** Deduplicate entity constants (single source in constants/entities.py) · _1h_
+- [x] **[TODO-231]** Deduplicate entity constants (single source in constants/entities.py) · _1h_ → ✅ 2026-03-02 — main.py now imports from constants/entities.py instead of redefining 17 constants (commit a63d4eb)
 
 #### 🟠 P1 — This Week
 - [ ] **[TODO-232]** Cache compiled regex patterns at module level (10-50x speedup) · _2h_
@@ -550,7 +550,7 @@
 - [ ] 318: Newsletter signup + HubSpot CRM integration (P1) — direct revenue pipeline
 - [ ] 319: E2E tests with Playwright (P2)
 - [ ] 320: CSP/security headers in next.config.ts + CONTACT_EMAIL env guard (P1)
-- [ ] 321: Slack webhook notification on contact form submit (P1) — instant lead visibility
+- [x] 321: Slack webhook notification on contact form submit (P1) — instant lead visibility ✅ 2026-03-02 — fire-and-forget Block Kit message with name/email/company/budget/message preview + Reply CTA; SLACK_WEBHOOK_URL env var (commit 49c4448)
 - [ ] 322: ESLint + Prettier + CI type-check (P1) — code quality baseline
 - [ ] 323: Dynamic sitemap.ts replacing public/sitemap.xml (P2) — SEO scalability
 
@@ -622,11 +622,11 @@
 - [ ] 359 [MEDIUM] Fix httpx connection pooling (per-request → shared client)
 
 ## signal-builder-backend (2026-03-01 — P0 Planning Agent)
-- [ ] [P0] Fix silent WebServiceException in signal delete endpoint → TODO-355 → 🔄 IN PROGRESS (signal-builder-p0-deepseek - 1m running)
-- [ ] [P0] CI security pipeline (pip-audit + bandit + mypy) → TODO-354 → 🔄 IN PROGRESS
-- [ ] [P0] Add rate limiting with slowapi → TODO-353 → 🔄 IN PROGRESS
-- [ ] [P0] Pydantic v2 + FastAPI upgrade → TODO-352 → 🔄 IN PROGRESS
-- [ ] [P0] Comprehensive tests for schema_builder + analytical_db → TODO-356 → 🔄 IN PROGRESS
+- [x] [P0] Fix silent WebServiceException in signal delete endpoint → TODO-355 → ✅ DONE 2026-02-28 (commit 823abdd)
+- [x] [P0] CI security pipeline (pip-audit + bandit + mypy) → TODO-354 → ✅ DONE 2026-03-02 05:09 UTC — Pipfile mypy added, bitbucket-pipelines.yml security step, scripts/security_check.sh, 0 prod CVEs, 0 HIGH bandit
+- [x] [P0] Add rate limiting with slowapi → TODO-353 → ✅ DONE 2026-03-02 05:11 UTC — slowapi wired, 4 endpoints limited (validate 10/min, preview 30/min, publish 5/min, logout 20/min), 13 tests pass, pushed feat/p0-todos-352-356
+- [ ] [P0] Pydantic v2 + FastAPI upgrade → TODO-352 → ⏳ DEFERRED (major refactor, post-demo)
+- [x] [P0] Comprehensive tests for schema_builder + analytical_db → TODO-356 → ✅ DONE 2026-03-02 05:12 UTC — 134 unit tests (51 schema_builder ops, 48 utils, 35 analytical_db), all pass, pushed feat/p0-todos-352-356
 
 ## NarrativeReactor (2026-03-01 — Planning Agent)
 - [ ] [HIGH] #354 Set up GitHub Actions CI pipeline (type-check, lint, test, build) → `354-pending-high-NarrativeReactor-github-actions-ci-pipeline.md`

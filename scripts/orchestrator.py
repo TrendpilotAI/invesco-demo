@@ -58,10 +58,11 @@ def save_blackboard(bb):
 
 MODEL_MAP = {
     "opus": "anthropic/claude-opus-4-6",
-    "sonnet": "anthropic/claude-sonnet-4-5",
+    "sonnet": "anthropic/claude-sonnet-4-6",
     "deepseek": "deepseek/deepseek-chat",
     "codex": "openai/gpt-5.3-codex-spark",
     "grok": "grok/grok-3",
+    "mini": "deepseek/deepseek-chat",
 }
 
 
@@ -180,7 +181,7 @@ def main():
     
     d = sub.add_parser("dispatch")
     d.add_argument("--task", required=True)
-    d.add_argument("--agent", default="sonnet", help="Model alias: opus, sonnet, deepseek, codex, grok")
+    d.add_argument("--agent", default="opus", help="Model alias: opus, sonnet, deepseek, codex, grok")
     d.add_argument("--workspace", default=None)
     d.add_argument("--isolate", action="store_true", help="Create isolated workspace")
     d.add_argument("--branch", action="store_true", help="Create git branch for task")
