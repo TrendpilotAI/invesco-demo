@@ -1,388 +1,99 @@
-# Invesco Retention — Execution Plan
-**Date Updated:** 2026-03-01  
-**Deadline:** DEMO IMMINENT — Early March 2026  
-**Stakes:** 🚨 $300K/yr account retention  
-**Status (March 1):** ✅ CODE COMPLETE. Demo ready. All remaining work is sales execution.
+# Invesco Retention — Execution Plan v2
+**Date:** 2026-03-02
+**Agent:** Planning Agent (Judge v2 protocol)
+**Based on:** BRAINSTORM.md v2
 
 ---
 
-## 🗓️ THIS WEEK — March 1 Priority List
+## Architecture Overview
 
-| # | Action | Owner | Effort | Priority |
-|---|---|---|---|---|
-| 1 | Book + execute dry run with Megan & Craig | Nathan | XS | 🔴 P0 |
-| 2 | Record Loom walkthroughs (4 flows) | Honey | S | 🔴 P0 |
-| 3 | Test demo on real iPhone (PWA) | Nathan | XS | 🔴 P0 |
-| 4 | Polish executive brief 2-pager | Honey | S | 🟠 P1 |
-| 5 | Finalize objection scripts cheat sheet | Honey | S | 🟠 P1 |
-| 6 | Create IT security one-pager | Honey | S | 🟡 P2 |
-| 7 | Demo day checklist + tab setup | Honey | XS | 🟠 P1 |
-| 8 | Post-demo follow-up email template | Honey | XS | 🟡 P2 |
-
-### Go/No-Go Criteria for Demo Day
-- [ ] Dry run with Megan/Craig completed — got their feedback
-- [ ] Loom recordings ready as backup
-- [ ] Demo tested on iPhone
-- [ ] Objection scripts memorized
-- [ ] All 4 browser tabs pre-loaded
-- [ ] Do Not Disturb enabled, power plugged in
-
----
-
-## ✅ COMPLETED (as of Feb 28)
-- [x] P1.1 — Deployed (GitHub Pages, URL live, returns 200)
-- [x] P1.2 — Mobile PWA built and accessible
-- [x] P1.3 — Invesco branding applied (TODO-214 done)
-- [x] P1.4 — Demo reset mechanism (DemoResetOverlay — TODO-216 done)
-- [x] P2.1 — Push-to-Salesforce simulation with toast (TODO-213 done)
-- [x] P2.2 — Skeleton loaders + AI animation (TODO-215 done)
-- [x] C0 — JSX fragment crash in salesforce/page.tsx fixed
-- [x] C1 — Non-null assertion crash in mobile/page.tsx fixed
-- [x] Auth middleware security fix
-- [x] Next.js CVE patched
-- [x] All sales materials written (exec brief, demo script, pilot proposal, ROI, competitive positioning, leave-behind)
-
-## 🔴 CRITICAL PATH (Remaining)
-
----
-
-## TL;DR — The Critical Path
+The invesco-retention project is a **demo-only** Next.js application + supporting deliverables. No backend. All data is static/synthetic. Architecture is intentionally simple for maximum demo reliability.
 
 ```
-Vercel Deploy → Email Megan+Craig → Dry Run → Demo to Brian Kiley → Pilot Signed
+invesco-retention/
+├── demo-app/          # Next.js 14, static export, deployed Railway + GitHub Pages
+├── mobile-pwa/        # Standalone PWA (no framework)
+├── salesforce-lwc/    # LWC package for actual SF deployment
+├── synthetic-data/    # Python data generation scripts + JSON/CSV outputs
+└── materials/         # Executive brief, deck, pilot proposal
 ```
 
-Everything else serves this path. Do not let polish block deploy.
-
 ---
 
-## Phase 1: Deploy NOW (Today — Day 1)
-*Goal: Get a public URL in Megan & Craig's inbox before end of business today.*
+## Execution Order (by phase)
 
-### P1.1 — Vercel Deploy [Owner: Honey | 15 min]
-```bash
-cd /data/workspace/projects/invesco-retention/demo-app
-npx vercel --prod
-```
-- No env vars needed (all static mock data)
-- Expected URL: `signal-studio-invesco.vercel.app`
-- **Risk:** 🔴 BLOCKS EVERYTHING. Nothing ships until this is done.
+### Phase 1: Pre-Demo Critical Path (NOW → Demo Day)
+These must be done before any demo to Brian Kiley.
 
-### P1.2 — Mobile PWA Verification [Owner: Honey | 10 min]
-- Verify mobile-pwa is accessible from the deployed URL
-- Test on iOS Safari (Brian Kiley's most likely platform)
-- Note any HTTPS/service worker issues
+| TODO | File | Effort | Owner |
+|---|---|---|---|
+| Dry run with Megan & Craig | #219 (existing) | S | Nathan |
+| Demo screen recordings backup | #220 (existing) | S | Honey |
+| iPhone live test | #332 (existing) | XS | Nathan |
+| Demo day checklist | #222 (existing) | XS | Honey |
 
-### P1.3 — Invesco Branding Touchpoint [Owner: Honey | 20 min]
-- Change org name from "Sales Cloud" → "Invesco Financial Services | Sales Cloud"
-- Update in Salesforce chrome component
-- Redeploy before sending URL
-- **Risk:** 🟠 Without this, demo feels generic. Kelly or Brian will notice.
+### Phase 2: Demo Polish (1-2 days)
+Features that increase win probability.
 
-### P1.4 — Demo Reset Button [Owner: Honey | 20 min]
-- Add `?reset=true` URL param handler that clears localStorage/sessionStorage
-- Confirm each view returns to pristine state
-- **Risk:** 🟠 Live demo with stale state = embarrassing failure
+| TODO | File | Effort |
+|---|---|---|
+| Competitor displacement persona | #383 | S (2h) |
+| Connect Your Data modal | #382 | M (3-4h) |
+| Demo default to /salesforce route | inline fix | XS |
 
-### P1.5 — Email Megan & Craig [Owner: Nathan | 5 min]
-Template:
-> "Team — we've built everything we discussed. Here's the live demo: [URL]. Can we jump on a 30-min Zoom this week before we show Brian? We want your coaching on which scenarios land best."
-- **Risk:** 🔴 Dry run is essential. They know Brian's preferences.
+### Phase 3: Infrastructure (post-demo or parallel)
 
-**Phase 1 Definition of Done:**
-- [ ] Public HTTPS URL live on Vercel
-- [ ] Invesco branding visible in Salesforce view
-- [ ] Demo reset working
-- [ ] Email sent to Megan & Craig with URL + dry run request
-
----
-
-## Phase 2: Polish (Days 2-4)
-*Goal: Make the demo indistinguishable from a real product.*
-
-### P2.1 — Push-to-Salesforce Simulation [Owner: Honey | 1-2 hrs]
-- Add working "Push to Salesforce" button in signal creation flow
-- Shows toast: "✅ Task created in Salesforce for Marcus Thompson"
-- Button state: disabled → loading → success (with Salesforce checkmark)
-- **Risk:** 🟠 High demo impact. Brian expects to see the Salesforce integration work.
-
-### P2.2 — Skeleton Loaders / AI Animation [Owner: Honey | 2-3 hrs]
-- Add "AI analyzing signals..." skeleton loader before signal results appear
-- 1.5s fake delay → skeleton → content reveal
-- Makes the AI intelligence feel real and dynamic
-- Priority on mobile view (Brian is mobile-first)
-- **Risk:** 🟠 Static data that "just appears" reduces perceived sophistication
-
-### P2.3 — Support Model Polish [Owner: Nathan + Honey | 1 hr]
-- Review `/materials/support-model.md`
-- Add "dedicated Invesco support engineer" framing
-- Answer Kelly's concern about support burden directly
-- Add "Ten Decoders" SLA tier with named contacts
-- **Risk:** 🟠 Kelly is in the room. Unanswered support questions can derail the deal.
-
-### P2.4 — Demo Recording (Loom) [Owner: Nathan | 2-3 hrs]
-- Record all 4 views: Salesforce embed, Signal creation, Territory dashboard, Mobile PWA
-- Use demo script from BRAINSTORM.md Section 1.2
-- Upload to Loom, get shareable links
-- **Risk:** 🔴 If live demo fails (WiFi, Vercel down), recordings are the safety net
-
-### P2.5 — Competitive Displacement Scene [Owner: Honey | 1 hr]
-- Ensure "Competitive Intelligence Summary" in demo shows clear Vanguard → Invesco displacement
-- Verify Marcus Thompson's scenario shows actionable talking points
-- This is the most directly monetizable moment in the demo
-
-**Phase 2 Definition of Done:**
-- [ ] Push-to-Salesforce button works convincingly
-- [ ] Skeleton loaders on signal results
-- [ ] Support model doc polished and ready
-- [ ] All 4 views recorded in Loom
-- [ ] Competitive displacement scenario validated
-
----
-
-## Phase 3: Demo Day Prep (Days 5-7)
-*Goal: Dry run complete, leave-behind package ready, Brian demo scheduled.*
-
-### P3.1 — Dry Run with Megan & Craig [Owner: Nathan | 30 min Zoom]
-- Walk through full 8-minute demo
-- Ask: "What's Brian going to push back on?"
-- Ask: "Which of these 4 features matters most to him?"
-- Incorporate feedback immediately after call
-
-### P3.2 — Leave-Behind Package [Owner: Honey + Nathan | 2 hrs]
-Bundle into single email or Notion page:
-- Executive brief (PDF — already exists in `/materials/`)
-- Loom screen recordings (linked)
-- Pilot proposal (PDF — 2 weeks, zero cost, Invesco infra)
-- ROI analysis (PDF)
-- Live demo URL
-- Support model doc (PDF export)
-- **Risk:** 🟠 Brian will share this internally. One clean package beats 6 separate emails.
-
-### P3.3 — ElevenLabs Narration (Optional Polish) [Owner: Honey | 2-3 hrs]
-- Create narrated version of demo recording using ElevenLabs
-- Professional voice, 8-minute runtime
-- Attach to leave-behind package as "executive version"
-- P2 priority — nice-to-have if time permits
-
-### P3.4 — Custom Domain Setup [Owner: Nathan | 15 min]
-- Set up `demo.forwardlane.com` or `signal-studio-demo.forwardlane.com` via DNS
-- Configure in Vercel
-- Update all materials with clean URL
-- P2 priority — worth doing if DNS access is quick
-
-### P3.5 — Demo Day Protocol [Owner: Nathan]
-- Open demo on iPad/phone before Brian enters room
-- Lead with mobile view first ("Here, take my phone")
-- Salesforce view second
-- Use `?reset=true` between any repeated runs
-- Have Loom recordings queued in browser tab as backup
-
-**Phase 3 Definition of Done:**
-- [ ] Dry run with Megan & Craig completed
-- [ ] Feedback incorporated
-- [ ] Leave-behind package assembled
-- [ ] Demo day protocol rehearsed
+| TODO | File | Effort |
+|---|---|---|
+| E2E smoke tests | #380 | M (2-3h) |
+| Demo analytics (PostHog) | #381 | S (1-2h) |
+| CI/CD GitHub Actions auto-deploy | new | S |
 
 ---
 
 ## Dependency Graph
 
 ```
-[Vercel Deploy]
-      │
-      ├──► [Email Megan+Craig] ──► [Dry Run] ──► [Brian Demo]
-      │
-      ├──► [Invesco Branding]
-      ├──► [Demo Reset]
-      ├──► [Push-to-Salesforce Sim] ──► [Demo Recording]
-      ├──► [Skeleton Loaders] ──► [Demo Recording]
-      └──► [Support Model Polish] ──► [Leave-Behind Package]
+Phase 1 (no deps) → Phase 2 (can run parallel) → Phase 3 (can run parallel)
 
-[Demo Recording] ──► [Leave-Behind Package] ──► [Brian Demo]
-[ElevenLabs Narration] ──► [Leave-Behind Package]
-[Custom Domain] ──► [All Materials URLs]
+#383 (competitor persona) → no deps
+#382 (connect data modal) → no deps
+#380 (E2E tests) → runs after Phase 2 polish
+#381 (analytics) → no deps
 ```
-
----
-
-## Day-by-Day Schedule
-
-### Day 1 (Today — 2026-02-26) 🔴 CRITICAL
-| Time | Task | Owner |
-|------|------|-------|
-| Morning | Vercel deploy | Honey |
-| Morning | Invesco branding patch | Honey |
-| Morning | Demo reset button | Honey |
-| Midday | Email Megan & Craig | Nathan |
-| Afternoon | Push-to-Salesforce simulation | Honey |
-
-### Day 2
-| Task | Owner |
-|------|-------|
-| Skeleton loaders implementation | Honey |
-| Support model doc polish | Nathan + Honey |
-| Demo script dry run (solo) | Nathan |
-
-### Day 3
-| Task | Owner |
-|------|-------|
-| Demo recording (all 4 views) | Nathan |
-| Competitive displacement scene verify | Honey |
-| Leave-behind package draft | Honey |
-
-### Day 4
-| Task | Owner |
-|------|-------|
-| Dry run with Megan & Craig | Nathan + Megan + Craig |
-| Incorporate feedback | Nathan + Honey |
-| Custom domain setup (if time) | Nathan |
-
-### Day 5-6 (Buffer)
-| Task | Owner |
-|------|-------|
-| ElevenLabs narration (optional) | Honey |
-| Final leave-behind package | Honey |
-| Demo day rehearsal | Nathan |
-
-### Day 7-10 (Target)
-| Task | Owner |
-|------|-------|
-| **DEMO TO BRIAN KILEY** | Nathan |
-| Follow up with pilot proposal same day | Nathan + Honey |
 
 ---
 
 ## Risk Assessment
 
-### 🔴 Deal-Breaking Risks (Must Fix)
-| Risk | Mitigation |
-|------|-----------|
-| Demo app not deployed | P1.1 — Deploy TODAY before anything else |
-| Live demo fails (WiFi, Vercel outage) | P2.4 — Loom recordings as backup, always have tab ready |
-| Brian can't access demo on his phone | Test on iOS Safari before meeting |
-| Kelly raises support burden objection | P2.3 — Polish support model doc, have answer ready |
-| No dry run → Nathan goes in blind | P3.1 — Non-negotiable. Don't skip this. |
-
-### 🟠 Deal-Damaging Risks (Should Fix)
-| Risk | Mitigation |
-|------|-----------|
-| Generic "Sales Cloud" branding | P1.3 — Invesco branding (20 min fix) |
-| Static data feels fake | P2.2 — Skeleton loaders |
-| "Push to Salesforce" doesn't work | P2.1 — Simulation button |
-| Post-demo confusion (6 separate docs) | P3.2 — One leave-behind package |
-
-### 🟡 Nice-to-Have (Don't Let Block)
-| Risk | Mitigation |
-|------|-----------|
-| Vercel subdomain looks unprofessional | P3.4 — Custom domain (15 min) |
-| No narrated video version | P3.3 — ElevenLabs (if time allows) |
+| Risk | Likelihood | Mitigation |
+|---|---|---|
+| Live demo tech failure | Medium | Backup recordings (TODO #220) |
+| "Real data" question derails meeting | High | Scripted answer (in BRAINSTORM.md) |
+| Demo route navigation confusion | Medium | Bookmark /salesforce as default open tab |
+| Brian not engaged in first 30s | High | Open directly on Salesforce scene, advisor pre-selected |
+| Competitor asks similar capability | Low | Competitive one-pager ready |
 
 ---
 
-## Owner Summary
+## Success Definition
 
-| Owner | Responsibilities |
-|-------|----------------|
-| **Honey** 🤖 | Vercel deploy, all code changes (branding, reset, push-to-SF, skeleton loaders), leave-behind package assembly, ElevenLabs narration |
-| **Nathan** 👤 | Email Megan+Craig, demo recordings (Loom), dry run Zoom, all human relationship touches, demo day itself |
-| **Megan + Craig** 🤝 | Dry run feedback, Brian Kiley personalization intel, internal Invesco relationship management |
+Demo wins if Brian Kiley says: *"This is what I've been looking for."*
 
----
-
-## Final Sprint — Week of Feb 27
-
-**Status:** Demo live at https://trendpilotai.github.io/invesco-demo/
-**Remaining:** Recordings → Dry Run → Demo → Pilot Signed
-
-### Critical Path
-
-```
-Email Megan+Craig (TODAY) → Dry Run Zoom (Day 2-3) → Record Loom (Day 2-3) → Demo to Brian (Day 4-7) → Pilot Proposal Signed
-```
-
-### Task List
-
-| # | Task | Owner | Effort | Status |
-|---|---|---|---|---|
-| TODO-219 | Email Megan + Craig with live URL | Nathan | XS | 🔴 URGENT |
-| TODO-219 | Schedule dry run Zoom | Nathan | XS | 🔴 URGENT |
-| TODO-220 | Record Loom of all 4 views | Honey | M | 🟠 HIGH |
-| TODO-221 | Polish leave-behind package | Honey | S | 🟡 MEDIUM |
-| TODO-222 | Create demo day checklist | Honey | XS | 🟡 MEDIUM |
-
-### What's DONE ✅
-- Synthetic data (10 advisors, 6 data sources)
-- Next.js demo app (Salesforce embed, dashboard, signal creation)
-- Mobile PWA (iOS Safari compatible)
-- Salesforce LWC package
-- Leave-behind materials (draft)
-- Push-to-Salesforce simulation (toast notification)
-- Invesco branding in Salesforce chrome
-- Skeleton loaders + AI analysis animation
-- Demo reset (?reset=true URL param)
-- Deployed to GitHub Pages
-- Critical bugs fixed (JSX parse error, non-null crash)
-
-### Risk Register
-
-| Risk | Likelihood | Impact | Mitigation |
-|---|---|---|---|
-| Live demo connection drops | Medium | High | Pre-recorded Loom backups (TODO-220) |
-| Stale state confuses demo | Medium | Medium | Reset button + checklist (TODO-222) |
-| Brian schedules short meeting | Low | High | Lead with Salesforce view (most compelling) |
-| Internal politics shift | Low | High | Megan + Craig dry run (TODO-219) |
-| Mobile rendering bug | Low | High | Test on real iPhone, have desktop fallback |
+That requires:
+1. ✅ Opens on Salesforce scene instantly
+2. ✅ Dr. Sarah Chen's brief is loaded and impressive
+3. ✅ Competitor Displacement signal is visible (Michael Torres)
+4. ✅ Push to Salesforce toast fires smoothly
+5. ✅ Mobile PWA shown on physical iPhone
+6. ✅ "Connect Your Data" bridges to pilot proposal
+7. ✅ Brian's question about real data gets a confident answer
 
 ---
 
-## 🆕 Plan Update — 2026-03-01 (Judge Agent v2 Pass)
+## TODOs Added This Sprint
 
-### Current Status
-| Deliverable | Status |
-|-------------|--------|
-| Demo app (Next.js, GitHub Pages) | ✅ DEPLOYED |
-| Salesforce LWC (Signal Studio Panel) | ✅ DEPLOYED |
-| Mobile PWA | ✅ DEPLOYED |
-| Synthetic data (10 advisors, 6 sources) | ✅ COMPLETE |
-| Leave-behind materials | ⚠️ PARTIAL |
-| Dry run with Megan/Craig | ❓ UNKNOWN — CRITICAL |
-| Screen recordings (Loom) | ⚠️ PENDING |
-| Executive brief (2-pager) | ❌ MISSING |
-| Objection handling scripts | ❌ MISSING |
-| IT security one-pager | ❌ MISSING |
-
-### Critical Path to Demo Day
-
-```
-TODAY:
-  1. Dry run with Megan/Craig [TODO-219] — #1 blocker
-  2. iPhone live test [TODO-332]
-  3. Executive brief 2-pager [TODO-333]
-  4. Objection scripts finalized [TODO-334]
-
-BEFORE DEMO:
-  5. Screen recordings backup [TODO-220]
-  6. IT security one-pager [TODO-335]
-  7. Follow-up email templates drafted
-
-DEMO DAY:
-  8. Use ?reset=true before each demo reset
-  9. Have Loom recording link ready to send within 1 hour of meeting end
-```
-
-### Risk Assessment
-| Risk | Likelihood | Impact | Mitigation |
-|------|-----------|--------|-----------|
-| Live demo tech failure | Medium | Critical | Screen recording backup ready |
-| "IT won't approve" objection | High | High | IT security one-pager in hand |
-| Brian asks for real data demo | High | High | Scripted answer + Snowflake integration story |
-| Ten Decoders credibility question | Medium | High | Scripted answer + Craig/Megan endorsement |
-| iPhone layout breaks | Low | High | Test today, fix before demo |
-
-### New TODOs Created This Pass
-- TODO-332: iPhone live test (P0)
-- TODO-333: Executive brief 2-pager (P0)
-- TODO-334: Objection handling scripts (P0)
-- TODO-335: IT security one-pager (P1)
-
+- `/data/workspace/todos/380-pending-p0-invesco-retention-e2e-smoke-tests.md`
+- `/data/workspace/todos/381-pending-p1-invesco-retention-demo-analytics.md`
+- `/data/workspace/todos/382-pending-p1-invesco-retention-connect-your-data-toggle.md`
+- `/data/workspace/todos/383-pending-p1-invesco-retention-competitor-displacement-persona.md`
