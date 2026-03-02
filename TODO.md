@@ -510,7 +510,7 @@
 - [x] **#321** [P1] Slack webhook on contact form submit ✅ done 2026-03-02 — commit 49c4448
 - [x] **#320** [P1] CSP security headers in next.config.ts [30min] ✅ 2026-03-02 — CSP + HSTS + X-Frame-Options + Referrer-Policy + Permissions-Policy + X-XSS-Protection (commit 602f694)
 - [x] **#317** [P1] JSON-LD Organization + Service + Article schemas [2h] ✅ 2026-03-02 — Organization + WebSite schemas in layout.tsx, Service ItemList on /services, Article on /blog/[slug], JsonLd component extracted (commit 46a57d4)
-- [ ] **#323** [P1] Dynamic sitemap (replace public/sitemap.xml) [30min]
+- [x] **#323** [P1] Dynamic sitemap (replace public/sitemap.xml) [30min] ✅ 2026-03-02 — app/sitemap.ts auto-includes blog MDX posts + static routes, build clean (commit b1a3cd0)
 - [ ] **#324** [P1] Microsoft Clarity heatmaps [15min]
 - [ ] **#325** [P1] LinkedIn Insight Tag [15min]
 - [ ] **#326** [P1] Welcome email sequence via Resend [2h]
@@ -583,7 +583,7 @@
 - [x] 320: CSP/security headers in next.config.ts + CONTACT_EMAIL env guard (P1) ✅ 2026-03-02 commit 602f694
 - [x] 321: Slack webhook notification on contact form submit (P1) — instant lead visibility ✅ 2026-03-02 — fire-and-forget Block Kit message with name/email/company/budget/message preview + Reply CTA; SLACK_WEBHOOK_URL env var (commit 49c4448)
 - [ ] 322: ESLint + Prettier + CI type-check (P1) — code quality baseline
-- [ ] 323: Dynamic sitemap.ts replacing public/sitemap.xml (P2) — SEO scalability
+- [x] 323: Dynamic sitemap.ts replacing public/sitemap.xml (P2) — SEO scalability ✅ 2026-03-02 (commit b1a3cd0)
 
 ## signal-builder-backend (ForwardLane)
 - [x] 325: Fix silent exception in signal delete endpoint (critical) ✅ 2026-02-28 — commit 823abdd: raises DBNotFoundException on rowcount=0 (was silent), logs WebServiceException warning (was swallowed), 3 unit tests added
@@ -657,8 +657,8 @@
 - [ ] 359 [MEDIUM] Fix httpx connection pooling (per-request → shared client)
 
 ## signal-studio-auth (2026-03-02 — Judge Agent v2 refresh)
-- [ ] 402 [CRITICAL] Replace in-memory rate limiter with Redis sliding-window (multi-replica safe)
-- [ ] 403 [CRITICAL] Add refresh token rotation + server-side revocation list (Redis-backed)
+- [ ] 402 [CRITICAL] Replace in-memory rate limiter with Redis sliding-window (multi-replica safe) ⏳ Agent spawned 2026-03-02 21:01 UTC
+- [ ] 403 [CRITICAL] Add refresh token rotation + server-side revocation list (Redis-backed) ⏳ Agent spawned 2026-03-02 21:01 UTC
 - [ ] 404 [HIGH] Migrate to Pydantic v2 (model_config, model_dump, response models)
 - [ ] 405 [HIGH] Add CORS middleware + Sentry error tracking + Prometheus /metrics
 - [ ] 406 [HIGH] Create Dockerfile + GitHub Actions CI (pytest, ruff, bandit, safety)
