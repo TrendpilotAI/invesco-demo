@@ -456,7 +456,7 @@
 - [x] **Untracked** [CRITICAL] Rate limit LLM proxy routes ✅ commit 3650d4b
 - [x] **Untracked** [CRITICAL] Upgrade next@16.0.10 → 16.0.11 (DoS CVE) ✅ commit ef184e2
 - ✅ **TODO-384** [HIGH] Remove ignoreBuildErrors from next.config.mjs [S] — commit 48c642f: Fixed Next.js 15 async params pattern for all dynamic route handlers in app/api/signals/[id]/ and app/session/status/[agentId]/. Fixed jest-dom types in tsconfig. NOTE: ignoreBuildErrors kept due to 100+ pre-existing TS errors (ai SDK mismatches, missing radix-ui/recharts types, oracledb types, etc.) — full removal requires separate cleanup effort.
-- [ ] **TODO-385** [HIGH] Rate limit Oracle query + signal run routes [S]
+- [x] **TODO-385** [HIGH] Rate limit Oracle query + signal run routes [S] ✅ 2026-03-02 — DB_RATE_LIMITED_PATHS added (/api/oracle/query, /api/oracle/preview, /api/signals/run, /api/signals/compile), 10 req/min per IP, commit a9169fa
 
 ### 🟠 P1 — This Sprint
 - [ ] **TODO-352** [HIGH] Remove duplicate reactflow (-300KB bundle) [M]
@@ -509,7 +509,7 @@
 ### 🟠 High Priority (v3 additions — 2026-03-02)
 - [x] **#321** [P1] Slack webhook on contact form submit ✅ done 2026-03-02 — commit 49c4448
 - [x] **#320** [P1] CSP security headers in next.config.ts [30min] ✅ 2026-03-02 — CSP + HSTS + X-Frame-Options + Referrer-Policy + Permissions-Policy + X-XSS-Protection (commit 602f694)
-- [ ] **#317** [P1] JSON-LD Organization + Service + Article schemas [2h]
+- [x] **#317** [P1] JSON-LD Organization + Service + Article schemas [2h] ✅ 2026-03-02 — Organization + WebSite schemas in layout.tsx, Service ItemList on /services, Article on /blog/[slug], JsonLd component extracted (commit 46a57d4)
 - [ ] **#323** [P1] Dynamic sitemap (replace public/sitemap.xml) [30min]
 - [ ] **#324** [P1] Microsoft Clarity heatmaps [15min]
 - [ ] **#325** [P1] LinkedIn Insight Tag [15min]
@@ -577,7 +577,7 @@
 ## SignalHaus Website (updated by Judge Agent v2 — 2026-03-01)
 - [x] 315: Contact API security — rate limiting + Zod validation (P0) ✅ 2026-02-28 — in-memory 5req/IP/15min, input validation (name/email/company/budget/message), XSS guard, commit b074064
 - [ ] 316: Testimonials & case studies page (P1) — needs Nathan content
-- [ ] 317: JSON-LD structured data for SEO (P1) — Organization + Service + Article schemas
+- [x] 317: JSON-LD structured data for SEO (P1) — Organization + Service + Article schemas ✅ 2026-03-02 (commit 46a57d4)
 - [ ] 318: Newsletter signup + HubSpot CRM integration (P1) — direct revenue pipeline
 - [ ] 319: E2E tests with Playwright (P2)
 - [x] 320: CSP/security headers in next.config.ts + CONTACT_EMAIL env guard (P1) ✅ 2026-03-02 commit 602f694
@@ -629,8 +629,8 @@
 - [ ] [P2] Complete settings page → TODO 347
 - [ ] [P1] Security headers CSP/HSTS → TODO 349
 - [ ] [P2] Bundle size optimization → TODO 350
-- [ ] [P0] Wire all pages to real TanStack Query hooks (replace mocks) → TODO-411 🤖 agent spawned 2026-03-02 13:01 UTC
-- [ ] [P0] Visual node graph builder with React Flow → TODO-412 🤖 agent spawned 2026-03-02 13:01 UTC
+- [x] [P0] Wire all pages to real TanStack Query hooks (replace mocks) → TODO-411 ✅ DONE 2026-03-02 13:14 UTC — all 5 pages wired (dashboard, signals, templates, chat, settings), loading skeletons + error states, TS clean
+- [x] [P0] Visual node graph builder with React Flow → TODO-412 ✅ DONE 2026-03-02 13:11 UTC — SignalCanvas + 5 node types (DataSource/Filter/Transform/AI/Output), drag-drop palette, config panel, save wiring, build clean
 - [ ] [P1] Tests + CI/CD (Vitest + Playwright + GitHub Actions) → TODO-413
 - [ ] [P1] Fix dark mode CSS (toggle works, visuals broken) → TODO-414
 

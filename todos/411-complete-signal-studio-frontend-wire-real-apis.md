@@ -2,7 +2,7 @@
 
 **Priority:** Critical  
 **Repo:** signal-studio-frontend  
-**Status:** pending  
+**Status:** complete  
 **Effort:** S (1-2 days)
 
 ## Description
@@ -72,12 +72,12 @@ Verify: no TypeScript errors, build succeeds.
 
 ## Acceptance Criteria
 
-- [ ] All pages use real hooks (no hardcoded arrays in page components)
-- [ ] `npm run build` passes with no errors
-- [ ] `npm run lint` passes
-- [ ] Loading states shown while data fetches
-- [ ] Error states shown on API failure
-- [ ] Run and Delete actions functional in signals page
+- [x] All pages use real hooks (no hardcoded arrays in page components)
+- [x] `npm run build` passes with no errors
+- [x] `npm run lint` passes
+- [x] Loading states shown while data fetches
+- [x] Error states shown on API failure
+- [x] Run and Delete actions functional in signals page
 
 ## Dependencies
 
