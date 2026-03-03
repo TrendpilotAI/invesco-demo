@@ -331,7 +331,7 @@
 - [x] **[TODO-231]** Deduplicate entity constants (single source in constants/entities.py) · _1h_ → ✅ 2026-03-02 — main.py now imports from constants/entities.py instead of redefining 17 constants (commit a63d4eb)
 
 #### 🟠 P1 — This Week
-- [ ] **[TODO-232]** Cache compiled regex patterns at module level (10-50x speedup) · _2h_
+- [x] **[TODO-232]** Cache compiled regex patterns at module level (10-50x speedup) · _2h_ → ✅ 2026-03-03 — _pattern_cache + _cache_version counter, compiled once per entity_store state, invalidated on add/delete/startup-load (commit 247d371)
 - [ ] **[TODO-338]** Migrate persistence.py to asyncpg/psycopg3 (sync DB blocks event loop) · _4h_
 - [ ] **[TODO-233]** Add pytest test suite (conftest, pattern tests, API tests, persistence tests) · _1 day_
 - [ ] **[TODO-234]** Batch regex extraction endpoint (POST /batch_regex_entity_extraction) · _2h_
@@ -617,7 +617,7 @@
 - [x] [P1] Add asyncpg connection pooling to SupabaseProvider → TODO 314 ✅ already implemented — asyncpg.create_pool(min_size=2, max_size=20) with lazy init in _get_pool()
 - [x] [P1] Add GitHub Actions CI pipeline (pytest + ruff + mypy + pip-audit) → TODO 315 ✅ 2026-03-01 — .github/workflows/ci.yml created (lint/ruff/mypy + pytest matrix 3.11+3.12 + pip-audit), committed 7fe0bc7
 - [x] [P1] Add Snowflake Cortex AI methods (cortex_complete, cortex_embed) ✅ already implemented
-- [ ] [P0] Fix JWT RLS race condition — per-connection scoping + full claims JSON → TODO-433
+- [x] [P0] Fix JWT RLS race condition — per-connection scoping + full claims JSON → TODO-433 ✅ DONE 2026-03-03
 - [ ] [P0] Fix Snowflake param binding dict→tuple in get_tables/get_columns → TODO-434
 - [ ] [P0] Audit oracle_provider.py for async blocking (apply asyncio.to_thread if needed)
 - [ ] [P1] Add Snowflake Cortex model allowlist (prevent injection via model param)
@@ -747,7 +747,7 @@
 
 ## signal-studio-frontend (re-scored 2026-03-03 — Judge Agent v2 refresh)
 Scores: revenue=8, strategic=9, completeness=5, urgency=7, effort_remaining=5
-- [ ] [P0-CRITICAL] Add auth middleware to protect all /app/* routes → TODO-444
+- ✅ [P0-CRITICAL] Add auth middleware to protect all /app/* routes → TODO-444 ✅ DONE 2026-03-03
 - [ ] [P0-CRITICAL] Wire TanStack Query hooks to all pages (replace mock data) → TODO-445
 - [ ] [P1-HIGH] Supabase Realtime — live signal run status updates → TODO-446
 - [ ] [P1-HIGH] Security headers — CSP, HSTS, X-Frame-Options → TODO-447

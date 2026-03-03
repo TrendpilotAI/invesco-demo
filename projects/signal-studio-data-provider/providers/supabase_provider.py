@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 import time
 from typing import Any
@@ -33,7 +34,6 @@ class SupabaseProvider:
             raise ValueError("SupabaseConfig required for self-serve tier")
         self._sb = sb
         self._pool: Any = None  # asyncpg pool, lazy
-        self._jwt: str | None = None  # set per-request for RLS
 
     # -- connection management ---------------------------------------------
 
@@ -43,20 +43,28 @@ class SupabaseProvider:
             self._pool = await asyncpg.create_pool(self._sb.database_url, min_size=2, max_size=20)
         return self._pool
 
-    def set_jwt(self, jwt: str) -> None:
-        """Set JWT token for row-level security."""
-        self._jwt = jwt
+    async def _set_jwt_on_conn(self, conn: Any, jwt: str | None) -> None:
+        """Set request.jwt.claims per-connection for RLS. Scoped to this connection only."""
+        if jwt:
+            claims = json.dumps({"sub": jwt, "role": "authenticated"})
+            await conn.execute(
+                "SELECT set_config('request.jwt.claims', $1, true)",
+                claims,
+            )
 
     # -- DataProvider implementation ---------------------------------------
 
-    async def execute_query(self, sql: str, params: dict[str, Any] | None = None) -> QueryResult:
+    async def execute_query(
+        self,
+        sql: str,
+        params: dict[str, Any] | None = None,
+        jwt: str | None = None,
+    ) -> QueryResult:
         pool = await self._get_pool()
         t0 = time.time()
         async with pool.acquire() as conn:
-            # Set RLS context if JWT provided
-            if self._jwt:
-                # TODO-311: Use parameterized SET to prevent SQL injection via JWT value
-                await conn.execute("SELECT set_config('request.jwt.claim.sub', $1, true)", self._jwt)
+            # Set RLS context per-connection — safe under concurrency
+            await self._set_jwt_on_conn(conn, jwt)
 
             # asyncpg uses $1, $2 positional params
             param_values = list((params or {}).values())
@@ -111,17 +119,27 @@ class SupabaseProvider:
             for r in result.rows
         ]
 
-    async def execute_signal(self, signal: SignalDefinition, params: dict[str, Any] | None = None) -> pd.DataFrame:
+    async def execute_signal(
+        self,
+        signal: SignalDefinition,
+        params: dict[str, Any] | None = None,
+        jwt: str | None = None,
+    ) -> pd.DataFrame:
         merged = {**signal.parameters, **(params or {})}
-        result = await self.execute_query(signal.sql, merged)
+        result = await self.execute_query(signal.sql, merged, jwt=jwt)
         return pd.DataFrame(result.rows, columns=result.columns)
 
-    async def write_back(self, table: str, data: list[dict[str, Any]], org_id: str) -> int:
+    async def write_back(
+        self,
+        table: str,
+        data: list[dict[str, Any]],
+        org_id: str,
+        jwt: str | None = None,
+    ) -> int:
         if not data:
             return 0
         pool = await self._get_pool()
         columns = list(data[0].keys())
-        # TODO-311: Validate identifiers to prevent SQL injection via table/column names
         _validate_identifier(table)
         for col in columns:
             _validate_identifier(col)
@@ -129,6 +147,8 @@ class SupabaseProvider:
         placeholders = ", ".join(f"${i+1}" for i in range(len(columns)))
         sql = f"INSERT INTO {table} ({col_str}) VALUES ({placeholders})"
         async with pool.acquire() as conn:
+            # Set RLS context per-connection — safe under concurrency
+            await self._set_jwt_on_conn(conn, jwt)
             await conn.executemany(sql, [tuple(row[c] for c in columns) for row in data])
         return len(data)
 
@@ -139,9 +159,8 @@ class SupabaseProvider:
 
     # -- pgvector helpers --------------------------------------------------
 
-    async def vector_search(self, table: str, embedding: list[float], column: str = "embedding", limit: int = 10) -> QueryResult:
+    async def vector_search(self, table: str, embedding: list[float], column: str = "embedding", limit: int = 10, jwt: str | None = None) -> QueryResult:
         """Perform pgvector similarity search."""
-        # TODO-311: Validate identifiers to prevent SQL injection
         _validate_identifier(table)
         _validate_identifier(column)
         vec_str = "[" + ",".join(str(v) for v in embedding) + "]"
@@ -149,7 +168,7 @@ class SupabaseProvider:
             f"SELECT *, ({column} <=> $1::vector) AS distance "
             f"FROM {table} ORDER BY {column} <=> $1::vector LIMIT $2"
         )
-        return await self.execute_query(sql, {"vec": vec_str, "limit": limit})
+        return await self.execute_query(sql, {"vec": vec_str, "limit": limit}, jwt=jwt)
 
     # -- Realtime (placeholder for supabase-py realtime) -------------------
 
