@@ -392,10 +392,12 @@
 
 ---
 
-## 🧩 Signal Studio Templates (Invesco) — 2026-02-26
+## 🧩 Signal Studio Templates (Invesco) — Updated 2026-03-03
 
-> Revenue=8 | Strategic=9 | Completeness=5 | Urgency=8
+> Revenue=8 | Strategic=9 | Completeness=7 | Urgency=9 | Effort Remaining=7
 > Full plan: `/data/workspace/projects/signal-studio-templates/PLAN.md`
+> Brainstorm: `/data/workspace/projects/signal-studio-templates/BRAINSTORM.md`
+> Audit: `/data/workspace/projects/signal-studio-templates/AUDIT.md`
 
 ### 🔴 Critical (run first, unblock everything)
 - [x] **#211** Fix build system — install deps, fix tsconfig, generate dist/ [2h] ✅ 2026-02-26 — pnpm, tsconfig fixed, dist/ generated clean
@@ -417,6 +419,13 @@
 - [ ] **#388** Webhook triggers — execute templates on CRM/portfolio events, push to Slack/email [M]
 - [ ] **#389** Zod validation — replace Record<string, any> with Zod schemas in engine + API [M]
 - [ ] **#390** Template diff/audit trail — change tracking for compliance (Invesco requirement) [S]
+
+### 🔴 v3 Additions (2026-03-03 — judge-agent-v2 updated run)
+- [ ] **TODO-426** API auth middleware — JWT validation, no auth = CRITICAL security gap [S] → `/data/workspace/todos/426-pending-p0-signal-studio-templates-api-auth-middleware.md` ⏳ Agent spawned 2026-03-03 09:04 UTC
+- [ ] **TODO-427** Integration tests — MockDataProvider, engine.test.ts, api.test.ts, ≥80% coverage [M] → `/data/workspace/todos/427-pending-p1-signal-studio-templates-integration-tests.md`
+- [ ] **TODO-428** GitHub Actions CI — typecheck/lint/test/build pipeline [S] → `/data/workspace/todos/428-pending-p1-signal-studio-templates-github-actions-ci.md`
+- [ ] **TODO-429** DataProvider adapters — Snowflake + Postgres real implementations [L] → `/data/workspace/todos/429-pending-p1-signal-studio-templates-data-provider-implementations.md`
+- [ ] **TODO-430** Expand template library 20→40 — 20 new templates across all 5 categories [M] → `/data/workspace/todos/430-pending-p2-signal-studio-templates-expand-template-library.md`
 
 
 ---
@@ -527,6 +536,12 @@
 - [ ] **#329** [P2] Type-safe env.ts + constants.ts [30min]
 - [ ] **#330** [P2] Google Search Console verification + GA4 link [15min] (Nathan action)
 - [ ] **#332** [P2] Uptime monitoring setup [15min]
+- [ ] **#443** [P1] HubSpot CRM + Deal creation on contact submit [4h] → TODO-443
+- [ ] **#444** [P1] Fix CONTACT_EMAIL silent fallback bug [30min] → TODO-444
+- [ ] **#445** [P2] Calendly sticky CTA on homepage hero [1h] → TODO-445
+- [ ] **#446** [P2] Case study PDF downloads (gated lead capture) [3h] → TODO-446
+- [ ] **#447** [P2] FAQ accordion + FAQPage JSON-LD on pricing page [1.5h] → TODO-447
+- [ ] **#448** [P2] Author bio page /team/nathan-stevenson + E-E-A-T [1.5h] → TODO-448
 
 
 ## Signal Studio Frontend (signal-studio-frontend) — Added 2026-02-27
@@ -601,11 +616,20 @@
 - [x] [P1] Fix table-name SQL injection in write_back() across all providers → TODO 313 ✅ 2026-03-01 — _validate_identifier() added to oracle_provider.py + snowflake_provider.py, validates table+columns before INSERT, 13 tests pass (commit 6fa4272)
 - [x] [P1] Add asyncpg connection pooling to SupabaseProvider → TODO 314 ✅ already implemented — asyncpg.create_pool(min_size=2, max_size=20) with lazy init in _get_pool()
 - [x] [P1] Add GitHub Actions CI pipeline (pytest + ruff + mypy + pip-audit) → TODO 315 ✅ 2026-03-01 — .github/workflows/ci.yml created (lint/ruff/mypy + pytest matrix 3.11+3.12 + pip-audit), committed 7fe0bc7
-- [ ] [P1] Add Snowflake Cortex AI methods (cortex_complete, cortex_embed)
-- [ ] [P2] Add OpenTelemetry tracing across all provider calls
+- [x] [P1] Add Snowflake Cortex AI methods (cortex_complete, cortex_embed) ✅ already implemented
+- [ ] [P0] Fix JWT RLS race condition — per-connection scoping + full claims JSON → TODO-433
+- [ ] [P0] Fix Snowflake param binding dict→tuple in get_tables/get_columns → TODO-434
+- [ ] [P0] Audit oracle_provider.py for async blocking (apply asyncio.to_thread if needed)
+- [ ] [P1] Add Snowflake Cortex model allowlist (prevent injection via model param)
+- [ ] [P1] Add OpenTelemetry tracing across all provider calls → TODO-436
+- [ ] [P1] Fix N+1 get_columns() in SchemaRegistry with asyncio.gather → TODO-435
+- [ ] [P1] Add max_rows guard to execute_query() (prevent OOM from unbounded queries)
+- [ ] [P2] Add async context manager __aenter__/__aexit__ to all providers → TODO-437
+- [ ] [P2] Add upsert_back() with dialect-specific conflict resolution → TODO-438
 - [ ] [P2] Add streaming execute_query_stream() returning AsyncIterator
-- [ ] [P2] Fix N+1 get_columns() in SchemaRegistry with bulk fetch
 - [ ] [P2] Wire library into Signal Studio Django backend
+- [ ] [P2] Add testcontainers integration tests (PostgreSQL container)
+- [ ] [P2] Add pytest-cov with --cov-fail-under=80 to CI
 
 ## signal-builder-frontend (added 2026-02-28)
 - [x] [P0] Sentry integration — error monitoring, React Router + canvas error boundary → TODO 323 ✅ DONE 2026-02-28
@@ -693,6 +717,11 @@
 - [ ] [MEDIUM/L] #376 Add analytics dashboard with cost/performance trends → `376-pending-medium-NarrativeReactor-analytics-dashboard.md`
 - [ ] [MEDIUM/M] #377 Add webhook retry logic for failed publishes (exponential backoff) → `377-pending-medium-NarrativeReactor-webhook-retry-logic.md`
 
+## NarrativeReactor (2026-03-03 — Judge Agent v2 refresh)
+- [ ] [HIGH/S] #430 Add SQLite indexes + pin Genkit wildcard deps → `430-pending-high-NarrativeReactor-sqlite-indexes.md`
+- [ ] [HIGH/M] #431 Wire ForwardLane API bridge for personalized content → `431-pending-high-NarrativeReactor-forwardlane-bridge.md`
+- [ ] [MEDIUM/S] #432 Railway auto-deploy on main branch push → `432-pending-medium-NarrativeReactor-railway-autodeploy.md`
+
 ## NarrativeReactor (2026-03-02 — Judge Agent v2 refresh)
 - [ ] [CRITICAL/S] #396 Deploy to production with CD pipeline → `396-pending-critical-NarrativeReactor-production-deployment.md`
 - [ ] [CRITICAL/M] #397 Multi-tenant SaaS foundation (tenant_id, scoped queries) → `397-pending-critical-NarrativeReactor-multi-tenancy.md`
@@ -700,3 +729,37 @@
 - [ ] [HIGH/M] #399 Redis caching for AI calls (LRU, TTL, tenant-scoped) → `399-pending-high-NarrativeReactor-redis-caching.md`
 - [ ] [HIGH/L] #400 Stripe billing integration (usage-based + subscriptions) → `400-pending-high-NarrativeReactor-stripe-billing.md`
 - [ ] [HIGH/M] #401 E2E integration tests (Supertest + mocked externals) → `401-pending-high-NarrativeReactor-e2e-tests.md`
+
+## forwardlane-backend (2026-03-03 — Judge Agent v2 Rescore)
+*Scores: revenue=9 strategic=10 completeness=7 urgency=9 effort_remaining=6*
+- [ ] [CRITICAL/S] #422 Replace DEMO_ENV AllowAny with X-Demo-Token API key auth → `422-pending-critical-forwardlane-backend-demo-api-key-auth.md` ⏳ Agent spawned 2026-03-03 09:04 UTC
+- [ ] [HIGH/M] #423 NL→SQL multi-turn conversation memory via Redis thread_id → `423-pending-high-forwardlane-backend-nl-sql-multiturn.md`
+- [ ] [HIGH/M] #424 Usage analytics model for Invesco renewal evidence → `424-pending-high-forwardlane-backend-usage-analytics.md`
+- [ ] [HIGH/M] #425 Dependency CVE audit — upgrade sentry/boto3/dj-rest-auth/pypdf → `425-pending-high-forwardlane-backend-dep-upgrades.md`
+- [ ] [HIGH/M] #220 Integration tests for all easy_button Invesco endpoints
+- [ ] [HIGH/M] #222 OpenAPI schema validation tests — prevent NL→SQL regressions
+- [ ] [HIGH/M] #226 E2E test fixtures with synthetic Invesco advisor data
+- [ ] [HIGH/H] #229 Expand NL→SQL to portfolio-level queries (fund comparisons, ESG)
+- [ ] [MEDIUM/S] #223 Async Celery task monitoring dashboard (Prometheus celery metrics)
+- [ ] [MEDIUM/S] #224 Redis cache warming on startup for meeting-prep + signals
+- [ ] [MEDIUM/S] #227 Structured error responses with error codes across easy_button
+- [ ] [MEDIUM/S] #228 DB connection health check endpoint for Railway monitoring
+
+## signal-studio-frontend (re-scored 2026-03-03 — Judge Agent v2 refresh)
+Scores: revenue=8, strategic=9, completeness=5, urgency=7, effort_remaining=5
+- [ ] [P0-CRITICAL] Add auth middleware to protect all /app/* routes → TODO-444
+- [ ] [P0-CRITICAL] Wire TanStack Query hooks to all pages (replace mock data) → TODO-445
+- [ ] [P1-HIGH] Supabase Realtime — live signal run status updates → TODO-446
+- [ ] [P1-HIGH] Security headers — CSP, HSTS, X-Frame-Options → TODO-447
+- [ ] [P1-HIGH] CI/CD pipeline — Bitbucket Pipelines + Railway deploy → TODO-448
+- [ ] [P1-HIGH] E2E tests — Playwright auth + signal CRUD flows → TODO-449
+- [ ] [P2-MEDIUM] PostHog analytics + Sentry error tracking → TODO-450
+
+## forwardlane_advisor (scored 2026-03-03 — Judge Agent v2)
+Scores: revenue=8, strategic=9, completeness=5, urgency=6, effort_remaining=3
+Core ForwardLane advisor platform — Node.js/Express with AI dialog, portfolio recs, alerts. Critical: IBM Watson NLC deprecated, all deps from 2016-2017.
+- [ ] [P0-CRITICAL] Upgrade Node.js from 0.10 to v20 LTS → TODO-451
+- [ ] [P0-CRITICAL] Security audit & CVE remediation (npm audit) → TODO-452
+- [ ] [P1-HIGH] Replace Watson NLC with Anthropic Claude LLM → TODO-453
+- [ ] [P1-HIGH] CI/CD pipeline + Docker Compose dev environment → TODO-454
+- [ ] [P1-HIGH] N+1 query audit & performance fixes → TODO-455

@@ -1,0 +1,17 @@
+You are a Code Optimization Agent. REPO: signal-studio-auth at /data/workspace/projects/signal-studio-auth/
+
+Perform a targeted code quality audit focusing on issues NOT already in /data/workspace/projects/signal-studio-auth/AUDIT.md:
+
+1. Read the existing AUDIT.md to understand what's already documented
+2. Analyze these specific files for new issues:
+   - routes/auth_routes.py — duplicate rate limiter code (two implementations: _build_rate_limiter AND _LimiterShim)
+   - middleware/supabase_auth_middleware.py — dead code paths, error handling gaps
+   - tests/test_auth.py, tests/test_security.py, tests/test_rate_limit_and_tokens.py — coverage gaps
+   - migrations/*.sql — missing indexes, RLS policy completeness
+3. Check for:
+   - Pydantic v1 vs v2 compatibility issues (pydantic[email]>=1.10.0 in requirements.txt)
+   - Missing response models on routes (FastAPI best practice)
+   - Any TODO comments left in code
+   - Missing __main__.py or app entry point
+4. Append a "## Update — March 2026" section to /data/workspace/projects/signal-studio-auth/AUDIT.md with NEW findings only (don't duplicate existing items)
+5. For each new finding: file path, line numbers, issue description, recommended fix

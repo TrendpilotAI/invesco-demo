@@ -1,0 +1,14 @@
+You are a Planning Agent. REPO: signal-studio-auth at /data/workspace/projects/signal-studio-auth/
+
+Steps:
+1. Read /data/workspace/projects/signal-studio-auth/BRAINSTORM.md
+2. Read /data/workspace/projects/signal-studio-auth/PLAN.md
+3. Run: ls /data/workspace/todos/ | grep signal-studio-auth
+4. Find next TODO number: ls /data/workspace/todos/ | grep -oP "^\d+" | sort -n | tail -1
+5. Create MISSING TODO files for items NOT already covered:
+   - httpx connection pooling fix (HIGH priority)
+   - CORS middleware (MEDIUM priority)
+   - Structured request logging/tracing (MEDIUM priority)
+   Format: /data/workspace/todos/{NNN}-pending-{priority}-signal-studio-auth-{slug}.md
+   Each needs: description, coding prompt, dependencies, effort, acceptance criteria
+6. Append "## Execution Status" section to /data/workspace/projects/signal-studio-auth/PLAN.md listing all signal-studio-auth TODOs

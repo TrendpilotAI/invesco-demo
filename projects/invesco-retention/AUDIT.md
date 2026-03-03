@@ -1,6 +1,6 @@
 # Invesco Retention — Code Quality Audit
-**Date:** 2026-03-02
-**Agent:** Optimization Agent (Judge v2 protocol)
+**Date:** 2026-03-03 (v3 — updated by Judge Agent v2)
+**Agent:** Optimization Agent (inline — depth limit)
 
 ---
 
@@ -145,3 +145,31 @@ class-variance-authority, clsx, lucide-react, next, radix-ui, react, react-dom, 
 | P2 | Verify CSP trusted site domain matches deploy URL | salesforce-lwc/ | XS |
 | P3 | Run ts-unused-exports to find dead code | demo-app/ | S |
 | P3 | Add cache version bump to service worker | mobile-pwa/sw.js | XS |
+
+---
+
+## v3 Addendum (2026-03-03)
+
+### Confirmed ✅
+- **Security headers:** next.config.ts has X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy — no nginx.conf audit needed for GitHub Pages deploy
+- **SignalSeverity type:** Properly exported from mock-data.ts and used consistently — DRY violation was overstated in v2
+- **Error boundaries:** Confirmed on all 4 routes (dashboard/error.tsx, salesforce/error.tsx, mobile/error.tsx, create/error.tsx, global-error.tsx)
+- **No hardcoded secrets:** Confirmed clean
+
+### New Findings
+- **salesforce/page.tsx is 610 lines** — Consider extracting the AccordionSection + SignalCard subcomponents to separate files post-demo
+- **`Separator` component imported in salesforce/page.tsx** — verify it's actually rendered (imported line 6, but may be dead import)
+- **homepage page.tsx does NOT auto-redirect** to /salesforce — manual bookmark needed for demo start URL
+- **No TypeScript strict mode** in tsconfig.json — `"strict": true` recommended post-demo
+
+### Updated Action Items
+| Priority | Action | File | Effort |
+|---|---|---|---|
+| P0 | Bookmark /salesforce?advisor=sarah-chen as demo start URL | — | XS |
+| P0 | Add confidence scores to signal cards (TODO #424) | mock-data.ts, salesforce/page.tsx | XS |
+| P0 | Add Seismic content recommendations (TODO #423) | salesforce/page.tsx | S |
+| P1 | Add E2E Playwright tests (TODO #380) | — | M |
+| P1 | Remove dead Separator import from salesforce/page.tsx | salesforce/page.tsx | XS |
+| P2 | Add TypeScript strict mode | tsconfig.json | XS |
+| P2 | Service worker cache versioning | mobile-pwa/sw.js | XS |
+| P3 | Extract large salesforce/page.tsx subcomponents | src/components/ | S |

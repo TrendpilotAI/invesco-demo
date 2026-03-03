@@ -1,7 +1,7 @@
-# Invesco Retention — Execution Plan v2
-**Date:** 2026-03-02
-**Agent:** Planning Agent (Judge v2 protocol)
-**Based on:** BRAINSTORM.md v2
+# Invesco Retention — Execution Plan v3
+**Date:** 2026-03-03
+**Agent:** Judge Agent v2 (Planning inline)
+**Based on:** BRAINSTORM.md v3
 
 ---
 
