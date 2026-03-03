@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ForwardLane Distribution Intelligence — Demo Screens</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0F0F0F; color: white; font-family: -apple-system, system-ui, sans-serif; padding: 40px; }
+  h1 { font-size: 32px; margin-bottom: 8px; }
+  .subtitle { color: #888; font-size: 16px; margin-bottom: 40px; }
+  .grid { display: flex; flex-direction: column; gap: 60px; }
+  .screen { background: #1A1A1A; border-radius: 16px; overflow: hidden; border: 1px solid #333; }
+  .screen-header { padding: 16px 24px; background: #222; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+  .screen-title { font-size: 16px; font-weight: 600; }
+  .screen-badge { font-size: 12px; padding: 4px 12px; border-radius: 12px; }
+  .invesco { background: #003366; color: white; }
+  .generic { background: #4F46E5; color: white; }
+  .screen-body { padding: 0; }
+  .screen-body object, .screen-body img { width: 100%; height: auto; display: block; }
+  .reload-btn { position: fixed; bottom: 30px; right: 30px; background: #4F46E5; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; z-index: 100; }
+  .reload-btn:hover { background: #4338CA; }
+  .section-label { font-size: 22px; font-weight: 700; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid #333; }
+  .note { color: #666; font-size: 13px; margin-top: 8px; }
+</style>
+</head>
+<body>
+  <h1>⚡ Distribution Intelligence</h1>
+  <p class="subtitle">Animated demo screens — Invesco/Salesforce + Generic white-label</p>
+
+  <button class="reload-btn" onclick="location.reload()">🔄 Replay Animations</button>
+
+  <div class="grid">
+    <div>
+      <p class="section-label">Invesco × Salesforce Embedded</p>
+    </div>
+
+    <div class="screen">
+      <div class="screen-header">
+        <span class="screen-title">1. Wholesaler Dashboard — Priority Queue</span>
+        <span class="screen-badge invesco">Invesco × Salesforce</span>
+      </div>
+      <div class="screen-body">
+        <object type="image/svg+xml" data="01-wholesaler-dashboard-invesco.svg"></object>
+      </div>
+    </div>
+
+    <div class="screen">
+      <div class="screen-header">
+        <span class="screen-title">2. Rising Star Detail — Sarah Chen</span>
+        <span class="screen-badge invesco">Invesco × Salesforce</span>
+      </div>
+      <div class="screen-body">
+        <object type="image/svg+xml" data="02-rising-star-detail-invesco.svg"></object>
+      </div>
+    </div>
+
+    <div class="screen">
+      <div class="screen-header">
+        <span class="screen-title">3. NL→SQL Query Interface</span>
+        <span class="screen-badge invesco">Invesco × Salesforce</span>
+      </div>
+      <div class="screen-body">
+        <object type="image/svg+xml" data="03-nl-sql-query-invesco.svg"></object>
+      </div>
+    </div>
+
+    <div class="screen">
+      <div class="screen-header">
+        <span class="screen-title">4. Cross-Sell Displacement Analysis</span>
+        <span class="screen-badge invesco">Invesco × Salesforce</span>
+      </div>
+      <div class="screen-body">
+        <object type="image/svg+xml" data="05-cross-sell-opportunity-invesco.svg"></object>
+      </div>
+    </div>
+
+    <div>
+      <p class="section-label" style="margin-top: 20px;">Generic White-Label Version</p>
+    </div>
+
+    <div class="screen">
+      <div class="screen-header">
+        <span class="screen-title">5. White-Label Dashboard — Signal Studio</span>
+        <span class="screen-badge generic">Generic / Any AM</span>
+      </div>
+      <div class="screen-body">
+        <object type="image/svg+xml" data="04-wholesaler-dashboard-generic.svg"></object>
+      </div>
+    </div>
+  </div>
+
+  <p class="note" style="margin-top: 40px; text-align: center;">
+    All animations are pure CSS + SMIL — 60fps, resolution-independent, no JavaScript required.<br>
+    Click "Replay Animations" to restart all animations.
+  </p>
+</body>
+</html>

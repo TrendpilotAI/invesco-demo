@@ -1,0 +1,282 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
+  <defs>
+    <style>
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes flowRight { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+      @keyframes arrowPulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+      @keyframes valueGrow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+
+      .bg { fill: #F3F3F3; }
+      .card { fill: white; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.1)); }
+      .text-primary { fill: #1B1C1D; font-family: -apple-system, system-ui, sans-serif; }
+      .text-secondary { fill: #706E6B; font-family: -apple-system, system-ui, sans-serif; }
+      .text-white { fill: white; font-family: -apple-system, system-ui, sans-serif; }
+      .text-blue { fill: #0176D3; font-family: -apple-system, system-ui, sans-serif; }
+      .text-green { fill: #2E844A; font-family: -apple-system, system-ui, sans-serif; }
+      .text-red { fill: #EA001E; font-family: -apple-system, system-ui, sans-serif; }
+      .mono { font-family: 'SF Mono', monospace; }
+
+      .d1 { animation: fadeIn 0.5s ease-out 0.2s both; }
+      .d2 { animation: fadeIn 0.5s ease-out 0.5s both; }
+      .d3 { animation: fadeIn 0.5s ease-out 0.8s both; }
+      .d4 { animation: fadeIn 0.5s ease-out 1.1s both; }
+      .d5 { animation: fadeIn 0.5s ease-out 1.4s both; }
+
+      .flow-1 { animation: flowRight 0.5s ease-out 1.8s both; }
+      .flow-2 { animation: flowRight 0.5s ease-out 2.0s both; }
+      .flow-3 { animation: flowRight 0.5s ease-out 2.2s both; }
+      .flow-4 { animation: flowRight 0.5s ease-out 2.4s both; }
+
+      .arrow-pulse { animation: arrowPulse 1.5s ease-in-out infinite; }
+    </style>
+    <linearGradient id="sfGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#032D60"/>
+      <stop offset="100%" stop-color="#0176D3"/>
+    </linearGradient>
+    <linearGradient id="compGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#9CA3AF"/>
+      <stop offset="100%" stop-color="#D1D5DB"/>
+    </linearGradient>
+    <linearGradient id="ivzGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#003366"/>
+      <stop offset="100%" stop-color="#0055A4"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="800" class="bg"/>
+
+  <!-- Header -->
+  <rect width="1200" height="52" fill="url(#sfGrad)"/>
+  <text x="20" y="33" class="text-white" font-size="16" font-weight="600">☁ Sales Cloud</text>
+  <text x="160" y="33" class="text-white" font-size="14" opacity="0.5">|</text>
+  <text x="178" y="33" class="text-white" font-size="14" opacity="0.8">Cross-Sell Analysis</text>
+
+  <!-- Advisor Hero -->
+  <g class="d1">
+    <rect x="20" y="68" width="1160" height="90" rx="8" class="card"/>
+    <circle cx="70" cy="113" r="28" fill="#EBF5FF"/>
+    <text x="58" y="120" class="text-blue" font-size="18" font-weight="700">JP</text>
+    <text x="112" y="100" class="text-primary" font-size="20" font-weight="700">Jennifer Park</text>
+    <rect x="290" y="86" width="105" height="22" rx="11" fill="#EBF5FF"/>
+    <text x="303" y="101" class="text-blue" font-size="10" font-weight="600">💰 Cross-Sell 8.4</text>
+    <text x="112" y="120" class="text-secondary" font-size="13">Merrill Lynch Wealth Management · CRD# 5120847</text>
+    <text x="112" y="140" class="text-secondary" font-size="12">Northeast Region · New York, NY · Total Book: $24.7M</text>
+
+    <!-- Quick stats -->
+    <text x="700" y="100" class="text-secondary" font-size="10">Invesco Share</text>
+    <text x="700" y="118" class="text-primary" font-size="16" font-weight="700">12%</text>
+    <text x="700" y="133" class="text-secondary" font-size="9">$2.9M of $24.7M</text>
+
+    <text x="830" y="100" class="text-secondary" font-size="10">Takeover Value</text>
+    <text x="830" y="118" class="text-green" font-size="16" font-weight="700">$4.2M</text>
+    <text x="830" y="133" class="text-secondary" font-size="9">across 4 categories</text>
+
+    <text x="980" y="100" class="text-secondary" font-size="10">Potential Share</text>
+    <text x="980" y="118" class="text-blue" font-size="16" font-weight="700">29%</text>
+    <text x="980" y="133" class="text-secondary" font-size="9">+17% uplift</text>
+  </g>
+
+  <!-- Displacement Analysis - The Core Visual -->
+  <g class="d2">
+    <rect x="20" y="174" width="1160" height="320" rx="8" class="card"/>
+    <text x="40" y="205" class="text-primary" font-size="16" font-weight="700">Competitive Displacement Analysis</text>
+    <text x="400" y="205" class="text-secondary" font-size="11">Competitor holdings → Invesco alternatives with better performance</text>
+
+    <!-- Column headers -->
+    <text x="60" y="235" class="text-secondary" font-size="10" font-weight="600">COMPETITOR HOLDING</text>
+    <text x="340" y="235" class="text-secondary" font-size="10" font-weight="600">AUM</text>
+    <text x="450" y="235" class="text-secondary" font-size="10" font-weight="600">→</text>
+    <text x="490" y="235" class="text-secondary" font-size="10" font-weight="600">INVESCO ALTERNATIVE</text>
+    <text x="770" y="235" class="text-secondary" font-size="10" font-weight="600">PERF EDGE</text>
+    <text x="900" y="235" class="text-secondary" font-size="10" font-weight="600">PROBABILITY</text>
+    <text x="1050" y="235" class="text-secondary" font-size="10" font-weight="600">VALUE</text>
+
+    <line x1="40" y1="244" x2="1160" y2="244" stroke="#E5E7EB" stroke-width="1"/>
+
+    <!-- Row 1: Fixed Income -->
+    <g class="flow-1">
+      <rect x="40" y="252" width="1120" height="56" fill="rgba(1,118,211,0.03)" rx="4"/>
+      <!-- Competitor -->
+      <rect x="60" y="262" width="24" height="24" rx="4" fill="#F3F4F6"/>
+      <text x="66" y="279" class="text-secondary" font-size="9" font-weight="700">BLK</text>
+      <text x="92" y="274" class="text-primary" font-size="12" font-weight="500">iShares Core US Aggregate Bond</text>
+      <text x="92" y="290" class="text-secondary" font-size="9">AGG · Fixed Income Core</text>
+      <text x="340" y="282" class="text-primary mono" font-size="12" font-weight="600">$1.8M</text>
+      <!-- Arrow -->
+      <text x="440" y="282" fill="#0176D3" font-size="18" class="arrow-pulse">→</text>
+      <!-- Invesco alternative -->
+      <rect x="490" y="262" width="24" height="24" rx="4" fill="#003366"/>
+      <text x="495" y="279" class="text-white" font-size="9" font-weight="700">IVZ</text>
+      <text x="522" y="274" class="text-primary" font-size="12" font-weight="600">Invesco Total Return Bond</text>
+      <text x="522" y="290" class="text-secondary" font-size="9">MGRQX · 4★ Morningstar</text>
+      <!-- Performance edge -->
+      <rect x="770" y="267" width="75" height="20" rx="4" fill="#D1FAE5"/>
+      <text x="782" y="281" class="text-green" font-size="10" font-weight="600">+82bps YTD</text>
+      <!-- Probability -->
+      <rect x="900" y="265" width="100" height="8" rx="4" fill="#E5E7EB"/>
+      <rect x="900" y="265" width="78" height="8" rx="4" fill="#0176D3"/>
+      <text x="900" y="290" class="text-primary" font-size="10" font-weight="600">78%</text>
+      <!-- Value -->
+      <text x="1050" y="282" class="text-green mono" font-size="14" font-weight="700">$1.4M</text>
+    </g>
+
+    <!-- Row 2: Large Cap -->
+    <g class="flow-2">
+      <rect x="60" y="318" width="24" height="24" rx="4" fill="#F3F4F6"/>
+      <text x="63" y="335" class="text-secondary" font-size="9" font-weight="700">VNGD</text>
+      <text x="92" y="330" class="text-primary" font-size="12" font-weight="500">Vanguard 500 Index Fund</text>
+      <text x="92" y="346" class="text-secondary" font-size="9">VFIAX · Large Cap Blend</text>
+      <text x="340" y="338" class="text-primary mono" font-size="12" font-weight="600">$1.2M</text>
+      <text x="440" y="338" fill="#0176D3" font-size="18" class="arrow-pulse">→</text>
+      <rect x="490" y="318" width="24" height="24" rx="4" fill="#003366"/>
+      <text x="495" y="335" class="text-white" font-size="9" font-weight="700">IVZ</text>
+      <text x="522" y="330" class="text-primary" font-size="12" font-weight="600">Invesco S&amp;P 500 Equal Weight</text>
+      <text x="522" y="346" class="text-secondary" font-size="9">RSP · Equal-weight differentiation</text>
+      <rect x="770" y="323" width="80" height="20" rx="4" fill="#D1FAE5"/>
+      <text x="782" y="337" class="text-green" font-size="10" font-weight="600">+145bps 3Y</text>
+      <rect x="900" y="321" width="100" height="8" rx="4" fill="#E5E7EB"/>
+      <rect x="900" y="321" width="65" height="8" rx="4" fill="#0176D3"/>
+      <text x="900" y="346" class="text-primary" font-size="10" font-weight="600">65%</text>
+      <text x="1050" y="338" class="text-green mono" font-size="14" font-weight="700">$780K</text>
+    </g>
+
+    <!-- Row 3: Growth -->
+    <g class="flow-3">
+      <rect x="40" y="364" width="1120" height="56" fill="rgba(1,118,211,0.03)" rx="4"/>
+      <rect x="60" y="374" width="24" height="24" rx="4" fill="#F3F4F6"/>
+      <text x="64" y="391" class="text-secondary" font-size="9" font-weight="700">FID</text>
+      <text x="92" y="386" class="text-primary" font-size="12" font-weight="500">Fidelity Growth Company</text>
+      <text x="92" y="402" class="text-secondary" font-size="9">FDGRX · Large Cap Growth</text>
+      <text x="340" y="394" class="text-primary mono" font-size="12" font-weight="600">$800K</text>
+      <text x="440" y="394" fill="#0176D3" font-size="18" class="arrow-pulse">→</text>
+      <rect x="490" y="374" width="24" height="24" rx="4" fill="#003366"/>
+      <text x="495" y="391" class="text-white" font-size="9" font-weight="700">IVZ</text>
+      <text x="522" y="386" class="text-primary" font-size="12" font-weight="600">Invesco QQQ Trust</text>
+      <text x="522" y="402" class="text-secondary" font-size="9">QQQ · NASDAQ-100 · Most liquid</text>
+      <rect x="770" y="379" width="80" height="20" rx="4" fill="#D1FAE5"/>
+      <text x="782" y="393" class="text-green" font-size="10" font-weight="600">+210bps 1Y</text>
+      <rect x="900" y="377" width="100" height="8" rx="4" fill="#E5E7EB"/>
+      <rect x="900" y="377" width="85" height="8" rx="4" fill="#0176D3"/>
+      <text x="900" y="402" class="text-primary" font-size="10" font-weight="600">85%</text>
+      <text x="1050" y="394" class="text-green mono" font-size="14" font-weight="700">$680K</text>
+    </g>
+
+    <!-- Row 4: Floating Rate -->
+    <g class="flow-4">
+      <rect x="60" y="430" width="24" height="24" rx="4" fill="#F3F4F6"/>
+      <text x="63" y="447" class="text-secondary" font-size="9" font-weight="700">TRP</text>
+      <text x="92" y="442" class="text-primary" font-size="12" font-weight="500">T. Rowe Price Floating Rate</text>
+      <text x="92" y="458" class="text-secondary" font-size="9">PRFRX · Bank Loan</text>
+      <text x="340" y="450" class="text-primary mono" font-size="12" font-weight="600">$400K</text>
+      <text x="440" y="450" fill="#0176D3" font-size="18" class="arrow-pulse">→</text>
+      <rect x="490" y="430" width="24" height="24" rx="4" fill="#003366"/>
+      <text x="495" y="447" class="text-white" font-size="9" font-weight="700">IVZ</text>
+      <text x="522" y="442" class="text-primary" font-size="12" font-weight="600">Invesco Senior Loan ETF</text>
+      <text x="522" y="458" class="text-secondary" font-size="9">BKLN · Lower expense ratio</text>
+      <rect x="770" y="435" width="85" height="20" rx="4" fill="#D1FAE5"/>
+      <text x="782" y="449" class="text-green" font-size="10" font-weight="600">-18bps ER</text>
+      <rect x="900" y="433" width="100" height="8" rx="4" fill="#E5E7EB"/>
+      <rect x="900" y="433" width="72" height="8" rx="4" fill="#0176D3"/>
+      <text x="900" y="458" class="text-primary" font-size="10" font-weight="600">72%</text>
+      <text x="1050" y="450" class="text-green mono" font-size="14" font-weight="700">$340K</text>
+    </g>
+
+    <!-- Totals -->
+    <line x1="40" y1="470" x2="1160" y2="470" stroke="#E5E7EB" stroke-width="1"/>
+    <text x="60" y="490" class="text-primary" font-size="13" font-weight="700">TOTAL TAKEOVER OPPORTUNITY</text>
+    <text x="340" y="490" class="text-primary mono" font-size="13" font-weight="700">$4.2M</text>
+    <text x="1050" y="490" class="text-green mono" font-size="16" font-weight="800">$3.2M</text>
+    <text x="1050" y="505" class="text-secondary" font-size="9">weighted by probability</text>
+  </g>
+
+  <!-- AI Pitch Script -->
+  <g class="d3">
+    <rect x="20" y="508" width="580" height="280" rx="8" class="card"/>
+    <rect x="20" y="508" width="580" height="34" rx="8" fill="#032D60"/>
+    <rect x="20" y="528" width="580" height="14" fill="#032D60"/>
+    <text x="40" y="530" class="text-white" font-size="12" font-weight="600">🤖 AI-Generated Pitch Script</text>
+
+    <g opacity="0"><animate attributeName="opacity" to="1" dur="0.5s" begin="2.8s" fill="freeze"/>
+      <text x="40" y="568" class="text-primary" font-size="12" font-weight="600">Opening:</text>
+      <text x="40" y="588" class="text-primary" font-size="11">"Jennifer, I noticed you have a strong fixed income allocation</text>
+      <text x="40" y="604" class="text-primary" font-size="11">with AGG. Our Total Return Bond fund has outperformed by 82bps</text>
+      <text x="40" y="620" class="text-primary" font-size="11">YTD — and it's eligible for your advisory platform."</text>
+
+      <text x="40" y="650" class="text-primary" font-size="12" font-weight="600">Key Data Points:</text>
+      <text x="40" y="670" class="text-primary" font-size="11">• Your book shows $4.2M in categories where Invesco outperforms</text>
+      <text x="40" y="690" class="text-primary" font-size="11">• RSP's equal-weight approach has beaten cap-weighted by 145bps/3Y</text>
+      <text x="40" y="710" class="text-primary" font-size="11">• BKLN has 18bps lower expense ratio vs. her current floating rate</text>
+
+      <text x="40" y="740" class="text-primary" font-size="12" font-weight="600">Close:</text>
+      <text x="40" y="758" class="text-primary" font-size="11">"Can I send you a comparison sheet for your top 3 holdings?"</text>
+
+      <rect x="40" y="770" width="120" height="22" rx="4" fill="#0176D3" opacity="0.9"/>
+      <text x="52" y="785" class="text-white" font-size="10" font-weight="600">📋 Copy Script</text>
+    </g>
+  </g>
+
+  <!-- Book Composition Pie -->
+  <g class="d4">
+    <rect x="620" y="508" width="270" height="280" rx="8" class="card"/>
+    <text x="640" y="538" class="text-primary" font-size="14" font-weight="700">Book Composition</text>
+
+    <!-- Stacked bar showing current vs. projected -->
+    <text x="640" y="568" class="text-secondary" font-size="10">Current</text>
+    <rect x="710" y="556" width="160" height="16" rx="3" fill="#E5E7EB"/>
+    <rect x="710" y="556" width="19" height="16" rx="3" fill="#003366"/>
+    <text x="875" y="568" class="text-primary" font-size="10">12%</text>
+
+    <text x="640" y="598" class="text-secondary" font-size="10">Projected</text>
+    <rect x="710" y="586" width="160" height="16" rx="3" fill="#E5E7EB"/>
+    <rect x="710" y="586" width="0" height="16" rx="3" fill="#0176D3">
+      <animate attributeName="width" from="19" to="46" dur="0.8s" begin="2.5s" fill="freeze"/>
+    </rect>
+    <text x="875" y="598" class="text-green" font-size="10" font-weight="600">29%</text>
+
+    <!-- Category breakdown -->
+    <text x="640" y="638" class="text-secondary" font-size="10" font-weight="600">By Category</text>
+    <text x="640" y="660" class="text-secondary" font-size="10">Fixed Income</text>
+    <text x="810" y="660" class="text-primary" font-size="10">$1.8M → $3.2M</text>
+    <text x="640" y="680" class="text-secondary" font-size="10">Large Cap</text>
+    <text x="810" y="680" class="text-primary" font-size="10">$1.2M → $2.0M</text>
+    <text x="640" y="700" class="text-secondary" font-size="10">Growth</text>
+    <text x="810" y="700" class="text-primary" font-size="10">$0 → $680K</text>
+    <text x="640" y="720" class="text-secondary" font-size="10">Bank Loan</text>
+    <text x="810" y="720" class="text-primary" font-size="10">$0 → $340K</text>
+
+    <line x1="640" y1="738" x2="870" y2="738" stroke="#E5E7EB"/>
+    <text x="640" y="758" class="text-primary" font-size="11" font-weight="600">Revenue Impact</text>
+    <text x="810" y="758" class="text-green" font-size="12" font-weight="700">+$42K/yr</text>
+  </g>
+
+  <!-- Similar Advisors -->
+  <g class="d5">
+    <rect x="910" y="508" width="270" height="280" rx="8" class="card"/>
+    <text x="930" y="538" class="text-primary" font-size="14" font-weight="700">Similar Conversions</text>
+    <text x="930" y="558" class="text-secondary" font-size="10">Advisors with similar profile who converted</text>
+
+    <g opacity="0"><animate attributeName="opacity" to="1" dur="0.3s" begin="3.2s" fill="freeze"/>
+      <circle cx="948" cy="590" r="10" fill="#D1FAE5"/>
+      <text x="942" y="594" class="text-green" font-size="8" font-weight="600">✓</text>
+      <text x="965" y="586" class="text-primary" font-size="11" font-weight="500">Michael Torres</text>
+      <text x="965" y="600" class="text-secondary" font-size="9">Merrill · Converted AGG→MGRQX ($2.1M)</text>
+
+      <circle cx="948" cy="630" r="10" fill="#D1FAE5"/>
+      <text x="942" y="634" class="text-green" font-size="8" font-weight="600">✓</text>
+      <text x="965" y="626" class="text-primary" font-size="11" font-weight="500">Lisa Nakamura</text>
+      <text x="965" y="640" class="text-secondary" font-size="9">Merrill · Converted VFIAX→RSP ($1.5M)</text>
+
+      <circle cx="948" cy="670" r="10" fill="#D1FAE5"/>
+      <text x="942" y="674" class="text-green" font-size="8" font-weight="600">✓</text>
+      <text x="965" y="666" class="text-primary" font-size="11" font-weight="500">David Chen</text>
+      <text x="965" y="680" class="text-secondary" font-size="9">MS · Converted FDGRX→QQQ ($3.8M)</text>
+
+      <text x="930" y="720" class="text-secondary" font-size="10">Success rate for this profile:</text>
+      <text x="930" y="740" class="text-green" font-size="20" font-weight="800">73%</text>
+      <text x="985" y="740" class="text-secondary" font-size="11">conversion rate</text>
+      <text x="930" y="760" class="text-secondary" font-size="9">Based on 47 similar advisor conversions</text>
+    </g>
+  </g>
+
+  <text x="1140" y="793" class="text-secondary" font-size="9" text-anchor="end" opacity="0.4">Powered by ForwardLane AI</text>
+</svg>

@@ -8,6 +8,7 @@
 
 > Daily Judge Swarm (2026-02-27 08:11 UTC): Judge agents produced 14 BRAINSTORM.md, 15 PLAN.md, and 16 AUDIT.md files across projects. Planning agents created 181 TODO files (see /data/workspace/todos/). Trendpilot judge required a retry but completed; cleanup agent ran to prune stale orchestrator state. Continued: review high-priority TODOs listed below and attack P0 items (Invesco demo deploy).
 > invesco-sprint cron check 2026-03-03 05:01 UTC: ALL INVESCO TECHNICAL P0s COMPLETE ✅. Demo live at https://trendpilotai.github.io/invesco-demo/ (HTTP 200). Remaining critical path is NATHAN ACTION: Email Megan+Craig → Schedule Dry Run → Brian Kiley Demo → Pilot signed. No new sub-agents needed — unblock is outreach, not code.
+> invesco-sprint cron check 2026-03-03 21:01 UTC: Demo still live. Identified 4 remaining P0 security/quality items across data-provider, backend, and templates. Spawned 4 parallel Sonnet agents: TODO-422 (demo auth hardening), TODO-426 (templates JWT auth), TODO-434 (Snowflake param binding), TODO-445 (TanStack Query wiring).
 
 
 
@@ -332,7 +333,7 @@
 
 #### 🟠 P1 — This Week
 - [x] **[TODO-232]** Cache compiled regex patterns at module level (10-50x speedup) · _2h_ → ✅ 2026-03-03 — _pattern_cache + _cache_version counter, compiled once per entity_store state, invalidated on add/delete/startup-load (commit 247d371)
-- [ ] **[TODO-338]** Migrate persistence.py to asyncpg/psycopg3 (sync DB blocks event loop) · _4h_
+- [x] **[TODO-338]** Migrate persistence.py to asyncpg/psycopg3 (sync DB blocks event loop) · _4h_ → ✅ 2026-03-03 — asyncpg.Pool replaces psycopg2.ThreadedConnectionPool, all persistence funcs async, startup/shutdown events updated, commit fad0c42
 - [ ] **[TODO-233]** Add pytest test suite (conftest, pattern tests, API tests, persistence tests) · _1 day_
 - [ ] **[TODO-234]** Batch regex extraction endpoint (POST /batch_regex_entity_extraction) · _2h_
 - [ ] **[TODO-340]** Batch ML extraction endpoint (POST /batch_ml_entity_extraction) · _2h_
@@ -421,7 +422,7 @@
 - [ ] **#390** Template diff/audit trail — change tracking for compliance (Invesco requirement) [S]
 
 ### 🔴 v3 Additions (2026-03-03 — judge-agent-v2 updated run)
-- [ ] **TODO-426** API auth middleware — JWT validation, no auth = CRITICAL security gap [S] → `/data/workspace/todos/426-pending-p0-signal-studio-templates-api-auth-middleware.md` ⏳ Agent spawned 2026-03-03 09:04 UTC
+- [ ] **TODO-426** API auth middleware — JWT validation, no auth = CRITICAL security gap [S] → `/data/workspace/todos/426-pending-p0-signal-studio-templates-api-auth-middleware.md` ⏳ Agent re-spawned 2026-03-03 21:01 UTC (todo-426-templates-auth)
 - [ ] **TODO-427** Integration tests — MockDataProvider, engine.test.ts, api.test.ts, ≥80% coverage [M] → `/data/workspace/todos/427-pending-p1-signal-studio-templates-integration-tests.md`
 - [ ] **TODO-428** GitHub Actions CI — typecheck/lint/test/build pipeline [S] → `/data/workspace/todos/428-pending-p1-signal-studio-templates-github-actions-ci.md`
 - [ ] **TODO-429** DataProvider adapters — Snowflake + Postgres real implementations [L] → `/data/workspace/todos/429-pending-p1-signal-studio-templates-data-provider-implementations.md`
@@ -618,7 +619,7 @@
 - [x] [P1] Add GitHub Actions CI pipeline (pytest + ruff + mypy + pip-audit) → TODO 315 ✅ 2026-03-01 — .github/workflows/ci.yml created (lint/ruff/mypy + pytest matrix 3.11+3.12 + pip-audit), committed 7fe0bc7
 - [x] [P1] Add Snowflake Cortex AI methods (cortex_complete, cortex_embed) ✅ already implemented
 - [x] [P0] Fix JWT RLS race condition — per-connection scoping + full claims JSON → TODO-433 ✅ DONE 2026-03-03
-- [ ] [P0] Fix Snowflake param binding dict→tuple in get_tables/get_columns → TODO-434
+- [ ] [P0] Fix Snowflake param binding dict→tuple in get_tables/get_columns → TODO-434 ⏳ Agent spawned 2026-03-03 21:01 UTC (todo-434-snowflake-params)
 - [ ] [P0] Audit oracle_provider.py for async blocking (apply asyncio.to_thread if needed)
 - [ ] [P1] Add Snowflake Cortex model allowlist (prevent injection via model param)
 - [ ] [P1] Add OpenTelemetry tracing across all provider calls → TODO-436
@@ -732,7 +733,7 @@
 
 ## forwardlane-backend (2026-03-03 — Judge Agent v2 Rescore)
 *Scores: revenue=9 strategic=10 completeness=7 urgency=9 effort_remaining=6*
-- [ ] [CRITICAL/S] #422 Replace DEMO_ENV AllowAny with X-Demo-Token API key auth → `422-pending-critical-forwardlane-backend-demo-api-key-auth.md` ⏳ Agent spawned 2026-03-03 09:04 UTC
+- [ ] [CRITICAL/S] #422 Replace DEMO_ENV AllowAny with X-Demo-Token API key auth → `422-pending-critical-forwardlane-backend-demo-api-key-auth.md` ⏳ Agent re-spawned 2026-03-03 21:01 UTC (todo-422-demo-auth)
 - [ ] [HIGH/M] #423 NL→SQL multi-turn conversation memory via Redis thread_id → `423-pending-high-forwardlane-backend-nl-sql-multiturn.md`
 - [ ] [HIGH/M] #424 Usage analytics model for Invesco renewal evidence → `424-pending-high-forwardlane-backend-usage-analytics.md`
 - [ ] [HIGH/M] #425 Dependency CVE audit — upgrade sentry/boto3/dj-rest-auth/pypdf → `425-pending-high-forwardlane-backend-dep-upgrades.md`
@@ -748,7 +749,7 @@
 ## signal-studio-frontend (re-scored 2026-03-03 — Judge Agent v2 refresh)
 Scores: revenue=8, strategic=9, completeness=5, urgency=7, effort_remaining=5
 - ✅ [P0-CRITICAL] Add auth middleware to protect all /app/* routes → TODO-444 ✅ DONE 2026-03-03
-- [ ] [P0-CRITICAL] Wire TanStack Query hooks to all pages (replace mock data) → TODO-445
+- [ ] [P0-CRITICAL] Wire TanStack Query hooks to all pages (replace mock data) → TODO-445 ⏳ Agent spawned 2026-03-03 21:01 UTC (todo-445-tanstack-wire)
 - [ ] [P1-HIGH] Supabase Realtime — live signal run status updates → TODO-446
 - [ ] [P1-HIGH] Security headers — CSP, HSTS, X-Frame-Options → TODO-447
 - [ ] [P1-HIGH] CI/CD pipeline — Bitbucket Pipelines + Railway deploy → TODO-448
@@ -758,7 +759,7 @@ Scores: revenue=8, strategic=9, completeness=5, urgency=7, effort_remaining=5
 ## forwardlane_advisor (scored 2026-03-03 — Judge Agent v2)
 Scores: revenue=8, strategic=9, completeness=5, urgency=6, effort_remaining=3
 Core ForwardLane advisor platform — Node.js/Express with AI dialog, portfolio recs, alerts. Critical: IBM Watson NLC deprecated, all deps from 2016-2017.
-- [ ] [P0-CRITICAL] Upgrade Node.js from 0.10 to v20 LTS → TODO-451
+- [x] [P0-CRITICAL] Upgrade Node.js from 0.10 to v20 LTS → TODO-451 ✅ DONE 2026-03-03
 - [ ] [P0-CRITICAL] Security audit & CVE remediation (npm audit) → TODO-452
 - [ ] [P1-HIGH] Replace Watson NLC with Anthropic Claude LLM → TODO-453
 - [ ] [P1-HIGH] CI/CD pipeline + Docker Compose dev environment → TODO-454

@@ -1,0 +1,2327 @@
+{
+  "enterprise_targets": [
+    {
+      "name": "Nicole Eddy",
+      "email": "nicole.eddy@morganstanley.com",
+      "domain": "morganstanley.com"
+    },
+    {
+      "name": "Angela Valvano",
+      "email": "angela.valvano@morganstanley.com",
+      "domain": "morganstanley.com"
+    },
+    {
+      "name": "Jake Lown",
+      "email": "jlown@janney.com",
+      "domain": "janney.com"
+    },
+    {
+      "name": "Brian Killea",
+      "email": "brian.killea@edwardjones.com",
+      "domain": "edwardjones.com"
+    },
+    {
+      "name": "Pranav Yamjala",
+      "email": "pyamjala@bostonprivate.com",
+      "domain": "bostonprivate.com"
+    },
+    {
+      "name": "Joel Varghese",
+      "email": "joel.varghese@prudential.com",
+      "domain": "prudential.com"
+    },
+    {
+      "name": "Aaron Harkavy",
+      "email": "aaron.harkavy@lfg.com",
+      "domain": "lfg.com"
+    },
+    {
+      "name": "Stephanie Petrosini",
+      "email": "stephanie.petrosini@ms.com",
+      "domain": "ms.com"
+    }
+  ],
+  "ria_high_touch": [
+    {
+      "name": "Jared Tyson Lee",
+      "email": "jaredl@sheaffbrock.com",
+      "domain": "sheaffbrock.com"
+    },
+    {
+      "name": "Debra Kay McCulley",
+      "email": "debm@sheaffbrock.com",
+      "domain": "sheaffbrock.com"
+    },
+    {
+      "name": "Lisa Michelle Reddick",
+      "email": "michelle.reddick@sheaffbrock.com",
+      "domain": "sheaffbrock.com"
+    },
+    {
+      "name": "Mark Allen Vandygriff",
+      "email": "markv@sheaffbrock.com",
+      "domain": "sheaffbrock.com"
+    },
+    {
+      "name": "Teresa Lynde Kane",
+      "email": "terik@sheaffbrock.com",
+      "domain": "sheaffbrock.com"
+    },
+    {
+      "name": "Seth William Webb Hickle",
+      "email": "sethh@sheaffbrock.com",
+      "domain": "sheaffbrock.com"
+    },
+    {
+      "name": "Angela M Reecer",
+      "email": "angier@sheaffbrock.com",
+      "domain": "sheaffbrock.com"
+    },
+    {
+      "name": "James Patrick McMahon",
+      "email": "jimm@sheaffbrock.com",
+      "domain": "sheaffbrock.com"
+    },
+    {
+      "name": "Audrey Lynn Kurzawa",
+      "email": "audreyk@sheaffbrock.com",
+      "domain": "sheaffbrock.com"
+    },
+    {
+      "name": "Christina Ann Jordan",
+      "email": "christyj@sheaffbrock.com",
+      "domain": "sheaffbrock.com"
+    },
+    {
+      "name": "Katherine Elizabeth Harper",
+      "email": "kath@sheaffbrock.com",
+      "domain": "sheaffbrock.com"
+    },
+    {
+      "name": "Nicholas Andrew Shaheen",
+      "email": "nshaheen@fsa-1.com",
+      "domain": "fsa-1.com"
+    },
+    {
+      "name": "Jeffrey David Medvedik",
+      "email": "jmedvedik@fsa-1.com",
+      "domain": "fsa-1.com"
+    },
+    {
+      "name": "Jeffery Jay Bleim",
+      "email": "jbleim@fsa-1.com",
+      "domain": "fsa-1.com"
+    },
+    {
+      "name": "John Lawrence Sauger",
+      "email": "jsauger@fsa-1.com",
+      "domain": "fsa-1.com"
+    },
+    {
+      "name": "Richard Dean Trombley",
+      "email": "rtrombley@fsa-1.com",
+      "domain": "fsa-1.com"
+    },
+    {
+      "name": "Mark Anthony Virostick",
+      "email": "mvirostick@fsa-1.com",
+      "domain": "fsa-1.com"
+    },
+    {
+      "name": "Michael Leonard Wallace",
+      "email": "mwallace@fsa-1.com",
+      "domain": "fsa-1.com"
+    },
+    {
+      "name": "Ronald Lee Baellow",
+      "email": "rlb@anculbertson.com",
+      "domain": "anculbertson.com"
+    },
+    {
+      "name": "George Howell Kidder Jr.",
+      "email": "ghk@anculbertson.com",
+      "domain": "anculbertson.com"
+    },
+    {
+      "name": "Robert Henderson Packard",
+      "email": "rhp@anculbertson.com",
+      "domain": "anculbertson.com"
+    },
+    {
+      "name": "Ann Greene Turner",
+      "email": "agt@anculbertson.com",
+      "domain": "anculbertson.com"
+    },
+    {
+      "name": "Roger Russell Fulton",
+      "email": "rrf@anculbertson.com",
+      "domain": "anculbertson.com"
+    },
+    {
+      "name": "Matthew P. Jenkins",
+      "email": "mj@anculbertson.com",
+      "domain": "anculbertson.com"
+    },
+    {
+      "name": "David M Maloney",
+      "email": "dmm@anculbertson.com",
+      "domain": "anculbertson.com"
+    },
+    {
+      "name": "Michael William McDonald",
+      "email": "mmcdonald@spectruminvestor.com",
+      "domain": "spectruminvestor.com"
+    },
+    {
+      "name": "Matthew Paul Demet",
+      "email": "mdemet@spectruminvestor.com",
+      "domain": "spectruminvestor.com"
+    },
+    {
+      "name": "Cheryl Ann Besaw",
+      "email": "cluedtkestoehr@spectruminvestor.com",
+      "domain": "spectruminvestor.com"
+    },
+    {
+      "name": "Joanne Marie Tomczak",
+      "email": "jtomczak@spectruminvestor.com",
+      "domain": "spectruminvestor.com"
+    },
+    {
+      "name": "John F Schaetzel",
+      "email": "jschaetzel@spectruminvestor.com",
+      "domain": "spectruminvestor.com"
+    },
+    {
+      "name": "Sean Kenneth McDonnell",
+      "email": "smcdonnell@acadviser.com",
+      "domain": "acadviser.com"
+    },
+    {
+      "name": "Ryan B. Sheffer",
+      "email": "rsheffer@acadviser.com",
+      "domain": "acadviser.com"
+    },
+    {
+      "name": "Daniel Mark Amiot II",
+      "email": "damiot@acadviser.com",
+      "domain": "acadviser.com"
+    },
+    {
+      "name": "David R Forshew",
+      "email": "dforshew@acadviser.com",
+      "domain": "acadviser.com"
+    },
+    {
+      "name": "Jeffrey Nicholas Lido",
+      "email": "jlido@acadviser.com",
+      "domain": "acadviser.com"
+    },
+    {
+      "name": "Jared David Vandenberg",
+      "email": "jvandenberg@acadviser.com",
+      "domain": "acadviser.com"
+    },
+    {
+      "name": "Todd Michael Schmidt",
+      "email": "tschmidt@acadviser.com",
+      "domain": "acadviser.com"
+    },
+    {
+      "name": "Samantha Ann Williams",
+      "email": "swilliams@acadviser.com",
+      "domain": "acadviser.com"
+    },
+    {
+      "name": "Terra Rose Hohf",
+      "email": "tbonucchi@acadviser.com",
+      "domain": "acadviser.com"
+    },
+    {
+      "name": "Bobby Ray White",
+      "email": "bwhite@rfgadvisory.com",
+      "domain": "rfgadvisory.com"
+    },
+    {
+      "name": "Laura Elizabeth Hinton",
+      "email": "lhinton@rfgadvisory.com",
+      "domain": "rfgadvisory.com"
+    },
+    {
+      "name": "Mark Andrew Pearson",
+      "email": "mpearson@rfgadvisory.com",
+      "domain": "rfgadvisory.com"
+    },
+    {
+      "name": "Kevin Robert Grelle",
+      "email": "kgrelle@rfgadvisory.com",
+      "domain": "rfgadvisory.com"
+    },
+    {
+      "name": "Dennis Randall Laird",
+      "email": "rlaird@rfgadvisory.com",
+      "domain": "rfgadvisory.com"
+    },
+    {
+      "name": "John William Pfaudler Jr.",
+      "email": "jpfaudler@rfgadvisory.com",
+      "domain": "rfgadvisory.com"
+    },
+    {
+      "name": "Kevin Wade Harper",
+      "email": "kharper@rfgadvisory.com",
+      "domain": "rfgadvisory.com"
+    },
+    {
+      "name": "Bradley J. Kamman",
+      "email": "bkamman@rfgadvisory.com",
+      "domain": "rfgadvisory.com"
+    },
+    {
+      "name": "Christine Marie Cipolla",
+      "email": "ccipolla@rfgadvisory.com",
+      "domain": "rfgadvisory.com"
+    },
+    {
+      "name": "William Jack Haskins",
+      "email": "bhaskins@rfgadvisory.com",
+      "domain": "rfgadvisory.com"
+    },
+    {
+      "name": "Dale W. Terrell",
+      "email": "dterrell@rfgadvisory.com",
+      "domain": "rfgadvisory.com"
+    },
+    {
+      "name": "James Harol Harrison Jr.",
+      "email": "jharrison@rfgadvisory.com",
+      "domain": "rfgadvisory.com"
+    },
+    {
+      "name": "Donald Sherwood Lundy",
+      "email": "dlundy@rfgadvisory.com",
+      "domain": "rfgadvisory.com"
+    },
+    {
+      "name": "Victoria Ann Scoles",
+      "email": "vscoles@rfgadvisory.com",
+      "domain": "rfgadvisory.com"
+    },
+    {
+      "name": "Danny Lee Hanson II",
+      "email": "dhanson@nicoletwealth.com",
+      "domain": "nicoletwealth.com"
+    },
+    {
+      "name": "Darrick E. Munsch",
+      "email": "dmunsch@nicoletwealth.com",
+      "domain": "nicoletwealth.com"
+    },
+    {
+      "name": "David Andrew Loasby",
+      "email": "dloasby@nicoletwealth.com",
+      "domain": "nicoletwealth.com"
+    },
+    {
+      "name": "Patrick Joseph Madson",
+      "email": "pmadson@nicoletwealth.com",
+      "domain": "nicoletwealth.com"
+    },
+    {
+      "name": "Ryan O'Leary",
+      "email": "klux@nicoletwealth.com",
+      "domain": "nicoletwealth.com"
+    },
+    {
+      "name": "William Thompson Sneed Jr.",
+      "email": "will.sneed@dhgwa.com",
+      "domain": "dhgwa.com"
+    },
+    {
+      "name": "William Fraser Laird Jr.",
+      "email": "bill.laird@dhgwa.com",
+      "domain": "dhgwa.com"
+    },
+    {
+      "name": "Catherine Barbara Smith Anderson",
+      "email": "kanderson@dhgwa.com",
+      "domain": "dhgwa.com"
+    },
+    {
+      "name": "Frederick Franklin Kramer",
+      "email": "rick.kramer@dhgwa.com",
+      "domain": "dhgwa.com"
+    },
+    {
+      "name": "Ashley Witt Israel",
+      "email": "ashley.israel@dhgwa.com",
+      "domain": "dhgwa.com"
+    },
+    {
+      "name": "Sarah Rebecca Paris",
+      "email": "sarah.paris@dhgwa.com",
+      "domain": "dhgwa.com"
+    },
+    {
+      "name": "Jason Andrew Lunsford",
+      "email": "jason.lunsford@dhgwa.com",
+      "domain": "dhgwa.com"
+    },
+    {
+      "name": "David William Winn",
+      "email": "dave.winn@dhgwa.com",
+      "domain": "dhgwa.com"
+    },
+    {
+      "name": "Carson Skottowe Wannamaker",
+      "email": "skotty.wannamaker@dhgwa.com",
+      "domain": "dhgwa.com"
+    },
+    {
+      "name": "David John Koppenheffer",
+      "email": "dave.koppenheffer@dhgwa.com",
+      "domain": "dhgwa.com"
+    },
+    {
+      "name": "Ellen Hawke Lindh",
+      "email": "ellen.lindh@dhgwa.com",
+      "domain": "dhgwa.com"
+    },
+    {
+      "name": "Justin Robert Baas",
+      "email": "justin.baas@dhgwa.com",
+      "domain": "dhgwa.com"
+    },
+    {
+      "name": "Dorsey Webster Tyndall",
+      "email": "webb.tyndall@dhgwa.com",
+      "domain": "dhgwa.com"
+    },
+    {
+      "name": "Colby Brittan Robinson",
+      "email": "colby.robinson@dhgwa.com",
+      "domain": "dhgwa.com"
+    },
+    {
+      "name": "William Clyde Bridgeman",
+      "email": "billy.bridgeman@dhgwa.com",
+      "domain": "dhgwa.com"
+    },
+    {
+      "name": "Daniel James Dingus",
+      "email": "ddingus@fragassoadvisors.com",
+      "domain": "fragassoadvisors.com"
+    },
+    {
+      "name": "Andrew David Silver",
+      "email": "asilver@fragassoadvisors.com",
+      "domain": "fragassoadvisors.com"
+    },
+    {
+      "name": "Robert James Yelenovsky",
+      "email": "ryelenovsky@fragassoadvisors.com",
+      "domain": "fragassoadvisors.com"
+    },
+    {
+      "name": "Christine Lucas Erimias",
+      "email": "cerimias@fragassoadvisors.com",
+      "domain": "fragassoadvisors.com"
+    },
+    {
+      "name": "Damien Gottschalk",
+      "email": "dgottschalk@fragassoadvisors.com",
+      "domain": "fragassoadvisors.com"
+    },
+    {
+      "name": "Andrew Madden",
+      "email": "amadden@fragassoadvisors.com",
+      "domain": "fragassoadvisors.com"
+    },
+    {
+      "name": "Daniel Spiro Tatomir",
+      "email": "dtatomir@fragassoadvisors.com",
+      "domain": "fragassoadvisors.com"
+    },
+    {
+      "name": "Liliann Moser",
+      "email": "lmoser@fragassoadvisors.com",
+      "domain": "fragassoadvisors.com"
+    },
+    {
+      "name": "Jay D. Angotti",
+      "email": "jay.angotti@swanglobalinvestments.com",
+      "domain": "swanglobalinvestments.com"
+    },
+    {
+      "name": "Chris S. Caswell",
+      "email": "chris.caswell@swanglobalinvestments.com",
+      "domain": "swanglobalinvestments.com"
+    },
+    {
+      "name": "Robert Alan Armstrong",
+      "email": "robert.armstrong@swanglobalinvestments.com",
+      "domain": "swanglobalinvestments.com"
+    },
+    {
+      "name": "Jamie Alan Atkinson",
+      "email": "jamie.atkinson@swanglobalinvestments.com",
+      "domain": "swanglobalinvestments.com"
+    },
+    {
+      "name": "Micah John Wakefield",
+      "email": "micah.wakefield@swanglobalinvestments.com",
+      "domain": "swanglobalinvestments.com"
+    },
+    {
+      "name": "David Osborn Lovell",
+      "email": "david.lovell@swanglobalinvestments.com",
+      "domain": "swanglobalinvestments.com"
+    },
+    {
+      "name": "Shirley Mae Crisler",
+      "email": "scrisler@domiinvestors.com",
+      "domain": "domiinvestors.com"
+    },
+    {
+      "name": "Cameron Edward Shropshire III",
+      "email": "cameron@domiinvestors.com",
+      "domain": "domiinvestors.com"
+    },
+    {
+      "name": "Robert Martin Werr",
+      "email": "bwerr@domiinvestors.com",
+      "domain": "domiinvestors.com"
+    },
+    {
+      "name": "John Ernest Boyd",
+      "email": "jeboyd@domiinvestors.com",
+      "domain": "domiinvestors.com"
+    },
+    {
+      "name": "Randall Warren Smith",
+      "email": "rwsmith@domiinvestors.com",
+      "domain": "domiinvestors.com"
+    },
+    {
+      "name": "Thomas Stanley Brister",
+      "email": "tsbrister@domiinvestors.com",
+      "domain": "domiinvestors.com"
+    },
+    {
+      "name": "Kimberly Ann Melton",
+      "email": "kim@domiinvestors.com",
+      "domain": "domiinvestors.com"
+    },
+    {
+      "name": "Michael Shane Barber",
+      "email": "michael@barberfinancialgroup.com",
+      "domain": "barberfinancialgroup.com"
+    },
+    {
+      "name": "Thomas Dean Clough",
+      "email": "tomc@barberfinancialgroup.com",
+      "domain": "barberfinancialgroup.com"
+    },
+    {
+      "name": "Benjamin Leo Herting",
+      "email": "benh@barberfinancialgroup.com",
+      "domain": "barberfinancialgroup.com"
+    },
+    {
+      "name": "Eric John Sheerin",
+      "email": "esheerin@barberfinancialgroup.com",
+      "domain": "barberfinancialgroup.com"
+    },
+    {
+      "name": "Courtney J. Roberts",
+      "email": "courtneyr@barberfinancialgroup.com",
+      "domain": "barberfinancialgroup.com"
+    },
+    {
+      "name": "Jeffrey Paul Ernest",
+      "email": "jeffe@barberfinancialgroup.com",
+      "domain": "barberfinancialgroup.com"
+    },
+    {
+      "name": "Craig James Snedden",
+      "email": "craigs@barberfinancialgroup.com",
+      "domain": "barberfinancialgroup.com"
+    },
+    {
+      "name": "Diane Dee Byrne",
+      "email": "diane@ellenbecker.com",
+      "domain": "ellenbecker.com"
+    },
+    {
+      "name": "Maureen Coogan Holsen",
+      "email": "maureen@ellenbecker.com",
+      "domain": "ellenbecker.com"
+    },
+    {
+      "name": "Anne Marie Mank",
+      "email": "anne@ellenbecker.com",
+      "domain": "ellenbecker.com"
+    },
+    {
+      "name": "Karen Jean Ellenbecker",
+      "email": "karen@ellenbecker.com",
+      "domain": "ellenbecker.com"
+    },
+    {
+      "name": "Brett William Engelking",
+      "email": "brett@ellenbecker.com",
+      "domain": "ellenbecker.com"
+    },
+    {
+      "name": "Heather Kay Deaton",
+      "email": "heather@ellenbecker.com",
+      "domain": "ellenbecker.com"
+    },
+    {
+      "name": "Kristina Amelia Alfini",
+      "email": "tina@ellenbecker.com",
+      "domain": "ellenbecker.com"
+    },
+    {
+      "name": "Sandra Lynn Miller",
+      "email": "sandy@ellenbecker.com",
+      "domain": "ellenbecker.com"
+    },
+    {
+      "name": "Jamie Colburn Williams",
+      "email": "jamie@ellenbecker.com",
+      "domain": "ellenbecker.com"
+    },
+    {
+      "name": "Kristina Elizabeth Schnuckel",
+      "email": "kristina@ellenbecker.com",
+      "domain": "ellenbecker.com"
+    },
+    {
+      "name": "Brent David Enders",
+      "email": "benders@usafinancial.net",
+      "domain": "usafinancial.net"
+    },
+    {
+      "name": "Andrea Denise Stewart McGrew",
+      "email": "amcgrew@usafinancial.net",
+      "domain": "usafinancial.net"
+    },
+    {
+      "name": "William Clayton Bachert",
+      "email": "wbachert@usafinancial.net",
+      "domain": "usafinancial.net"
+    },
+    {
+      "name": "Mark Robert Mersman",
+      "email": "mmersman@usafinancial.net",
+      "domain": "usafinancial.net"
+    },
+    {
+      "name": "Matthew Lee McGrew",
+      "email": "mmcgrew@usafinancial.net",
+      "domain": "usafinancial.net"
+    },
+    {
+      "name": "Matthew H. Eilers",
+      "email": "meilers@usafinancial.net",
+      "domain": "usafinancial.net"
+    },
+    {
+      "name": "Christine Marie Lindberg",
+      "email": "christine.lindberg@zhangfinancial.com",
+      "domain": "zhangfinancial.com"
+    },
+    {
+      "name": "Kolby Loren Smith",
+      "email": "kolby.smith@zhangfinancial.com",
+      "domain": "zhangfinancial.com"
+    },
+    {
+      "name": "Barbara Cheryl Robbins",
+      "email": "barbara.robbins@zhangfinancial.com",
+      "domain": "zhangfinancial.com"
+    },
+    {
+      "name": "Amanda Marie Hartman",
+      "email": "amanda.hartman@zhangfinancial.com",
+      "domain": "zhangfinancial.com"
+    },
+    {
+      "name": "David William Marshall",
+      "email": "dave.marshall@zhangfinancial.com",
+      "domain": "zhangfinancial.com"
+    },
+    {
+      "name": "Richard Robert Rush",
+      "email": "rrush@ewmadvisors.com",
+      "domain": "ewmadvisors.com"
+    },
+    {
+      "name": "Jaclyn Marie Snyder",
+      "email": "jsnyder@ewmadvisors.com",
+      "domain": "ewmadvisors.com"
+    },
+    {
+      "name": "Michael James Lay",
+      "email": "mlay@ewmadvisors.com",
+      "domain": "ewmadvisors.com"
+    },
+    {
+      "name": "Kevin Edmund Cross",
+      "email": "kcross@ewmadvisors.com",
+      "domain": "ewmadvisors.com"
+    },
+    {
+      "name": "John Lawrence Barbrick",
+      "email": "jbarbrick@ewmadvisors.com",
+      "domain": "ewmadvisors.com"
+    },
+    {
+      "name": "Lisa McCormick",
+      "email": "lmccormick@ewmadvisors.com",
+      "domain": "ewmadvisors.com"
+    },
+    {
+      "name": "Suchitra Sampath Busch",
+      "email": "sbusch@ewmadvisors.com",
+      "domain": "ewmadvisors.com"
+    },
+    {
+      "name": "Christopher Walter Kubert",
+      "email": "ckubert@ewmadvisors.com",
+      "domain": "ewmadvisors.com"
+    },
+    {
+      "name": "James A. Plaskey Jr.",
+      "email": "jplaskey@ewmadvisors.com",
+      "domain": "ewmadvisors.com"
+    }
+  ],
+  "ria_warm": [
+    {
+      "name": "dennis houlihan",
+      "email": "dhoulihan@houlihan.biz",
+      "domain": "houlihan.biz"
+    },
+    {
+      "name": "dennis houlihan",
+      "email": "dennis@houlihan.biz",
+      "domain": "houlihan.biz"
+    },
+    {
+      "name": "",
+      "email": "lmciarrocca@1847financial.com",
+      "domain": "1847financial.com"
+    },
+    {
+      "name": "",
+      "email": "swhiskeyman@1847financial.com",
+      "domain": "1847financial.com"
+    },
+    {
+      "name": "",
+      "email": "jason.kim@salesprocess.io",
+      "domain": "salesprocess.io"
+    },
+    {
+      "name": "",
+      "email": "justin.babin@salesprocess.io",
+      "domain": "salesprocess.io"
+    },
+    {
+      "name": "David Chandler Wright",
+      "email": "dave@sierrainvestment.com",
+      "domain": "sierrainvestment.com"
+    },
+    {
+      "name": "Gayatri Rajiv Vyas",
+      "email": "gayatri@sierrainvestment.com",
+      "domain": "sierrainvestment.com"
+    },
+    {
+      "name": "Kenneth Lee Sleeper",
+      "email": "ken@sierrainvestment.com",
+      "domain": "sierrainvestment.com"
+    },
+    {
+      "name": "Phyllis Joy Leibman",
+      "email": "joy@sierrainvestment.com",
+      "domain": "sierrainvestment.com"
+    },
+    {
+      "name": "John Chi Wai Yung",
+      "email": "jyung@mulhollandwa.com",
+      "domain": "mulhollandwa.com"
+    },
+    {
+      "name": "Michael Todd Messinger",
+      "email": "mmessinger@mulhollandwa.com",
+      "domain": "mulhollandwa.com"
+    },
+    {
+      "name": "Deirdre Hafen",
+      "email": "deirdre.hafen@tuckeram.com",
+      "domain": "tuckeram.com"
+    },
+    {
+      "name": "Lloyd Joseph Domingos",
+      "email": "lloyd.domingos@tuckeram.com",
+      "domain": "tuckeram.com"
+    },
+    {
+      "name": "Chris D. Davies",
+      "email": "chris@navwm.com",
+      "domain": "navwm.com"
+    },
+    {
+      "name": "Christopher William Staples",
+      "email": "christopher@navwm.com",
+      "domain": "navwm.com"
+    },
+    {
+      "name": "James W Davies",
+      "email": "jim@navwm.com",
+      "domain": "navwm.com"
+    },
+    {
+      "name": "Gregg Eric Clarke",
+      "email": "gregg@meritaswealth.com",
+      "domain": "meritaswealth.com"
+    },
+    {
+      "name": "Phyllis Gessert Garratt",
+      "email": "phyllis@meritaswealth.com",
+      "domain": "meritaswealth.com"
+    },
+    {
+      "name": "Adele P. McIntosh",
+      "email": "amcintosh@danielstansey.com",
+      "domain": "danielstansey.com"
+    },
+    {
+      "name": "Christopher Frank Daniels",
+      "email": "cdaniels@danielstansey.com",
+      "domain": "danielstansey.com"
+    },
+    {
+      "name": "Darren Foster Petty",
+      "email": "darren.petty@tuckeradvisors.com",
+      "domain": "tuckeradvisors.com"
+    },
+    {
+      "name": "Sherilyn Leigh Zimmermann",
+      "email": "sheri.zimmermann@tuckeradvisors.com",
+      "domain": "tuckeradvisors.com"
+    },
+    {
+      "name": "Karlan Ken Tucker",
+      "email": "karlan@tuckeradvisors.com",
+      "domain": "tuckeradvisors.com"
+    },
+    {
+      "name": "Vincent Albert Vantassel",
+      "email": "vvantassel@allianceam.com",
+      "domain": "allianceam.com"
+    },
+    {
+      "name": "Scott Norman Tank",
+      "email": "stank@allianceam.com",
+      "domain": "allianceam.com"
+    },
+    {
+      "name": "Steven James Thomas",
+      "email": "sthomas@sglfinancial.com",
+      "domain": "sglfinancial.com"
+    },
+    {
+      "name": "Jennifer Lynn Eberwein",
+      "email": "jeberwein@sglfinancial.com",
+      "domain": "sglfinancial.com"
+    },
+    {
+      "name": "Gabriel David Lewit",
+      "email": "glewit@sglfinancial.com",
+      "domain": "sglfinancial.com"
+    },
+    {
+      "name": "Craig Scott Wade",
+      "email": "cw@rsi2.com",
+      "domain": "rsi2.com"
+    },
+    {
+      "name": "Jim Gordon Rhodes",
+      "email": "jr@rsi2.com",
+      "domain": "rsi2.com"
+    },
+    {
+      "name": "John Rush Vann Jr.",
+      "email": "jv@rsi2.com",
+      "domain": "rsi2.com"
+    },
+    {
+      "name": "J. Gordon Rhodes",
+      "email": "gr@rsi2.com",
+      "domain": "rsi2.com"
+    },
+    {
+      "name": "Jeffrey James Pearce",
+      "email": "jpearce@vermillionfinancial.com",
+      "domain": "vermillionfinancial.com"
+    },
+    {
+      "name": "Robert Warren Hanson Jr.",
+      "email": "rhanson@vermillionfinancial.com",
+      "domain": "vermillionfinancial.com"
+    },
+    {
+      "name": "Phillip C Coad",
+      "email": "pcoad@vermillionfinancial.com",
+      "domain": "vermillionfinancial.com"
+    },
+    {
+      "name": "Bradley Thomas Goss",
+      "email": "brad@veritasmail.com",
+      "domain": "veritasmail.com"
+    },
+    {
+      "name": "Mitchum W. Tapson",
+      "email": "mitch@veritasmail.com",
+      "domain": "veritasmail.com"
+    },
+    {
+      "name": "Diana Kay Rogers",
+      "email": "diana@veritasmail.com",
+      "domain": "veritasmail.com"
+    },
+    {
+      "name": "Joseph Anthony Caputo",
+      "email": "jcaputo@bwfa.com",
+      "domain": "bwfa.com"
+    },
+    {
+      "name": "Joseph U Manfredi",
+      "email": "jmanfredi@bwfa.com",
+      "domain": "bwfa.com"
+    },
+    {
+      "name": "Douglas Paul Kintzinger",
+      "email": "doug@imscapital.com",
+      "domain": "imscapital.com"
+    },
+    {
+      "name": "Carl William Marker",
+      "email": "marker@imscapital.com",
+      "domain": "imscapital.com"
+    },
+    {
+      "name": "Christopher L Magana",
+      "email": "chris@imscapital.com",
+      "domain": "imscapital.com"
+    },
+    {
+      "name": "Daniel Allan Belica",
+      "email": "dan@imscapital.com",
+      "domain": "imscapital.com"
+    },
+    {
+      "name": "David Gregg Kelly",
+      "email": "dkelly@cpasllc.com",
+      "domain": "cpasllc.com"
+    },
+    {
+      "name": "Steven Madonna",
+      "email": "smadonna@cpasllc.com",
+      "domain": "cpasllc.com"
+    },
+    {
+      "name": "Dominick Thomas Scianandre",
+      "email": "dscianandre@hhcminc.com",
+      "domain": "hhcminc.com"
+    },
+    {
+      "name": "Frederick William Peterson",
+      "email": "fpeterson@hhcminc.com",
+      "domain": "hhcminc.com"
+    },
+    {
+      "name": "William James Williamson III",
+      "email": "bill.williamson@gladstonewealth.com",
+      "domain": "gladstonewealth.com"
+    },
+    {
+      "name": "Jomar Monserate Fernandez",
+      "email": "jfernandez@gladstonewealth.com",
+      "domain": "gladstonewealth.com"
+    },
+    {
+      "name": "Keith Thomas Brothers",
+      "email": "keith.brothers@gladstonewealth.com",
+      "domain": "gladstonewealth.com"
+    },
+    {
+      "name": "Michael Kennedy Carberry",
+      "email": "michael.carberry@gladstonewealth.com",
+      "domain": "gladstonewealth.com"
+    },
+    {
+      "name": "Joshua Barret Diamond",
+      "email": "josh.diamond@tcgwealth.com",
+      "domain": "tcgwealth.com"
+    },
+    {
+      "name": "Ira S. Katz",
+      "email": "ira.katz@tcgwealth.com",
+      "domain": "tcgwealth.com"
+    },
+    {
+      "name": "Richard Lynn Fox",
+      "email": "fox@aisweb.com",
+      "domain": "aisweb.com"
+    },
+    {
+      "name": "Gerald Andrew Wells",
+      "email": "gwells@aisweb.com",
+      "domain": "aisweb.com"
+    },
+    {
+      "name": "Jaclyn Kate Harrington",
+      "email": "kharrington@unitedadvisors.com",
+      "domain": "unitedadvisors.com"
+    },
+    {
+      "name": "Aubrey Marie Paganelli",
+      "email": "apaganelli@unitedadvisors.com",
+      "domain": "unitedadvisors.com"
+    },
+    {
+      "name": "Henry Anthony Fanger",
+      "email": "hank@prosperityfg.com",
+      "domain": "prosperityfg.com"
+    },
+    {
+      "name": "Cesar Bagamasbad Dantes",
+      "email": "al@prosperityfg.com",
+      "domain": "prosperityfg.com"
+    },
+    {
+      "name": "Jamie Granville Hargrave",
+      "email": "jamie@prosperityfg.com",
+      "domain": "prosperityfg.com"
+    },
+    {
+      "name": "Charles Anthony Ballweg",
+      "email": "chuck@prosperityfg.com",
+      "domain": "prosperityfg.com"
+    },
+    {
+      "name": "Louis Peter Stanasolovich",
+      "email": "lstanasolovich@legend-financial.com",
+      "domain": "legend-financial.com"
+    },
+    {
+      "name": "James Jude Holtzman",
+      "email": "jholtzman@legend-financial.com",
+      "domain": "legend-financial.com"
+    },
+    {
+      "name": "Jon Keith Cook",
+      "email": "jcook@cookwealth.com",
+      "domain": "cookwealth.com"
+    },
+    {
+      "name": "Brian J. Cook",
+      "email": "bcook@cookwealth.com",
+      "domain": "cookwealth.com"
+    },
+    {
+      "name": "Robert Doran Shepard",
+      "email": "bshepard@cap-mgt.com",
+      "domain": "cap-mgt.com"
+    },
+    {
+      "name": "Ralph Hoie Tuttle",
+      "email": "rtuttle@cap-mgt.com",
+      "domain": "cap-mgt.com"
+    },
+    {
+      "name": "David Matthew Riley",
+      "email": "driley@strategyfinancialgroup.com",
+      "domain": "strategyfinancialgroup.com"
+    },
+    {
+      "name": "Calvin Peter Goetz",
+      "email": "cgoetz@strategyfinancialgroup.com",
+      "domain": "strategyfinancialgroup.com"
+    },
+    {
+      "name": "Neil Eric Elmouchi",
+      "email": "neil@thewiseinvestor.net",
+      "domain": "thewiseinvestor.net"
+    },
+    {
+      "name": "Timothy John Milaney",
+      "email": "tim@thewiseinvestor.net",
+      "domain": "thewiseinvestor.net"
+    },
+    {
+      "name": "Caleb A. Tucker",
+      "email": "ctucker@wellspringwealth.com",
+      "domain": "wellspringwealth.com"
+    },
+    {
+      "name": "Valeri Jan Bishop",
+      "email": "vbishop@wellspringwealth.com",
+      "domain": "wellspringwealth.com"
+    },
+    {
+      "name": "Amy Lynch",
+      "email": "alynch@riverstreetadvisors.com",
+      "domain": "riverstreetadvisors.com"
+    },
+    {
+      "name": "Bradley Joseph Johnson",
+      "email": "bjohnson@riverstreetadvisors.com",
+      "domain": "riverstreetadvisors.com"
+    },
+    {
+      "name": "Yamilet Suarez",
+      "email": "ysuarez@riverstreetadvisors.com",
+      "domain": "riverstreetadvisors.com"
+    },
+    {
+      "name": "Michael Vincent Demski",
+      "email": "mdemski@riverstreetadvisors.com",
+      "domain": "riverstreetadvisors.com"
+    },
+    {
+      "name": "Christopher Allan Matlock",
+      "email": "cmatlock@goodmanfinancial.com",
+      "domain": "goodmanfinancial.com"
+    },
+    {
+      "name": "Lee Joseph Taylor",
+      "email": "ltaylor@goodmanfinancial.com",
+      "domain": "goodmanfinancial.com"
+    },
+    {
+      "name": "Charlotte Marie Jungen",
+      "email": "cjungen@goodmanfinancial.com",
+      "domain": "goodmanfinancial.com"
+    },
+    {
+      "name": "Kimberlee Marie Brown",
+      "email": "kimberlee.brown@jnba.com",
+      "domain": "jnba.com"
+    },
+    {
+      "name": "Stephanie Jean Rossi",
+      "email": "srossi@jnba.com",
+      "domain": "jnba.com"
+    },
+    {
+      "name": "John William Foster",
+      "email": "jfoster@jnba.com",
+      "domain": "jnba.com"
+    },
+    {
+      "name": "Stephen Dale Bull",
+      "email": "sbull@veruscapitalpartners.com",
+      "domain": "veruscapitalpartners.com"
+    },
+    {
+      "name": "Zachary Taylor Mason",
+      "email": "zmason@veruscapitalpartners.com",
+      "domain": "veruscapitalpartners.com"
+    },
+    {
+      "name": "Brandon Carl Drespling",
+      "email": "brandond@triumphcapitalmanagement.com",
+      "domain": "triumphcapitalmanagement.com"
+    },
+    {
+      "name": "Cory Philip Robinson",
+      "email": "coryr@triumphcapitalmanagement.com",
+      "domain": "triumphcapitalmanagement.com"
+    },
+    {
+      "name": "James Baker Peters",
+      "email": "jimp@triumphcapitalmanagement.com",
+      "domain": "triumphcapitalmanagement.com"
+    },
+    {
+      "name": "Daniel L. Mayer",
+      "email": "danm@triumphcapitalmanagement.com",
+      "domain": "triumphcapitalmanagement.com"
+    },
+    {
+      "name": "Stephen Hardin Obenchain",
+      "email": "sobenchain@dcmol.com",
+      "domain": "dcmol.com"
+    },
+    {
+      "name": "Matthew Kyle Markle",
+      "email": "kmarkle@dcmol.com",
+      "domain": "dcmol.com"
+    },
+    {
+      "name": "Patrick Aaron Justice",
+      "email": "patrick@demmingfinancial.com",
+      "domain": "demmingfinancial.com"
+    },
+    {
+      "name": "Karen R Bordonaro",
+      "email": "karen@demmingfinancial.com",
+      "domain": "demmingfinancial.com"
+    },
+    {
+      "name": "Dean A. Huddleston",
+      "email": "dhuddleston@yourlifeafterwork.com",
+      "domain": "yourlifeafterwork.com"
+    },
+    {
+      "name": "Susan Renee Jones",
+      "email": "rjones@yourlifeafterwork.com",
+      "domain": "yourlifeafterwork.com"
+    },
+    {
+      "name": "Nancy Karen Nelson",
+      "email": "nnelson@gibslandbank.com",
+      "domain": "gibslandbank.com"
+    },
+    {
+      "name": "Robert Baucum Anglin",
+      "email": "ranglin@gibslandbank.com",
+      "domain": "gibslandbank.com"
+    },
+    {
+      "name": "Meredyth Roberts Hazzard",
+      "email": "robby.hazzard@bhkllc.com",
+      "domain": "bhkllc.com"
+    },
+    {
+      "name": "James Bailey Knight",
+      "email": "bailey.knight@bhkllc.com",
+      "domain": "bhkllc.com"
+    },
+    {
+      "name": "Paul S. Baumbach",
+      "email": "paul@mallardfinancial.com",
+      "domain": "mallardfinancial.com"
+    },
+    {
+      "name": "Pamela S. Baumbach",
+      "email": "pam@mallardfinancial.com",
+      "domain": "mallardfinancial.com"
+    },
+    {
+      "name": "John David Porter",
+      "email": "jporter@kcpag.com",
+      "domain": "kcpag.com"
+    },
+    {
+      "name": "Jolene Marie Johnson",
+      "email": "jjohnson@kcpag.com",
+      "domain": "kcpag.com"
+    },
+    {
+      "name": "Brian Anthony Bouillet",
+      "email": "bbouillet@kcpag.com",
+      "domain": "kcpag.com"
+    },
+    {
+      "name": "Jamie Lynn Scales",
+      "email": "jscales@kcpag.com",
+      "domain": "kcpag.com"
+    },
+    {
+      "name": "Grant David Engelbart",
+      "email": "gengelbart@clsinvest.com",
+      "domain": "clsinvest.com"
+    },
+    {
+      "name": "Case Daniel Eichenberger",
+      "email": "case.eichenberger@clsinvest.com",
+      "domain": "clsinvest.com"
+    },
+    {
+      "name": "April Lynn  Vinciarelli",
+      "email": "apiccotti@jacobicapital.com",
+      "domain": "jacobicapital.com"
+    },
+    {
+      "name": "John Bernard McCarthy",
+      "email": "jmccarthy@jacobicapital.com",
+      "domain": "jacobicapital.com"
+    },
+    {
+      "name": "Jeffrey P. Clemente",
+      "email": "jclemente@jacobicapital.com",
+      "domain": "jacobicapital.com"
+    },
+    {
+      "name": "Christina Vignec Winch",
+      "email": "christina.winch@winchfinancial.com",
+      "domain": "winchfinancial.com"
+    },
+    {
+      "name": "Matthew William Weyers",
+      "email": "matt.weyers@winchfinancial.com",
+      "domain": "winchfinancial.com"
+    },
+    {
+      "name": "John Elmer Hintz",
+      "email": "john.hintz@winchfinancial.com",
+      "domain": "winchfinancial.com"
+    },
+    {
+      "name": "Samuel Ronald Winch",
+      "email": "samuel.winch@winchfinancial.com",
+      "domain": "winchfinancial.com"
+    },
+    {
+      "name": "John Wayne Perdue Jr.",
+      "email": "jperdue@wmgfa.com",
+      "domain": "wmgfa.com"
+    },
+    {
+      "name": "Charles W. Sells",
+      "email": "csells@wmgfa.com",
+      "domain": "wmgfa.com"
+    },
+    {
+      "name": "David Allen Pierce",
+      "email": "dpierce@catalystwealthmanagement.com",
+      "domain": "catalystwealthmanagement.com"
+    },
+    {
+      "name": "Lisa Smallwood Hamilton",
+      "email": "lhamilton@catalystwealthmanagement.com",
+      "domain": "catalystwealthmanagement.com"
+    },
+    {
+      "name": "Andres Felipe Bonell",
+      "email": "andres@bellrockcapital.com",
+      "domain": "bellrockcapital.com"
+    },
+    {
+      "name": "Jacqueline Reeves",
+      "email": "jackie@bellrockcapital.com",
+      "domain": "bellrockcapital.com"
+    },
+    {
+      "name": "Jacquelyn Kerry Blue",
+      "email": "jackieb@bellrockcapital.com",
+      "domain": "bellrockcapital.com"
+    },
+    {
+      "name": "John Paul Schwan",
+      "email": "jschwan@schwanfg.com",
+      "domain": "schwanfg.com"
+    },
+    {
+      "name": "Sarathi Giridhar",
+      "email": "sgiridhar@schwanfg.com",
+      "domain": "schwanfg.com"
+    },
+    {
+      "name": "Allen Ray Soulek",
+      "email": "asoulek@schwanfg.com",
+      "domain": "schwanfg.com"
+    },
+    {
+      "name": "Ryan D Feuerstein",
+      "email": "rfeuerstein@wnyasset.com",
+      "domain": "wnyasset.com"
+    },
+    {
+      "name": "John Anthony Pieroni",
+      "email": "jpieroni@wnyasset.com",
+      "domain": "wnyasset.com"
+    },
+    {
+      "name": "Lisa Marie Colon",
+      "email": "colonl@meetgirard.com",
+      "domain": "meetgirard.com"
+    },
+    {
+      "name": "William Francis Vansant III",
+      "email": "vansantw@meetgirard.com",
+      "domain": "meetgirard.com"
+    },
+    {
+      "name": "James Michael Spindler",
+      "email": "spindlerj@meetgirard.com",
+      "domain": "meetgirard.com"
+    },
+    {
+      "name": "Joseph Daniel Smith",
+      "email": "smithj@meetgirard.com",
+      "domain": "meetgirard.com"
+    },
+    {
+      "name": "Michael Scott Brocker",
+      "email": "mbrocker@buckheadinvestments.com",
+      "domain": "buckheadinvestments.com"
+    },
+    {
+      "name": "Taylor Nolan Williams",
+      "email": "twilliams@buckheadinvestments.com",
+      "domain": "buckheadinvestments.com"
+    },
+    {
+      "name": "Naushad Virji",
+      "email": "naushad@shariaportfolio.com",
+      "domain": "shariaportfolio.com"
+    },
+    {
+      "name": "Ishaq Khader Mohiuddin",
+      "email": "ishaq@shariaportfolio.com",
+      "domain": "shariaportfolio.com"
+    },
+    {
+      "name": "John Robert Dixon",
+      "email": "jdixon@coseyfinancial.com",
+      "domain": "coseyfinancial.com"
+    },
+    {
+      "name": "Randy Lynn Puckett",
+      "email": "rpuckett@coseyfinancial.com",
+      "domain": "coseyfinancial.com"
+    },
+    {
+      "name": "Jonathan Yuri Freeman",
+      "email": "jfreeman@centurawealth.com",
+      "domain": "centurawealth.com"
+    },
+    {
+      "name": "Kyle Lee Malmstrom",
+      "email": "kmalmstrom@centurawealth.com",
+      "domain": "centurawealth.com"
+    },
+    {
+      "name": "Eric Shea Hollifield",
+      "email": "eric.hollifield@hamiltoninvestmentcounsel.com",
+      "domain": "hamiltoninvestmentcounsel.com"
+    },
+    {
+      "name": "Jeffrey Kenneth Kirkpatrick",
+      "email": "jeff.kirkpatrick@hamiltoninvestmentcounsel.com",
+      "domain": "hamiltoninvestmentcounsel.com"
+    },
+    {
+      "name": "Harry Michael Barth",
+      "email": "harry@barthfinancialadvisorsllc.com",
+      "domain": "barthfinancialadvisorsllc.com"
+    },
+    {
+      "name": "William Thomas Black III",
+      "email": "bill@barthfinancialadvisorsllc.com",
+      "domain": "barthfinancialadvisorsllc.com"
+    },
+    {
+      "name": "Richard W Jackman",
+      "email": "richard@barthfinancialadvisorsllc.com",
+      "domain": "barthfinancialadvisorsllc.com"
+    },
+    {
+      "name": "Danielle Marie Doran",
+      "email": "ddoran@bank-northwest.com",
+      "domain": "bank-northwest.com"
+    },
+    {
+      "name": "Ryan David Hervey",
+      "email": "rhervey@bank-northwest.com",
+      "domain": "bank-northwest.com"
+    },
+    {
+      "name": "John Patrick Schloegel",
+      "email": "john@cordamanagement.com",
+      "domain": "cordamanagement.com"
+    },
+    {
+      "name": "Timothy Bryce Wolfcale",
+      "email": "tim@cordamanagement.com",
+      "domain": "cordamanagement.com"
+    },
+    {
+      "name": "Robert Patrick Biancardi",
+      "email": "robert@cascadiawm.com",
+      "domain": "cascadiawm.com"
+    },
+    {
+      "name": "Jeremiah Anthony Beam",
+      "email": "jeremiah@cascadiawm.com",
+      "domain": "cascadiawm.com"
+    },
+    {
+      "name": "Michaelanne Georgianna Brannen",
+      "email": "mbrannen@rdafn.com",
+      "domain": "rdafn.com"
+    },
+    {
+      "name": "Christopher Wayne Arthur",
+      "email": "carthur@rdafn.com",
+      "domain": "rdafn.com"
+    },
+    {
+      "name": "Andrew Bert Fishman",
+      "email": "andy@affiancefinancial.com",
+      "domain": "affiancefinancial.com"
+    },
+    {
+      "name": "Steven Michael Lear",
+      "email": "stevelear@affiancefinancial.com",
+      "domain": "affiancefinancial.com"
+    },
+    {
+      "name": "Brendan William Halleron",
+      "email": "brendan@affiancefinancial.com",
+      "domain": "affiancefinancial.com"
+    },
+    {
+      "name": "John Anthony Naphor",
+      "email": "j.naphor@christopheredwardsfinancial.com",
+      "domain": "christopheredwardsfinancial.com"
+    },
+    {
+      "name": "Austin William Sweerus",
+      "email": "austin.sweerus@christopheredwardsfinancial.com",
+      "domain": "christopheredwardsfinancial.com"
+    }
+  ],
+  "ria_cold": [
+    {
+      "name": "Lindsey Ciarrocca",
+      "email": "lindsey@providersandfamilies.com",
+      "domain": "providersandfamilies.com"
+    },
+    {
+      "name": "Justin Skelton",
+      "email": "justin.skelton@sgc-financial.com",
+      "domain": "sgc-financial.com"
+    },
+    {
+      "name": "Jenna Dickinson",
+      "email": "jenna.dickinson@uconn.edu",
+      "domain": "uconn.edu"
+    },
+    {
+      "name": "Alex Compton",
+      "email": "acompton@ft.newyorklife.com",
+      "domain": "ft.newyorklife.com"
+    },
+    {
+      "name": "Brittany Olsson",
+      "email": "brittany@rocketfuellabs.io",
+      "domain": "rocketfuellabs.io"
+    },
+    {
+      "name": "Alyson Carroll",
+      "email": "alyson.carroll@rocketfuellabs.com",
+      "domain": "rocketfuellabs.com"
+    },
+    {
+      "name": "Steven Robert Gates",
+      "email": "steven@srgates.com",
+      "domain": "srgates.com"
+    },
+    {
+      "name": "Cory Shane Colquette",
+      "email": "cory@colquettegroup.com",
+      "domain": "colquettegroup.com"
+    },
+    {
+      "name": "Roger Dale Davis",
+      "email": "rdavis@sebwm.com",
+      "domain": "sebwm.com"
+    },
+    {
+      "name": "Brian Norman Corriveau",
+      "email": "brian.corriveau@wcipllc.com",
+      "domain": "wcipllc.com"
+    },
+    {
+      "name": "Bret Thomas Elam",
+      "email": "bret.elam@stayalivebenefits.com",
+      "domain": "stayalivebenefits.com"
+    },
+    {
+      "name": "Donald A. Shelton",
+      "email": "donald@senioradvisorcorp.com",
+      "domain": "senioradvisorcorp.com"
+    },
+    {
+      "name": "John Russell Martin",
+      "email": "john@jmaforlife.com",
+      "domain": "jmaforlife.com"
+    },
+    {
+      "name": "Daniel Leigh Brownsberger",
+      "email": "dan@financialteam.com",
+      "domain": "financialteam.com"
+    },
+    {
+      "name": "Gregory Orlo Mackenzie",
+      "email": "gmackenzie@cfunds.com",
+      "domain": "cfunds.com"
+    },
+    {
+      "name": "Joseph Robert Theisen",
+      "email": "jtheisen@acfunds.com",
+      "domain": "acfunds.com"
+    },
+    {
+      "name": "Charles Phillip Melka",
+      "email": "charles.melka@gcgfinancial.com",
+      "domain": "gcgfinancial.com"
+    },
+    {
+      "name": "David Sean Rich",
+      "email": "david.rich@nhldcorp.com",
+      "domain": "nhldcorp.com"
+    },
+    {
+      "name": "Judith Darlene Tucker",
+      "email": "darlene.tucker@strategicfinancialpartners.com",
+      "domain": "strategicfinancialpartners.com"
+    },
+    {
+      "name": "Gary Paul Robertson",
+      "email": "grobertson@brookstoneadvisor.com",
+      "domain": "brookstoneadvisor.com"
+    },
+    {
+      "name": "Daniel Lee Korth",
+      "email": "dkorth@lilywm.com",
+      "domain": "lilywm.com"
+    },
+    {
+      "name": "Krista D McBeath",
+      "email": "krista@mcbeathfinancial.com",
+      "domain": "mcbeathfinancial.com"
+    },
+    {
+      "name": "Wallace Carr Burgoyne Jr.",
+      "email": "carr@symphonyplanning.com",
+      "domain": "symphonyplanning.com"
+    },
+    {
+      "name": "Daryl Anthony Arnett",
+      "email": "daryl@dynastyfinancialgroup.net",
+      "domain": "dynastyfinancialgroup.net"
+    },
+    {
+      "name": "Timothy R Merrill",
+      "email": "tmerrill@starcapinc.com",
+      "domain": "starcapinc.com"
+    },
+    {
+      "name": "Michelle Denise Bennett",
+      "email": "mbennett@newportcapitalgroup.com",
+      "domain": "newportcapitalgroup.com"
+    },
+    {
+      "name": "Timothy Daggett Mersereau",
+      "email": "tmersereau@cpamlr.com",
+      "domain": "cpamlr.com"
+    },
+    {
+      "name": "Richard Buel Bates Jr.",
+      "email": "rick@iiata.com",
+      "domain": "iiata.com"
+    },
+    {
+      "name": "Joseph John Gates",
+      "email": "joe.gates@clearcreekfm.com",
+      "domain": "clearcreekfm.com"
+    },
+    {
+      "name": "Chad Aaron Williams",
+      "email": "chad@aveocapital.com",
+      "domain": "aveocapital.com"
+    },
+    {
+      "name": "Richard Eugene Middleton",
+      "email": "richardm@annuitiesandlife.net",
+      "domain": "annuitiesandlife.net"
+    },
+    {
+      "name": "David Leon Cowee",
+      "email": "david@pineywoodsfinancial.com",
+      "domain": "pineywoodsfinancial.com"
+    },
+    {
+      "name": "Patrick Daniel Munnerlyn",
+      "email": "patrick@wellpreserved.info",
+      "domain": "wellpreserved.info"
+    },
+    {
+      "name": "Allen Parnell Hargis",
+      "email": "allen@allenphargiscpa.com",
+      "domain": "allenphargiscpa.com"
+    },
+    {
+      "name": "Kyle Edward Johnston Sr.",
+      "email": "kjohnston@mylsfa.com",
+      "domain": "mylsfa.com"
+    },
+    {
+      "name": "Joseph Benjamin Gruber",
+      "email": "jobygruber@bganetwork.com",
+      "domain": "bganetwork.com"
+    },
+    {
+      "name": "Michael Alan Burnette",
+      "email": "mburntte@wmgfinancialadvisors.com",
+      "domain": "wmgfinancialadvisors.com"
+    },
+    {
+      "name": "Curtis Timothy Cottle",
+      "email": "curtis@securitybenefitscenter.com",
+      "domain": "securitybenefitscenter.com"
+    },
+    {
+      "name": "Jordan Paul Gates",
+      "email": "jordan@fusiontax.com",
+      "domain": "fusiontax.com"
+    },
+    {
+      "name": "Michael Joseph Fry",
+      "email": "michael@stewardfinancialservices.com",
+      "domain": "stewardfinancialservices.com"
+    },
+    {
+      "name": "Dennis Bernard Szymanski",
+      "email": "dszymanski@firstfruitsam.com",
+      "domain": "firstfruitsam.com"
+    },
+    {
+      "name": "Donald Brian Trentlage",
+      "email": "don@tlp.money",
+      "domain": "tlp.money"
+    },
+    {
+      "name": "Charles Otis Patton III",
+      "email": "ppatton@cplanning.com",
+      "domain": "cplanning.com"
+    },
+    {
+      "name": "Marilyn Joyce Prevoir",
+      "email": "marilyn@monamiewealth.com",
+      "domain": "monamiewealth.com"
+    },
+    {
+      "name": "Timothy Scott Chubb Jr.",
+      "email": "tchubb@girardpartners.com",
+      "domain": "girardpartners.com"
+    },
+    {
+      "name": "Carl C Buckner",
+      "email": "cbuckner@managingtobewealthy.com",
+      "domain": "managingtobewealthy.com"
+    },
+    {
+      "name": "Brenda R.C. Jackson",
+      "email": "b.jackson@shankwm.com",
+      "domain": "shankwm.com"
+    },
+    {
+      "name": "Christopher David Pullaro",
+      "email": "chrispullaro@thejohnsonfinancialgroup.com",
+      "domain": "thejohnsonfinancialgroup.com"
+    },
+    {
+      "name": "Joe Allen Justus",
+      "email": "joe@joejustusinsurance.com",
+      "domain": "joejustusinsurance.com"
+    },
+    {
+      "name": "Charles Richard Heuring",
+      "email": "charles@iamswm.com",
+      "domain": "iamswm.com"
+    },
+    {
+      "name": "Stephen Scott Harper",
+      "email": "scott@preservationwc.com",
+      "domain": "preservationwc.com"
+    },
+    {
+      "name": "Joseph Francis Helmer",
+      "email": "joe@cald.com",
+      "domain": "cald.com"
+    },
+    {
+      "name": "Sandeva O'Bryan Morris",
+      "email": "sandy@sandymorrisfinancial.com",
+      "domain": "sandymorrisfinancial.com"
+    },
+    {
+      "name": "Raymond Patrick O'Connell",
+      "email": "ray@altusbenefits.com",
+      "domain": "altusbenefits.com"
+    },
+    {
+      "name": "Drew William Pelton",
+      "email": "drew.pelton@willis.com",
+      "domain": "willis.com"
+    },
+    {
+      "name": "Richard Caleb Falter",
+      "email": "caleb@markfalter.com",
+      "domain": "markfalter.com"
+    },
+    {
+      "name": "Paul Edward Mann",
+      "email": "paul.mann@trajanwealth.com",
+      "domain": "trajanwealth.com"
+    },
+    {
+      "name": "Daniel Frederick Moerck",
+      "email": "daniel.moerck@ceterafi.com",
+      "domain": "ceterafi.com"
+    },
+    {
+      "name": "Monica Elizabeth Lacey",
+      "email": "monica@pegasuswealthstrategies.com",
+      "domain": "pegasuswealthstrategies.com"
+    },
+    {
+      "name": "Ronald Robert Brock",
+      "email": "ron@sbauerfunds.com",
+      "domain": "sbauerfunds.com"
+    },
+    {
+      "name": "Laura Helen Stover",
+      "email": "laura@laurahstoverfinancial.com",
+      "domain": "laurahstoverfinancial.com"
+    },
+    {
+      "name": "Anne E. Culbertson",
+      "email": "anne.culbertson@compass.com",
+      "domain": "compass.com"
+    },
+    {
+      "name": "David Grant Stepp",
+      "email": "davidstepp@beacon-financial.com",
+      "domain": "beacon-financial.com"
+    },
+    {
+      "name": "Johnathon Thomas Davis",
+      "email": "jtdavis@jtdavisky.com",
+      "domain": "jtdavisky.com"
+    },
+    {
+      "name": "William Bruce Campbell",
+      "email": "bruce@insuranceelite.com",
+      "domain": "insuranceelite.com"
+    },
+    {
+      "name": "David Andrew Sprenger",
+      "email": "davids@dunhillinsurance.com",
+      "domain": "dunhillinsurance.com"
+    },
+    {
+      "name": "Duayne Joseph Madl",
+      "email": "dmadl@madlco.net",
+      "domain": "madlco.net"
+    },
+    {
+      "name": "Kenneth Lee Rigler Jr.",
+      "email": "kenny@themeckgroup.com",
+      "domain": "themeckgroup.com"
+    },
+    {
+      "name": "Steven Verlin Wise",
+      "email": "swise@beaconexperts.com",
+      "domain": "beaconexperts.com"
+    },
+    {
+      "name": "Daniel Gerard Finnerty",
+      "email": "dfinnerty@kingsburycap.com",
+      "domain": "kingsburycap.com"
+    },
+    {
+      "name": "Russell Edward Fieger",
+      "email": "rfieger@crownmail.net",
+      "domain": "crownmail.net"
+    },
+    {
+      "name": "Steven Michael Stratton",
+      "email": "steven@smstratton.com",
+      "domain": "smstratton.com"
+    },
+    {
+      "name": "Bart Anthony Spachek",
+      "email": "bspachek@reignbenefits.com",
+      "domain": "reignbenefits.com"
+    },
+    {
+      "name": "James Elbert Bivins",
+      "email": "elbertbivins@montgomerybivins.com",
+      "domain": "montgomerybivins.com"
+    },
+    {
+      "name": "Erik Sean Wilson",
+      "email": "eswilson@assuregrp.com",
+      "domain": "assuregrp.com"
+    },
+    {
+      "name": "Robert John Hoffman",
+      "email": "rhoffman@jwcoonsadvisors.com",
+      "domain": "jwcoonsadvisors.com"
+    },
+    {
+      "name": "Louis Abraham Shaff",
+      "email": "louis@cabanaportfolio.com",
+      "domain": "cabanaportfolio.com"
+    },
+    {
+      "name": "Jeffrey Dean Bliss",
+      "email": "jeffbliss@blisswealthmanagement.com",
+      "domain": "blisswealthmanagement.com"
+    },
+    {
+      "name": "David Allan Eissman",
+      "email": "dave@bestinsurancedesign.com",
+      "domain": "bestinsurancedesign.com"
+    },
+    {
+      "name": "David Shane Pearcy",
+      "email": "shane@shanepearcy.com",
+      "domain": "shanepearcy.com"
+    },
+    {
+      "name": "Jonathan Samuel Slater",
+      "email": "jslater@firstcitybank.com",
+      "domain": "firstcitybank.com"
+    },
+    {
+      "name": "Zachary K. Abraham",
+      "email": "zach@bulwarkcapitalmgmt.com",
+      "domain": "bulwarkcapitalmgmt.com"
+    },
+    {
+      "name": "Kenneth Wade Christian",
+      "email": "kenneth@maplewoodfinancial.com",
+      "domain": "maplewoodfinancial.com"
+    },
+    {
+      "name": "Michael Gerald Terrio",
+      "email": "mike@motiv8advisors.com",
+      "domain": "motiv8advisors.com"
+    },
+    {
+      "name": "Dianne Patricia Williams",
+      "email": "dianne@retirementpathways.com",
+      "domain": "retirementpathways.com"
+    },
+    {
+      "name": "David R Bezar",
+      "email": "david.bezar@thrivefinancialservices.com",
+      "domain": "thrivefinancialservices.com"
+    },
+    {
+      "name": "Troy Collins Copeland",
+      "email": "tcopeland@ifgsd.com",
+      "domain": "ifgsd.com"
+    },
+    {
+      "name": "Darcy Lee Bergen",
+      "email": "carol@bergenfinancialgroup.com",
+      "domain": "bergenfinancialgroup.com"
+    },
+    {
+      "name": "Robert Jeffrey Mitchell",
+      "email": "jmitchell@taylorlawpartners.com",
+      "domain": "taylorlawpartners.com"
+    },
+    {
+      "name": "Anthony Joseph Baldassano",
+      "email": "anthony@aacpa.pro",
+      "domain": "aacpa.pro"
+    },
+    {
+      "name": "Gary E. Brown",
+      "email": "browng@univest.net",
+      "domain": "univest.net"
+    },
+    {
+      "name": "Patrick Lester Stiefel",
+      "email": "pat.stiefel@swanwealthadvisors.com",
+      "domain": "swanwealthadvisors.com"
+    },
+    {
+      "name": "Sherri Lynne Aron",
+      "email": "saron@unitedplanners.com",
+      "domain": "unitedplanners.com"
+    },
+    {
+      "name": "Andy John Armstrong",
+      "email": "andrew.armstrong@dinsmorecomplianceservices.com",
+      "domain": "dinsmorecomplianceservices.com"
+    },
+    {
+      "name": "Tyler V Cook",
+      "email": "tcook@sestina.com",
+      "domain": "sestina.com"
+    },
+    {
+      "name": "Jerry Marlin Toombs",
+      "email": "jerry@summitgroupwa.com",
+      "domain": "summitgroupwa.com"
+    },
+    {
+      "name": "Timothy Robert Knapp",
+      "email": "tknapp@asset-mgmt-strategies.com",
+      "domain": "asset-mgmt-strategies.com"
+    },
+    {
+      "name": "Joel Stephen Gemmell",
+      "email": "joel.gemmell@mcleanam.com",
+      "domain": "mcleanam.com"
+    },
+    {
+      "name": "Noah Abram Seidenberg",
+      "email": "nseidenberg@inspirionwealth.com",
+      "domain": "inspirionwealth.com"
+    },
+    {
+      "name": "Tyron Blake Draper",
+      "email": "ty@beaconcm.com",
+      "domain": "beaconcm.com"
+    },
+    {
+      "name": "James Wong",
+      "email": "jameswong@myinsightadvisors.com",
+      "domain": "myinsightadvisors.com"
+    },
+    {
+      "name": "Timothy Ralph Detloff",
+      "email": "tdetloff@vestorcapital.com",
+      "domain": "vestorcapital.com"
+    },
+    {
+      "name": "Glen Arthur Mcgaha",
+      "email": "glen@baysideweinsurefl.com",
+      "domain": "baysideweinsurefl.com"
+    },
+    {
+      "name": "Michael Ray Wallin",
+      "email": "mwallin@panthrex.com",
+      "domain": "panthrex.com"
+    },
+    {
+      "name": "Timothy Robert Singleton",
+      "email": "tim.singleton@rsi3.com",
+      "domain": "rsi3.com"
+    },
+    {
+      "name": "John Andrew Capets",
+      "email": "jcapets@harborcapitalmgmt.com",
+      "domain": "harborcapitalmgmt.com"
+    },
+    {
+      "name": "Carl Joseph Nutt",
+      "email": "cnutt@csaplanners.com",
+      "domain": "csaplanners.com"
+    },
+    {
+      "name": "Rem Oculee",
+      "email": "rj@pljadvisors.com",
+      "domain": "pljadvisors.com"
+    },
+    {
+      "name": "Arthur Roy McPherson II",
+      "email": "arthur@mcphersonfinancialgroup.com",
+      "domain": "mcphersonfinancialgroup.com"
+    },
+    {
+      "name": "Jason Paul Daugherty",
+      "email": "jason@triumphadvisors.com",
+      "domain": "triumphadvisors.com"
+    },
+    {
+      "name": "Stuart Craig Chamberlin Jr.",
+      "email": "stuart@chamberlinfinancial.com",
+      "domain": "chamberlinfinancial.com"
+    },
+    {
+      "name": "Kyle M. Akers",
+      "email": "kyle@ofgwealth.com",
+      "domain": "ofgwealth.com"
+    },
+    {
+      "name": "Peter E. Wargo",
+      "email": "pete@osiwalafinancial.com",
+      "domain": "osiwalafinancial.com"
+    },
+    {
+      "name": "Daniel Coye Weaver",
+      "email": "dan@barkerweber.com",
+      "domain": "barkerweber.com"
+    },
+    {
+      "name": "Robert Kort",
+      "email": "robert@kortadvisorgroup.com",
+      "domain": "kortadvisorgroup.com"
+    },
+    {
+      "name": "Kevin Michael Bucher",
+      "email": "kevin@citizenadvisory.com",
+      "domain": "citizenadvisory.com"
+    },
+    {
+      "name": "William Peter Parrish",
+      "email": "parrish@phpcapital.com",
+      "domain": "phpcapital.com"
+    },
+    {
+      "name": "Brian Michael Clouden",
+      "email": "brianc@sgroifinancial.com",
+      "domain": "sgroifinancial.com"
+    },
+    {
+      "name": "Andrew Robert Hermsen",
+      "email": "andrew@hermsenwealth.com",
+      "domain": "hermsenwealth.com"
+    },
+    {
+      "name": "Jason Richard Gittins",
+      "email": "jason@willowcreekwealth.com",
+      "domain": "willowcreekwealth.com"
+    },
+    {
+      "name": "Michael Roger  Congdon",
+      "email": "mrcongdon@horizonadvisors.net",
+      "domain": "horizonadvisors.net"
+    },
+    {
+      "name": "Christopher J. Roger",
+      "email": "croger@bayntree.com",
+      "domain": "bayntree.com"
+    },
+    {
+      "name": "Matthew Aaron Lapides",
+      "email": "mattl@mbmwealth.com",
+      "domain": "mbmwealth.com"
+    },
+    {
+      "name": "Marion Leopold Leonberger Jr.",
+      "email": "mleonberger@investforyou.com",
+      "domain": "investforyou.com"
+    },
+    {
+      "name": "Jane Bonnie Truckenbrod",
+      "email": "jane@first-advisors.com",
+      "domain": "first-advisors.com"
+    },
+    {
+      "name": "Frank Friedler III",
+      "email": "ffriedler@freegulliver.com",
+      "domain": "freegulliver.com"
+    },
+    {
+      "name": "Brian Keith Koski",
+      "email": "brian@jmrfg.com",
+      "domain": "jmrfg.com"
+    },
+    {
+      "name": "Scott Edward Register",
+      "email": "sregister@registerfinancial.com",
+      "domain": "registerfinancial.com"
+    },
+    {
+      "name": "Kurt William Mears",
+      "email": "kmears@advancecapitalonline.com",
+      "domain": "advancecapitalonline.com"
+    },
+    {
+      "name": "Gary Robert Komarek",
+      "email": "gkomarek@nshoreamta.com",
+      "domain": "nshoreamta.com"
+    },
+    {
+      "name": "Michael Wayne Stalka",
+      "email": "mstalka@grnstlouis.com",
+      "domain": "grnstlouis.com"
+    },
+    {
+      "name": "Adrian George Castner Vassallo",
+      "email": "adrian.vassallo@dhgllp.com",
+      "domain": "dhgllp.com"
+    },
+    {
+      "name": "Tyler W. Saile",
+      "email": "tyler@ironwoodfwa.com",
+      "domain": "ironwoodfwa.com"
+    },
+    {
+      "name": "Dale Allan Dobnicker",
+      "email": "ddobnicker@iafs.net",
+      "domain": "iafs.net"
+    },
+    {
+      "name": "Simon Keogh",
+      "email": "simon@americanfinancialmanagement.com",
+      "domain": "americanfinancialmanagement.com"
+    },
+    {
+      "name": "Laura Leigh Simpson",
+      "email": "laura@paxfg.com",
+      "domain": "paxfg.com"
+    },
+    {
+      "name": "Peter Arthur Leppones",
+      "email": "pleppones@apellacapital.com",
+      "domain": "apellacapital.com"
+    },
+    {
+      "name": "Jacqueline Ruth Bradshaw",
+      "email": "jacquie@jacksonwm.com",
+      "domain": "jacksonwm.com"
+    },
+    {
+      "name": "Eric James Viavattene",
+      "email": "eric@dobbinswealth.com",
+      "domain": "dobbinswealth.com"
+    },
+    {
+      "name": "Debra Deleers",
+      "email": "ddeleers@northrightfinancial.com",
+      "domain": "northrightfinancial.com"
+    },
+    {
+      "name": "David Sheaff Gilreath",
+      "email": "dave@salzingersheaffbrock.com",
+      "domain": "salzingersheaffbrock.com"
+    },
+    {
+      "name": "Mark Edward Stratton",
+      "email": "mark.stratton@privateadvisorgroup.com",
+      "domain": "privateadvisorgroup.com"
+    },
+    {
+      "name": "Britton Nathanial Ouellette",
+      "email": "britton@shieldfinancialgroup.com",
+      "domain": "shieldfinancialgroup.com"
+    },
+    {
+      "name": "Bruno M Marques",
+      "email": "bruno@investmentcapital360.com",
+      "domain": "investmentcapital360.com"
+    },
+    {
+      "name": "Michael Matthew Stewart",
+      "email": "mstewart@leightongroup.com",
+      "domain": "leightongroup.com"
+    },
+    {
+      "name": "Ross Evan Marynell",
+      "email": "ross@vcplanning.com",
+      "domain": "vcplanning.com"
+    },
+    {
+      "name": "Joanna Nineen Amberger",
+      "email": "amberger@3financialgroup.com",
+      "domain": "3financialgroup.com"
+    }
+  ],
+  "lpl_network": [
+    {
+      "name": "William Earl Shank",
+      "email": "bill.shank@lpl.com",
+      "domain": "lpl.com"
+    },
+    {
+      "name": "Melissa Ann Brennan",
+      "email": "melissa.brennan@lpl.com",
+      "domain": "lpl.com"
+    },
+    {
+      "name": "Mark Joseph Murphy",
+      "email": "mark.murphy@lpl.com",
+      "domain": "lpl.com"
+    },
+    {
+      "name": "Renee Louise Dietz",
+      "email": "renee.dietz@lpl.com",
+      "domain": "lpl.com"
+    },
+    {
+      "name": "Stacy Elaine Hefty",
+      "email": "stacy.hefty@lpl.com",
+      "domain": "lpl.com"
+    },
+    {
+      "name": "Joseph Donald Esposito",
+      "email": "joseph.esposito@lpl.com",
+      "domain": "lpl.com"
+    },
+    {
+      "name": "Cheryl Patricia Janik",
+      "email": "cheryl.janik@lpl.com",
+      "domain": "lpl.com"
+    },
+    {
+      "name": "Shane Quinlan",
+      "email": "shane.quinlan@lpl.com",
+      "domain": "lpl.com"
+    },
+    {
+      "name": "Steven Robert Cherry",
+      "email": "steven.cherry@lpl.com",
+      "domain": "lpl.com"
+    },
+    {
+      "name": "Jamie Lawrence Baraldi",
+      "email": "jamie.baraldi@lpl.com",
+      "domain": "lpl.com"
+    },
+    {
+      "name": "Jennifer Lynn Tamburo",
+      "email": "jennifer.tamburo@lpl.com",
+      "domain": "lpl.com"
+    },
+    {
+      "name": "David Lawrence Andrews",
+      "email": "davidl.andrews@lpl.com",
+      "domain": "lpl.com"
+    },
+    {
+      "name": "Judith Ann Anderson",
+      "email": "judy.anderson@lpl.com",
+      "domain": "lpl.com"
+    },
+    {
+      "name": "Robert Paul Slomin",
+      "email": "robert.slomin@lpl.com",
+      "domain": "lpl.com"
+    },
+    {
+      "name": "Kristopher Bonocore",
+      "email": "kristopher.bonocore@lpl.com",
+      "domain": "lpl.com"
+    },
+    {
+      "name": "James Patrick McGeehin",
+      "email": "james.mcgeehin@lpl.com",
+      "domain": "lpl.com"
+    },
+    {
+      "name": "Gregg S. Schriro",
+      "email": "gregg.schriro@lpl.com",
+      "domain": "lpl.com"
+    },
+    {
+      "name": "Falgun Jariwala",
+      "email": "falgun.jariwala@lpl.com",
+      "domain": "lpl.com"
+    },
+    {
+      "name": "Michael David Palace",
+      "email": "michael.palace@lpl.com",
+      "domain": "lpl.com"
+    }
+  ]
+}

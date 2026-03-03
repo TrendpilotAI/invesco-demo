@@ -81,12 +81,12 @@ class SnowflakeProvider:
 
     # -- DataProvider implementation ---------------------------------------
 
-    def _execute_query_sync(self, sql: str, params: dict[str, Any] | None = None) -> QueryResult:
+    def _execute_query_sync(self, sql: str, params: list[Any] | None = None) -> QueryResult:
         """Blocking Snowflake query — must be called via run_in_executor, never directly from the event loop."""
         cur = self._cursor()
         t0 = time.time()
         try:
-            cur.execute(sql, params or {})
+            cur.execute(sql, params or [])
             columns = [desc[0] for desc in cur.description] if cur.description else []
             rows = [dict(zip(columns, row)) for row in cur.fetchall()]
         finally:
@@ -97,7 +97,7 @@ class SnowflakeProvider:
         cost = elapsed / 60_000  # very rough
         return QueryResult(rows=rows, columns=columns, row_count=len(rows), execution_time_ms=elapsed, cost=cost)
 
-    async def execute_query(self, sql: str, params: dict[str, Any] | None = None) -> QueryResult:
+    async def execute_query(self, sql: str, params: list[Any] | None = None) -> QueryResult:
         cache_key = f"{sql}|{params}"
         cached = self._cache.get(cache_key)
         if cached is not None:
@@ -133,7 +133,7 @@ class SnowflakeProvider:
         result = await self.execute_query(
             "SELECT TABLE_NAME, ROW_COUNT, COMMENT "
             "FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = %s",
-            {"1": self._sf.schema_name},
+            [self._sf.schema_name],  # TODO-434: Snowflake execute() requires positional list, not dict
         )
         return [
             TableInfo(
@@ -149,7 +149,7 @@ class SnowflakeProvider:
         result = await self.execute_query(
             "SELECT COLUMN_NAME, DATA_TYPE, IS_NULLABLE, COMMENT "
             "FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = %s AND TABLE_SCHEMA = %s",
-            {"1": table, "2": self._sf.schema_name},
+            [table, self._sf.schema_name],  # TODO-434: Snowflake execute() requires positional list, not dict
         )
         return [
             ColumnInfo(
@@ -201,7 +201,7 @@ class SnowflakeProvider:
         """Call Snowflake Cortex COMPLETE function."""
         result = await self.execute_query(
             f"SELECT SNOWFLAKE.CORTEX.COMPLETE('{model}', %s) AS response",
-            {"1": prompt},
+            [prompt],
         )
         return result.rows[0]["RESPONSE"] if result.rows else ""
 
@@ -209,7 +209,7 @@ class SnowflakeProvider:
         """Call Snowflake Cortex EMBED_TEXT function."""
         result = await self.execute_query(
             f"SELECT SNOWFLAKE.CORTEX.EMBED_TEXT_768('{model}', %s) AS embedding",
-            {"1": text},
+            [text],
         )
         return result.rows[0]["EMBEDDING"] if result.rows else []
 
