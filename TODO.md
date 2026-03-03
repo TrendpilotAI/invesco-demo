@@ -6,7 +6,8 @@
 
 ## 🔴 P0 — Critical /Revenue-Impacting
 
-> Daily Judge Swarm (2026-02-27 08:11 UTC): Judge agents produced 14 BRAINSTORM.md, 15 PLAN.md, and 16 AUDIT.md files across projects. Planning agents created 181 TODO files (see /data/workspace/todos/). Trendpilot judge required a retry but completed; cleanup agent ran to prune stale orchestrator state. Continued: review high-priority TODOs listed below and attack P0 items (Invesco demo deploy). 
+> Daily Judge Swarm (2026-02-27 08:11 UTC): Judge agents produced 14 BRAINSTORM.md, 15 PLAN.md, and 16 AUDIT.md files across projects. Planning agents created 181 TODO files (see /data/workspace/todos/). Trendpilot judge required a retry but completed; cleanup agent ran to prune stale orchestrator state. Continued: review high-priority TODOs listed below and attack P0 items (Invesco demo deploy).
+> invesco-sprint cron check 2026-03-03 05:01 UTC: ALL INVESCO TECHNICAL P0s COMPLETE ✅. Demo live at https://trendpilotai.github.io/invesco-demo/ (HTTP 200). Remaining critical path is NATHAN ACTION: Email Megan+Craig → Schedule Dry Run → Brian Kiley Demo → Pilot signed. No new sub-agents needed — unblock is outreach, not code.
 
 
 
@@ -511,8 +512,8 @@
 - [x] **#320** [P1] CSP security headers in next.config.ts [30min] ✅ 2026-03-02 — CSP + HSTS + X-Frame-Options + Referrer-Policy + Permissions-Policy + X-XSS-Protection (commit 602f694)
 - [x] **#317** [P1] JSON-LD Organization + Service + Article schemas [2h] ✅ 2026-03-02 — Organization + WebSite schemas in layout.tsx, Service ItemList on /services, Article on /blog/[slug], JsonLd component extracted (commit 46a57d4)
 - [x] **#323** [P1] Dynamic sitemap (replace public/sitemap.xml) [30min] ✅ 2026-03-02 — app/sitemap.ts auto-includes blog MDX posts + static routes, build clean (commit b1a3cd0)
-- [ ] **#324** [P1] Microsoft Clarity heatmaps [15min]
-- [ ] **#325** [P1] LinkedIn Insight Tag [15min]
+- [x] **#324** [P1] Microsoft Clarity heatmaps [15min] ✅ 2026-03-03 — MicrosoftClarity component added, reads NEXT_PUBLIC_CLARITY_PROJECT_ID (commit 39d42d7)
+- [x] **#325** [P1] LinkedIn Insight Tag [15min] ✅ 2026-03-03 — LinkedInInsight component added with noscript fallback, reads NEXT_PUBLIC_LINKEDIN_PARTNER_ID (commit 39d42d7)
 - [ ] **#326** [P1] Welcome email sequence via Resend [2h]
 - [ ] **#318** [P1] HubSpot CRM integration on contact submit [4h]
 - [ ] **#322** [P1] ESLint + Prettier + CI type-check [2h]
