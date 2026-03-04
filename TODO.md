@@ -10,6 +10,7 @@
 > invesco-sprint cron check 2026-03-03 05:01 UTC: ALL INVESCO TECHNICAL P0s COMPLETE ✅. Demo live at https://trendpilotai.github.io/invesco-demo/ (HTTP 200). Remaining critical path is NATHAN ACTION: Email Megan+Craig → Schedule Dry Run → Brian Kiley Demo → Pilot signed. No new sub-agents needed — unblock is outreach, not code.
 > invesco-sprint cron check 2026-03-03 21:01 UTC: Demo still live. Identified 4 remaining P0 security/quality items across data-provider, backend, and templates. Spawned 4 parallel Sonnet agents: TODO-422 (demo auth hardening), TODO-426 (templates JWT auth), TODO-434 (Snowflake param binding), TODO-445 (TanStack Query wiring).
 > invesco-sprint cron check 2026-03-04 05:01 UTC: TODO-422 ✅ DONE (HMAC X-Demo-Token auth, commit 501aa6b0). TODO-426 ✅ DONE (JWT middleware via JWKS-RSA, commit 9af41e8, 18 tests pass). TODO-434 + TODO-445 still pending — spawned 2 fresh Sonnet agents in parallel to complete.
+> invesco-sprint cron check 2026-03-04 13:01 UTC: TODO-434 ✅ DONE, TODO-445 ✅ DONE. Spawned 4 parallel Sonnet agents for remaining P0s: TODO-456 (force_text Django 4.2 compat), TODO-466 (Templates API rate limiting+CORS), TODO-467 (npm publish pipeline), TODO-495 (AI route rate limiting).
 
 
 
@@ -550,7 +551,7 @@
 - [ ] **#330** [P2] Google Search Console verification + GA4 link [15min] (Nathan action)
 - [ ] **#332** [P2] Uptime monitoring setup [15min]
 - [ ] **#443** [P1] HubSpot CRM + Deal creation on contact submit [4h] → TODO-443
-- [ ] **#444** [P1] Fix CONTACT_EMAIL silent fallback bug [30min] → TODO-444
+- [x] **#444** [P1] Fix CONTACT_EMAIL silent fallback bug [30min] → TODO-444 ✅ 2026-03-04 (TODO-469, commit 1c90f1f)
 - [ ] **#445** [P2] Calendly sticky CTA on homepage hero [1h] → TODO-445
 - [ ] **#446** [P2] Case study PDF downloads (gated lead capture) [3h] → TODO-446
 - [ ] **#447** [P2] FAQ accordion + FAQPage JSON-LD on pricing page [1.5h] → TODO-447
@@ -816,13 +817,13 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 
 ## signal-studio-frontend (2026-03-04 — Judge Agent v2 refresh)
 **Scores:** revenue=7, strategic=9, completeness=5, urgency=7, effort_remaining=5
-- [ ] 494 [P0/XL] Complete Oracle AI vector service — OracleVectorService, SemanticSearchService, embeddings (CORE VALUE PROP)
+- [x] 494 [P0/XL] Complete Oracle AI vector service — OracleVectorService, SemanticSearchService, embeddings (CORE VALUE PROP) — commit c08533a9
 - [ ] 495 [P0/M] Add rate limiting to AI API routes — prevents API credit exhaustion
 - [ ] 496 [P1/S] Remove dual reactflow dependency (reactflow v11 + @xyflow v12 both present)
 - [ ] 497 [P1/L] Build ForwardLane Django backend bridge (BFF proxy + JWT forwarding + Oracle sync)
 - [ ] 498 [P1/S] Wire Bitbucket CI/CD → Railway auto-deploy (pipelines + deploy hooks)
 - [ ] 499 [P1/M] Bundle size audit — verify @xenova server-only, fix dynamic imports
 - [ ] 500 [P2/M] Add E2E Playwright test suite for critical flows
-- [ ] [QUICK] Add dump.rdb to .gitignore (Redis dump file committed to git)
-- [ ] [QUICK] Harden SQL injection check in /api/oracle/query (multi-statement bypass possible)
+- [x] [QUICK] Add dump.rdb to .gitignore (Redis dump file committed to git) ✅ 2026-03-04 commit 101f32af
+- [x] [QUICK] Harden SQL injection check in /api/oracle/query (multi-statement bypass possible) ✅ 2026-03-04 commit 101f32af — block semicolons, dangerous DDL/DML keywords, 10k char limit
 - [ ] [QUICK] Archive/delete 30+ stale root-level .md files (PHASE-*.md, PR-*.md etc)
