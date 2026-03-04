@@ -290,13 +290,21 @@
 ### SECOND-OPP-001: Second-Opinion Post-Competition Hardening
 - **Why:** Submitted to Kaggle MedGemma challenge (Feb 24), now needs productionization (composite 5.1)
 - **Status:** 🟡 Live at gen-lang-client-0003791133.web.app, ~40 stub components
+- **Scored:** revenue_potential:7 strategic_value:8 completeness:7 urgency:5 effort_remaining:7
 - **Tasks:**
-- [ ] Complete ~40 stubbed UI components
-- [ ] Increase test coverage from ~18 to 60+ test files
-- [ ] Add real HIPAA compliance layer (auth, audit trail, data encryption)
-- [ ] Add monitoring (Sentry/Datadog)
-- [ ] Define SaaS pricing + billing model
-- [ ] Launch marketing page for second-opinion product
+- [ ] [TODO-519] Add Stripe monetization (freemium: free/pro/$9.99/unlimited/$29.99)
+- [ ] [TODO-520] ELI5 ↔ Clinical language toggle in results view (3h quick win)
+- [ ] [TODO-521] Provider/Doctor dashboard for B2B clinic sales
+- [ ] [TODO-522] Longitudinal case tracking (follow-up uploads, delta analysis)
+- [ ] [TODO-523] Test suite: >60% coverage on services/ + hooks/
+- [ ] [TODO-524] Sentry error monitoring (production is currently blind)
+- [ ] [TODO-525] Bundle optimization (code-split 43 components, target <500KB gzipped)
+- [ ] Add CSP headers to firebase.json (security gap)
+- [ ] Fix auditLog.ts TODO — tamper-evident Firestore writes (HIPAA)
+- [ ] Wire real ClinicalTrials.gov API to ClinicalTrialMatcher
+- [ ] Add FHIR export button (service exists, no UI)
+- [ ] Remove debug-app.ts and vite-7.3.1.tgz from root
+- [ ] See BRAINSTORM.md, PLAN.md, AUDIT.md for full analysis
 
 ### TRENDPILOT-001: Trendpilot Real Data Layer
 - **Why:** 423 tests + enterprise architecture exist but ALL services use in-memory storage (composite 6.0)
@@ -428,6 +436,9 @@
 - [ ] **TODO-428** GitHub Actions CI — typecheck/lint/test/build pipeline [S] → `/data/workspace/todos/428-pending-p1-signal-studio-templates-github-actions-ci.md`
 - [ ] **TODO-429** DataProvider adapters — Snowflake + Postgres real implementations [L] → `/data/workspace/todos/429-pending-p1-signal-studio-templates-data-provider-implementations.md`
 - [ ] **TODO-430** Expand template library 20→40 — 20 new templates across all 5 categories [M] → `/data/workspace/todos/430-pending-p2-signal-studio-templates-expand-template-library.md`
+- [ ] **TODO-466** Rate limiting + CORS on Templates API — express-rate-limit, cors allowlist, body size limit [S/P0] → `/data/workspace/todos/466-pending-p0-signal-studio-templates-rate-limiting-cors.md`
+- [ ] **TODO-467** Publish @forwardlane/signal-studio-templates to npm registry — publishConfig, .npmrc, CI publish on tag [S/P0] → `/data/workspace/todos/467-pending-p0-signal-studio-templates-npm-publish-pipeline.md`
+- [ ] **TODO-468** Template preview/dry-run mode — POST /templates/:id/preview, previewData in schema, no DB needed [S/P1] → `/data/workspace/todos/468-pending-p1-signal-studio-templates-preview-dryrun.md`
 
 
 ---
@@ -765,3 +776,53 @@ Core ForwardLane advisor platform — Node.js/Express with AI dialog, portfolio 
 - [ ] [P1-HIGH] Replace Watson NLC with Anthropic Claude LLM → TODO-453
 - [ ] [P1-HIGH] CI/CD pipeline + Docker Compose dev environment → TODO-454
 - [ ] [P1-HIGH] N+1 query audit & performance fixes → TODO-455
+
+## signal-builder-backend (re-scored 2026-03-04 — Judge Agent v2 daily refresh)
+Scores: revenue=7, strategic=9, completeness=7, urgency=6, effort_remaining=7
+Active FastAPI backend — 653 tests passing, rate limiting + security CI in place. 21 in-code TODOs catalogued.
+- [ ] [HIGH] Celery Redis task lock guard (prevent duplicate DB syncs) → TODO-456
+- [ ] [HIGH] Orphaned node cleanup on signal edge creation failure → TODO-457
+- [ ] [MEDIUM] Redis caching for validator DB lookups (3 cache TODOs) → TODO-458
+- [ ] [HIGH] Refactor sql_code arg to parameterized SQL (security) → TODO-403 (existing)
+- [ ] [HIGH] Implement list of property ids processing in filter validator → TODO-404 (existing)
+
+## forwardlane-backend Round 4 (2026-03-04)
+- [ ] TODO-456: Fix force_text → force_str Django 4.2 compat [CRITICAL/XS]
+- [ ] TODO-457: Upgrade abandoned deps (boto3, sentry-sdk, pypdf, dj-rest-auth) [CRITICAL/M]
+- [ ] TODO-458: Extract shared LLM client with fallback chain [HIGH/S]
+- [ ] TODO-459: Streaming LLM responses via SSE [HIGH/M]
+- [ ] TODO-460: Add pytest-cov 50% coverage gate to CI [HIGH/S]
+- [ ] TODO-461: Pre-commit hooks (ruff + black + bandit) [HIGH/XS]
+- [ ] TODO-462: Enforce MFA for admin via django-otp [HIGH/M]
+- [ ] TODO-463: Daily Briefing aggregate endpoint + Celery pre-gen [MEDIUM/L]
+- [ ] TODO-464: Celery dead letter queue + Flower monitoring [MEDIUM/M]
+- [ ] TODO-465: N+1 query audit for pipeline_engine + ranking [MEDIUM/M]
+
+## signal-studio-auth (2026-03-04 — Judge Agent v2 refresh)
+**Scores:** revenue=7, strategic=9, completeness=7, urgency=6, effort_remaining=7
+**✅ Done since last run:** TODO-402 (Redis rate limiter), TODO-403 (refresh token rotation)
+- [x] 353 [CRITICAL] Add admin role check to /invite-to-org — security vulnerability open NOW ✅ 2026-03-04 — _get_caller_role() + HTTP 403 guard, 5 tests pass, commit 4d74e79
+- [ ] 356 [HIGH] Add require_role() FastAPI dependency for RBAC enforcement
+- [ ] 359 [HIGH] Replace per-request httpx.AsyncClient with module-level connection pool
+- [ ] 354 [HIGH] Add password reset/change routes (/auth/recover, /auth/change-password)
+- [ ] 404 [HIGH] Migrate to Pydantic v2 (model_config, model_dump, response models)
+- [ ] 405 [HIGH] Add CORS middleware + Sentry error tracking + Prometheus /metrics
+- [ ] 406 [HIGH] Create Dockerfile + GitHub Actions CI (pytest, ruff, bandit, pip-audit)
+- [ ] 357 [HIGH] Add pytest-asyncio integration tests for all 7 auth routes
+- [ ] 501 [P1] Redis connection pool (currently creates new connection per call)
+- [ ] 504 [P1] Add pre-commit hooks (ruff, mypy, detect-private-key)
+- [ ] 502 [P2] Supabase webhook handler (user delete → purge Redis tokens)
+- [ ] 503 [P2] Auth audit log to Postgres (SOC2 compliance)
+
+## signal-studio-frontend (2026-03-04 — Judge Agent v2 refresh)
+**Scores:** revenue=7, strategic=9, completeness=5, urgency=7, effort_remaining=5
+- [ ] 494 [P0/XL] Complete Oracle AI vector service — OracleVectorService, SemanticSearchService, embeddings (CORE VALUE PROP)
+- [ ] 495 [P0/M] Add rate limiting to AI API routes — prevents API credit exhaustion
+- [ ] 496 [P1/S] Remove dual reactflow dependency (reactflow v11 + @xyflow v12 both present)
+- [ ] 497 [P1/L] Build ForwardLane Django backend bridge (BFF proxy + JWT forwarding + Oracle sync)
+- [ ] 498 [P1/S] Wire Bitbucket CI/CD → Railway auto-deploy (pipelines + deploy hooks)
+- [ ] 499 [P1/M] Bundle size audit — verify @xenova server-only, fix dynamic imports
+- [ ] 500 [P2/M] Add E2E Playwright test suite for critical flows
+- [ ] [QUICK] Add dump.rdb to .gitignore (Redis dump file committed to git)
+- [ ] [QUICK] Harden SQL injection check in /api/oracle/query (multi-statement bypass possible)
+- [ ] [QUICK] Archive/delete 30+ stale root-level .md files (PHASE-*.md, PR-*.md etc)

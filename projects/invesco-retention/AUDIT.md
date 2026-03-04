@@ -173,3 +173,46 @@ class-variance-authority, clsx, lucide-react, next, radix-ui, react, react-dom, 
 | P2 | Add TypeScript strict mode | tsconfig.json | XS |
 | P2 | Service worker cache versioning | mobile-pwa/sw.js | XS |
 | P3 | Extract large salesforce/page.tsx subcomponents | src/components/ | S |
+
+---
+
+# Audit v4 — Judge Agent Pass (2026-03-04)
+
+## Status Update
+Demo deployed and functional. GitHub Pages delivery confirmed. No backend, no secrets, no PII. Audit scope remains: demo reliability, code quality, bundle health.
+
+## New Findings
+
+### 4.1 Missing Print Styles [🟠 HIGH]
+- No `@media print` CSS exists in the current build
+- Adding print styles is required for the PDF leave-behind feature (#426)
+- **File:** `demo-app/src/app/globals.css` or per-page CSS
+- **Action:** Add `@media print { .demo-banner, nav, .reset-button { display: none; } }`
+
+### 4.2 Static Export — No 404 Page
+- GitHub Pages serves `404.html` for unknown routes
+- Ensure `demo-app/out/404.html` exists and redirects to homepage
+- **Action:** Add `notFound.tsx` or `404.html` static fallback
+
+### 4.3 PWA Service Worker Cache Strategy
+- **File:** `mobile-pwa/sw.js`
+- Verify cache-first strategy doesn't serve stale data if demo content is updated
+- **Action:** Bump cache version string when deploying demo updates
+- Add `SKIP_WAITING` logic for instant updates
+
+### 4.4 No robots.txt or sitemap.xml
+- Demo site is public but shouldn't be indexed by Google
+- **File:** `demo-app/public/robots.txt`
+- **Action:** Add `User-agent: * / Disallow: /` to prevent indexing of demo site
+- LOW priority but protects against synthetic data being surfaced in search results
+
+### 4.5 Bundle Analysis (Estimated)
+- Next.js app with Radix UI + Tailwind — estimated bundle ~300-500KB gzipped
+- No performance issues expected for demo (fast connection assumed)
+- For mobile demo: verify load time on 4G connection
+- **Action:** Run `ANALYZE=true npm run build` if `@next/bundle-analyzer` is installed
+
+## No Critical Issues Found
+All critical security, auth, and data concerns remain addressed from v3 audit.
+The codebase is demo-grade and fit for purpose.
+

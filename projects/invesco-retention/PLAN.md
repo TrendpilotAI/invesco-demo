@@ -97,3 +97,45 @@ That requires:
 - `/data/workspace/todos/381-pending-p1-invesco-retention-demo-analytics.md`
 - `/data/workspace/todos/382-pending-p1-invesco-retention-connect-your-data-toggle.md`
 - `/data/workspace/todos/383-pending-p1-invesco-retention-competitor-displacement-persona.md`
+
+---
+
+# Plan v4 — Judge Agent Update (2026-03-04)
+**Demo deployed. Week 2 of retention window. Dry run not yet done.**
+
+## Immediate Priority Order (This Week)
+
+1. **Schedule dry run with Megan & Craig** — Nathan action, 0 engineering required (#219)
+2. **Record backup MP4s** — Honey action, use demo-video skill, 2-4 hours (#220, #302)
+3. **Print-to-PDF button** — Honey codes, ~2 hours, adds huge leave-behind value (new TODO)
+4. **Demo tab pre-setup script** — XS, creates browser bookmarks, <30 min (#341)
+5. **iPhone PWA test** — Nathan action, 15 minutes (#332)
+
+## New TODOs to Create
+
+### TODO: Print-to-PDF Leave-Behind Button
+- File: `426-pending-p0-invesco-retention-print-to-pdf-button.md`
+- Add "Save as PDF" / "Print Brief" button to /salesforce meeting brief
+- Uses `window.print()` with `@media print` CSS or html2pdf.js
+- Shows Invesco logo, advisor name, signal summary, recommended actions
+- Effort: S (2-3h)
+
+### TODO: Live AUM Input on ROI Calculator  
+- File: `427-pending-p1-invesco-retention-live-aum-input.md`
+- Input field on dashboard/ROI section: "Your AUM with this advisor"
+- Pre-filled with synthetic $40M; user can type actual number
+- ROI recalculates live
+- Effort: S (1-2h)
+
+### TODO: Pilot Timeline Widget
+- File: `428-pending-p1-invesco-retention-pilot-timeline-widget.md`
+- Visual day-by-day timeline: Day 0 → Day 14
+- Add to /salesforce bottom section or as standalone modal
+- Effort: XS (1h)
+
+## Risk Assessment (Updated)
+- **Highest risk:** Demo hasn't been dry-run. Megan/Craig may flag political issues.
+- **Second risk:** Live demo failure. Mitigated by backup recordings.
+- **Third risk:** Brian focuses on integration complexity. Mitigated by "Connect Your Data" wizard.
+- **Fourth risk:** Ten Decoders bench concern. Mitigated by existing IT security one-pager (#335).
+
