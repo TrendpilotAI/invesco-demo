@@ -1,0 +1,107 @@
+{
+  "project": "signal-studio-frontend",
+  "repo": "/data/workspace/repos/signal-studio",
+  "analyzed_at": "2026-03-04T03:33:00Z",
+  "summary": "Next.js 16 frontend for Signal Studio — a comprehensive signal builder/library platform with AI chat, visual editor, Oracle integration, admin console, and Salesforce embed capability. 25 pages, 30+ components, JWT auth, rate limiting, PostgreSQL backend. Active development with security hardening and demo polish in recent commits.",
+  "tech_stack": {
+    "framework": "Next.js 16.0.11",
+    "language": "TypeScript",
+    "ui": "React 18, Tailwind CSS, shadcn/ui, React Flow",
+    "ai": "@ai-sdk/openai, @ai-sdk/anthropic, @ai-sdk/google",
+    "auth": "JWT middleware with CSRF double-submit",
+    "database": "PostgreSQL",
+    "testing": "Jest (24 test files), Playwright e2e",
+    "ci": "GitHub Actions (mvp-ci.yml)",
+    "deployment": "Railway"
+  },
+  "scores": {
+    "revenue_potential": 8,
+    "strategic_value": 9,
+    "completeness": 6,
+    "urgency": 8,
+    "effort_remaining": 5,
+    "ci_pipeline": 5,
+    "test_quality": 4
+  },
+  "score_rationale": {
+    "revenue_potential": "Direct enterprise product for ForwardLane/SignalHaus — signal generation platform with Salesforce embed and Oracle ML integration targets high-value finserv clients like Invesco",
+    "strategic_value": "Core product offering; combines AI, data analytics, and client-facing UI — central to business positioning",
+    "completeness": "25 pages built, auth/middleware done, but many features feel demo-stage (visual builder, canvas, oracle-ml). Easy-button/embed exists but needs polish",
+    "urgency": "Recent commits show active demo prep (easy-button public access for screenshots, admin preview for demo fallback) — Invesco demo likely imminent",
+    "effort_remaining": "Auth, rate limiting, core pages exist. Remaining: mobile responsive, Salesforce embed production-ready, performance optimization, error handling consistency",
+    "ci_pipeline": "Basic CI exists (lint + build + test) but no deploy pipeline, no preview environments, no E2E in CI",
+    "test_quality": "24 test files exist but mostly unit/smoke level. E2e specs exist but only 2 found. No visible coverage thresholds enforced"
+  },
+  "prioritized_todos": [
+    {
+      "priority": 1,
+      "category": "invesco_demo_polish",
+      "items": [
+        "Polish easy-button page — ensure all demo flows work end-to-end without auth friction",
+        "Harden admin preview page as reliable demo fallback",
+        "Fix any broken demo routes (ai-prompt, animated-input demos)",
+        "Ensure signal-library and signal-builder pages render cleanly with sample data",
+        "Add loading states and error boundaries on all demo-visible pages"
+      ]
+    },
+    {
+      "priority": 2,
+      "category": "salesforce_embed",
+      "items": [
+        "Production-harden easy-button/embed route with proper auth token passthrough",
+        "Add iframe resize/postMessage communication for Salesforce Lightning container",
+        "Test embed in actual Salesforce sandbox environment",
+        "Add embed configuration options (theme, branding, feature flags)",
+        "Document embed integration steps for client IT teams"
+      ]
+    },
+    {
+      "priority": 3,
+      "category": "auth_and_security",
+      "items": [
+        "Add token refresh flow on frontend (currently have /api/auth/refresh but unclear client usage)",
+        "Add role-based access control for admin vs client views",
+        "Audit all public bypass routes for security gaps",
+        "Add session timeout handling with graceful re-auth"
+      ]
+    },
+    {
+      "priority": 4,
+      "category": "mobile_responsive",
+      "items": [
+        "Audit all 25 pages for mobile breakpoints",
+        "Make sidebar navigation collapsible/hamburger on mobile",
+        "Ensure signal cards and chat interface work on tablet for Salesforce mobile",
+        "Test visual-builder on touch devices (React Flow touch support)"
+      ]
+    },
+    {
+      "priority": 5,
+      "category": "performance",
+      "items": [
+        "Add dynamic imports for heavy components (React Flow, chart libraries)",
+        "Implement route-level code splitting for 25 page routes",
+        "Add API response caching for signal library and templates",
+        "Profile and optimize initial bundle size",
+        "Add Web Vitals monitoring (LCP, CLS, FID)"
+      ]
+    },
+    {
+      "priority": 6,
+      "category": "testing_and_ci",
+      "items": [
+        "Add E2E tests for critical demo flows (signal creation, library browse, embed)",
+        "Add Playwright E2E to CI pipeline",
+        "Add preview deployment on PRs (Railway or Vercel preview)",
+        "Set coverage threshold (aim for 60%+ on lib/)",
+        "Add visual regression tests for demo pages"
+      ]
+    }
+  ],
+  "key_risks": [
+    "Demo-stage features exposed publicly could embarrass in client demos if edge cases hit",
+    "No preview environments means manual QA before every demo",
+    "Oracle ML and vectorization agents are complex — failure modes not well-tested",
+    "24 test files for 25 pages + 30 components + multiple API routes = low coverage"
+  ]
+}

@@ -1,125 +1,113 @@
 {
   "project": "signal-builder-backend",
-  "analyzed_at": "2025-06-10T22:00:00Z",
-  "summary": "FastAPI-based signal construction and publishing platform for ForwardLane. Clean Architecture with dependency injection (dependency-injector). Core value: translates visual signal builder nodes into SQL, validates, previews, and publishes to ForwardLane API. Key risks: severely outdated dependencies with known CVEs, missing authorization boundary checks (IDOR), incomplete RBAC, and large untested surface area in critical business logic (translators, schema_builder, analytical_db).",
-  "improvements": [
-    {
-      "rank": 1,
-      "title": "Fix IDOR: Add Organization-Scoped Authorization to All Signal Endpoints",
-      "problem": "Signal endpoints only filter by user_id but never verify organization_id boundaries. The get_signal dependency (apps/signals/routers/dependencies.py) fetches a signal by signal_id + user_id, but update_signal, delete_signal, validate_signal, preview_signal, and publish_signal do not enforce that the requesting user's organization owns the signal. A user from one organization could potentially access or modify signals belonging to another organization's user if they guessed or enumerated signal IDs. The organization_id field on signals is nullable (marked as a TODO in the model), compounding the risk.",
-      "solution": "1) Make organization_id NOT NULL on the Signal model with an Alembic migration (backfill existing NULLs first using ensure_signals_connected_to_org). 2) Update get_signal dependency to also filter by organization_id from the authenticated user's JWT claims. 3) Add a middleware or dependency that enforces org-scoping on all signal-related storage queries. 4) Add integration tests verifying cross-org access is denied.",
-      "priority": "MUST",
-      "effort_days": 3,
-      "revenue_impact": "high",
-      "security_risk": "high",
-      "ux_improvement": "low"
-    },
-    {
-      "rank": 2,
-      "title": "Upgrade Critically Outdated Dependencies (Pydantic v2, FastAPI, aiohttp CVEs)",
-      "problem": "Pipfile pins severely outdated versions: pydantic 1.10.13 (EOL, v2 has been stable for 2+ years), fastapi 0.92.0 (current is 0.115+), aiohttp 3.8.6 (multiple known CVEs in 3.8.x series including request smuggling and CRLF injection), passlib 1.7.4 (unmaintained since 2020), asyncpg 0.27 (current is 0.30+). The AUDIT.md already flagged this. Running pip-audit would surface actionable CVEs. fastapi-jwt-auth 0.5.0 is also unmaintained and incompatible with Pydantic v2.",
-      "solution": "1) Run pip-audit to get full CVE list. 2) Upgrade aiohttp to 3.10+ first (security-critical, minimal API changes). 3) Upgrade pydantic to v2 with fastapi 0.100+ (largest effort — requires orm_mode→model_config migration across all schemas). 4) Replace fastapi-jwt-auth with python-jose or PyJWT (maintained). 5) Replace passlib with bcrypt directly or use argon2-cffi. 6) Upgrade SQLAlchemy, celery, uvicorn. Create a branch, upgrade incrementally, run full test suite after each.",
-      "priority": "MUST",
-      "effort_days": 8,
-      "revenue_impact": "medium",
-      "security_risk": "high",
-      "ux_improvement": "low"
-    },
-    {
-      "rank": 3,
-      "title": "Implement Proper RBAC with Role-Based Permissions",
-      "problem": "The auth system has stub functions is_active() and is_admin() that are empty (core/auth/dependencies.py). The audit log router uses a hacky getattr(user, 'is_admin', False) check that will always return False since the User schema has no is_admin field. This means the audit log endpoint is effectively locked to everyone, and there's no way to distinguish admin users from regular users. The JWT payload from ForwardLane doesn't appear to include role information that the app can use.",
-      "solution": "1) Add a 'role' or 'roles' field to the User schema and JWT payload (coordinate with ForwardLane API). 2) Implement proper role definitions (admin, editor, viewer) as an enum. 3) Create permission decorators: @require_role('admin'), @require_role('editor'). 4) Apply to all endpoints: audit log (admin), signal publish (editor+), signal preview (viewer+). 5) Add org-admin concept for multi-tenant management. 6) Implement the empty is_active()/is_admin() stubs.",
-      "priority": "MUST",
-      "effort_days": 5,
-      "revenue_impact": "medium",
-      "security_risk": "high",
-      "ux_improvement": "medium"
-    },
-    {
-      "rank": 4,
-      "title": "Add Test Coverage for Translators, Schema Builder, and Analytical DB",
-      "problem": "The three most complex and business-critical modules — apps/translators/ (SQL generation from signal nodes), apps/schema_builder/ (schema construction), and apps/analytical_db/ (data synchronization) — have zero visible test files. The translator module converts user-constructed visual signal nodes into raw SQL that gets executed against the database. Any bug here could produce incorrect financial signals, corrupt data, or introduce SQL injection. The analytical_db module self-documents that it needs tests. Estimated ~40-50% of critical business logic is untested.",
-      "solution": "1) Write unit tests for TranslatorManager.translate_to_sql() with various node tree structures. 2) Test each semantic_layer_translator (basic_operators, comparison, logical, group_functions, ordering) independently. 3) Add integration tests for signal_data_translators with mock DB. 4) Test schema_builder CRUD and validation. 5) Test analytical_db sync cases with mock sessions. 6) Add a CI coverage gate (e.g., 80% minimum for apps/translators/). Target: 60+ tests covering the critical paths.",
-      "priority": "MUST",
-      "effort_days": 10,
-      "revenue_impact": "high",
-      "security_risk": "medium",
-      "ux_improvement": "low"
-    },
-    {
-      "rank": 5,
-      "title": "Reduce JWT Token Lifetime and Add Token Revocation",
-      "problem": "Access tokens expire after 24 hours (AUTH_ACCESS_TOKEN_EXPIRE_MINUTES=1440) and refresh tokens after 7 days (AUTH_REFRESH_TOKEN_EXPIRE_MINUTES=10080). For a financial data platform, these are excessively long. There is no token blacklist/revocation mechanism — a compromised token remains valid until natural expiry. The .env.example shows even longer defaults (1000/2000 minutes). Combined with the lack of rate limiting on auth verification, a stolen token gives prolonged access.",
-      "solution": "1) Reduce access token TTL to 15-30 minutes. 2) Reduce refresh token TTL to 8-24 hours. 3) Implement a Redis-backed token blacklist for logout/revocation. 4) Add a /auth/logout endpoint that blacklists the current token pair. 5) Add a /auth/refresh endpoint that rotates both tokens (refresh token rotation). 6) Add rate limiting (already have slowapi) to the ForwardLane JWT verification calls. 7) Consider adding JWT 'jti' (JWT ID) claim for individual token tracking.",
-      "priority": "SHOULD",
-      "effort_days": 4,
-      "revenue_impact": "low",
-      "security_risk": "high",
-      "ux_improvement": "low"
-    },
-    {
-      "rank": 6,
-      "title": "Add Signal Preview Caching and Performance Optimization for Validators",
-      "problem": "Multiple validator classes have TODO: cache comments (base_group_function_filter_value_validator, base_ordering_validator, base_filter_value_validator). These validators make individual DB calls per validation without caching, causing N+1 query patterns during signal construction. The signal preview endpoint (preview_sql) executes raw SQL with a 30s timeout but no result caching — the same signal previewed repeatedly re-executes the full query. Signal node creation (signal_node.py:57) creates edges one-by-one instead of batch inserting (TODO: create with batch create).",
-      "solution": "1) Add Redis-based caching to validator property lookups with short TTL (5-10 min). 2) Implement batch edge creation in signal_node_cases using bulk INSERT. 3) Cache preview results in Redis with signal_id + node_tree_hash as key (invalidate on node changes via _reset_signal_state). 4) Add DB query count assertions in tests to prevent N+1 regressions. 5) Consider adding connection pooling config (asyncpg pool size) for concurrent requests. Expected: 3-5x improvement in signal construction latency.",
-      "priority": "SHOULD",
-      "effort_days": 5,
-      "revenue_impact": "medium",
-      "security_risk": "low",
-      "ux_improvement": "high"
-    },
-    {
-      "rank": 7,
-      "title": "Add Webhook/Event System for Signal Lifecycle Notifications",
-      "problem": "Signal validation is async (Celery task) but there's no mechanism to notify users when validation completes or fails. Users must poll the signal status endpoint to know if their signal validated successfully. The publish flow similarly has no notification on ForwardLane API success/failure. For a product serving financial advisors, this is a significant UX gap — users build a signal, click validate, and have to manually check back. The audit log captures events but doesn't push them anywhere.",
-      "solution": "1) Add a WebSocket endpoint (/ws/signals/{signal_id}/status) for real-time status updates. 2) In ValidationSignalService.execute_signal, after status update, broadcast via WebSocket. 3) Add optional webhook URL per organization for external integrations (Slack, email). 4) Add an email notification service for critical events (validation failed, publish succeeded). 5) Create a notification preferences model per user. This directly improves user engagement and reduces support load.",
-      "priority": "SHOULD",
-      "effort_days": 7,
-      "revenue_impact": "high",
-      "security_risk": "low",
-      "ux_improvement": "high"
-    },
-    {
-      "rank": 8,
-      "title": "Eliminate Mixed Flask/FastAPI Stack and Remove Dead Admin Code",
-      "problem": "The Pipfile includes flask-admin, flask-security-too, and flask-sqlalchemy alongside the FastAPI main application. This doubles the web framework dependency surface, increases attack surface, and creates maintenance confusion. The admin interface uses Flask while the API uses FastAPI — two different auth systems, two different middleware stacks, two different session models. The scripts/one_time_scripts/ directory contains migration scripts that should have been archived. There are potentially unused schemas flagged with TODO: delete unused.",
-      "solution": "1) Replace Flask Admin with a FastAPI-native admin (sqladmin or starlette-admin — both support SQLAlchemy 2.0). 2) Remove flask, flask-admin, flask-security-too, flask-sqlalchemy from Pipfile. 3) Archive scripts/one_time_scripts/ to a separate branch or delete. 4) Audit and remove unused schemas flagged with TODOs. 5) Fix the REQUEST_DEFAULT_MAX_RETREIS_COUNT typo → REQUEST_DEFAULT_MAX_RETRIES_COUNT. Net effect: ~4 fewer dependencies, smaller Docker image, reduced CVE surface.",
-      "priority": "SHOULD",
-      "effort_days": 4,
-      "revenue_impact": "low",
-      "security_risk": "medium",
-      "ux_improvement": "low"
-    },
-    {
-      "rank": 9,
-      "title": "Add Signal Versioning Rollback and Diff Capabilities",
-      "problem": "The SignalVersion model exists and snapshots are created on publish, but there's no endpoint to rollback to a previous version, compare versions, or view the diff between versions. The signal_version router only supports listing and creating versions. For financial signal builders, the ability to say 'this version produced wrong results, rollback to v3' is critical for operational safety. Currently, a bad publish requires manually reconstructing the signal node tree.",
-      "solution": "1) Add GET /signals/{id}/versions/{version_num}/diff endpoint comparing node_tree_json between two versions. 2) Add POST /signals/{id}/versions/{version_num}/rollback endpoint that restores signal nodes from the snapshot. 3) Store full node_tree (nodes + edges) in node_tree_json, not just sql_pattern. 4) Add a 'rollback_reason' field to SignalVersion. 5) Emit SIGNAL_ROLLED_BACK audit event. 6) Add UI-facing version labels (already have label field, expose it). Revenue impact: reduces customer churn from accidental bad publishes.",
-      "priority": "COULD",
-      "effort_days": 6,
-      "revenue_impact": "medium",
-      "security_risk": "low",
-      "ux_improvement": "high"
-    },
-    {
-      "rank": 10,
-      "title": "Add API Documentation, OpenAPI Enhancements, and Client SDK Generation",
-      "problem": "The FastAPI app generates OpenAPI docs automatically, but endpoint descriptions are sparse (only publish and preview have description= set), there are no example request/response bodies on most endpoints, and the README was auto-generated with placeholder text ('Unknown application', 'No description available'). The health check endpoint hits /docs for its healthcheck (Dockerfile HEALTHCHECK), which is wrong — it should hit /api/v1/health. There's no generated client SDK for frontend teams consuming the API.",
-      "solution": "1) Add description, summary, and response_model_exclude_unset to all router endpoints. 2) Add example values to all Pydantic schemas using Config.schema_extra. 3) Fix Dockerfile HEALTHCHECK to curl /api/v1/health instead of /docs. 4) Generate TypeScript client SDK using openapi-generator from the OpenAPI spec (automate in CI). 5) Rewrite README.md with actual business context, setup instructions, and architecture overview. 6) Add API versioning strategy documentation. This accelerates frontend development and reduces integration bugs.",
-      "priority": "COULD",
-      "effort_days": 4,
-      "revenue_impact": "medium",
-      "security_risk": "low",
-      "ux_improvement": "medium"
-    }
+  "repo_path": "/data/workspace/repos/signal-builder-backend/",
+  "analyzed_at": "2026-03-04T03:34:00Z",
+  "summary": "FastAPI-based signal builder backend with clean architecture (DI via dependency-injector). Provides CRUD for signals, signal versioning, preview/dry-run, audit logging, schema builder, analytical DB sync, user onboarding, and health endpoints. Recent commits show strong security hardening (SQL injection fix, JWT enforcement, CORS lockdown, rate limiting) and operational improvements (Railway deploy, Sentry, pip-audit). 105 test files, Bitbucket Pipelines CI with tox + Postgres. Python 3.11, Alembic migrations, Docker Compose setup.",
+  "tech_stack": {
+    "language": "Python 3.11",
+    "framework": "FastAPI + Uvicorn/Gunicorn",
+    "orm": "SQLAlchemy + Alembic",
+    "di": "dependency-injector",
+    "database": "PostgreSQL 14",
+    "ci": "Bitbucket Pipelines + tox",
+    "deployment": "Railway, Docker, Ansible (QA/Demo)",
+    "observability": "Sentry, logging",
+    "security": "JWT auth, rate limiting (slowapi+Redis), CORS, sqlglot SQL validation"
+  },
+  "api_endpoints": [
+    "POST /signals/ - Create signal",
+    "GET /signals/ - List signals (paginated)",
+    "GET /signals/{id}/ - Get signal",
+    "PATCH /signals/{id}/ - Update signal",
+    "DELETE /signals/{id}/ - Delete signal",
+    "POST /signals/{id}/preview - Dry-run preview execution",
+    "GET /signals/{id}/versions - Signal version history",
+    "POST /signals/{id}/rollback - Rollback to version",
+    "GET /signal-results/ - Client signal results",
+    "POST /analytical-db/sync - Analytical DB synchronization",
+    "GET /schema/ - Schema builder",
+    "GET /audit-log/ - Audit log query",
+    "GET /health - Health check",
+    "GET/PATCH /users/ - User management",
+    "GET/PATCH /onboarding/ - Onboarding status"
   ],
-  "metadata": {
-    "tech_stack": "Python 3.11, FastAPI 0.92, Pydantic v1, SQLAlchemy 2.0, PostgreSQL, Redis, Celery, Docker",
-    "architecture": "Clean Architecture with dependency-injector, domain-driven apps structure",
-    "deployment": "Railway (Docker), Gunicorn + Uvicorn workers",
-    "total_effort_days": 56,
-    "critical_items_count": 5,
-    "lines_of_python_approx": "8000-10000"
-  }
+  "apps": ["signals", "users", "schema_builder", "analytical_db", "audit", "health", "translators", "web_services"],
+  "recent_commits_20": [
+    "49bf528 Add rate limiting with slowapi and Redis",
+    "823abdd fix: signal delete endpoint — raise 404 on not-found, log WebServiceException",
+    "9a7a717 feat: add append-only audit log with middleware context capture and admin query endpoint",
+    "fa1f5b7 feat: add POST /signals/{id}/preview dry-run execution endpoint",
+    "0285a39 feat: signal versioning with snapshot history + rollback",
+    "70c94e1 feat: add /health endpoint + Sentry error tracking",
+    "c9445f3 chore: pin all Pipfile wildcards to locked versions + add pip-audit",
+    "141c1b1 security: fix SQL injection in is_sql_code_correct via sqlglot validation + read-only transaction",
+    "e50ece6 security: require JWT_SECRET_KEY + AUTH_SECRET_KEY env vars, remove insecure hardcoded defaults",
+    "774e24a security: restrict CORS to configured allowed origins",
+    "f1dffe7 Add Railway deployment files",
+    "20fa3c7 docs: add comprehensive README"
+  ],
+  "scores": {
+    "revenue_potential": 8,
+    "strategic_value": 9,
+    "completeness": 7,
+    "urgency": 7,
+    "effort_remaining": 5,
+    "ci_pipeline": 6,
+    "test_quality": 6
+  },
+  "score_rationale": {
+    "revenue_potential": "Core product backend for ForwardLane's signal builder — directly enables client-facing signal creation/management. High revenue linkage.",
+    "strategic_value": "Central to ForwardLane + SignalHaus product ecosystem. Signal versioning, preview, audit trail are enterprise-grade features.",
+    "completeness": "Core CRUD, versioning, preview, audit all implemented. Missing: comprehensive API docs/OpenAPI polish, webhook/event integrations, batch operations.",
+    "urgency": "Recent security hardening sprint suggests production exposure. Needs Signal Studio frontend integration and API stability guarantees.",
+    "effort_remaining": "Moderate. Security hardened, core features present. Still needs: integration testing, API versioning strategy, monitoring dashboards, load testing.",
+    "ci_pipeline": "Bitbucket Pipelines with tox on PRs, Ansible deploy for QA/Demo, Railway for hosting. No automated deploy-on-merge, no staging gate, no coverage reporting.",
+    "test_quality": "105 test files covering storages, cases, e2e. Good coverage breadth but unclear depth. No coverage metrics in CI. Missing integration/load tests."
+  },
+  "todo": [
+    {
+      "category": "Signal Studio Integration",
+      "items": [
+        "Define and document stable API contract (OpenAPI spec) for Signal Studio frontend",
+        "Add WebSocket or SSE for real-time signal preview status updates",
+        "Implement CORS config specifically for Signal Studio origin",
+        "Add API versioning headers (v1/v2) for backward compatibility",
+        "Build signal template/preset endpoints for Studio quick-start flows"
+      ]
+    },
+    {
+      "category": "API Stability",
+      "items": [
+        "Add API versioning strategy (URL prefix or header-based)",
+        "Generate and publish OpenAPI spec with examples",
+        "Add request/response validation middleware with structured error responses",
+        "Implement pagination cursor-based option alongside offset",
+        "Add ETags/conditional requests for signal resources"
+      ]
+    },
+    {
+      "category": "Missing Features",
+      "items": [
+        "Batch signal operations (bulk create/update/delete)",
+        "Signal sharing/permissions model (team-level access)",
+        "Webhook notifications on signal state changes",
+        "Signal export/import (JSON/CSV)",
+        "Signal scheduling/automated execution",
+        "Dashboard/analytics for signal usage metrics",
+        "API key management for programmatic access (beyond JWT)"
+      ]
+    },
+    {
+      "category": "Infrastructure & Quality",
+      "items": [
+        "Add test coverage reporting to CI pipeline",
+        "Implement automated deploy-on-merge to staging",
+        "Add load/performance testing suite",
+        "Set up structured logging with correlation IDs",
+        "Add Prometheus metrics endpoint for monitoring",
+        "Database connection pooling tuning and health checks",
+        "Add Redis health check to /health endpoint"
+      ]
+    }
+  ]
 }

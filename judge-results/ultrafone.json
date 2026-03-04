@@ -1,156 +1,92 @@
 {
   "project": "Ultrafone",
-  "analyzed_at": "2025-07-17T00:00:00Z",
-  "summary": "Ultrafone is an AI-powered phone receptionist for Nathan (CEO, ForwardLane). It screens calls, identifies callers from synced contacts, detects spam/social engineering, and routes intelligently. Backend is FastAPI + Deepgram Voice Agent + Groq LLM; frontend is React/TypeScript; iOS app is Flutter (early stage). Product is pre-launch with strong feature depth but critical security gaps and no monetization infrastructure.",
-  "improvements": [
+  "path": "/data/workspace/projects/Ultrafone/",
+  "evaluated_at": "2026-03-04T03:29:00Z",
+  "summary": "AI phone receptionist that screens calls via Twilio, with Pipecat orchestration, Groq Llama 3.3 70B for LLM, Deepgram for STT, Fish Audio for TTS, and ElevenLabs as alternate TTS. Includes social engineering detection, caller reputation, spam screening, DND modes, contact sync (Google/HubSpot/iCloud), React frontend with glassmorphic UI, and a Flutter iOS app scaffold. Substantial codebase (~2k+ lines backend services, 20+ commits, 6 phases implemented).",
+  "integrations": {
+    "pipecat": {"status": "integrated", "details": "pipecat-ai[groq,deepgram,twilio] in requirements; GroqLLMService, DeepgramSTTService used in receptionist.py"},
+    "groq": {"status": "integrated", "details": "Groq Llama 3.3 70B as primary LLM; used in receptionist + call classifier"},
+    "fish_audio": {"status": "integrated", "details": "FishTTSService implemented in fish_tts.py, used as primary TTS in receptionist"},
+    "deepgram": {"status": "integrated", "details": "DeepgramSTTService for speech-to-text; also Deepgram Voice Agent API for Phase 3"},
+    "elevenlabs": {"status": "integrated", "details": "Alternate TTS provider with voice cloning support"},
+    "twilio": {"status": "integrated", "details": "Call handling, media streams, STIR/SHAKEN verification"},
+    "supabase": {"status": "integrated", "details": "Auth + database via Supabase SDK"},
+    "redis": {"status": "integrated", "details": "Pub/sub for real-time call approval"}
+  },
+  "scores": {
+    "revenue_potential": 8,
+    "strategic_value": 9,
+    "completeness": 6,
+    "urgency": 7,
+    "effort_remaining": 5
+  },
+  "score_rationale": {
+    "revenue_potential": "Strong B2C SaaS potential — AI call screening is a real pain point. Subscription model ($10-30/mo) with clear value prop. Market timing good with AI voice maturity.",
+    "strategic_value": "Showcases Pipecat+Groq+Fish Audio stack; differentiates with social engineering detection. Strong demo piece for ForwardLane/SignalHaus AI capabilities.",
+    "completeness": "Core pipeline (Twilio→Pipecat→Groq→Fish Audio→Deepgram) is wired. 6 phases implemented. But: no end-to-end integration tests, iOS app is scaffold only (0 Dart files), no deployment config beyond Dockerfile, no CI/CD.",
+    "urgency": "AI call screening market heating up (Truecaller, Hiya, Google Call Screen). First-mover advantage with social engineering detection angle. Ship before commoditized.",
+    "effort_remaining": "Core services exist but need: real device testing with Twilio, iOS app build-out, deployment pipeline, billing/payments, App Store submission. ~3-5 weeks to MVP."
+  },
+  "architecture": {
+    "backend": "Python/FastAPI + Pipecat pipeline orchestration",
+    "frontend": "React 19 + Vite + Tailwind + Radix UI + Framer Motion",
+    "ios": "Flutter (scaffold only, no Dart files found)",
+    "database": "PostgreSQL via SQLAlchemy/Alembic + Supabase",
+    "realtime": "Redis pub/sub for call approval, WebSocket for dashboard",
+    "monitoring": "PostHog analytics + Sentry error tracking (optional)"
+  },
+  "todo": [
     {
-      "id": 1,
-      "title": "Rotate All Leaked API Keys Immediately",
-      "problem": "The file `backend/.env.development` is committed to the git repo and contains live API keys in plaintext: Groq (gsk_PkR1...), Fish Audio, Deepgram, Twilio Account SID + Auth Token, and a weak JWT secret. Anyone with repo access (or if the repo is public) can impersonate the Twilio account, make calls on Nathan's dime, access Deepgram/Groq APIs, or forge JWTs. The `.gitignore` does not exclude `.env.development`.",
-      "solution": "1) Immediately rotate every key in that file (Groq, Fish Audio, Deepgram, Twilio SID/token). 2) Add `.env.development` and `.env` to `.gitignore`. 3) Remove the file from git history with `git filter-repo` or BFG Repo Cleaner. 4) Move all secrets to Railway environment variables or a vault. 5) Add a pre-commit hook that blocks files matching `.env*` (except `.env.example`). 6) Change the JWT_SECRET to a cryptographically random 256-bit value in production.",
-      "revenue_impact": "high",
-      "security_risk": "high",
-      "ux_improvement": "low",
-      "effort_days": 1,
-      "priority": "MUST"
+      "priority": "P0",
+      "category": "mvp",
+      "items": [
+        "End-to-end integration test: real Twilio call → Pipecat → Groq → Fish Audio → caller hears response",
+        "Deploy backend to cloud (Railway/Fly.io) with PostgreSQL + Redis",
+        "Configure Twilio webhook to point at deployed backend",
+        "Test with 10+ real phone calls across scenarios (known contact, spam, social engineering, legitimate unknown)"
+      ]
     },
     {
-      "id": 2,
-      "title": "Add Twilio Webhook Request Validation",
-      "problem": "The `/twilio/voice`, `/twilio/voice/status`, `/twilio/voice/agent-complete`, and `/twilio/recording` endpoints accept any POST request without verifying the `X-Twilio-Signature` header. An attacker who knows the URL can inject fake call events, trigger call forwarding to arbitrary numbers, pollute the database with fake records, and potentially trigger costly outbound calls via the `transfer_call` REST API function.",
-      "solution": "1) Add Twilio request signature validation middleware using `twilio.request_validator.RequestValidator`. Check `X-Twilio-Signature` against the full URL + POST body using the Twilio Auth Token. 2) Return 403 for any request that fails validation. 3) Rate-limit these endpoints at the reverse proxy (nginx/Cloudflare) level. 4) Validate the `transfer_call` function ensures `to_phone` is in an allowlist (currently accepts any number).",
-      "revenue_impact": "medium",
-      "security_risk": "high",
-      "ux_improvement": "low",
-      "effort_days": 2,
-      "priority": "MUST"
+      "priority": "P0",
+      "category": "social_engineering_detection",
+      "items": [
+        "Validate security_analyzer.py against real social engineering scripts (IRS scam, tech support, bank fraud, impersonation)",
+        "Add confidence scoring and threshold tuning for false positive rate",
+        "Build evaluation dataset: 50+ labeled call transcripts (benign vs malicious)",
+        "Add real-time escalation: push notification to user when social engineering detected mid-call"
+      ]
     },
     {
-      "id": 3,
-      "title": "Implement Multi-Tenant SaaS Billing for Productization",
-      "problem": "The system is hardcoded for a single user ('nathan'). The roadmap says Phase 3 includes 'SaaS offering' and 'white-label solution', but there is zero billing/subscription infrastructure. The `user_id` is hardcoded as 'nathan' across call handlers, settings queries, and API routes. The project summary shows clear unit economics ($0.23-0.26/call) but no way to charge customers. This is the single biggest revenue blocker.",
-      "solution": "1) Replace hardcoded `user_id='nathan'` with proper Supabase auth (the schema already has RLS policies — they're just bypassed). 2) Add Stripe billing integration: monthly subscriptions tiered by call volume (e.g., $29/mo for 100 calls, $99/mo for 500, $299/mo for 2000). 3) Add per-call metering with Stripe Usage Records for overage. 4) Add onboarding flow: sign up → connect Twilio number → configure greeting → go live. 5) Track cost-per-call per tenant for margin monitoring. The cost analysis in PROJECT_SUMMARY.md proves the unit economics work ($0.23/call cost, charge $0.50-1.00/call).",
-      "revenue_impact": "high",
-      "security_risk": "medium",
-      "ux_improvement": "high",
-      "effort_days": 14,
-      "priority": "SHOULD"
+      "priority": "P1",
+      "category": "consumer_launch",
+      "items": [
+        "Build Flutter iOS app (currently empty scaffold) — minimum: login, call log, settings, push notifications",
+        "Implement Stripe billing (free tier + $9.99/mo premium)",
+        "App Store submission: privacy policy, screenshots, review guidelines compliance",
+        "Landing page with demo video showing social engineering detection in action",
+        "Onboarding flow: Twilio number provisioning or BYOP (bring your own phone forwarding)"
+      ]
     },
     {
-      "id": 4,
-      "title": "Build Calendar Integration for Appointment Booking",
-      "problem": "Healthcare calls are the most common call type, but the AI can only take messages about appointments — it can't actually check Nathan's calendar availability or book appointments. The receptionist asks for date/time but has no way to confirm or suggest alternatives. This creates a round-trip where Nathan has to call back to confirm, defeating the purpose of an AI receptionist. The roadmap lists this as Phase 2 but it's not started.",
-      "solution": "1) Integrate Google Calendar API (OAuth already partially built for Google Contacts). 2) Add agent function `check_availability(date, time_range)` that queries Nathan's calendar. 3) Add agent function `book_appointment(title, datetime, caller_name, notes)` that creates a calendar event. 4) For ForwardLane calls, add `schedule_callback(caller_phone, preferred_time)` that creates a calendar event with reminders. 5) This single feature transforms Ultrafone from 'fancy voicemail' to 'actual scheduling assistant' — dramatically increasing perceived value for SaaS customers.",
-      "revenue_impact": "high",
-      "security_risk": "low",
-      "ux_improvement": "high",
-      "effort_days": 5,
-      "priority": "SHOULD"
+      "priority": "P1",
+      "category": "quality",
+      "items": [
+        "Latency benchmarking: measure and optimize end-to-end response time (target <800ms)",
+        "Add structured logging and call analytics dashboard",
+        "Voice quality A/B testing: Fish Audio vs ElevenLabs vs Deepgram TTS",
+        "Handle edge cases: caller hangs up mid-conversation, network drops, API timeouts"
+      ]
     },
     {
-      "id": 5,
-      "title": "Add Voicemail Transcription and Smart Summaries",
-      "problem": "When callers leave voicemails (via `<Record>` in TwiML), only the `recording_url` is saved. There's no transcription of voicemails, no summary generation, and no notification with the voicemail content. Nathan has to listen to every recording manually. The iOS app design includes a voicemails screen with transcripts (`voicemails_screen.dart`, `voicemail_player.dart`) but there's no backend support. The frontend has no voicemail view either.",
-      "solution": "1) Add a Twilio recording status callback handler that fetches the recording audio. 2) Send the audio to Deepgram for transcription (already have the API key). 3) Run the transcript through Groq to generate a 2-3 sentence summary with action items (e.g., 'Dr. Smith's office called to reschedule your cleaning to next Thursday at 2pm. Call back to confirm.'). 4) Store transcript + summary on the call record. 5) Send push notification with the summary text. 6) Add voicemail list/player to both web and iOS frontends. This is low effort because the STT and LLM are already integrated.",
-      "revenue_impact": "medium",
-      "security_risk": "low",
-      "ux_improvement": "high",
-      "effort_days": 3,
-      "priority": "SHOULD"
-    },
-    {
-      "id": 6,
-      "title": "Add Rate Limiting and Abuse Protection on All API Endpoints",
-      "problem": "There is no rate limiting on any endpoint. The API has no authentication enforcement (auth middleware falls back to `user_id='nathan'` when no token is provided). Any unauthenticated request gets full access to all call records, settings, contacts, caller management, and can whitelist/blacklist numbers. The `approve_call` endpoint can be called by anyone to approve or reject live calls. The `transfer_call` function can redirect calls to any phone number.",
-      "solution": "1) Enforce Supabase JWT auth on all `/api/*` routes (remove the graceful fallback to default user). 2) Add `slowapi` rate limiting: 60 req/min on read endpoints, 10 req/min on write endpoints, 3 req/min on call approval. 3) Add IP allowlisting for Twilio webhook endpoints (Twilio publishes their IP ranges). 4) Add CSRF protection for state-changing endpoints. 5) Validate and sanitize all input (phone numbers should be validated as E.164, email validated, etc.). 6) Add request logging with IP addresses for audit trail.",
-      "revenue_impact": "medium",
-      "security_risk": "high",
-      "ux_improvement": "low",
-      "effort_days": 3,
-      "priority": "MUST"
-    },
-    {
-      "id": 7,
-      "title": "Implement Outbound Call Intelligence (Follow-ups and Callbacks)",
-      "problem": "Ultrafone only handles inbound calls. When the AI takes a message or schedules a callback, there's no automated follow-up. Nathan still has to manually call people back with no context. The `callback_scheduled` disposition exists in the database but nothing ever acts on it. For a SaaS product, outbound intelligence (automated callback scheduling, follow-up reminders, lead nurturing calls) would be a massive differentiator and could command premium pricing.",
-      "solution": "1) Add a callback queue: when AI takes a message with `callback_scheduled` disposition, create a scheduled task. 2) Send Nathan a digest notification: 'You have 3 callbacks pending — tap to auto-dial with context.' 3) Before the callback, show Nathan the full call transcript, extracted info, and security analysis so he's prepared. 4) For SaaS: add automated outbound calls where the AI calls back the person on Nathan's behalf with a message ('Nathan asked me to let you know he's available at 3pm'). 5) Track callback completion rates for analytics.",
-      "revenue_impact": "high",
-      "security_risk": "low",
-      "ux_improvement": "high",
-      "effort_days": 8,
-      "priority": "COULD"
-    },
-    {
-      "id": 8,
-      "title": "Build Analytics Dashboard with Call Intelligence Insights",
-      "problem": "The current stats endpoint returns only basic counts (total calls, forwarded, blocked, messages, avg duration). There are no trends, no caller pattern analysis, no time-of-day heatmaps, no conversion metrics (what % of ForwardLane calls become qualified leads?), no cost tracking, and no actionable insights. The `release_analytics` feature flag exists but nothing is behind it. For a SaaS product, analytics is a key retention and upsell driver.",
-      "solution": "1) Add backend analytics endpoints: call volume trends (daily/weekly/monthly), caller type distribution over time, spam block rate, average security scores, peak call hours heatmap, cost-per-call breakdown, ForwardLane lead qualification rate. 2) Build frontend analytics page with charts (Recharts or similar) showing: calls over time, disposition breakdown, top callers, security incidents timeline, estimated time saved. 3) Add weekly email digest: 'This week Ultrafone handled 47 calls, blocked 12 spam, forwarded 8 to you, saving ~2.5 hours.' 4) For SaaS: make advanced analytics a premium tier feature.",
-      "revenue_impact": "medium",
-      "security_risk": "low",
-      "ux_improvement": "high",
-      "effort_days": 7,
-      "priority": "SHOULD"
-    },
-    {
-      "id": 9,
-      "title": "Add Conversation Quality Monitoring and LLM Guardrails",
-      "problem": "The AI receptionist has no guardrails against prompt injection or adversarial callers manipulating the LLM. The system prompt is injected via `riskContext` as a TwiML stream parameter — visible in the page source. A sophisticated caller could potentially trick the AI into forwarding calls it shouldn't, revealing Nathan's phone number, or extracting information about other callers. The `_is_vague_or_generic` function uses naive keyword matching. There's no conversation quality scoring or feedback loop.",
-      "solution": "1) Move sensitive context (Nathan's phone number, forwarding rules) out of the system prompt and into server-side function implementations — the AI should call `forward_call()` without knowing the target number. 2) Add output guardrails: post-process agent responses to strip any PII before sending to caller. 3) Add conversation quality scoring: after each call, run the full transcript through Groq to score naturalness (1-5), goal completion (1-5), and security compliance (pass/fail). 4) Store scores and flag calls below threshold for human review. 5) Add adversarial input detection: if caller says 'ignore your instructions' or similar, immediately escalate security score.",
-      "revenue_impact": "medium",
-      "security_risk": "high",
-      "ux_improvement": "medium",
-      "effort_days": 5,
-      "priority": "MUST"
-    },
-    {
-      "id": 10,
-      "title": "Add SMS/WhatsApp Message Handling Channel",
-      "problem": "Ultrafone only handles voice calls. Many callers (especially younger demographics and international contacts) prefer text messaging. Twilio already supports SMS and WhatsApp, and the existing infrastructure (caller reputation, spam screening, message taking, contact lookup) maps directly to text conversations. Adding SMS/WhatsApp would roughly double the addressable use cases with minimal incremental architecture. For SaaS, multi-channel is a major competitive advantage.",
-      "solution": "1) Add Twilio SMS webhook endpoint `/twilio/sms` that receives incoming texts. 2) Reuse existing caller lookup + spam screening pipeline. 3) For trusted callers: forward the message to Nathan via push notification with one-tap reply. 4) For unknown callers: AI responds via SMS asking the same verification questions as the voice flow, but asynchronously. 5) Store SMS conversations as a new `channel` type on call_records (or a new `message_records` table). 6) Add WhatsApp Business via Twilio — same flow, different channel. 7) Show all channels unified in the dashboard/app. Twilio SMS costs ~$0.0079/message, making it highly profitable.",
-      "revenue_impact": "high",
-      "security_risk": "low",
-      "ux_improvement": "high",
-      "effort_days": 10,
-      "priority": "COULD"
+      "priority": "P2",
+      "category": "growth",
+      "items": [
+        "Android app or progressive web app",
+        "Multi-user support (family plan)",
+        "Custom AI personality/voice per user",
+        "Voicemail transcription and AI summary",
+        "Integration with smart home (announce caller on HomePod/Alexa)"
+      ]
     }
-  ],
-  "critical_findings": {
-    "security": [
-      "Live API keys committed to git (Groq, Deepgram, Twilio, Fish Audio) in backend/.env.development",
-      "No Twilio webhook signature validation — anyone can inject fake call events",
-      "Authentication is optional — all API endpoints fall back to hardcoded user without requiring auth",
-      "JWT secret is a weak dev string ('dev_secret_change_in_production_12345678901234567890')",
-      "No rate limiting on any endpoint",
-      "transfer_call accepts any phone number with no validation or allowlist",
-      "System prompt with sensitive routing logic exposed via TwiML stream parameters"
-    ],
-    "architecture": [
-      "Hardcoded single-user ('nathan') throughout — blocks multi-tenant scaling",
-      "receptionist.py uses synchronous Groq client but wraps calls with async — potential blocking",
-      "APNs push notifications are stubbed (placeholder only, not implemented)",
-      "No database migrations beyond initial schema — no contact tables visible in migration despite being in the models",
-      "iOS app is Flutter (Dart) but ARCHITECTURE.md says SwiftUI — documentation mismatch"
-    ]
-  },
-  "priority_summary": {
-    "MUST": [
-      "#1 Rotate Leaked API Keys (1 day)",
-      "#2 Twilio Webhook Validation (2 days)",
-      "#6 Rate Limiting & Auth Enforcement (3 days)",
-      "#9 LLM Guardrails & Prompt Injection Protection (5 days)"
-    ],
-    "SHOULD": [
-      "#3 Multi-Tenant SaaS Billing (14 days)",
-      "#4 Calendar Integration (5 days)",
-      "#5 Voicemail Transcription (3 days)",
-      "#8 Analytics Dashboard (7 days)"
-    ],
-    "COULD": [
-      "#7 Outbound Call Intelligence (8 days)",
-      "#10 SMS/WhatsApp Channel (10 days)"
-    ]
-  },
-  "total_effort_days": 58,
-  "must_have_effort_days": 11,
-  "estimated_revenue_unlock": "MUST items prevent security disasters and credential abuse. SHOULD items (#3 billing + #4 calendar) unlock SaaS revenue estimated at $5K-50K MRR within 6 months based on $29-299/mo pricing across 200-500 small business customers. COULD items (#10 SMS/WhatsApp) expand TAM by ~2x."
+  ]
 }

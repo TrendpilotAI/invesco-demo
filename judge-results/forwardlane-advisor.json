@@ -1,0 +1,79 @@
+{
+  "project": "forwardlane_advisor",
+  "name": "ForwardLane Advisor (DialogTool)",
+  "path": "/data/workspace/projects/forwardlane_advisor/",
+  "analyzed_at": "2026-03-04T03:38:00Z",
+  "summary": "Legacy Node.js/Express financial advisor platform with IBM Watson dialog integration, Sequelize/MySQL ORM, portfolio management, alerts, compliance, recommendation engine, and MorningStar fund integration. Originally built ~2016 on Node 0.10 (IBM Watson Dialog Tool fork), recently patched to Node 20 with security hardening. Extensive domain model (~40 Sequelize models) covering clients, portfolios, instruments, strategies, recommendations, and alerts.",
+  "tech_stack": {
+    "runtime": "Node.js 20 (upgraded from 0.10)",
+    "framework": "Express 4.x",
+    "orm": "Sequelize 3.x (severely outdated)",
+    "database": "MySQL",
+    "templating": "Jade (deprecated, now Pug)",
+    "task_runner": "Gulp",
+    "process_manager": "PM2",
+    "auth": "Passport (local strategy)",
+    "messaging": "AMQP (RabbitMQ)",
+    "cloud": "AWS SDK, DynamoDB",
+    "external": "IBM Watson, MorningStar, wkhtmltopdf"
+  },
+  "scores": {
+    "revenue_potential": 4,
+    "strategic_value": 6,
+    "completeness": 7,
+    "urgency": 3,
+    "effort_remaining": 8
+  },
+  "score_rationale": {
+    "revenue_potential": "Legacy internal tool for ForwardLane advisors. Revenue is indirect—supports advisor workflows but unlikely to generate new revenue without major modernization. The domain models (portfolios, recommendations, alerts) hold business logic value.",
+    "strategic_value": "Contains core ForwardLane domain knowledge: client segmentation, portfolio analysis, recommendation engine, compliance workflows, alert systems. This IP is strategically important even if the codebase is legacy. Could inform a modern rebuild.",
+    "completeness": "Feature-rich: 20+ route modules covering admin, analysis, strategy, instruments, universes, recommendations, compliance, signals, relationships, clients, portfolios, alerts, cards, products, currency. 40+ DB models. Functional but dated.",
+    "urgency": "Low urgency—recent security patches (Dockerfile SSH exfil removed, Node 20 upgrade, helmet/CORS hardening) reduced immediate risk. Not actively developed. Can sit as-is while decisions are made.",
+    "effort_remaining": "Massive modernization effort: Sequelize 3→7, Jade→modern frontend, Express patterns, test coverage unknown, many deprecated deps (node-uuid, request, xmldom). Realistically easier to extract domain logic and rebuild than to incrementally upgrade."
+  },
+  "git_recent": [
+    "c0a8fff security: CVE remediation + hardening (TODO-452)",
+    "f3e99a1 chore: upgrade Node.js 0.10 → v20 LTS, update Dockerfile + package.json engines",
+    "308f960 SECURITY: Remove SSH key exfiltration from Dockerfile",
+    "a35be55 docs: add comprehensive README with business overview and technical documentation"
+  ],
+  "todos": {
+    "modernization": [
+      "Upgrade Sequelize 3.x → 6.x+ (breaking changes in associations, scopes, migrations)",
+      "Replace Jade/Pug templates with modern frontend (React/Next.js or at minimum Pug)",
+      "Replace deprecated `request` library with `fetch` or `axios`",
+      "Replace `node-uuid` with `crypto.randomUUID()` (built-in Node 20)",
+      "Upgrade `watson-developer-cloud` → `ibm-watson` SDK or remove if Watson Dialog is sunset",
+      "Replace `xmldom` (unmaintained) with `@xmldom/xmldom`",
+      "Add proper environment config management (dotenv or similar, remove hardcoded paths)",
+      "Add ESLint + Prettier for code consistency",
+      "Add proper logging infrastructure (structured JSON logs, replace bunyan if desired)",
+      "Containerize properly: multi-stage Docker build, non-root user, health checks",
+      "Add CI/CD pipeline (tests, linting, security scanning)",
+      "Extract business logic from route handlers into service layer"
+    ],
+    "deprecation_plan": [
+      "Phase 1: Document all active users/integrations depending on this system",
+      "Phase 2: Identify which domain modules (recommendations, portfolios, alerts) are still business-critical vs unused",
+      "Phase 3: Extract critical business logic and Sequelize models into a shared library or API spec",
+      "Phase 4: Build modern replacement (TypeScript, modern ORM, proper API design) informed by extracted domain knowledge",
+      "Phase 5: Migrate data and switch over, decommission legacy app",
+      "Timeline suggestion: 3-6 months for full deprecation if actively staffed"
+    ],
+    "security_vulnerabilities": [
+      "CRITICAL (FIXED): Dockerfile previously fetched SSH private keys from external HTTP server with hardcoded bearer token—supply chain attack vector. Removed in commit 308f960.",
+      "HIGH: `trim` package v0.0.1 — known prototype pollution vulnerability (CVE-2020-7753)",
+      "HIGH: `sequelize` 3.x — multiple known CVEs, no longer maintained",
+      "HIGH: `express-validator` 2.x — severely outdated, known issues",
+      "MEDIUM: `hawk` 6.x — outdated cryptographic library",
+      "MEDIUM: `minimatch` 3.x — ReDoS vulnerability in older versions",
+      "MEDIUM: `lodash` 4.17.4 — needs update to 4.17.21+ for prototype pollution fixes",
+      "MEDIUM: `helmet` 3.x — outdated, should be 7.x+",
+      "MEDIUM: Cookie session without secure flag enforcement in production",
+      "LOW: `jade` 1.9 — deprecated and renamed to Pug, no security patches",
+      "LOW: Git dependency `fl-dialog` fetched via SSH from Bitbucket—ensure repo access is controlled",
+      "LOW: `file-manager-js` fetched from GitHub URL without version pinning",
+      "RECOMMENDATION: Run `npm audit` after install to get full CVE report; expect 50+ vulnerabilities"
+    ]
+  }
+}

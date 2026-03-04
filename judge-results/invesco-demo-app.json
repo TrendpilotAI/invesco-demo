@@ -1,0 +1,81 @@
+{
+  "project": "invesco-demo-app",
+  "path": "/data/workspace/projects/invesco-retention/demo-app",
+  "judged_at": "2026-03-04T03:33:00Z",
+  "summary": "Next.js 16 + React 19 demo app for Invesco wholesaler pitch. 4 working screens: App Launcher (home), Salesforce Meeting Brief (hero), Territory Dashboard, Signal Studio (NL queries), Mobile Brief. Static export exists in out/. Uses Salesforce Lightning Design System (SLDS) styling, shadcn/ui components, mock data (500 advisors, $156B AUM). Includes error boundaries, demo reset overlay, synthetic data disclaimer. Well-structured for a pitch demo.",
+
+  "scores": {
+    "revenue_potential": 9,
+    "revenue_potential_rationale": "Invesco is a major asset manager. A successful demo could land a significant enterprise deal for ForwardLane. Direct client pitch tool.",
+    "strategic_value": 9,
+    "strategic_value_rationale": "Core ForwardLane product demo for a named prospect. Salesforce-native look builds credibility. Shows AI signal intelligence across multiple surfaces.",
+    "completeness": 7,
+    "completeness_rationale": "4 of 6 apps functional (Analytics, Events are 'coming soon'). Static export works. Has mock data, error boundaries, reset overlay. Missing: real API integration, charts library (sparklines are hand-rolled SVG), no recharts/nivo.",
+    "urgency": 9,
+    "urgency_rationale": "Git log shows active Invesco prep commits in last 48h. This is an imminent pitch demo.",
+    "effort_remaining": 4,
+    "effort_remaining_rationale": "Core screens exist and work. Remaining effort is polish, not foundation. ~2-4 days of focused work to make pitch-perfect."
+  },
+
+  "tech_stack": {
+    "framework": "Next.js 16.1.6 (App Router, static export)",
+    "react": "19.2.3",
+    "ui": "shadcn/ui + Radix UI + custom SLDS components",
+    "styling": "Tailwind CSS 4 + tw-animate-css",
+    "icons": "Lucide React + custom SLDS SVG icons",
+    "data": "Mock data (354 lines mock-data.ts + 5358 lines combined-data.ts)",
+    "deployment": "Static export (out/) + Dockerfile"
+  },
+
+  "screens": [
+    { "route": "/", "name": "App Launcher", "status": "complete", "notes": "SF-style app grid, animated stats, clean branding" },
+    { "route": "/salesforce", "name": "Meeting Brief", "status": "complete", "notes": "610 lines, hero screen, contact record AI intelligence" },
+    { "route": "/dashboard", "name": "Territory Dashboard", "status": "complete", "notes": "428 lines, advisor rankings, sparklines, signals" },
+    { "route": "/create", "name": "Signal Studio", "status": "complete", "notes": "514 lines, NL query interface" },
+    { "route": "/mobile", "name": "Mobile Brief", "status": "complete", "notes": "445 lines, field-ready meeting prep" },
+    { "route": "/analytics", "name": "Analytics", "status": "placeholder", "notes": "Coming soon badge on launcher" },
+    { "route": "/events", "name": "Events", "status": "placeholder", "notes": "Coming soon badge on launcher" }
+  ],
+
+  "todo": [
+    {
+      "category": "demo_quality",
+      "items": [
+        { "task": "Add loading/transition animations between screens for wow factor", "effort": "small", "impact": "high" },
+        { "task": "Add Invesco branding/colors alongside ForwardLane logo", "effort": "small", "impact": "high" },
+        { "task": "Polish Salesforce Meeting Brief as the hero walkthrough screen", "effort": "medium", "impact": "critical" },
+        { "task": "Add a scripted demo flow / guided tour mode (step-by-step highlights)", "effort": "medium", "impact": "high" },
+        { "task": "Ensure all mock data tells a coherent story (advisor at risk → signal → action → outcome)", "effort": "medium", "impact": "critical" },
+        { "task": "Add a fake 'AI generating...' typing animation for Signal Studio responses", "effort": "small", "impact": "high" }
+      ]
+    },
+    {
+      "category": "easy_buttons",
+      "items": [
+        { "task": "Pre-populate Signal Studio with 3-5 canned queries that demo well", "effort": "small", "impact": "high" },
+        { "task": "Add one-click 'Reset Demo' that resets all state to pristine", "effort": "small", "impact": "medium", "notes": "DemoResetOverlay exists, verify it works" },
+        { "task": "Add keyboard shortcuts for screen navigation (1-4 keys)", "effort": "small", "impact": "medium" },
+        { "task": "Add 'Send to CRM' / 'Export' buttons that show success toast (no-op)", "effort": "small", "impact": "high" },
+        { "task": "Deploy static export to a shareable URL (Vercel/Cloudflare Pages)", "effort": "small", "impact": "critical" }
+      ]
+    },
+    {
+      "category": "mobile_polish",
+      "items": [
+        { "task": "Test and fix responsive layout on iPhone 14/15 Pro viewport", "effort": "medium", "impact": "high" },
+        { "task": "Ensure Mobile Brief page has touch-friendly tap targets (min 44px)", "effort": "small", "impact": "medium" },
+        { "task": "Fix any horizontal scroll issues on mobile viewports", "effort": "small", "impact": "medium" },
+        { "task": "Add PWA manifest for 'Add to Home Screen' during demo", "effort": "small", "impact": "medium" },
+        { "task": "Verify App Launcher grid collapses to 2-col on mobile", "effort": "small", "impact": "medium" }
+      ]
+    },
+    {
+      "category": "technical_debt",
+      "items": [
+        { "task": "Remove 'coming soon' apps or add minimal placeholder pages", "effort": "small", "impact": "low" },
+        { "task": "Add proper chart library (recharts) for dashboard sparklines", "effort": "medium", "impact": "medium" },
+        { "task": "Verify Docker build works for self-hosted demo option", "effort": "small", "impact": "medium" }
+      ]
+    }
+  ]
+}
