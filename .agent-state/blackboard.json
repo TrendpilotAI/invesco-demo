@@ -1,0 +1,11 @@
+{
+  "test/hello": {
+    "value": {
+      "message": "blackboard v2 working"
+    },
+    "agent": "honey",
+    "project": "test",
+    "written_at": 1772646033,
+    "expires_at": null
+  }
+}

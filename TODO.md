@@ -11,6 +11,7 @@
 > invesco-sprint cron check 2026-03-03 21:01 UTC: Demo still live. Identified 4 remaining P0 security/quality items across data-provider, backend, and templates. Spawned 4 parallel Sonnet agents: TODO-422 (demo auth hardening), TODO-426 (templates JWT auth), TODO-434 (Snowflake param binding), TODO-445 (TanStack Query wiring).
 > invesco-sprint cron check 2026-03-04 05:01 UTC: TODO-422 ✅ DONE (HMAC X-Demo-Token auth, commit 501aa6b0). TODO-426 ✅ DONE (JWT middleware via JWKS-RSA, commit 9af41e8, 18 tests pass). TODO-434 + TODO-445 still pending — spawned 2 fresh Sonnet agents in parallel to complete.
 > invesco-sprint cron check 2026-03-04 13:01 UTC: TODO-434 ✅ DONE, TODO-445 ✅ DONE. Spawned 4 parallel Sonnet agents for remaining P0s: TODO-456 (force_text Django 4.2 compat), TODO-466 (Templates API rate limiting+CORS), TODO-467 (npm publish pipeline), TODO-495 (AI route rate limiting).
+> invesco-sprint cron check 2026-03-04 21:01 UTC: TODO-456 ✅ DONE (force_str Django 4.2, all legacy utils replaced). TODO-466 ✅ DONE (rate limiting + CORS on Templates API, commit 6d1e40c). TODO-467 ✅ DONE (npm publish pipeline for @forwardlane/signal-studio-templates). TODO-495 ✅ DONE (AI route rate limiting, commit b9dbd910). Spawned 1 agent for remaining P0: oracle_provider async blocking audit.
 
 
 
@@ -437,8 +438,8 @@
 - [ ] **TODO-428** GitHub Actions CI — typecheck/lint/test/build pipeline [S] → `/data/workspace/todos/428-pending-p1-signal-studio-templates-github-actions-ci.md`
 - [ ] **TODO-429** DataProvider adapters — Snowflake + Postgres real implementations [L] → `/data/workspace/todos/429-pending-p1-signal-studio-templates-data-provider-implementations.md`
 - [ ] **TODO-430** Expand template library 20→40 — 20 new templates across all 5 categories [M] → `/data/workspace/todos/430-pending-p2-signal-studio-templates-expand-template-library.md`
-- [ ] **TODO-466** Rate limiting + CORS on Templates API — express-rate-limit, cors allowlist, body size limit [S/P0] → `/data/workspace/todos/466-pending-p0-signal-studio-templates-rate-limiting-cors.md`
-- [ ] **TODO-467** Publish @forwardlane/signal-studio-templates to npm registry — publishConfig, .npmrc, CI publish on tag [S/P0] → `/data/workspace/todos/467-pending-p0-signal-studio-templates-npm-publish-pipeline.md`
+- [x] **TODO-466** Rate limiting + CORS on Templates API — express-rate-limit, cors allowlist, body size limit [S/P0] ✅ DONE 2026-03-04 — commit 6d1e40c
+- [x] **TODO-467** Publish @forwardlane/signal-studio-templates to npm registry — publishConfig, .npmrc, CI publish on tag [S/P0] ✅ DONE 2026-03-04
 - [ ] **TODO-468** Template preview/dry-run mode — POST /templates/:id/preview, previewData in schema, no DB needed [S/P1] → `/data/workspace/todos/468-pending-p1-signal-studio-templates-preview-dryrun.md`
 
 
@@ -632,8 +633,8 @@
 - [x] [P1] Add GitHub Actions CI pipeline (pytest + ruff + mypy + pip-audit) → TODO 315 ✅ 2026-03-01 — .github/workflows/ci.yml created (lint/ruff/mypy + pytest matrix 3.11+3.12 + pip-audit), committed 7fe0bc7
 - [x] [P1] Add Snowflake Cortex AI methods (cortex_complete, cortex_embed) ✅ already implemented
 - [x] [P0] Fix JWT RLS race condition — per-connection scoping + full claims JSON → TODO-433 ✅ DONE 2026-03-03
-- [ ] [P0] Fix Snowflake param binding dict→tuple in get_tables/get_columns → TODO-434 ⏳ Agent spawned 2026-03-04 05:01 UTC (todo-434-snowflake-params)
-- [ ] [P0] Audit oracle_provider.py for async blocking (apply asyncio.to_thread if needed)
+- [x] [P0] Fix Snowflake param binding dict→tuple in get_tables/get_columns → TODO-434 ✅ DONE 2026-03-04 — commit a1af2f9
+- [x] [P0] Audit oracle_provider.py for async blocking (apply asyncio.to_thread if needed) ✅ VERIFIED 2026-03-04 21:05 UTC — oracle_provider.py correctly uses asyncio.to_thread() for all blocking calls (execute_query, test_connection, write_back). No blocking code in event loop.
 - [ ] [P1] Add Snowflake Cortex model allowlist (prevent injection via model param)
 - [ ] [P1] Add OpenTelemetry tracing across all provider calls → TODO-436
 - [ ] [P1] Fix N+1 get_columns() in SchemaRegistry with asyncio.gather → TODO-435
@@ -762,7 +763,7 @@
 ## signal-studio-frontend (re-scored 2026-03-03 — Judge Agent v2 refresh)
 Scores: revenue=8, strategic=9, completeness=5, urgency=7, effort_remaining=5
 - ✅ [P0-CRITICAL] Add auth middleware to protect all /app/* routes → TODO-444 ✅ DONE 2026-03-03
-- [ ] [P0-CRITICAL] Wire TanStack Query hooks to all pages (replace mock data) → TODO-445 ⏳ Agent spawned 2026-03-04 05:01 UTC (todo-445-tanstack-wire)
+- [x] [P0-CRITICAL] Wire TanStack Query hooks to all pages (replace mock data) → TODO-445 ✅ DONE 2026-03-04
 - [ ] [P1-HIGH] Supabase Realtime — live signal run status updates → TODO-446
 - [x] [P1-HIGH] Security headers — CSP, HSTS, X-Frame-Options → TODO-447 ✅ DONE 2026-03-04 — X-DNS-Prefetch-Control, HSTS (2yr), X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, CSP (Supabase+OpenAI+Anthropic+Railway); frame-ancestors none. Commit 0796b6ea
 - [ ] [P1-HIGH] CI/CD pipeline — Bitbucket Pipelines + Railway deploy → TODO-448
@@ -788,8 +789,8 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 - [ ] [HIGH] Implement list of property ids processing in filter validator → TODO-404 (existing)
 
 ## forwardlane-backend Round 4 (2026-03-04)
-- [ ] TODO-456: Fix force_text → force_str Django 4.2 compat [CRITICAL/XS]
-- [ ] TODO-457: Upgrade abandoned deps (boto3, sentry-sdk, pypdf, dj-rest-auth) [CRITICAL/M]
+- [x] TODO-456: Fix force_text → force_str Django 4.2 compat [CRITICAL/XS] ✅ DONE 2026-03-04
+- [x] TODO-457: Upgrade abandoned deps (boto3, sentry-sdk, pypdf, dj-rest-auth) [CRITICAL/M] ✅ DONE 2026-03-04 — boto3→1.38, sentry→2.26, pypdf2→pypdf 4.x, django-rest-auth→dj-rest-auth 6.x, DRF→3.15, cors→4.x, redis→5.x; 6 files updated, commit a6d4dff1, PR #2056
 - [ ] TODO-458: Extract shared LLM client with fallback chain [HIGH/S]
 - [ ] TODO-459: Streaming LLM responses via SSE [HIGH/M]
 - [ ] TODO-460: Add pytest-cov 50% coverage gate to CI [HIGH/S]
@@ -818,7 +819,7 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 ## signal-studio-frontend (2026-03-04 — Judge Agent v2 refresh)
 **Scores:** revenue=7, strategic=9, completeness=5, urgency=7, effort_remaining=5
 - [x] 494 [P0/XL] Complete Oracle AI vector service — OracleVectorService, SemanticSearchService, embeddings (CORE VALUE PROP) — commit c08533a9
-- [ ] 495 [P0/M] Add rate limiting to AI API routes — prevents API credit exhaustion
+- [x] 495 [P0/M] Add rate limiting to AI API routes ✅ DONE 2026-03-04 — commit b9dbd910
 - [ ] 496 [P1/S] Remove dual reactflow dependency (reactflow v11 + @xyflow v12 both present)
 - [ ] 497 [P1/L] Build ForwardLane Django backend bridge (BFF proxy + JWT forwarding + Oracle sync)
 - [ ] 498 [P1/S] Wire Bitbucket CI/CD → Railway auto-deploy (pipelines + deploy hooks)

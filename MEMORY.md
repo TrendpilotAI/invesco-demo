@@ -26,6 +26,12 @@
 - 2026-02-14: Exec security set to `full` (no approval bottleneck). Major FlipMyEra cleanup (auth, SamCart→Stripe, code splitting, CI). Fixed production JS crash from bad chunk splitting. Reports generated for GTM, business research, n8n workflows.
 - 2026-02-16: GitHub access restored (gh CLI + PAT). Deepgram STT configured. Twilio voice-call plugin enabled. Postiz deployed. Temporal needs own DB. YouTube transcript extraction working. Agent dashboard built at /dashboard/.
 
+## GoHighLevel
+- **ForwardLane account token**: `pit-2e433b73-5ceb-4a98-acb4-887b1d8ff32e`
+- Saved as `GHL_API_TOKEN` on Signal Studio Railway service (ForwardLane Signal Studio project)
+- For use with `signalhaus-website` / Signal Studio Website project
+- API base: `https://services.leadconnectorhq.com` or `https://rest.gohighlevel.com/v1/`
+
 ## Credentials & Services Configured
 - **Deepgram**: nova-3 STT, working for Telegram voice notes
 - **Blotato**: Cross-platform social posting API

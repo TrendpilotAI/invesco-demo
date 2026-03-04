@@ -1,0 +1,12 @@
+[
+  {
+    "id": "msg-1772646033462",
+    "to": "j-backend",
+    "from": "honey",
+    "message": "P0: add integration tests to easy_button",
+    "priority": "urgent",
+    "context": {},
+    "sent_at": 1772646033,
+    "read": false
+  }
+]
