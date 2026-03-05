@@ -12,6 +12,7 @@
 > invesco-sprint cron check 2026-03-04 05:01 UTC: TODO-422 ✅ DONE (HMAC X-Demo-Token auth, commit 501aa6b0). TODO-426 ✅ DONE (JWT middleware via JWKS-RSA, commit 9af41e8, 18 tests pass). TODO-434 + TODO-445 still pending — spawned 2 fresh Sonnet agents in parallel to complete.
 > invesco-sprint cron check 2026-03-04 13:01 UTC: TODO-434 ✅ DONE, TODO-445 ✅ DONE. Spawned 4 parallel Sonnet agents for remaining P0s: TODO-456 (force_text Django 4.2 compat), TODO-466 (Templates API rate limiting+CORS), TODO-467 (npm publish pipeline), TODO-495 (AI route rate limiting).
 > invesco-sprint cron check 2026-03-04 21:01 UTC: TODO-456 ✅ DONE (force_str Django 4.2, all legacy utils replaced). TODO-466 ✅ DONE (rate limiting + CORS on Templates API, commit 6d1e40c). TODO-467 ✅ DONE (npm publish pipeline for @forwardlane/signal-studio-templates). TODO-495 ✅ DONE (AI route rate limiting, commit b9dbd910). Spawned 1 agent for remaining P0: oracle_provider async blocking audit.
+> invesco-sprint cron check 2026-03-05 05:01 UTC: oracle_provider async blocking ✅ VERIFIED (all calls use asyncio.to_thread). All prior P0s complete. Spawned 3 parallel Sonnet agents: TODO-459 (streaming LLM SSE for MeetingPrep), TODO-460+461 (pytest-cov coverage gate + pre-commit hooks on forwardlane-backend), TODO-498 (Bitbucket CI/CD → Railway auto-deploy for signal-studio).
 
 
 
@@ -791,7 +792,7 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 ## forwardlane-backend Round 4 (2026-03-04)
 - [x] TODO-456: Fix force_text → force_str Django 4.2 compat [CRITICAL/XS] ✅ DONE 2026-03-04
 - [x] TODO-457: Upgrade abandoned deps (boto3, sentry-sdk, pypdf, dj-rest-auth) [CRITICAL/M] ✅ DONE 2026-03-04 — boto3→1.38, sentry→2.26, pypdf2→pypdf 4.x, django-rest-auth→dj-rest-auth 6.x, DRF→3.15, cors→4.x, redis→5.x; 6 files updated, commit a6d4dff1, PR #2056
-- [ ] TODO-458: Extract shared LLM client with fallback chain [HIGH/S]
+- [x] TODO-458: Extract shared LLM client with fallback chain [HIGH/S] ✅ 2026-03-05 — `libs/llm_client.py` LLMClient class (Gemini→Kimi fallback), refactored views.py, 11/11 tests pass, commit 77d151ec
 - [ ] TODO-459: Streaming LLM responses via SSE [HIGH/M]
 - [ ] TODO-460: Add pytest-cov 50% coverage gate to CI [HIGH/S]
 - [ ] TODO-461: Pre-commit hooks (ruff + black + bandit) [HIGH/XS]
@@ -804,7 +805,7 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 **Scores:** revenue=7, strategic=9, completeness=7, urgency=6, effort_remaining=7
 **✅ Done since last run:** TODO-402 (Redis rate limiter), TODO-403 (refresh token rotation)
 - [x] 353 [CRITICAL] Add admin role check to /invite-to-org — security vulnerability open NOW ✅ 2026-03-04 — _get_caller_role() + HTTP 403 guard, 5 tests pass, commit 4d74e79
-- [ ] 356 [HIGH] Add require_role() FastAPI dependency for RBAC enforcement
+- [x] 356 [HIGH] Add require_role() FastAPI dependency for RBAC enforcement ✅ 2026-03-05 — middleware/rbac.py, Depends(require_role(*roles)), case-insensitive, 401/403, app_metadata primary + user_metadata fallback, 16/16 tests pass (commit 39baf3c)
 - [ ] 359 [HIGH] Replace per-request httpx.AsyncClient with module-level connection pool
 - [ ] 354 [HIGH] Add password reset/change routes (/auth/recover, /auth/change-password)
 - [ ] 404 [HIGH] Migrate to Pydantic v2 (model_config, model_dump, response models)
