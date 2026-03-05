@@ -34,3 +34,4 @@ repos/
 signal-studio
 skills/claw-conductor/
 venv/
+tools/convex-sync/target/
