@@ -216,3 +216,37 @@ Demo deployed and functional. GitHub Pages delivery confirmed. No backend, no se
 All critical security, auth, and data concerns remain addressed from v3 audit.
 The codebase is demo-grade and fit for purpose.
 
+
+---
+
+## Audit v2 — Code-Verified Findings (2026-03-05)
+
+### ⚠️ HIGH: Security Headers Silently Dropped (Static Export)
+- **File:** `demo-app/next.config.ts`, lines 21-28
+- `headers()` is documented as unsupported with `output: 'export'`
+- Headers in next.config.ts are NOT sent by GitHub Pages
+- **Mitigation:** nginx.conf exists in demo-app/ — use Railway URL for any IT security demo
+- **Severity:** MEDIUM (demo context, no PII, but optics matter)
+
+### LOW: Unused Component
+- **File:** `src/components/ui/scroll-area.tsx`
+- Zero imports found across all app pages
+- Safe to delete post-demo
+- `separator.tsx` — CONFIRMED USED in salesforce/page.tsx (lines 6, 472, 523, 554)
+
+### MEDIUM: Duplicated ToastContainer
+- **File:** `src/app/dashboard/page.tsx` lines 61-66 and `src/app/salesforce/page.tsx` lines 137-145
+- Identical pattern, different interface name (Toast vs ToastItem)
+- Extract to `src/components/ToastContainer.tsx` post-demo
+
+### ✅ No Secrets Found
+- No API keys, tokens, .env files, hardcoded credentials
+- All data is synthetic JSON
+
+### ✅ Error Boundaries Confirmed
+- `error.tsx` present in all 4 routes (salesforce, dashboard, create, mobile)
+- `global-error.tsx` in app root
+- `ErrorBoundary.tsx` component also present
+
+### ✅ TypeScript Strict — Verify
+- Run `npx tsc --noEmit` to confirm zero type errors before demo

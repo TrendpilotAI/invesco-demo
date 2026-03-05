@@ -240,6 +240,11 @@
   - [ ] iOS native app (Flutter scaffold exists, needs build on macOS)
   - [ ] Live production E2E Twilio test (end-to-end call test)
   - [ ] Set `CORS_ORIGINS` env var in Railway production (e.g. `https://ultrafone.app,https://admin.ultrafone.app`)
+  - [ ] **[622] CRITICAL: Purge .env.development from git history** (`git filter-repo`)
+  - [ ] **[623] Telegram real-time call notifications with inline approve/block buttons** (4h)
+  - [ ] **[624] Live call dashboard with WebSocket streaming transcript** (2d)
+  - [ ] **[625] Weekly intelligence digest via Telegram** (1d)
+  - [ ] **[568] Rotate ALL committed API keys** (Groq, Deepgram, Twilio, Fish Audio)
 
 ### SIGBUILD-001: Signal Builder Backend Hardening
 - **Why:** Production FastAPI NL→SQL engine (composite 7.7), deployed, needs reliability work
@@ -357,7 +362,25 @@
 
 > FastAPI backend for ForwardLane signal builder. Security hardening + feature additions.  
 > Plan: /data/workspace/projects/signal-builder-backend/PLAN.md  
-> TODOs: 200–206 in /data/workspace/todos/
+> TODOs: 200–206, 580–585 in /data/workspace/todos/
+> Last judged: 2026-03-05 | Score: 7.2 composite | 666 tests
+
+### 🔴 NEW CRITICAL (March 5, 2026)
+
+- [ ] **[TODO-580]** Make `organization_id` non-nullable in signal schema + migration · _XS_ · `580-pending-p0-...-org-id-non-nullable.md`
+- [ ] **[TODO-581]** Webhook HMAC-SHA256 payload signing — enterprise clients can't verify authenticity · _S_ · `581-pending-p0-...-webhook-hmac-signing.md`
+
+### 🟠 NEW HIGH (March 5, 2026)
+
+- [ ] **[TODO-582]** JWT refresh token revocation on logout/password change · _S_ · `582-pending-p1-...-jwt-refresh-revocation.md`
+- [ ] **[TODO-583]** Upgrade python-jose → PyJWT, passlib → argon2-cffi (CVEs) · _S_ · `583-pending-p1-...-upgrade-auth-deps.md`
+- [ ] **[TODO-584]** Signal execution history table + API endpoints · _M_ · `584-pending-p1-...-signal-run-history.md`
+- [ ] **[TODO-585]** Add coverage threshold (70%) to CI · _XS_ · `585-pending-p1-...-coverage-threshold-ci.md`
+
+### ⚠️ PENDING CLEANUP
+
+- Duplicate TODOs to archive: 456 (=397), 457 (=398), 458 (=396)
+- Completed TODOs to mark DONE: 352, 353, 354, 355, 356, 327, 326, 325
 
 ### 🔴 CRITICAL — Execute Immediately (Phase 1, ~4h parallelizable)
 
@@ -829,3 +852,94 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 - [x] [QUICK] Add dump.rdb to .gitignore (Redis dump file committed to git) ✅ 2026-03-04 commit 101f32af
 - [x] [QUICK] Harden SQL injection check in /api/oracle/query (multi-statement bypass possible) ✅ 2026-03-04 commit 101f32af — block semicolons, dangerous DDL/DML keywords, 10k char limit
 - [ ] [QUICK] Archive/delete 30+ stale root-level .md files (PHASE-*.md, PR-*.md etc)
+
+## signal-studio (2026-03-05 — Judge Agent v2 refresh)
+**Scores:** revenue=8, strategic=9, completeness=7, urgency=8, effort_remaining=6
+- [ ] 585 [P0/S] Fix ignoreBuildErrors: true in next.config.mjs (compliance risk, masks TS errors)
+- [ ] 586 [P0/S] Rate limit Oracle query + signal run routes (missing, attack vector)
+- [ ] 587 [P0/M] Replace 204 console.* calls with pino structured logger (may leak sensitive data)
+- [ ] 588 [P1/M] Create signal_runs Postgres table + run history UI (compliance + UX gap)
+- [ ] 589 [P1/S] Create audit_log compliance table + lib/audit.ts (SOC2 requirement)
+- [ ] 352 [P1/M] Remove duplicate reactflow@11 (dedup with @xyflow/react, -300KB bundle)
+- [ ] 355 [P1/M] E2E Playwright tests for 5 critical user flows
+- [ ] [P2/S] Add /api/health/db endpoint for Railway health monitoring
+- [ ] [P2/M] Redis caching for signal execution results (TTL per signal)
+- [ ] [P2/M] OpenTelemetry tracing wired to Railway log drain
+- [ ] [P2/S] Update jest to patch glob CVE (DEP-003)
+- [ ] [QUICK] Archive 30+ stale root-level .md files (PR-*.md, PHASE-*.md, etc.)
+
+## signal-studio-auth (2026-03-05 — Judge Agent v2 refresh)
+**Scores:** revenue=7, strategic=8, completeness=7, urgency=6, effort_remaining=6
+**Recently Completed:** TODO-351 (secrets), TODO-352 (rate limit), TODO-353/356 (RBAC), TODO-402 (Redis rate limit), TODO-403 (token rotation), CRITICAL-1 (invite-to-org admin check) ✅
+- [ ] 600 [P0/S] httpx connection pooling via FastAPI lifespan (removes 6 per-request TCP opens)
+- [ ] 404 [P0/S] Pydantic v2 migration — _compat.py + .model_dump() (existing TODO)
+- [ ] 601 [P0/M] Redis integration tests: /refresh rotation, /logout revocation, /invite RBAC, rate limits
+- [ ] 605 [P1/S] Password reset + update routes (/auth/reset-password, /auth/update-password)
+- [ ] 602 [P1/S] Org membership validation on /invite-to-org (admin cross-org invite gap)
+- [ ] 603 [P1/M] Refresh token family tracking (theft detection + full chain revocation)
+- [ ] 604 [P1/M] Audit log migration (004_audit_log.sql) + GET /auth/audit-log endpoint
+- [ ] 406 [P1/S] CI/CD GitHub Actions pipeline (lint, mypy, pytest, Docker build)
+- [ ] [P2/M] Social OAuth endpoints (Google, LinkedIn)
+- [ ] [P2/M] MFA/TOTP enrollment + verification
+- [ ] [P2/S] Middleware error detail leakage fix (suppress internal errors in prod)
+- [ ] [QUICK] Add pip-audit to CI for dependency CVE scanning
+- [ ] [QUICK] Add pre-commit hooks (ruff, mypy)
+
+## signal-studio-frontend (2026-03-05 — Judge Agent v2 refresh)
+**Scores:** revenue=8, strategic=9, completeness=6, urgency=7, effort_remaining=5
+**Summary:** Next.js financial signal platform. Core Oracle + AI features working. Missing BFF to ForwardLane Django, weak SQL protection, dual reactflow bloating bundle.
+- [ ] 606 [P0/XS] Fix SQL injection in oracle/query — parameterized binds, sanitize error messages
+- [ ] 607 [P0/M] Wire ForwardLane BFF proxy routes (/api/bff/*) to CORE_API Django backend
+- [ ] 608 [P1/S] Remove dual reactflow (v11 + @xyflow v12) — migrate fully to @xyflow/react v12, ~400KB savings
+- [ ] 609 [P1/S] Extract Oracle connection singleton (lib/oracle/connection.ts) — fix duplicated init across 3 files
+- [ ] 610 [P1/XS] Delete 13 root test scripts + 30 stale phase/PR markdown docs
+- [ ] [P1/S] Add Sentry error monitoring (no observability in prod)
+- [ ] [P1/S] GitHub Actions CI pipeline (lint + type-check + test + Railway deploy)
+- [ ] [P2/M] E2E Playwright tests for critical flows (login, signal browse, oracle connect)
+- [ ] [P2/S] Signal Export/Share feature (JSON/CSV export, shareable URL)
+- [ ] [QUICK] Extract shared API error handler (duplicated in 20+ route files)
+- [ ] [QUICK] Add React.memo to signal card components (filter keystrokes cause re-renders)
+
+---
+
+## 🤖 Daily Judge Swarm — 2026-03-05 08:00 UTC
+
+> Full swarm run across all 17 projects. 17 Judge Agents, 18 sub-agents total (cleanup included). ~570K tokens consumed. Runtime: ~30 minutes end-to-end.
+
+### Score Changes (vs 2026-03-04)
+| Project | Old Score | New Score | Delta | Key Finding |
+|---------|-----------|-----------|-------|-------------|
+| invesco-retention | 9.1 | **9.3** | +0.2 | Security headers silently dropped on GH Pages (#429), dry run NOT done yet (#219) |
+| forwardlane-backend | 8.3 | **8.6** | +0.3 | Raw psycopg2 connections per request, LLM logic not extracted, zero tests on analytical views |
+| signal-studio-templates | 8.2 | **8.4** | +0.2 | Integration tests missing, docs incomplete |
+| NarrativeReactor | 7.3 | **7.6** | +0.3 | Near-production-ready, E2E + auth wiring outstanding |
+| signal-studio-frontend | 6.9 | **7.3** | +0.4 | Dual reactflow deps, 30+ stale docs, Oracle AI test stubs failing |
+| forwardlane_advisor | 6.6 | **6.9** | +0.3 | Node v20 upgrade done, Watson EOL critical |
+| Second-Opinion | 6.7 | **6.9** | +0.2 | Kaggle results March 17-24, monetization layer missing |
+| core-entityextraction | 6.7 | **6.8** | +0.1 | Duplicate filter block bug found, sync psycopg2 blocking async loop |
+| signal-studio-auth | 7.2 | **6.8** | -0.4 | invite-to-org admin check now FIXED, remaining gaps smaller |
+| signalhaus-website | 7.2 | **6.8** | -0.4 | Tests/CI still missing; score normalized vs new info |
+| signal-studio-data-provider | 7.3 | **6.5** | -0.8 | Completeness reassessed — async pooling missing, Redis caching not done |
+| Ultrafone | 6.6 | **6.3** | -0.3 | Real API keys in .env.development CONFIRMED — must rotate NOW |
+| flip-my-era | 5.4 | **6.4** | +1.0 | VITE_SENTRY_AUTH_TOKEN exposed in client bundle (P0) |
+
+### New TODOs Created Today (sample)
+- **#429** (P0) invesco: Use Railway URL for IT security header demo (GH Pages silently drops headers)
+- **#430** (P0) invesco: Verify `npm run build` is clean before demo day
+- **#606-616** (P1-P2) signalhaus-website: OG images, booking, newsletter, HubSpot CRM, service landing pages, Playwright E2E, ESLint, Turnstile CAPTCHA
+- **#617-621** (P0-P1) core-entityextraction: Fix connection leak, fix duplicate filter bug, add confidence scores, Redis caching, update README
+- **#622** (CRITICAL) Ultrafone: Purge git history secrets — GROQ, Deepgram, Twilio, Fish Audio all exposed
+- **#623-625** (HIGH) Ultrafone: Telegram call notifications, live call dashboard, weekly digest
+- **#626-628** (P0-P1) Trendpilot: LLM integration, fix SSO stubs, rate limiting + helmet
+- **#629** (P0) flip-my-era: Remove VITE_SENTRY_AUTH_TOKEN from client bundle
+
+### Files Generated Today
+- BRAINSTORM.md: all 17 repos updated
+- PLAN.md: all 17 repos updated
+- AUDIT.md: all 17 repos updated
+
+### 🚨 Critical Security Items — ACTION REQUIRED
+1. **Ultrafone** — Real API keys (GROQ, Deepgram, Twilio, Fish Audio) committed in .env.development → ROTATE ALL KEYS + purge git history (#622)
+2. **flip-my-era** — VITE_SENTRY_AUTH_TOKEN exposed in client bundle (#629) → move to server-only env
+3. **invesco-retention** — Security headers not served by GH Pages (silent failure) — use Railway URL for IT conversations (#429)
+

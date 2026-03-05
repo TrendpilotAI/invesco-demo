@@ -139,3 +139,42 @@ That requires:
 - **Third risk:** Brian focuses on integration complexity. Mitigated by "Connect Your Data" wizard.
 - **Fourth risk:** Ten Decoders bench concern. Mitigated by existing IT security one-pager (#335).
 
+
+---
+
+## Plan Update v4 — 2026-03-05
+
+### New TODOs from Code Audit
+
+| # | Task | Priority | Effort |
+|---|------|----------|--------|
+| #429 | Use Railway URL for IT security demo (headers not sent by GH Pages) | P0 | XS |
+| #430 | Verify TypeScript clean build before demo | P0 | XS |
+
+### Revised Demo Day Execution Order
+
+```
+IMMEDIATE (today/tomorrow before demo):
+1. #430 — npm run build (XS, verify clean)
+2. Bookmark /salesforce directly (XS, not a TODO file — just do it)
+3. #332 — iPhone PWA test (XS)
+4. #222 — Demo day checklist finalize (XS)
+5. #219 — Dry run with Megan/Craig (S — schedule now)
+
+PRE-DEMO PARALLEL:
+6. #220 — Record backup MP4s (S)  
+7. #426 — Print-to-PDF button (S, high win-rate impact)
+8. #383 — Competitor displacement persona (S)
+9. #424 — Signal confidence scores (XS)
+10. #423 — Seismic content recommendations (S)
+
+POST-DEMO:
+11. #429 — Railway deploy + security header verification
+12. #380 — E2E smoke tests
+13. #381 — PostHog analytics
+```
+
+### Risk Flags
+- 🔴 Dry run (#219) not yet done — HIGHEST RISK
+- 🟠 No backup recordings yet (#220) — if live demo fails, nothing to fall back on
+- 🟡 Security headers not on GH Pages — low risk for demo, medium risk if IT reviews
