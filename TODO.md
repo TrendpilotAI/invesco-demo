@@ -18,6 +18,7 @@
 > todo-progress cron 2026-03-06 09:09 UTC: Verified TODO-581 ✅ TODO-585 ✅ TODO-586 ✅ TODO-600 ✅ TODO-606 ✅ TODO-629 ✅ (all prior queued agents completed). Spawned Sonnet agent for TODO-219 (forwardlane-backend analytical psycopg2 connection leak → Django pooling). 🚨 CRITICAL: Ultrafone API key rotation (#622) still requires Nathan action.
 > todo-progress cron 2026-03-06 01:04 UTC: Verified TODO-219 ✅ (done file confirmed). Spawned 2 parallel Sonnet agents: TODO-404 (signal-studio-auth Pydantic v2 migration) + TODO-601 (Redis integration tests). Updated TODO.md checkboxes for previously verified items (585, 586, 600, 606, 629).
 > todo-progress cron 2026-03-06 09:09 UTC: Verified TODO-587 ✅ TODO-607 ✅ TODO-459 ✅ TODO-460 ✅ TODO-461 ✅ (done files confirmed). Spawned 4 parallel Sonnet agents: TODO-583 (signal-builder-backend CVE dep upgrade: python-jose→PyJWT, passlib→argon2-cffi), TODO-589 (signal-studio audit_log compliance table + lib/audit.ts), TODO-605 (signal-studio-auth password reset/update routes), TODO-608 (signal-studio-frontend remove dual reactflow ~400KB savings).
+> todo-progress cron 2026-03-06 09:09 UTC (run 2): Verified TODO-583 ✅ TODO-589 ✅ TODO-605 ✅ TODO-608 ✅ (done files confirmed). Completed TODO-636 directly (strip SQL from signal-studio-templates API response, commit 462de15, pushed). Verified TODO-630 already done (real Invesco fund names QQQ/RSP/SPLV/QQQM already in codebase). Spawned 2 parallel Sonnet agents: TODO-634 (OpenAI AIProvider) + TODO-635 (MockDataProvider + seed data). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run.
 > invesco-sprint cron 2026-03-06 05:01 UTC: Verified TODO-580 ✅ TODO-581 ✅ (done files confirmed). Spawned 4 parallel Sonnet agents: TODO-587 (signal-studio pino structured logger), TODO-607 (signal-studio-frontend BFF proxy), TODO-459 (forwardlane-backend streaming SSE), TODO-460+461 (coverage gate + pre-commit hooks). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run.
 
 
@@ -41,6 +42,9 @@
   - [x] 320 — Error Boundary Components (P0, S) → `todos/320-pending-p0-invesco-retention-error-boundaries.md` — protect all 4 demo views from runtime crashes during live demo ✅ DONE 2026-02-28 13:07 UTC (commit cf64cda, pushed)
   - [x] 321 — GitHub Repo Privacy Check (P0, XS) → ✅ 2026-02-28 — Repo is PUBLIC. Scanned for sensitive data: "Marcus Thompson" is synthetic demo data (not a real person). No real advisor names (Brian Kiley, Craig Lieb, Megan) in source. Invesco references are appropriate demo framing. Risk assessed as LOW — demo content is generic enough. No action required beyond documenting.
   - [x] 322 — 🚨 GitHub Pages 404 FIX (P0, XS) → ✅ FIXED 2026-03-01 — Demo live at https://trendpilotai.github.io/invesco-demo/ (200 OK all routes). Root cause: no gh-pages branch + repo was private (blocked Pages). Created gh-pages branch, made repo public, enabled Pages. All 4 routes verified.
+  - [x] 630 — Real Invesco fund names in synthetic data (P0, XS) → ✅ VERIFIED 2026-03-06 — invesco_fund_catalog.json + combined-data.ts already use real Invesco tickers (QQQ, RSP, SPLV, QQQM, etc.). No generic names found.
+  - [ ] 631 — Global demo reset mechanism / keyboard shortcut (P0, S) → `todos/631-pending-p0-invesco-retention-global-demo-reset.md`
+  - [ ] 632 — "Your Data Here" integration path tooltips (P1, XS) → `todos/632-pending-p1-invesco-retention-your-data-here-tooltips.md`
 
 
 
@@ -471,6 +475,15 @@
 - [x] **TODO-466** Rate limiting + CORS on Templates API — express-rate-limit, cors allowlist, body size limit [S/P0] ✅ DONE 2026-03-04 — commit 6d1e40c
 - [x] **TODO-467** Publish @forwardlane/signal-studio-templates to npm registry — publishConfig, .npmrc, CI publish on tag [S/P0] ✅ DONE 2026-03-04
 - [ ] **TODO-468** Template preview/dry-run mode — POST /templates/:id/preview, previewData in schema, no DB needed [S/P1] → `/data/workspace/todos/468-pending-p1-signal-studio-templates-preview-dryrun.md`
+- [ ] **TODO-634** [P0] Implement OpenAI AIProvider — concrete impl of AIProvider interface, demo-blocking [S] ⏳ Sonnet agent spawned 2026-03-06 09:09
+- [ ] **TODO-635** [P0] MockDataProvider + seed data — 50 advisors, 500 accounts, all 20 templates produce results [S] ⏳ Sonnet agent spawned 2026-03-06 09:09
+- [x] **TODO-636** [P0] Strip SQL from API response — ExecutionResult.sql leaks DB schema [XS] ✅ DONE 2026-03-06 — destructure sql field, log internally via console.debug, 25 tests pass, commit 462de15
+- [ ] **TODO-637** [P1] ESLint config + GitHub Actions CI — .eslintrc.json, ci.yml, publish.yml [S] → `/data/workspace/todos/637-pending-P1-signal-studio-templates-eslint-ci-pipeline.md`
+- [ ] **TODO-638** [P1] Rate limit by JWT sub (not IP) — fails behind load balancer [S] → `/data/workspace/todos/638-pending-P1-signal-studio-templates-rate-limit-by-jwt-sub.md`
+- [ ] **TODO-639** [P1] Zod validation for API request bodies [S] → `/data/workspace/todos/639-pending-P1-signal-studio-templates-zod-validation.md`
+- [ ] **TODO-640** [P2] CSV/Excel export endpoints + gallery download buttons [S] → `/data/workspace/todos/640-pending-P2-signal-studio-templates-csv-excel-export.md`
+- [ ] **TODO-641** [P2] Execution history + compliance audit log [M] → `/data/workspace/todos/641-pending-P2-signal-studio-templates-execution-audit-log.md`
+- [ ] **TODO-642** [P2] Deploy demo to Railway for Invesco [S] → `/data/workspace/todos/642-pending-P2-signal-studio-templates-demo-deployment.md`
 
 
 ---
@@ -607,7 +620,13 @@
 - [x] [P0] Add X-API-Key authentication middleware — all endpoints currently open (TODO-229) ✅ already in repo (10586df)
 - [x] [P0] Remove dead Flask code from services/ and controllers/ — 7 files never imported (TODO-230) ✅ already in repo (5933da4)
 - [x] [P1] Add pytest test suite — zero tests currently exist (TODO-233) ✅ 2026-02-28 — 30/30 tests passing, committed + pushed
-- [ ] [P1] Cache compiled regex patterns — rebuilt on every request today (TODO-232)
+- [x] [P1] Cache compiled regex patterns — rebuilt on every request today (TODO-232) ✅ done
+- [ ] [P0] Update README for FastAPI/Python 3.11 (TODO-720)
+- [ ] [P0] Add pytest test suite — judge-v2 audit confirms zero tests (TODO-721)
+- [ ] [P1] Refactor 694-line main.py into modular package structure (TODO-722)
+- [ ] [P1] Fix HTTP status code semantics — endpoints return 200 with 4xx in body (TODO-723)
+- [ ] [P1] CORS + API key caching security hardening (TODO-724)
+- [ ] [P1] Add batch extraction endpoint POST /batch_regex_entity_extraction (TODO-725)
 
 ## NarrativeReactor — AI Content Generation Platform (added 2026-02-27)
 
@@ -675,6 +694,13 @@
 - [ ] [P2] Wire library into Signal Studio Django backend
 - [ ] [P2] Add testcontainers integration tests (PostgreSQL container)
 - [ ] [P2] Add pytest-cov with --cov-fail-under=80 to CI
+- [ ] [HIGH] Add streaming query results via async generators → TODO 726
+- [ ] [HIGH] Add query audit log (JSONL + optional Supabase) → TODO 727
+- [ ] [HIGH] Implement bulk upsert in write_back() with conflict_columns → TODO 728
+- [ ] [MED] Wire up Snowflake cost pre-estimation (max_query_cost enforcement) → TODO 729
+- [ ] [MED] Add schema diff event emission on SchemaRegistry.refresh() → TODO 730
+- [ ] [MED] Add tenacity retry logic across all providers → TODO 731
+- [ ] [MED] Add secrets manager integration (AWS SSM / Vault / GCP) → TODO 732
 
 ## signal-builder-frontend (added 2026-02-28)
 - [x] [P0] Sentry integration — error monitoring, React Router + canvas error boundary → TODO 323 ✅ DONE 2026-02-28
@@ -891,6 +917,18 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 - [ ] [QUICK] Add pip-audit to CI for dependency CVE scanning
 - [ ] [QUICK] Add pre-commit hooks (ruff, mypy)
 
+## signal-studio-frontend (2026-03-06 — Judge Agent v2 refresh)
+**Scores:** revenue=7, strategic=9, completeness=5, urgency=6, effort_remaining=5
+**Summary:** Next.js financial signal platform for ForwardLane/SignalHaus. Core UI solid, Oracle 23ai vector services skeletal (MVP not production-ready per own docs). Recent security hardening good. Critical path: complete OracleVectorService + integration tests to ship MVP.
+- [ ] 711 [P0/L] Complete OracleVectorService implementation (DDL + embeddings + vector search)
+- [ ] 712 [P0/S] Dead code cleanup (rete editor, duplicate middleware, stale docs)
+- [ ] 713 [P0/M] Oracle service unit tests with mocked oracledb
+- [ ] 714 [P1/S] CI/CD pipeline + pre-commit hooks (Husky + lint-staged)
+- [ ] 715 [P1/M] E2E Playwright test suite (auth + signals + chat)
+- [ ] 716 [P1/L] Signal alerting & scheduling system (email/Slack alerts)
+- [ ] 717 [P1/M] Performance: TanStack Virtual for signal list + lazy load visual builder
+- [ ] 718 [P2/XL] Chat-to-Signal: natural language → signal definition (ReactFlow + SQL)
+
 ## signal-studio-frontend (2026-03-05 — Judge Agent v2 refresh)
 **Scores:** revenue=8, strategic=9, completeness=6, urgency=7, effort_remaining=5
 **Summary:** Next.js financial signal platform. Core Oracle + AI features working. Missing BFF to ForwardLane Django, weak SQL protection, dual reactflow bloating bundle.
@@ -949,3 +987,56 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 2. **flip-my-era** — VITE_SENTRY_AUTH_TOKEN exposed in client bundle (#629) → move to server-only env
 3. **invesco-retention** — Security headers not served by GH Pages (silent failure) — use Railway URL for IT conversations (#429)
 
+
+## NarrativeReactor (2026-03-06 — Judge Agent v2 refresh)
+- [ ] [P0/M] #630 Stripe multi-tenant SaaS billing layer (quotas, Checkout, webhooks) → `630-pending-P0-NarrativeReactor-stripe-billing-layer.md`
+- [ ] [P1/M] #631 Content performance feedback loop via Blotato webhooks → `631-pending-P1-NarrativeReactor-content-performance-feedback-loop.md`
+- [ ] [P1/S] #632 Extract SQLite DB singleton (src/lib/db.ts) + WAL + indexes → `632-pending-P1-NarrativeReactor-sqlite-db-singleton.md`
+- [ ] [P2/M] #633 Async video job queue (SQLite-backed, background worker) → `633-pending-P2-NarrativeReactor-video-job-queue.md`
+
+
+## signal-builder-backend (2026-03-06 — Judge Agent v2 refresh)
+
+### Completed Since March 5
+- [x] ✅ #580 org_id non-nullable + migration — DONE
+- [x] ✅ #581 Webhook HMAC-SHA256 signing — DONE
+- [x] ✅ #583 python-jose → PyJWT, passlib → argon2-cffi (CVE fixes) — DONE
+
+### Open Bugs (Critical Path)
+- [ ] [P1/XS] #398 Fix orphan node on edge failure — transaction wrapper in signal_node.py
+- [ ] [P1/S] #396 Cache validator hot-path DB queries (4 locations with TODO: cache comments)
+- [ ] [P1/S] #397 Celery task deduplication — Redis SET NX lock for webhook delivery
+
+### Security
+- [ ] [P1/S] #582 JWT refresh token revocation on logout/password change
+- [ ] [P2/S] #588 Rate limiting X-Forwarded-For adversarial tests + TRUSTED_PROXIES config
+
+### Features
+- [ ] [P1/M] #584 Signal run history — signal_runs table + API endpoints
+- [ ] [P1/M] #586 Webhook delivery retry with exponential backoff + dead letter queue
+- [ ] [P2/M] #587 SSE streaming for large signal preview
+
+### Test Coverage
+- [ ] [P1/M] #392 Expand tests: schema_builder, translators, analytical_db modules
+- [ ] [P1/XS] #585 Add --cov-fail-under=70 to CI coverage gate
+
+
+## flip-my-era (2026-03-06 — Judge Agent v2 refresh)
+
+### Completed Since Last Run
+- [x] ✅ #629 VITE_SENTRY_AUTH_TOKEN removed from client bundle (commit 5074c28) — DONE
+
+### Revenue / P0
+- [ ] [P0/M] #726 Subscription upsell flow — credit exhaustion modal → pricing → Stripe checkout → `726-pending-p0-flip-my-era-subscription-upsell-flow.md`
+
+### Growth / P1
+- [ ] [P1/M] #727 Social sharing — TikTok/Instagram share cards + public story pages → `727-pending-p1-flip-my-era-social-sharing-tiktok.md`
+- [ ] [P1/S] #728 Rate limiting on edge functions (generation abuse prevention) → `728-pending-p1-flip-my-era-rate-limiting-edge-functions.md`
+- [ ] [P1/S] #010 Wire gallery to real Supabase data (pre-existing)
+- [ ] [P1/S] #011 E2E tests in CI pipeline (pre-existing)
+- [ ] [P1/M] #014 Dynamic OG tags for stories (pre-existing)
+
+### Hygiene / P2
+- [ ] [P2/XS] #729 Remove debug HTML files + strip console.logs → `729-pending-p2-flip-my-era-cleanup-debug-files.md`
+- [ ] [P2/S] #017 Dynamic sitemap generation (pre-existing)
+- [ ] [P2/S] #013 Dark mode toggle (pre-existing)

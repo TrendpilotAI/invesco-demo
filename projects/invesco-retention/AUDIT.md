@@ -250,3 +250,35 @@ The codebase is demo-grade and fit for purpose.
 
 ### ✅ TypeScript Strict — Verify
 - Run `npx tsc --noEmit` to confirm zero type errors before demo
+
+---
+
+# Audit Update v4 — Judge Agent v2 (2026-03-06)
+
+## Build Status Check
+```bash
+# Verify clean TypeScript build (TODO #430)
+cd /data/workspace/projects/invesco-retention/demo-app && npm run build
+```
+
+## New Findings (v4)
+
+### Demo Reset Coverage
+- Each route (/salesforce, /dashboard, /mobile) has its own error boundary and reset
+- No global cross-tab reset mechanism — risk if demo leaves dirty state
+- **Action:** Add a `window.__DEMO_RESET__` global function callable from console as fallback
+
+### Fund Names in Synthetic Data
+- `synthetic-data/invesco_fund_catalog.json` — check if real Invesco fund tickers are used
+- Real names (QQQ, RSP, BLDG, IVW) would increase demo authenticity at zero cost
+- **Severity:** LOW (demo quality only)
+
+### Service Worker Cache Staleness
+- `mobile-pwa/sw.js` — verify cache version is bumped when demo app updates
+- Stale PWA cache on demo iPhone could show old content
+- **Action:** Check SW version string matches latest deploy date
+
+### Security Headers on GitHub Pages
+- GitHub Pages does NOT send custom HTTP headers — CSP/X-Frame-Options in next.config.ts won't be honored
+- Railway deploy (#429) would fix this for IT security review
+- **Severity:** LOW for demo, MEDIUM for IT review post-demo
