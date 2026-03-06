@@ -16,6 +16,9 @@
 > invesco-sprint cron check 2026-03-05 13:01 UTC: New P0s from March 5 daily judge swarm identified. Spawned 5 parallel Sonnet agents: TODO-580 (signal-builder-backend org_id non-nullable migration), TODO-581 (signal-builder-backend webhook HMAC-SHA256 signing), TODO-606 (signal-studio-frontend Oracle SQL injection fix), TODO-629 (flip-my-era VITE_SENTRY_AUTH_TOKEN exposure), TODO-600+404 (signal-studio-auth httpx pooling + Pydantic v2). TODO-585 (signal-studio ignoreBuildErrors) queued — hit 5-agent cap, will run next cron. 🚨 CRITICAL security action still needed from Nathan: Ultrafone API keys (GROQ/Deepgram/Twilio/Fish Audio) committed in .env.development — rotate ALL keys ASAP (#622).
 > invesco-sprint cron check 2026-03-05 21:01 UTC: TODO-580 ✅ DONE (org_id non-nullable, confirmed done file). Prior agents (581, 600, 606, 629) did not complete — files still pending. Spawned 5 fresh parallel Sonnet agents: TODO-581 (webhook HMAC signing), TODO-585 (signal-studio ignoreBuildErrors — was queued last run), TODO-586 (signal-studio rate limit all API routes), TODO-600 (httpx connection pooling), TODO-606 (Oracle SQL injection fix). TODO-629 (flip-my-era VITE_SENTRY_AUTH_TOKEN) queued — hit 5-agent cap again, will run next cron. 🚨 CRITICAL still needed from Nathan: Rotate Ultrafone API keys (#622).
 > todo-progress cron 2026-03-06 09:09 UTC: Verified TODO-581 ✅ TODO-585 ✅ TODO-586 ✅ TODO-600 ✅ TODO-606 ✅ TODO-629 ✅ (all prior queued agents completed). Spawned Sonnet agent for TODO-219 (forwardlane-backend analytical psycopg2 connection leak → Django pooling). 🚨 CRITICAL: Ultrafone API key rotation (#622) still requires Nathan action.
+> todo-progress cron 2026-03-06 01:04 UTC: Verified TODO-219 ✅ (done file confirmed). Spawned 2 parallel Sonnet agents: TODO-404 (signal-studio-auth Pydantic v2 migration) + TODO-601 (Redis integration tests). Updated TODO.md checkboxes for previously verified items (585, 586, 600, 606, 629).
+> todo-progress cron 2026-03-06 09:09 UTC: Verified TODO-587 ✅ TODO-607 ✅ TODO-459 ✅ TODO-460 ✅ TODO-461 ✅ (done files confirmed). Spawned 4 parallel Sonnet agents: TODO-583 (signal-builder-backend CVE dep upgrade: python-jose→PyJWT, passlib→argon2-cffi), TODO-589 (signal-studio audit_log compliance table + lib/audit.ts), TODO-605 (signal-studio-auth password reset/update routes), TODO-608 (signal-studio-frontend remove dual reactflow ~400KB savings).
+> invesco-sprint cron 2026-03-06 05:01 UTC: Verified TODO-580 ✅ TODO-581 ✅ (done files confirmed). Spawned 4 parallel Sonnet agents: TODO-587 (signal-studio pino structured logger), TODO-607 (signal-studio-frontend BFF proxy), TODO-459 (forwardlane-backend streaming SSE), TODO-460+461 (coverage gate + pre-commit hooks). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run.
 
 
 
@@ -370,8 +373,8 @@
 
 ### 🔴 NEW CRITICAL (March 5, 2026)
 
-- [ ] **[TODO-580]** Make `organization_id` non-nullable in signal schema + migration · _XS_ · `580-pending-p0-...-org-id-non-nullable.md`
-- [ ] **[TODO-581]** Webhook HMAC-SHA256 payload signing — enterprise clients can't verify authenticity · _S_ · `581-pending-p0-...-webhook-hmac-signing.md`
+- [x] **[TODO-580]** Make `organization_id` non-nullable in signal schema + migration · _XS_ ✅ DONE (done file confirmed 2026-03-06)
+- [x] **[TODO-581]** Webhook HMAC-SHA256 payload signing — enterprise clients can't verify authenticity · _S_ ✅ DONE (done file confirmed 2026-03-06)
 
 ### 🟠 NEW HIGH (March 5, 2026)
 
@@ -726,7 +729,7 @@
 ## signal-studio-auth (2026-03-02 — Judge Agent v2 refresh)
 - [ ] 402 [CRITICAL] Replace in-memory rate limiter with Redis sliding-window (multi-replica safe) ⏳ Agent spawned 2026-03-02 21:01 UTC
 - [ ] 403 [CRITICAL] Add refresh token rotation + server-side revocation list (Redis-backed) ⏳ Agent spawned 2026-03-02 21:01 UTC
-- [ ] 404 [HIGH] Migrate to Pydantic v2 (model_config, model_dump, response models)
+- [x] 404 [HIGH] Migrate to Pydantic v2 (model_config, model_dump, response models) ✅ DONE commit 53b7fdd
 - [ ] 405 [HIGH] Add CORS middleware + Sentry error tracking + Prometheus /metrics
 - [ ] 406 [HIGH] Create Dockerfile + GitHub Actions CI (pytest, ruff, bandit, safety)
 
@@ -834,7 +837,7 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 - [x] 356 [HIGH] Add require_role() FastAPI dependency for RBAC enforcement ✅ 2026-03-05 — middleware/rbac.py, Depends(require_role(*roles)), case-insensitive, 401/403, app_metadata primary + user_metadata fallback, 16/16 tests pass (commit 39baf3c)
 - [ ] 359 [HIGH] Replace per-request httpx.AsyncClient with module-level connection pool
 - [ ] 354 [HIGH] Add password reset/change routes (/auth/recover, /auth/change-password)
-- [ ] 404 [HIGH] Migrate to Pydantic v2 (model_config, model_dump, response models)
+- [x] 404 [HIGH] Migrate to Pydantic v2 (model_config, model_dump, response models) ✅ DONE commit 53b7fdd
 - [ ] 405 [HIGH] Add CORS middleware + Sentry error tracking + Prometheus /metrics
 - [ ] 406 [HIGH] Create Dockerfile + GitHub Actions CI (pytest, ruff, bandit, pip-audit)
 - [ ] 357 [HIGH] Add pytest-asyncio integration tests for all 7 auth routes
@@ -858,8 +861,8 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 
 ## signal-studio (2026-03-05 — Judge Agent v2 refresh)
 **Scores:** revenue=8, strategic=9, completeness=7, urgency=8, effort_remaining=6
-- [ ] 585 [P0/S] Fix ignoreBuildErrors: true in next.config.mjs (compliance risk, masks TS errors)
-- [ ] 586 [P0/S] Rate limit Oracle query + signal run routes (missing, attack vector)
+- [x] 585 [P0/S] Fix ignoreBuildErrors: true in next.config.mjs ✅ DONE 2026-03-05
+- [x] 586 [P0/S] Rate limit Oracle query + signal run routes ✅ DONE 2026-03-05
 - [ ] 587 [P0/M] Replace 204 console.* calls with pino structured logger (may leak sensitive data)
 - [ ] 588 [P1/M] Create signal_runs Postgres table + run history UI (compliance + UX gap)
 - [ ] 589 [P1/S] Create audit_log compliance table + lib/audit.ts (SOC2 requirement)
@@ -874,9 +877,9 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 ## signal-studio-auth (2026-03-05 — Judge Agent v2 refresh)
 **Scores:** revenue=7, strategic=8, completeness=7, urgency=6, effort_remaining=6
 **Recently Completed:** TODO-351 (secrets), TODO-352 (rate limit), TODO-353/356 (RBAC), TODO-402 (Redis rate limit), TODO-403 (token rotation), CRITICAL-1 (invite-to-org admin check) ✅
-- [ ] 600 [P0/S] httpx connection pooling via FastAPI lifespan (removes 6 per-request TCP opens)
-- [ ] 404 [P0/S] Pydantic v2 migration — _compat.py + .model_dump() (existing TODO)
-- [ ] 601 [P0/M] Redis integration tests: /refresh rotation, /logout revocation, /invite RBAC, rate limits
+- [x] 600 [P0/S] httpx connection pooling via FastAPI lifespan ✅ DONE 2026-03-05 (verified 2026-03-06)
+- [x] 404 [P0/S] Pydantic v2 migration — _compat.py + .model_dump() (existing TODO) ✅ DONE commit 53b7fdd — requirements updated, models.py added, 65 tests pass
+- [x] 601 [P0/M] Redis integration tests: /refresh rotation, /logout revocation, /invite RBAC, rate limits — ✅ DONE commit f4f1974 (2026-03-06)
 - [ ] 605 [P1/S] Password reset + update routes (/auth/reset-password, /auth/update-password)
 - [ ] 602 [P1/S] Org membership validation on /invite-to-org (admin cross-org invite gap)
 - [ ] 603 [P1/M] Refresh token family tracking (theft detection + full chain revocation)
@@ -891,7 +894,7 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 ## signal-studio-frontend (2026-03-05 — Judge Agent v2 refresh)
 **Scores:** revenue=8, strategic=9, completeness=6, urgency=7, effort_remaining=5
 **Summary:** Next.js financial signal platform. Core Oracle + AI features working. Missing BFF to ForwardLane Django, weak SQL protection, dual reactflow bloating bundle.
-- [ ] 606 [P0/XS] Fix SQL injection in oracle/query — parameterized binds, sanitize error messages
+- [x] 606 [P0/XS] Fix SQL injection in oracle/query ✅ DONE 2026-03-05 (verified 2026-03-06)
 - [ ] 607 [P0/M] Wire ForwardLane BFF proxy routes (/api/bff/*) to CORE_API Django backend
 - [ ] 608 [P1/S] Remove dual reactflow (v11 + @xyflow v12) — migrate fully to @xyflow/react v12, ~400KB savings
 - [ ] 609 [P1/S] Extract Oracle connection singleton (lib/oracle/connection.ts) — fix duplicated init across 3 files

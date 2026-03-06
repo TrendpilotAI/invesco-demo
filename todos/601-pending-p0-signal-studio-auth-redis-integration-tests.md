@@ -3,7 +3,7 @@
 **Repo:** signal-studio-auth  
 **Priority:** P0 (HIGH)  
 **Effort:** 4h  
-**Status:** pending
+**Status:** ✅ DONE — commit f4f1974 (pushed to GitHub/TrendpilotAI/signal-studio-auth)
 
 ## Problem
 `tests/test_rate_limit_and_tokens.py` exists but critical integration paths are untested:
