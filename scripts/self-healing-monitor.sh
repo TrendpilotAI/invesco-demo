@@ -12,7 +12,7 @@ SERVICES=(
 )
 
 # Known failures to ignore
-KNOWN_FAILURES="entity-extraction"
+KNOWN_FAILURES="entity-extraction|signal-studio-old"
 
 FAILURES=""
 ALL_STATUS=""

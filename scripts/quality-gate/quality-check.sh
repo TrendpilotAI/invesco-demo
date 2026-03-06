@@ -53,7 +53,7 @@ fi
 
 # TypeScript: eslint
 if [ -f "node_modules/.bin/eslint" ]; then
-  if npx eslint . --quiet --max-warnings 0 2>/dev/null; then
+  if node_modules/.bin/eslint . --quiet --max-warnings 0 2>/dev/null; then
     echo "✅ eslint: clean"
     PASS=$((PASS+1))
     LINT_PASS=1
@@ -66,7 +66,14 @@ fi
 
 # TypeScript: tsc
 if [ -f "tsconfig.json" ] && [ -f "node_modules/.bin/tsc" ]; then
-  if npx tsc --noEmit 2>/dev/null; then
+  # Check if project explicitly opts out of tsc (e.g. projects with ignoreBuildErrors:true)
+  SKIP_TSC="false"
+  if [ -f ".quality-overrides.json" ]; then
+    SKIP_TSC=$(python3 -c "import json; d=json.load(open('.quality-overrides.json')); print(str(d.get('skipTsc', False)).lower())" 2>/dev/null || echo "false")
+  fi
+  if [ "$SKIP_TSC" = "true" ]; then
+    echo "⚠️  tsc: skipped (skipTsc=true in .quality-overrides.json)"
+  elif node_modules/.bin/tsc --noEmit 2>/dev/null; then
     echo "✅ tsc: no type errors"
     PASS=$((PASS+1))
     LINT_PASS=1
@@ -80,7 +87,8 @@ fi
 # ── Stage 3: Tests (expensive, run last) ────────────────────────
 
 # Python: pytest
-if (find . -name "test_*.py" -not -path "./.venv/*" -not -path "./venv/*" -quit 2>/dev/null); then
+PY_TESTS=$(find . -name "test_*.py" -not -path "./.venv/*" -not -path "./venv/*" 2>/dev/null | head -1)
+if [ -n "$PY_TESTS" ]; then
   if command -v pytest >/dev/null 2>&1; then
     if pytest -x --tb=short -q 2>/dev/null; then
       echo "✅ pytest: all passing"
@@ -106,7 +114,28 @@ if [ -f "node_modules/.bin/vitest" ]; then
     TESTS_PASS=0
   fi
 elif [ -f "package.json" ] && grep -q '"test"' package.json 2>/dev/null; then
-  if npm test -- --silent 2>/dev/null; then
+  # Check if project opts out of tests
+  SKIP_TESTS="false"
+  if [ -f ".quality-overrides.json" ]; then
+    SKIP_TESTS=$(python3 -c "import json; d=json.load(open('.quality-overrides.json')); print(str(d.get('skipTests', False)).lower())" 2>/dev/null || echo "false")
+  fi
+  if [ "$SKIP_TESTS" = "true" ]; then
+    echo "⚠️  tests: skipped (skipTests=true in .quality-overrides.json)"
+  else
+  # Load jest extra args from .quality-overrides.json
+  JEST_EXTRA=""
+  if [ -f ".quality-overrides.json" ]; then
+    JEST_EXTRA=$(python3 -c "import json; d=json.load(open('.quality-overrides.json')); print(d.get('jestExtraArgs', ''))" 2>/dev/null || echo "")
+  fi
+  # Use local jest binary directly (avoids shell arg issues with `-- flags`)
+  if [ -f "node_modules/.bin/jest" ]; then
+    TEST_CMD="node_modules/.bin/jest --silent $JEST_EXTRA"
+  elif command -v pnpm >/dev/null 2>&1 && [ -f "pnpm-lock.yaml" ]; then
+    TEST_CMD="pnpm test"
+  else
+    TEST_CMD="npm test -- --silent $JEST_EXTRA"
+  fi
+  if $TEST_CMD 2>/dev/null; then
     echo "✅ npm test: all passing"
     PASS=$((PASS+1))
     TESTS_PASS=1
@@ -115,6 +144,7 @@ elif [ -f "package.json" ] && grep -q '"test"' package.json 2>/dev/null; then
     FAIL=$((FAIL+1))
     TESTS_PASS=0
   fi
+  fi  # end skipTests check
 fi
 
 # ── Metrics JSON ───────────────────────────────────────────

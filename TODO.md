@@ -1,6 +1,6 @@
 # TODO.md — Master Project Plan
 
-> Auto-monitored by Honey's cron loops. Last updated: 2026-03-02 08:04 UTC (judge-signal-builder-backend: re-scored signal-builder-backend [revenue:8, strategic:9, completeness:7, urgency:7, effort_remaining:6], refreshed BRAINSTORM/PLAN/AUDIT, created TODO-391-395 covering mypy cleanup, test coverage for schema_builder/translators/analytical_db, Flask dep removal, N+1 batch fix, dev CVE upgrades. Previously: 2026-03-02 08:01 UTC judge-signal-studio: re-scored signal-studio, refreshed BRAINSTORM/PLAN/AUDIT, created TODO-384-388.)
+> Auto-monitored by Honey's cron loops. Last updated: 2026-03-06 13:07 UTC (judge-signal-builder-backend: re-scored signal-builder-backend [revenue:8, strategic:9, completeness:7, urgency:7, effort_remaining:6], refreshed BRAINSTORM/PLAN/AUDIT, created TODO-391-395 covering mypy cleanup, test coverage for schema_builder/translators/analytical_db, Flask dep removal, N+1 batch fix, dev CVE upgrades. Previously: 2026-03-02 08:01 UTC judge-signal-studio: re-scored signal-studio, refreshed BRAINSTORM/PLAN/AUDIT, created TODO-384-388.)
 
 ---
 
@@ -17,6 +17,7 @@
 > invesco-sprint cron check 2026-03-05 21:01 UTC: TODO-580 ✅ DONE (org_id non-nullable, confirmed done file). Prior agents (581, 600, 606, 629) did not complete — files still pending. Spawned 5 fresh parallel Sonnet agents: TODO-581 (webhook HMAC signing), TODO-585 (signal-studio ignoreBuildErrors — was queued last run), TODO-586 (signal-studio rate limit all API routes), TODO-600 (httpx connection pooling), TODO-606 (Oracle SQL injection fix). TODO-629 (flip-my-era VITE_SENTRY_AUTH_TOKEN) queued — hit 5-agent cap again, will run next cron. 🚨 CRITICAL still needed from Nathan: Rotate Ultrafone API keys (#622).
 > todo-progress cron 2026-03-06 09:09 UTC: Verified TODO-581 ✅ TODO-585 ✅ TODO-586 ✅ TODO-600 ✅ TODO-606 ✅ TODO-629 ✅ (all prior queued agents completed). Spawned Sonnet agent for TODO-219 (forwardlane-backend analytical psycopg2 connection leak → Django pooling). 🚨 CRITICAL: Ultrafone API key rotation (#622) still requires Nathan action.
 > todo-progress cron 2026-03-06 01:04 UTC: Verified TODO-219 ✅ (done file confirmed). Spawned 2 parallel Sonnet agents: TODO-404 (signal-studio-auth Pydantic v2 migration) + TODO-601 (Redis integration tests). Updated TODO.md checkboxes for previously verified items (585, 586, 600, 606, 629).
+> invesco-sprint cron 2026-03-06 13:10 UTC: Verified TODO-607 ✅ (BFF proxy done file confirmed). All prior Invesco technical P0s remain complete. Identified 3 open non-Invesco P0s and spawned 3 parallel Sonnet agents: TODO-711+713 (signal-studio-frontend OracleVectorService + unit tests), TODO-726 (flip-my-era subscription upsell flow), TODO-630 (NarrativeReactor Stripe multi-tenant billing). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley.
 > todo-progress cron 2026-03-06 09:09 UTC: Verified TODO-587 ✅ TODO-607 ✅ TODO-459 ✅ TODO-460 ✅ TODO-461 ✅ (done files confirmed). Spawned 4 parallel Sonnet agents: TODO-583 (signal-builder-backend CVE dep upgrade: python-jose→PyJWT, passlib→argon2-cffi), TODO-589 (signal-studio audit_log compliance table + lib/audit.ts), TODO-605 (signal-studio-auth password reset/update routes), TODO-608 (signal-studio-frontend remove dual reactflow ~400KB savings).
 > todo-progress cron 2026-03-06 09:09 UTC (run 2): Verified TODO-583 ✅ TODO-589 ✅ TODO-605 ✅ TODO-608 ✅ (done files confirmed). Completed TODO-636 directly (strip SQL from signal-studio-templates API response, commit 462de15, pushed). Verified TODO-630 already done (real Invesco fund names QQQ/RSP/SPLV/QQQM already in codebase). Spawned 2 parallel Sonnet agents: TODO-634 (OpenAI AIProvider) + TODO-635 (MockDataProvider + seed data). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run.
 > invesco-sprint cron 2026-03-06 05:01 UTC: Verified TODO-580 ✅ TODO-581 ✅ (done files confirmed). Spawned 4 parallel Sonnet agents: TODO-587 (signal-studio pino structured logger), TODO-607 (signal-studio-frontend BFF proxy), TODO-459 (forwardlane-backend streaming SSE), TODO-460+461 (coverage gate + pre-commit hooks). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run.
@@ -43,7 +44,7 @@
   - [x] 321 — GitHub Repo Privacy Check (P0, XS) → ✅ 2026-02-28 — Repo is PUBLIC. Scanned for sensitive data: "Marcus Thompson" is synthetic demo data (not a real person). No real advisor names (Brian Kiley, Craig Lieb, Megan) in source. Invesco references are appropriate demo framing. Risk assessed as LOW — demo content is generic enough. No action required beyond documenting.
   - [x] 322 — 🚨 GitHub Pages 404 FIX (P0, XS) → ✅ FIXED 2026-03-01 — Demo live at https://trendpilotai.github.io/invesco-demo/ (200 OK all routes). Root cause: no gh-pages branch + repo was private (blocked Pages). Created gh-pages branch, made repo public, enabled Pages. All 4 routes verified.
   - [x] 630 — Real Invesco fund names in synthetic data (P0, XS) → ✅ VERIFIED 2026-03-06 — invesco_fund_catalog.json + combined-data.ts already use real Invesco tickers (QQQ, RSP, SPLV, QQQM, etc.). No generic names found.
-  - [ ] 631 — Global demo reset mechanism / keyboard shortcut (P0, S) → `todos/631-pending-p0-invesco-retention-global-demo-reset.md`
+  - [x] 631 — Global demo reset mechanism / keyboard shortcut (P0, S) ✅ VERIFIED 2026-03-06 — DemoResetOverlay.tsx + lib/demo-reset.ts already implemented (Ctrl+Shift+R + floating Reset Demo button)
   - [ ] 632 — "Your Data Here" integration path tooltips (P1, XS) → `todos/632-pending-p1-invesco-retention-your-data-here-tooltips.md`
 
 
@@ -475,8 +476,8 @@
 - [x] **TODO-466** Rate limiting + CORS on Templates API — express-rate-limit, cors allowlist, body size limit [S/P0] ✅ DONE 2026-03-04 — commit 6d1e40c
 - [x] **TODO-467** Publish @forwardlane/signal-studio-templates to npm registry — publishConfig, .npmrc, CI publish on tag [S/P0] ✅ DONE 2026-03-04
 - [ ] **TODO-468** Template preview/dry-run mode — POST /templates/:id/preview, previewData in schema, no DB needed [S/P1] → `/data/workspace/todos/468-pending-p1-signal-studio-templates-preview-dryrun.md`
-- [ ] **TODO-634** [P0] Implement OpenAI AIProvider — concrete impl of AIProvider interface, demo-blocking [S] ⏳ Sonnet agent spawned 2026-03-06 09:09
-- [ ] **TODO-635** [P0] MockDataProvider + seed data — 50 advisors, 500 accounts, all 20 templates produce results [S] ⏳ Sonnet agent spawned 2026-03-06 09:09
+- [x] **TODO-634** [P0] Implement OpenAI AIProvider — concrete impl of AIProvider interface, demo-blocking [S] ✅ DONE 2026-03-06 (done file confirmed)
+- [x] **TODO-635** [P0] MockDataProvider + seed data — 50 advisors, 500 accounts, all 20 templates produce results [S] ✅ DONE 2026-03-06 (done file confirmed)
 - [x] **TODO-636** [P0] Strip SQL from API response — ExecutionResult.sql leaks DB schema [XS] ✅ DONE 2026-03-06 — destructure sql field, log internally via console.debug, 25 tests pass, commit 462de15
 - [ ] **TODO-637** [P1] ESLint config + GitHub Actions CI — .eslintrc.json, ci.yml, publish.yml [S] → `/data/workspace/todos/637-pending-P1-signal-studio-templates-eslint-ci-pipeline.md`
 - [ ] **TODO-638** [P1] Rate limit by JWT sub (not IP) — fails behind load balancer [S] → `/data/workspace/todos/638-pending-P1-signal-studio-templates-rate-limit-by-jwt-sub.md`
@@ -621,8 +622,8 @@
 - [x] [P0] Remove dead Flask code from services/ and controllers/ — 7 files never imported (TODO-230) ✅ already in repo (5933da4)
 - [x] [P1] Add pytest test suite — zero tests currently exist (TODO-233) ✅ 2026-02-28 — 30/30 tests passing, committed + pushed
 - [x] [P1] Cache compiled regex patterns — rebuilt on every request today (TODO-232) ✅ done
-- [ ] [P0] Update README for FastAPI/Python 3.11 (TODO-720)
-- [ ] [P0] Add pytest test suite — judge-v2 audit confirms zero tests (TODO-721)
+- [x] [P0] Update README for FastAPI/Python 3.11 (TODO-720) ✅ 2026-03-06 — commit 378c5cf
+- [x] [P0] Add pytest test suite — judge-v2 audit confirms zero tests (TODO-721)
 - [ ] [P1] Refactor 694-line main.py into modular package structure (TODO-722)
 - [ ] [P1] Fix HTTP status code semantics — endpoints return 200 with 4xx in body (TODO-723)
 - [ ] [P1] CORS + API key caching security hardening (TODO-724)
@@ -921,7 +922,7 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 **Scores:** revenue=7, strategic=9, completeness=5, urgency=6, effort_remaining=5
 **Summary:** Next.js financial signal platform for ForwardLane/SignalHaus. Core UI solid, Oracle 23ai vector services skeletal (MVP not production-ready per own docs). Recent security hardening good. Critical path: complete OracleVectorService + integration tests to ship MVP.
 - [ ] 711 [P0/L] Complete OracleVectorService implementation (DDL + embeddings + vector search)
-- [ ] 712 [P0/S] Dead code cleanup (rete editor, duplicate middleware, stale docs)
+- [x] 712 [P0/S] Dead code cleanup (rete editor, duplicate middleware, stale docs) ✅ DONE 2026-03-06 — commit 8bfad1d: deleted rete-editor.tsx, browser-history-search/, 12 root test scripts; archived 34 stale docs to docs/archive/
 - [ ] 713 [P0/M] Oracle service unit tests with mocked oracledb
 - [ ] 714 [P1/S] CI/CD pipeline + pre-commit hooks (Husky + lint-staged)
 - [ ] 715 [P1/M] E2E Playwright test suite (auth + signals + chat)
