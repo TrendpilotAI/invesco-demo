@@ -17,6 +17,7 @@
 > invesco-sprint cron check 2026-03-05 21:01 UTC: TODO-580 ✅ DONE (org_id non-nullable, confirmed done file). Prior agents (581, 600, 606, 629) did not complete — files still pending. Spawned 5 fresh parallel Sonnet agents: TODO-581 (webhook HMAC signing), TODO-585 (signal-studio ignoreBuildErrors — was queued last run), TODO-586 (signal-studio rate limit all API routes), TODO-600 (httpx connection pooling), TODO-606 (Oracle SQL injection fix). TODO-629 (flip-my-era VITE_SENTRY_AUTH_TOKEN) queued — hit 5-agent cap again, will run next cron. 🚨 CRITICAL still needed from Nathan: Rotate Ultrafone API keys (#622).
 > todo-progress cron 2026-03-06 09:09 UTC: Verified TODO-581 ✅ TODO-585 ✅ TODO-586 ✅ TODO-600 ✅ TODO-606 ✅ TODO-629 ✅ (all prior queued agents completed). Spawned Sonnet agent for TODO-219 (forwardlane-backend analytical psycopg2 connection leak → Django pooling). 🚨 CRITICAL: Ultrafone API key rotation (#622) still requires Nathan action.
 > todo-progress cron 2026-03-06 01:04 UTC: Verified TODO-219 ✅ (done file confirmed). Spawned 2 parallel Sonnet agents: TODO-404 (signal-studio-auth Pydantic v2 migration) + TODO-601 (Redis integration tests). Updated TODO.md checkboxes for previously verified items (585, 586, 600, 606, 629).
+> invesco-sprint cron 2026-03-06 21:01 UTC: Verified TODO-711 ✅ TODO-713 ✅ TODO-726 ✅ TODO-630 ✅ TODO-587 ✅ TODO-607 ✅ (all prior P0 agents completed via done files). **ALL P0 ITEMS NOW COMPLETE.** No new code P0s identified. 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley.
 > invesco-sprint cron 2026-03-06 13:10 UTC: Verified TODO-607 ✅ (BFF proxy done file confirmed). All prior Invesco technical P0s remain complete. Identified 3 open non-Invesco P0s and spawned 3 parallel Sonnet agents: TODO-711+713 (signal-studio-frontend OracleVectorService + unit tests), TODO-726 (flip-my-era subscription upsell flow), TODO-630 (NarrativeReactor Stripe multi-tenant billing). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley.
 > todo-progress cron 2026-03-06 09:09 UTC: Verified TODO-587 ✅ TODO-607 ✅ TODO-459 ✅ TODO-460 ✅ TODO-461 ✅ (done files confirmed). Spawned 4 parallel Sonnet agents: TODO-583 (signal-builder-backend CVE dep upgrade: python-jose→PyJWT, passlib→argon2-cffi), TODO-589 (signal-studio audit_log compliance table + lib/audit.ts), TODO-605 (signal-studio-auth password reset/update routes), TODO-608 (signal-studio-frontend remove dual reactflow ~400KB savings).
 > todo-progress cron 2026-03-06 09:09 UTC (run 2): Verified TODO-583 ✅ TODO-589 ✅ TODO-605 ✅ TODO-608 ✅ (done files confirmed). Completed TODO-636 directly (strip SQL from signal-studio-templates API response, commit 462de15, pushed). Verified TODO-630 already done (real Invesco fund names QQQ/RSP/SPLV/QQQM already in codebase). Spawned 2 parallel Sonnet agents: TODO-634 (OpenAI AIProvider) + TODO-635 (MockDataProvider + seed data). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run.
@@ -383,7 +384,7 @@
 
 ### 🟠 NEW HIGH (March 5, 2026)
 
-- [ ] **[TODO-582]** JWT refresh token revocation on logout/password change · _S_ · `582-pending-p1-...-jwt-refresh-revocation.md`
+- [x] **[TODO-582]** JWT refresh token revocation on logout/password change · _S_ · ✅ DONE 2026-03-06 (commit c5a41e4)
 - [ ] **[TODO-583]** Upgrade python-jose → PyJWT, passlib → argon2-cffi (CVEs) · _S_ · `583-pending-p1-...-upgrade-auth-deps.md`
 - [ ] **[TODO-584]** Signal execution history table + API endpoints · _M_ · `584-pending-p1-...-signal-run-history.md`
 - [ ] **[TODO-585]** Add coverage threshold (70%) to CI · _XS_ · `585-pending-p1-...-coverage-threshold-ci.md`
@@ -877,7 +878,7 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 **Scores:** revenue=7, strategic=9, completeness=5, urgency=7, effort_remaining=5
 - [x] 494 [P0/XL] Complete Oracle AI vector service — OracleVectorService, SemanticSearchService, embeddings (CORE VALUE PROP) — commit c08533a9
 - [x] 495 [P0/M] Add rate limiting to AI API routes ✅ DONE 2026-03-04 — commit b9dbd910
-- [ ] 496 [P1/S] Remove dual reactflow dependency (reactflow v11 + @xyflow v12 both present)
+- [x] 496 [P1/S] Remove dual reactflow dependency (reactflow v11 + @xyflow v12 both present) ✅ DONE 2026-03-06 — commit 37ff9fe, ~300KB bundle savings
 - [ ] 497 [P1/L] Build ForwardLane Django backend bridge (BFF proxy + JWT forwarding + Oracle sync)
 - [ ] 498 [P1/S] Wire Bitbucket CI/CD → Railway auto-deploy (pipelines + deploy hooks)
 - [ ] 499 [P1/M] Bundle size audit — verify @xenova server-only, fix dynamic imports
@@ -890,10 +891,10 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 **Scores:** revenue=8, strategic=9, completeness=7, urgency=8, effort_remaining=6
 - [x] 585 [P0/S] Fix ignoreBuildErrors: true in next.config.mjs ✅ DONE 2026-03-05
 - [x] 586 [P0/S] Rate limit Oracle query + signal run routes ✅ DONE 2026-03-05
-- [ ] 587 [P0/M] Replace 204 console.* calls with pino structured logger (may leak sensitive data)
+- [x] 587 [P0/M] Replace 204 console.* calls with pino structured logger (may leak sensitive data) ✅ DONE 2026-03-06 (done file confirmed)
 - [ ] 588 [P1/M] Create signal_runs Postgres table + run history UI (compliance + UX gap)
 - [ ] 589 [P1/S] Create audit_log compliance table + lib/audit.ts (SOC2 requirement)
-- [ ] 352 [P1/M] Remove duplicate reactflow@11 (dedup with @xyflow/react, -300KB bundle)
+- [x] 352 [P1/M] Remove duplicate reactflow@11 (dedup with @xyflow/react, -300KB bundle) ✅ DONE 2026-03-06 — commit 37ff9fe
 - [ ] 355 [P1/M] E2E Playwright tests for 5 critical user flows
 - [ ] [P2/S] Add /api/health/db endpoint for Railway health monitoring
 - [ ] [P2/M] Redis caching for signal execution results (TTL per signal)
@@ -921,9 +922,9 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 ## signal-studio-frontend (2026-03-06 — Judge Agent v2 refresh)
 **Scores:** revenue=7, strategic=9, completeness=5, urgency=6, effort_remaining=5
 **Summary:** Next.js financial signal platform for ForwardLane/SignalHaus. Core UI solid, Oracle 23ai vector services skeletal (MVP not production-ready per own docs). Recent security hardening good. Critical path: complete OracleVectorService + integration tests to ship MVP.
-- [ ] 711 [P0/L] Complete OracleVectorService implementation (DDL + embeddings + vector search)
+- [x] 711 [P0/L] Complete OracleVectorService implementation (DDL + embeddings + vector search) ✅ DONE 2026-03-06
 - [x] 712 [P0/S] Dead code cleanup (rete editor, duplicate middleware, stale docs) ✅ DONE 2026-03-06 — commit 8bfad1d: deleted rete-editor.tsx, browser-history-search/, 12 root test scripts; archived 34 stale docs to docs/archive/
-- [ ] 713 [P0/M] Oracle service unit tests with mocked oracledb
+- [x] 713 [P0/M] Oracle service unit tests with mocked oracledb ✅ DONE 2026-03-06
 - [ ] 714 [P1/S] CI/CD pipeline + pre-commit hooks (Husky + lint-staged)
 - [ ] 715 [P1/M] E2E Playwright test suite (auth + signals + chat)
 - [ ] 716 [P1/L] Signal alerting & scheduling system (email/Slack alerts)
@@ -934,8 +935,8 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 **Scores:** revenue=8, strategic=9, completeness=6, urgency=7, effort_remaining=5
 **Summary:** Next.js financial signal platform. Core Oracle + AI features working. Missing BFF to ForwardLane Django, weak SQL protection, dual reactflow bloating bundle.
 - [x] 606 [P0/XS] Fix SQL injection in oracle/query ✅ DONE 2026-03-05 (verified 2026-03-06)
-- [ ] 607 [P0/M] Wire ForwardLane BFF proxy routes (/api/bff/*) to CORE_API Django backend
-- [ ] 608 [P1/S] Remove dual reactflow (v11 + @xyflow v12) — migrate fully to @xyflow/react v12, ~400KB savings
+- [x] 607 [P0/M] Wire ForwardLane BFF proxy routes (/api/bff/*) to CORE_API Django backend ✅ DONE 2026-03-06 (done file confirmed)
+- [x] 608 [P1/S] Remove dual reactflow (v11 + @xyflow v12) — migrate fully to @xyflow/react v12, ~400KB savings ✅ DONE 2026-03-06 — commit 37ff9fe
 - [ ] 609 [P1/S] Extract Oracle connection singleton (lib/oracle/connection.ts) — fix duplicated init across 3 files
 - [ ] 610 [P1/XS] Delete 13 root test scripts + 30 stale phase/PR markdown docs
 - [ ] [P1/S] Add Sentry error monitoring (no observability in prod)
@@ -990,7 +991,7 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 
 
 ## NarrativeReactor (2026-03-06 — Judge Agent v2 refresh)
-- [ ] [P0/M] #630 Stripe multi-tenant SaaS billing layer (quotas, Checkout, webhooks) → `630-pending-P0-NarrativeReactor-stripe-billing-layer.md`
+- [x] [P0/M] #630 Stripe multi-tenant SaaS billing layer (quotas, Checkout, webhooks) ✅ DONE 2026-03-06 (done file confirmed)
 - [ ] [P1/M] #631 Content performance feedback loop via Blotato webhooks → `631-pending-P1-NarrativeReactor-content-performance-feedback-loop.md`
 - [ ] [P1/S] #632 Extract SQLite DB singleton (src/lib/db.ts) + WAL + indexes → `632-pending-P1-NarrativeReactor-sqlite-db-singleton.md`
 - [ ] [P2/M] #633 Async video job queue (SQLite-backed, background worker) → `633-pending-P2-NarrativeReactor-video-job-queue.md`
@@ -1009,7 +1010,7 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 - [ ] [P1/S] #397 Celery task deduplication — Redis SET NX lock for webhook delivery
 
 ### Security
-- [ ] [P1/S] #582 JWT refresh token revocation on logout/password change
+- [x] [P1/S] #582 JWT refresh token revocation on logout/password change ✅ DONE 2026-03-06
 - [ ] [P2/S] #588 Rate limiting X-Forwarded-For adversarial tests + TRUSTED_PROXIES config
 
 ### Features
@@ -1028,7 +1029,7 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 - [x] ✅ #629 VITE_SENTRY_AUTH_TOKEN removed from client bundle (commit 5074c28) — DONE
 
 ### Revenue / P0
-- [ ] [P0/M] #726 Subscription upsell flow — credit exhaustion modal → pricing → Stripe checkout → `726-pending-p0-flip-my-era-subscription-upsell-flow.md`
+- [x] [P0/M] #726 Subscription upsell flow — credit exhaustion modal → pricing → Stripe checkout ✅ DONE 2026-03-06 (done file confirmed)
 
 ### Growth / P1
 - [ ] [P1/M] #727 Social sharing — TikTok/Instagram share cards + public story pages → `727-pending-p1-flip-my-era-social-sharing-tiktok.md`
