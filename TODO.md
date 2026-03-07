@@ -19,6 +19,7 @@
 > todo-progress cron 2026-03-06 01:04 UTC: Verified TODO-219 ✅ (done file confirmed). Spawned 2 parallel Sonnet agents: TODO-404 (signal-studio-auth Pydantic v2 migration) + TODO-601 (Redis integration tests). Updated TODO.md checkboxes for previously verified items (585, 586, 600, 606, 629).
 > invesco-sprint cron 2026-03-06 21:01 UTC: Verified TODO-711 ✅ TODO-713 ✅ TODO-726 ✅ TODO-630 ✅ TODO-587 ✅ TODO-607 ✅ (all prior P0 agents completed via done files). **ALL P0 ITEMS NOW COMPLETE.** No new code P0s identified. 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley.
 > invesco-sprint cron 2026-03-07 05:01 UTC: Verified #398 (orphan node fix, commit 901e6a3) ✅. Scanned full TODO.md — **ALL P0 ITEMS REMAIN COMPLETE.** No new P0s found. No sub-agents spawned. 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley.
+> invesco-sprint cron 2026-03-07 13:01 UTC: Identified 4 new P0/CRITICAL items from 2026-03-07 judge refresh. Spawned 4 parallel Sonnet agents: TODO-1001 (forwardlane_advisor delete EOL Watson retrieve_and_rank dead code), TODO-1003 (forwardlane_advisor express-rate-limit on auth endpoints), TODO-821 (signal-builder-backend remove jsonpickle RCE risk), TODO-822 (signal-builder-backend Celery task idempotency). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley.
 > invesco-sprint cron 2026-03-06 13:10 UTC: Verified TODO-607 ✅ (BFF proxy done file confirmed). All prior Invesco technical P0s remain complete. Identified 3 open non-Invesco P0s and spawned 3 parallel Sonnet agents: TODO-711+713 (signal-studio-frontend OracleVectorService + unit tests), TODO-726 (flip-my-era subscription upsell flow), TODO-630 (NarrativeReactor Stripe multi-tenant billing). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley.
 > todo-progress cron 2026-03-06 09:09 UTC: Verified TODO-587 ✅ TODO-607 ✅ TODO-459 ✅ TODO-460 ✅ TODO-461 ✅ (done files confirmed). Spawned 4 parallel Sonnet agents: TODO-583 (signal-builder-backend CVE dep upgrade: python-jose→PyJWT, passlib→argon2-cffi), TODO-589 (signal-studio audit_log compliance table + lib/audit.ts), TODO-605 (signal-studio-auth password reset/update routes), TODO-608 (signal-studio-frontend remove dual reactflow ~400KB savings).
 > todo-progress cron 2026-03-06 09:09 UTC (run 2): Verified TODO-583 ✅ TODO-589 ✅ TODO-605 ✅ TODO-608 ✅ (done files confirmed). Completed TODO-636 directly (strip SQL from signal-studio-templates API response, commit 462de15, pushed). Verified TODO-630 already done (real Invesco fund names QQQ/RSP/SPLV/QQQM already in codebase). Spawned 2 parallel Sonnet agents: TODO-634 (OpenAI AIProvider) + TODO-635 (MockDataProvider + seed data). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run.
@@ -627,7 +628,7 @@
 - [x] [P0] Update README for FastAPI/Python 3.11 (TODO-720) ✅ 2026-03-06 — commit 378c5cf
 - [x] [P0] Add pytest test suite — judge-v2 audit confirms zero tests (TODO-721)
 - [ ] [P1] Refactor 694-line main.py into modular package structure (TODO-722)
-- [ ] [P1] Fix HTTP status code semantics — endpoints return 200 with 4xx in body (TODO-723)
+- [x] [P1] Fix HTTP status code semantics — endpoints return 200 with 4xx in body (TODO-723) ✅ 2026-03-07 — 9 error responses now return proper 400/404 (commit 3337ba3)
 - [ ] [P1] CORS + API key caching security hardening (TODO-724)
 - [ ] [P1] Add batch extraction endpoint POST /batch_regex_entity_extraction (TODO-725)
 
@@ -1099,7 +1100,7 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 
 ## signal-builder-backend (added 2026-03-07)
 - [ ] TODO-821: CRITICAL — Remove jsonpickle (RCE risk) in apps/signals/schemas/signal.py
-- [ ] TODO-822: CRITICAL — Fix Celery task idempotency (data integrity risk) in apps/tasks.py
+- [x] TODO-822: CRITICAL — Fix Celery task idempotency (data integrity risk) in apps/tasks.py ✅ DONE 2026-03-07 — Redis distributed lock (NX, 10min TTL) on both tasks; 7 tests pass; commit fd7d744
 - [ ] TODO-823: HIGH — Add pagination to all list endpoints
 - [ ] TODO-824: HIGH — Wire webhook delivery to signal run completion
 - [ ] TODO-825: HIGH — Expand translator unit test coverage to 80%+
