@@ -1043,3 +1043,63 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 - [ ] [P2/XS] #729 Remove debug HTML files + strip console.logs → `729-pending-p2-flip-my-era-cleanup-debug-files.md`
 - [ ] [P2/S] #017 Dynamic sitemap generation (pre-existing)
 - [ ] [P2/S] #013 Dark mode toggle (pre-existing)
+
+## signal-studio (2026-03-07 — Judge Agent v2 refresh)
+
+**Scores**: revenue_potential=8, strategic_value=9, completeness=7, urgency=7, effort_remaining=6
+
+### Security / P0 (Fix Immediately)
+- [x] [P0/XS] #815 Remove dump.rdb from repo + rotate Redis secrets → ✅ DONE 2026-03-07 — git rm --cached dump.rdb, *.rdb added to .gitignore, commit 5952c74
+
+### Stability / P1
+- [ ] [P1/S] #816 Replace in-memory rate limiter with Upstash Redis → `816-pending-high-signal-studio-redis-rate-limiter.md`
+- [ ] [P1/M] #817 Add Zod validation to all API routes + eliminate `any` types → `817-pending-high-signal-studio-zod-validation.md`
+- [ ] [P1/S] #818 Add Sentry error monitoring → `818-pending-high-signal-studio-sentry.md`
+
+### Revenue / P2
+- [ ] [P2/M] #819 CSV/PDF export for signal results → `819-pending-medium-signal-studio-export-csv-pdf.md`
+- [ ] [P2/L] #820 Add Playwright E2E tests for critical flows → `820-pending-medium-signal-studio-e2e-tests.md`
+
+### Hygiene / P2
+- [ ] [P2/XS] Archive stale one-shot migration scripts (fix-*.py, replace-*.py)
+- [ ] [P2/XS] Consolidate 3 duplicate PR creation scripts (create-pr.sh/.js/.py → keep .py)
+- [ ] [P2/XS] Move loose SQL files from repo root → scripts/sql/
+- [ ] [P2/S] Add pre-commit hooks (husky + lint-staged)
+- [ ] [P2/XS] Add npm audit to CI pipeline
+- [ ] [P2/XS] Add gitleaks secret scanning to CI
+- [ ] [P2/M] DRY: extract shared logic from duplicate visual-builder pages (builder + enhanced)
+
+---
+
+## forwardlane_advisor — Added 2026-03-07
+
+### P0 — Critical
+- [ ] [P0/S] #1003 forwardlane_advisor: Add express-rate-limit to auth endpoints → `TODO-1003`
+- [ ] [P0/XL] #1020 forwardlane_advisor: Replace Watson NLC with LLM gateway (OpenAI/Anthropic) → `TODO-1020`
+- [ ] [P0/XS] #1001 forwardlane_advisor: Delete app/retrieve_and_rank/ (EOL dead code) → `TODO-1001`
+
+### P1 — High
+- [ ] [P1/M] #1010 forwardlane_advisor: Replace file-based sessions with Redis → `TODO-1010`
+- [ ] [P1/M] #1030 forwardlane_advisor: Consolidate db-migrate + Sequelize migrations → `TODO-1030`
+- [ ] [P1/M] #1005 forwardlane_advisor: Add GitHub Actions CI pipeline → `TODO-1005`
+- [ ] [P1/S] #1002 forwardlane_advisor: Fix model filename typos (startegy, notifiations) → `TODO-1002`
+- [ ] [P1/XS] #1001b forwardlane_advisor: Rotate suspicious credentials in watson_services.js.sample → `TODO-1001b`
+
+### P2 — Medium
+- [ ] [P2/L] #1031 forwardlane_advisor: Upgrade Sequelize v3 → v6 → `TODO-1031`
+- [ ] [P2/M] #1050 forwardlane_advisor: Migrate AWS SDK v2 → v3 → `TODO-1050`
+- [ ] [P2/M] #1041 forwardlane_advisor: Write portfolio + alert unit tests → `TODO-1041`
+- [ ] [P2/S] #1004 forwardlane_advisor: Add ESLint + Prettier → `TODO-1004`
+- [ ] [P2/M] #1011 forwardlane_advisor: Add Redis cache layer for market data → `TODO-1011`
+
+### P3 — Low
+- [ ] [P3/L] #1042 forwardlane_advisor: Add Playwright E2E test suite → `TODO-1042`
+- [ ] [P3/XS] forwardlane_advisor: Rename jade→pug, update view engine config
+- [ ] [P3/S] forwardlane_advisor: Merge duplicate app/morning_star + app/morningstar_funds
+
+## signal-builder-backend (added 2026-03-07)
+- [ ] TODO-821: CRITICAL — Remove jsonpickle (RCE risk) in apps/signals/schemas/signal.py
+- [ ] TODO-822: CRITICAL — Fix Celery task idempotency (data integrity risk) in apps/tasks.py
+- [ ] TODO-823: HIGH — Add pagination to all list endpoints
+- [ ] TODO-824: HIGH — Wire webhook delivery to signal run completion
+- [ ] TODO-825: HIGH — Expand translator unit test coverage to 80%+

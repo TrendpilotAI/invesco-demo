@@ -178,3 +178,67 @@ POST-DEMO:
 - 🔴 Dry run (#219) not yet done — HIGHEST RISK
 - 🟠 No backup recordings yet (#220) — if live demo fails, nothing to fall back on
 - 🟡 Security headers not on GH Pages — low risk for demo, medium risk if IT reviews
+
+---
+
+# Plan v5 Update — 2026-03-07
+**Agent:** Judge Agent v2 (inline)
+**Based on:** BRAINSTORM.md v5
+
+## New Action Items from Brainstorm v5
+
+### Immediate (< 30 min each, do before demo)
+
+| Action | Effort | Impact | Owner |
+|---|---|---|---|
+| Make date dynamic in UI (`new Date()` not hardcoded) | XS (5m) | HIGH | Honey |
+| Audit mobile tap targets in `mobile/page.tsx` (min 44px) | XS (15m) | HIGH | Honey |
+| Check `randomSFId()` stability in dashboard — wrap in `useRef` | XS (10m) | MEDIUM | Honey |
+| Verify `ReactNode` and `useMemo` imports are actually used | XS (5m) | LOW | Honey |
+
+### Pre-Demo (< 2 hours)
+
+| Action | Effort | Impact | Owner |
+|---|---|---|---|
+| Add "Brian Kiley — Managing Director" as demo logged-in user | XS (15m) | HIGH | Nathan (provide title) + Honey |
+| Record 3 MP4 versions: narrator-only, face-cam, silent | S (90m) | HIGH | Honey + Nathan |
+| Add .srt caption file to demo recording | XS (20m) | MEDIUM | Honey |
+| Customize Signal Studio empty state with Invesco-specific examples | XS (20m) | MEDIUM | Honey |
+
+### Post-Win Prep (have ready but don't show unless deal is won)
+
+| Action | Effort | Impact | Owner |
+|---|---|---|---|
+| Integration checklist PDF (Snowflake/SF/Seismic requirements) | XS (30m) | HIGH | Honey |
+| Pilot success metrics definition doc | XS (20m) | HIGH | Honey |
+
+## Updated Execution Order (v5)
+
+```
+TODAY (before demo):
+1. Dynamic date fix (XS)
+2. Mobile tap target audit (XS) 
+3. randomSFId() stability (XS)
+4. Personalize with Brian Kiley reference (XS — need his title from Nathan/Megan)
+5. Signal Studio empty state personalization (XS)
+
+TOMORROW:
+6. #219 — Dry run with Megan/Craig (MOST CRITICAL — schedule NOW)
+7. Record 3-version MP4s (#220 expanded)
+8. Caption file for recordings
+
+AFTER DRY RUN:
+9. Incorporate Megan/Craig feedback
+10. Final demo run-through and checklist
+
+POST-WIN:
+11. Integration checklist PDF
+12. Pilot success metrics doc
+```
+
+## Risk Flags (v5 Update)
+- 🔴 CRITICAL: Dry run (#219) still not scheduled — Nathan must act NOW
+- 🔴 CRITICAL: No backup recordings — if live demo fails, nothing to show
+- 🟠 HIGH: Dynamic date — if demo shows stale date, kills credibility instantly
+- 🟡 MEDIUM: Mobile tap targets — live demo on iPhone could embarrass if taps miss
+- 🟢 LOW: Code quality items (randomSFId, unused imports) — demo risk only if errors surface
