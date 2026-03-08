@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, ReactNode, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { advisors, getAdvisor } from '@/lib/mock-data';
+import { capture, DEMO_EVENTS } from '@/lib/posthog';
 import { Separator } from '@/components/ui/separator';
 import Link from 'next/link';
 import { SLDSIcon, SLDSAvatar, SLDSCardHeader, SLDSBadge } from '@/components/slds-icons';
@@ -418,6 +419,7 @@ function SalesforcePageInner() {
 
   const handlePushToSF = useCallback(() => {
     if (pushState !== 'idle' || !advisor) return;
+    capture(DEMO_EVENTS.PUSH_TO_SALESFORCE, { advisor_name: advisor.name, advisor_id: advisor.id });
     setPushState('loading');
     setTimeout(() => {
       setPushState('success');
