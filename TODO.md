@@ -25,6 +25,7 @@
 > invesco-sprint cron 2026-03-07 13:01 UTC: Identified 4 new P0/CRITICAL items from 2026-03-07 judge refresh. Spawned 4 parallel Sonnet agents: TODO-1001 (forwardlane_advisor delete EOL Watson retrieve_and_rank dead code), TODO-1003 (forwardlane_advisor express-rate-limit on auth endpoints), TODO-821 (signal-builder-backend remove jsonpickle RCE risk), TODO-822 (signal-builder-backend Celery task idempotency). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley.
 > invesco-sprint cron 2026-03-07 21:01 UTC: Verified TODO-822 ✅ (Celery task idempotency Redis lock, commit fd7d744). TODO-821/1001/1003 still pending from prior run — spawned 3 fresh parallel Sonnet agents to complete. 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley.
 > todo-progress cron 2026-03-07 21:06 UTC: Verified TODO-821 ✅ (jsonpickle removed) TODO-1001 ✅ (retrieve_and_rank deleted) TODO-1003 ✅ (express-rate-limit on auth) TODO-605 ✅ (password reset routes) TODO-723 ✅ (HTTP status codes). Spawned Sonnet agent for TODO-588 (signal_runs Postgres table + run history UI). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley.
+> invesco-sprint cron 2026-03-08 12:01 UTC: Identified 5 fresh Invesco P0s (INV-001 through INV-007, 8 items total). Spawned 5 parallel Sonnet agents: INV-001 (SF chrome wrapper on meeting brief), INV-002 (ROI panel), INV-003 (Megan/Craig demo personas), INV-005+006 (PostHog + CVE fix), INV-007 (demo script). INV-004 (DemoReset enhance) + INV-008 (dry run schedule) queued — INV-008 requires Nathan action. 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley.
 > invesco-sprint cron 2026-03-08 05:01 UTC: Verified TODO-588 ✅ (signal_runs migration + RunHistory UI committed). NOTE: TODO-1003 was BLOCKED (TrendpilotAI/forwardlane_advisor GitHub 404 — repo may be private/missing; code is available locally). Only 1 open P0 identified: TODO-1020 (forwardlane_advisor Watson NLC → LLM gateway). Spawned 1 Sonnet agent for TODO-1020. 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley.
 > invesco-sprint cron 2026-03-06 13:10 UTC: Verified TODO-607 ✅ (BFF proxy done file confirmed). All prior Invesco technical P0s remain complete. Identified 3 open non-Invesco P0s and spawned 3 parallel Sonnet agents: TODO-711+713 (signal-studio-frontend OracleVectorService + unit tests), TODO-726 (flip-my-era subscription upsell flow), TODO-630 (NarrativeReactor Stripe multi-tenant billing). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley.
 > todo-progress cron 2026-03-06 09:09 UTC: Verified TODO-587 ✅ TODO-607 ✅ TODO-459 ✅ TODO-460 ✅ TODO-461 ✅ (done files confirmed). Spawned 4 parallel Sonnet agents: TODO-583 (signal-builder-backend CVE dep upgrade: python-jose→PyJWT, passlib→argon2-cffi), TODO-589 (signal-studio audit_log compliance table + lib/audit.ts), TODO-605 (signal-studio-auth password reset/update routes), TODO-608 (signal-studio-frontend remove dual reactflow ~400KB savings).
@@ -510,7 +511,7 @@
 - [ ] **#FL-002** [P0] Add `check_env` management command; wire to Railway release phase ⏳ Agent spawned 2026-03-08 08:04 UTC
 - [ ] **#FL-003** [P0] Add LLM observability: log provider, model, latency_ms, prompt_chars per call in llm_client.py
 - [ ] **#FL-004** [P0] Upgrade django-saml2-auth from 2.2.* to >=4.0 — CVE risk (XML signature bypass)
-- [ ] **#FL-005** [P0] Add pip-audit to bitbucket-pipelines.yml for automated dep vulnerability scanning
+- [x] **#FL-005** [P0] Add pip-audit to bitbucket-pipelines.yml for automated dep vulnerability scanning ✅ DONE 2026-03-08 — pip-audit step added to master/development/PR pipelines, commit c8514c0, pushed upgrade/python311-django42
 - [ ] **#FL-006** [P0] Add easy_button + analytical + adapters to pylint scope in tox.ini
 
 ### 🟠 P1 — Next Sprint (Stability)
@@ -1225,14 +1226,14 @@ Scores: revenue_potential=10, strategic_value=10, completeness=6, urgency=10, ef
 $300K/year account at risk. Champions: Megan Weber & Craig Lieb. Target: Brian Kiley. 2-3 week window.
 
 ### P0 — Critical (Demo Impact)
-- [ ] [P0/S] #INV-001: Add Salesforce chrome wrapper around meeting brief (nav bar, record layout chrome)
-- [ ] [P0/S] #INV-002: Add Before/After ROI panel on homepage with Invesco-specific ROI numbers
-- [ ] [P0/S] #INV-003: Add personalized Megan/Craig demo persona to mock-data.ts + ?demo=megan URL param
-- [ ] [P0/S] #INV-004: Enhance DemoReset with full state reset + Cmd+Shift+R keyboard shortcut
-- [ ] [P0/XS] #INV-005: Install PostHog analytics to track exactly what Brian/Vanessa click
-- [ ] [P0/XS] #INV-006: Fix express-rate-limit CVE — run `pnpm update shadcn` in demo-app
-- [ ] [P0/M] #INV-007: Create demo script + narration guide for each screen (materials/demo-script.md)
-- [ ] [P0/S] #INV-008: Schedule dry-run demo session with Megan & Craig before Brian sees it
+- [ ] [P0/S] #INV-001: Add Salesforce chrome wrapper around meeting brief (nav bar, record layout chrome) ⏳ Agent spawned 2026-03-08 12:01 UTC
+- [ ] [P0/S] #INV-002: Add Before/After ROI panel on homepage with Invesco-specific ROI numbers ⏳ Agent spawned 2026-03-08 12:01 UTC
+- [ ] [P0/S] #INV-003: Add personalized Megan/Craig demo persona to mock-data.ts + ?demo=megan URL param ⏳ Agent spawned 2026-03-08 12:01 UTC
+- [x] [P0/S] #INV-004: Enhance DemoReset with full state reset + Cmd+Shift+R keyboard shortcut ✅ DONE 2026-03-08 — confirmation dialog (Invesco navy), cookie clearing, toast feedback, expanded localStorage key list, Escape to dismiss (commit bfccb3a)
+- [ ] [P0/XS] #INV-005: Install PostHog analytics to track exactly what Brian/Vanessa click ⏳ Agent spawned 2026-03-08 12:01 UTC
+- [ ] [P0/XS] #INV-006: Fix express-rate-limit CVE — run `pnpm update shadcn` in demo-app ⏳ Agent spawned 2026-03-08 12:01 UTC
+- [ ] [P0/M] #INV-007: Create demo script + narration guide for each screen (materials/demo-script.md) ⏳ Agent spawned 2026-03-08 12:01 UTC
+- [ ] [P0/S] #INV-008: Schedule dry-run demo session with Megan & Craig before Brian sees it — 🚨 NATHAN ACTION REQUIRED
 
 ### P1 — High
 - [ ] [P1/M] #INV-009: Add live signal feed to dashboard (timer-driven, new signal every 8-12s)
