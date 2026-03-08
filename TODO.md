@@ -510,7 +510,7 @@
 ### 🔴 P0 — This Week (Production Hardening)
 - [ ] **#FL-001** [P0] Confirm DJANGO_ENV=production + REDIS_URL + ALLOWED_HOSTS in Railway prod env — run `manage.py check --deploy` ⏳ Agent spawned 2026-03-08 08:04 UTC
 - [ ] **#FL-002** [P0] Add `check_env` management command; wire to Railway release phase ⏳ Agent spawned 2026-03-08 08:04 UTC
-- [ ] **#FL-003** [P0] Add LLM observability: log provider, model, latency_ms, prompt_chars per call in llm_client.py
+- [x] **#FL-003** [P0] Add LLM observability: log provider, model, latency_ms, prompt_chars per call in llm_client.py ✅ DONE 2026-03-08 — _log_llm_call() emits structured JSON via llm_observability logger; timing in call_gemini()/call_kimi(); 11/11 tests pass, commit 7f1cde4e
 - [ ] **#FL-004** [P0] Upgrade django-saml2-auth from 2.2.* to >=4.0 — CVE risk (XML signature bypass)
 - [x] **#FL-005** [P0] Add pip-audit to bitbucket-pipelines.yml for automated dep vulnerability scanning ✅ DONE 2026-03-08 — pip-audit step added to master/development/PR pipelines, commit c8514c0, pushed upgrade/python311-django42
 - [ ] **#FL-006** [P0] Add easy_button + analytical + adapters to pylint scope in tox.ini
