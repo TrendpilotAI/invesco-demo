@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect, useCallback, ReactNode, Suspense } from 'react';
+import { useState, useEffect, useCallback, ReactNode, Suspense, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { advisors, getAdvisor } from '@/lib/mock-data';
+import { usePersona } from '@/lib/use-persona';
 import { Separator } from '@/components/ui/separator';
 import Link from 'next/link';
 import { SLDSIcon, SLDSAvatar, SLDSCardHeader, SLDSBadge } from '@/components/slds-icons';
@@ -15,11 +16,12 @@ import {
 } from '@/components/slds-patterns';
 
 // ─── SF Lightning Global Navigation ─────────────────────────────────────────
-function SFGlobalNav({ advisorName, advisors: adv, selectedId, onSelect }: {
+function SFGlobalNav({ advisorName, advisors: adv, selectedId, onSelect, homeHref = '/' }: {
   advisorName: string;
   advisors: { id: string; name: string }[];
   selectedId: string;
   onSelect: (id: string) => void;
+  homeHref?: string;
 }) {
   return (
     <div className="flex-shrink-0">
@@ -86,7 +88,7 @@ function SFGlobalNav({ advisorName, advisors: adv, selectedId, onSelect }: {
 
       {/* App Navigation Bar */}
       <div className="bg-[#0176D3] h-10 flex items-center px-4 gap-6 text-sm" style={{ borderBottom: '1px solid rgba(0,0,0,0.15)' }}>
-        <Link href="/" className="text-blue-100 hover:text-white text-xs transition-colors whitespace-nowrap">
+        <Link href={homeHref} className="text-blue-100 hover:text-white text-xs transition-colors whitespace-nowrap">
           ← Home
         </Link>
         <div className="hidden md:flex gap-5 text-blue-100">
@@ -109,10 +111,10 @@ function SFGlobalNav({ advisorName, advisors: adv, selectedId, onSelect }: {
 }
 
 // ─── SF Breadcrumb ────────────────────────────────────────────────────────────
-function SFBreadcrumb({ advisorName }: { advisorName: string }) {
+function SFBreadcrumb({ advisorName, homeHref = '/' }: { advisorName: string; homeHref?: string }) {
   return (
     <nav className="flex items-center gap-1.5 px-4 py-2 bg-white border-b border-[#E5E5E5] text-xs text-[#706E6B]">
-      <Link href="/" className="hover:text-[#0176D3] transition-colors flex items-center gap-1">
+      <Link href={homeHref} className="hover:text-[#0176D3] transition-colors flex items-center gap-1">
         <SLDSIcon name="home" className="w-3 h-3" />
         <span>Home</span>
       </Link>
@@ -385,7 +387,11 @@ function SFSideRail({ advisor }: { advisor: NonNullable<ReturnType<typeof getAdv
 // ─── Page ─────────────────────────────────────────────────────────────────────
 function SalesforcePageInner() {
   const searchParams = useSearchParams();
-  const initialId = searchParams.get('id') || 'sarah-chen';
+  const { persona, appendDemo } = usePersona();
+  const personaAdvisors = useMemo(() =>
+    persona.advisorFilter ? advisors.filter(persona.advisorFilter) : advisors,
+  [persona]);
+  const initialId = searchParams.get('id') || (personaAdvisors[0]?.id ?? 'sarah-chen');
   const [selectedId, setSelectedId] = useState(initialId);
   const [loading, setLoading] = useState(true);
   const [toasts, setToasts] = useState<Toast[]>([]);
@@ -460,13 +466,14 @@ function SalesforcePageInner() {
       {/* ── SF Global Navigation Chrome ────────────────────── */}
       <SFGlobalNav
         advisorName={advisor.name}
-        advisors={advisors}
+        advisors={personaAdvisors}
         selectedId={selectedId}
         onSelect={setSelectedId}
+        homeHref={appendDemo('/')}
       />
 
       {/* ── Breadcrumb ────────────────────────────────────── */}
-      <SFBreadcrumb advisorName={advisor.name} />
+      <SFBreadcrumb advisorName={advisor.name} homeHref={appendDemo('/')} />
 
       {/* ── Record Header / Highlight Panel ───────────────── */}
       <SFRecordHeader
