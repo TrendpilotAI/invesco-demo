@@ -1,6 +1,9 @@
 # TODO.md — Master Project Plan
 
-> Auto-monitored by Honey's cron loops. Last updated: 2026-03-06 13:07 UTC (judge-signal-builder-backend: re-scored signal-builder-backend [revenue:8, strategic:9, completeness:7, urgency:7, effort_remaining:6], refreshed BRAINSTORM/PLAN/AUDIT, created TODO-391-395 covering mypy cleanup, test coverage for schema_builder/translators/analytical_db, Flask dep removal, N+1 batch fix, dev CVE upgrades. Previously: 2026-03-02 08:01 UTC judge-signal-studio: re-scored signal-studio, refreshed BRAINSTORM/PLAN/AUDIT, created TODO-384-388.)
+> Auto-monitored by Honey's cron loops. Last updated: 2026-03-08 07:12 UTC (judge-signalhaus-website: re-scored [revenue:7, strategic:8, completeness:7, urgency:5, effort_remaining:7], refreshed BRAINSTORM/PLAN/AUDIT via swarm agents. Key gaps: Redis rate limiting, CAPTCHA, CRM/HubSpot, newsletter, service detail pages, Cal.com booking, Playwright E2E, 0% test coverage.)
+> Previously: 2026-03-08 07:08 UTC (judge-signal-studio-data-provider: re-scored [revenue:6, strategic:8, completeness:7, urgency:5, effort_remaining:7], refreshed BRAINSTORM/PLAN/AUDIT, added 14 new TODOs covering SQL injection fix, Snowflake threading, DRY violations, DuckDB provider, Oracle pooling, integration tests, mypy strict, DDL blocklist, SecretStr, BigQuery stub.)
+> Previously: 2026-03-08 07:03 UTC (judge-NarrativeReactor: scored NarrativeReactor [revenue:8, strategic:9, completeness:8, urgency:6, effort_remaining:7], refreshed BRAINSTORM/PLAN/AUDIT, created NR-001 through NR-023 covering quota enforcement, metered billing, LinkedIn publishing, analytics dashboard, E2E tests, SQLite indexes, asyncHandler refactor, and podcast/white-label platform expansion.)
+> Previously: 2026-03-06 13:07 UTC (judge-signal-builder-backend: re-scored signal-builder-backend [revenue:8, strategic:9, completeness:7, urgency:7, effort_remaining:6], refreshed BRAINSTORM/PLAN/AUDIT, created TODO-391-395 covering mypy cleanup, test coverage for schema_builder/translators/analytical_db, Flask dep removal, N+1 batch fix, dev CVE upgrades. Previously: 2026-03-02 08:01 UTC judge-signal-studio: re-scored signal-studio, refreshed BRAINSTORM/PLAN/AUDIT, created TODO-384-388.)
 
 ---
 
@@ -495,7 +498,46 @@
 
 ---
 
-## 🔒 ForwardLane Backend (Invesco Demo Hardening) — 2026-02-26
+## 🔒 ForwardLane Backend — Judge v2 Round 6 (2026-03-08)
+
+> Revenue=9 | Strategic=10 | Completeness=7 | Urgency=8 | EffortRemaining=6
+> Brainstorm: `/data/workspace/projects/forwardlane-backend/BRAINSTORM.md`
+> Plan: `/data/workspace/projects/forwardlane-backend/PLAN.md`
+> Audit: `/data/workspace/projects/forwardlane-backend/AUDIT.md`
+
+### 🔴 P0 — This Week (Production Hardening)
+- [ ] **#FL-001** [P0] Confirm DJANGO_ENV=production + REDIS_URL + ALLOWED_HOSTS in Railway prod env — run `manage.py check --deploy` ⏳ Agent spawned 2026-03-08 08:04 UTC
+- [ ] **#FL-002** [P0] Add `check_env` management command; wire to Railway release phase ⏳ Agent spawned 2026-03-08 08:04 UTC
+- [ ] **#FL-003** [P0] Add LLM observability: log provider, model, latency_ms, prompt_chars per call in llm_client.py
+- [ ] **#FL-004** [P0] Upgrade django-saml2-auth from 2.2.* to >=4.0 — CVE risk (XML signature bypass)
+- [ ] **#FL-005** [P0] Add pip-audit to bitbucket-pipelines.yml for automated dep vulnerability scanning
+- [ ] **#FL-006** [P0] Add easy_button + analytical + adapters to pylint scope in tox.ini
+
+### 🟠 P1 — Next Sprint (Stability)
+- [ ] **#FL-007** [P1] Replace urllib.request with httpx in libs/llm_client.py — proper timeout + connection pooling
+- [ ] **#FL-008** [P1] Expand easy_button test coverage: DashboardView, ClientsView, SignalsView, ActionsView
+- [ ] **#FL-009** [P1] Generate OpenAPI schema for easy_button endpoints via drf-yasg
+- [ ] **#FL-010** [P1] Upgrade django-celery-beat from 2.2.* to >=2.6,<3.0
+- [ ] **#FL-011** [P1] Raise coverage gate from 50% to 70% in tox.ini
+- [ ] **#FL-012** [P1] Add LLM client unit tests (mock httpx, test Gemini→Kimi fallback chain)
+
+### 🟡 P2 — Features
+- [ ] **#FL-013** [P2] Multi-turn MeetingPrep chat endpoint with Redis conversation history
+- [ ] **#FL-014** [P2] AI signal recommendations layer on SignalsView (LLM-generated actions)
+- [ ] **#FL-015** [P2] Redis caching decorator for non-streaming LLM calls (4h meeting prep, 1h signals)
+- [ ] **#FL-016** [P2] Webhook outbound dispatcher (WebhookSubscription model + Celery delivery with HMAC)
+- [ ] **#FL-017** [P2] Add pre-commit hooks (.pre-commit-config.yaml with ruff + bandit)
+
+### 🔵 P3 — Architecture
+- [ ] **#FL-018** [P3] Token usage tracking (LLMUsage model, async Celery write, admin cost dashboard)
+- [ ] **#FL-019** [P3] Type hints across easy_button, llm_client, adapters + mypy in tox
+- [ ] **#FL-020** [P3] Salesforce CRM adapter (OAuth2, Contact/Account sync, webhook listener)
+- [ ] **#FL-021** [P3] Async LLM client with httpx.AsyncClient + Django async views
+- [ ] **#FL-022** [P3] Prompt version control — extract inline prompts to easy_button/prompts/ module
+
+---
+
+## 🔒 ForwardLane Backend (Invesco Demo Hardening) — 2026-02-26 [ARCHIVED]
 
 > Revenue=8 | Strategic=9 | Security=CRITICAL | Urgency=9
 > Full plan: `/data/workspace/projects/forwardlane-backend/PLAN.md`
@@ -634,6 +676,21 @@
 - [x] [P1] Fix HTTP status code semantics — endpoints return 200 with 4xx in body (TODO-723) ✅ DONE 2026-03-07 — 9 error responses now return proper 400/404 (commit 3337ba3)
 - [ ] [P1] CORS + API key caching security hardening (TODO-724)
 - [ ] [P1] Add batch extraction endpoint POST /batch_regex_entity_extraction (TODO-725)
+- [ ] [P1] Migrate persistence.py from psycopg2 (sync/blocking) to asyncpg — critical for high-concurrency (TODO-726)
+- [ ] [P1] Add GET /fixed_lists endpoint — no way to query existing entities without DB client (TODO-727)
+- [ ] [P1] Add entity_type allowlist validation in POST /fixed_lists — arbitrary keys accepted today (TODO-728)
+- [ ] [P1] Add ML extraction tests (test_ml_extraction.py with mocked _ml_nlp) (TODO-729)
+- [ ] [P2] Add confidence scores to ML/spaCy extraction responses (TODO-730)
+- [ ] [P2] Add entity normalization/canonicalization — map "Goldman" → canonical GS record (TODO-731)
+- [ ] [P2] Add LLM fallback layer (GPT-4o) when ML confidence < threshold (TODO-732)
+- [ ] [P2] Add Redis shared entity cache for multi-worker uvicorn deployments (TODO-733)
+- [ ] [P2] Add Prometheus metrics endpoint via prometheus-fastapi-instrumentator (TODO-734)
+- [ ] [P2] Replace deprecated @app.on_event("startup") with lifespan context manager (TODO-735)
+- [ ] [P2] Add pre-commit hooks: ruff lint+format, mypy, bandit security (TODO-736)
+- [ ] [P2] Add pip-audit to CI for dependency CVE scanning (TODO-737)
+- [ ] [P3] Docker multi-stage build: builder stage for ML models, slim final image (TODO-738)
+- [ ] [P3] Add CORS middleware with configurable CORS_ORIGINS env var (TODO-739)
+- [ ] [P3] Add webhook emission on entity extraction (EXTRACTION_WEBHOOK_URL env var) (TODO-740)
 
 ## NarrativeReactor — AI Content Generation Platform (added 2026-02-27)
 
@@ -708,6 +765,20 @@
 - [ ] [MED] Add schema diff event emission on SchemaRegistry.refresh() → TODO 730
 - [ ] [MED] Add tenacity retry logic across all providers → TODO 731
 - [ ] [MED] Add secrets manager integration (AWS SSM / Vault / GCP) → TODO 732
+- [ ] [P0] Fix SQL injection in Snowflake Cortex path (f-string user_query interpolation) → AUDIT-2026-03-08
+- [ ] [P0] Fix Snowflake threading (connections not thread-safe; wrap in asyncio.to_thread per-coroutine) → AUDIT-2026-03-08
+- [ ] [P1] Use Pydantic SecretStr for all password fields in config.py → AUDIT-2026-03-08
+- [ ] [P1] Remove unused `lru_cache` import in snowflake_provider.py line 6 → AUDIT-2026-03-08
+- [ ] [P1] Extract _build_schema_info() DRY violation to providers/_utils.py → AUDIT-2026-03-08
+- [ ] [P1] Extract shared _execute_with_retry() helper to providers/_utils.py → AUDIT-2026-03-08
+- [ ] [P1] Add DDL blocklist guard in execute_query() (DROP/TRUNCATE/ALTER) → AUDIT-2026-03-08
+- [ ] [P1] Add Oracle connection pooling via oracledb.create_pool() → PLAN-2026-03-08
+- [ ] [P2] Add DuckDB provider for zero-setup dev/test mode → PLAN-2026-03-08
+- [ ] [P2] Add integration test suite with docker-compose postgres + DuckDB → PLAN-2026-03-08
+- [ ] [P2] Add mypy --strict mode enforcement in CI → PLAN-2026-03-08
+- [ ] [P2] Add pre-commit hooks (ruff + mypy) → PLAN-2026-03-08
+- [ ] [P2] Add coverage gate (pytest-cov --cov-fail-under=80) → PLAN-2026-03-08
+- [ ] [P2] Add BigQuery provider stub → PLAN-2026-03-08
 
 ## signal-builder-frontend (added 2026-02-28)
 - [x] [P0] Sentry integration — error monitoring, React Router + canvas error boundary → TODO 323 ✅ DONE 2026-02-28
@@ -907,6 +978,40 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 - [ ] [P2/S] Update jest to patch glob CVE (DEP-003)
 - [ ] [QUICK] Archive 30+ stale root-level .md files (PR-*.md, PHASE-*.md, etc.)
 
+## signal-studio-auth (2026-03-08 — Judge Agent v2 refresh)
+**Scores:** revenue=7, strategic=8, completeness=7, urgency=6, effort_remaining=7
+**Summary:** FastAPI auth proxy with Redis token rotation + theft detection (603 ✅), RBAC, password reset (605 ✅), org mgmt. Deployment-ready but missing: Docker, CI/CD, MFA, audit logging, security headers.
+**New Findings (AUDIT.md):** Dead `_build_rate_limiter()` code, 4 overlapping rate limiter abstractions, IP spoofing risk in `_client_ip()`, Redis race condition in token rotation, duplicate `_get_caller_role()`.
+
+### P0 — Critical
+- [ ] [P0/XS] #SSA-001 Remove dead `_build_rate_limiter()` function from auth_routes.py (~70 LOC dead code) ⏳ Agent spawned 2026-03-08 08:04 UTC
+- [ ] [P0/XS] #SSA-002 Add security headers middleware (HSTS, CSP, X-Frame-Options, X-Content-Type-Options) ⏳ Agent spawned 2026-03-08 08:04 UTC
+- [ ] [P0/XS] #SSA-003 Pin dependency versions + run pip-audit (requirements.txt uses `>=` ranges) ⏳ Agent spawned 2026-03-08 08:04 UTC
+- [ ] [P0/S] #SSA-004 Create Dockerfile + docker-compose.yml (no deployment config exists)
+- [ ] [P0/M] #SSA-005 GitHub Actions CI/CD (pytest + ruff + mypy + Docker build on PR)
+
+### P1 — High Priority
+- [ ] [P1/S] #SSA-006 Fix IP spoofing in `_client_ip()` — add TRUSTED_PROXIES env var validation
+- [ ] [P1/S] #SSA-007 Fix Redis race condition in token rotation (use Lua script or pipeline for atomic swap)
+- [ ] [P1/S] #SSA-008 Account lockout policy (10 failed logins → Redis-backed lockout, admin unlock endpoint)
+- [ ] [P1/M] #SSA-009 Audit logging service (structured JSON for every auth event: login, theft, lockout)
+- [ ] [P1/XS] #SSA-010 Pre-commit hooks (pyproject.toml + .pre-commit-config.yaml for ruff + mypy)
+
+### P2 — Medium Priority
+- [ ] [P2/M] #SSA-011 MFA/TOTP endpoints (enroll, verify, unenroll via Supabase /auth/v1/factors)
+- [ ] [P2/S] #SSA-012 Session management API (GET/DELETE /auth/sessions — list/revoke active sessions)
+- [ ] [P2/S] #SSA-013 Consolidate rate limiter into middleware/rate_limit.py (remove 4-abstraction mess)
+- [ ] [P2/S] #SSA-014 Magic link / OTP auth endpoints
+- [ ] [P2/S] #SSA-015 Redis pipeline batching for token rotation (3 calls → 1 atomic op)
+- [ ] [P2/XS] #SSA-016 Remove duplicate `_get_caller_role()` from auth_routes.py (already in rbac.py)
+- [ ] [P2/M] #SSA-017 Split auth_routes.py into auth/org/password modules (29KB single file)
+
+### P3 — Low Priority
+- [ ] [P3/M] #SSA-018 Prometheus metrics (auth success/failure rates, token theft events, rate limit hits)
+- [ ] [P3/S] #SSA-019 Add concurrent refresh race condition tests
+- [ ] [P3/S] #SSA-020 Add Redis failover chaos tests
+- [ ] [P3/XL] #SSA-021 SSO/SAML enterprise auth (OIDC proxy for Invesco/enterprise customers)
+
 ## signal-studio-auth (2026-03-05 — Judge Agent v2 refresh)
 **Scores:** revenue=7, strategic=8, completeness=7, urgency=6, effort_remaining=6
 **Recently Completed:** TODO-351 (secrets), TODO-352 (rate limit), TODO-353/356 (RBAC), TODO-402 (Redis rate limit), TODO-403 (token rotation), CRITICAL-1 (invite-to-org admin check) ✅
@@ -923,6 +1028,13 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 - [ ] [P2/S] Middleware error detail leakage fix (suppress internal errors in prod)
 - [ ] [QUICK] Add pip-audit to CI for dependency CVE scanning
 - [ ] [QUICK] Add pre-commit hooks (ruff, mypy)
+
+## signal-studio-frontend (2026-03-08 — Judge Agent v2 refresh)
+**Scores:** revenue=8, strategic=9, completeness=5, urgency=7, effort_remaining=4
+**Summary:** Next.js financial signal platform for ForwardLane/SignalHaus. Oracle vector services now implemented (TODO-711/713 done). Urgency elevated for Invesco demos. New items: chat history persistence, React Query caching, TypeScript strict mode.
+- [ ] 849 [P1/M] Persist AI chat history to Oracle (CHAT_SESSIONS + CHAT_MESSAGES tables + API routes + sidebar)
+- [ ] 850 [P1/M] Add React Query caching layer for Oracle signal data (60s TTL, optimistic updates)
+- [ ] 851 [P2/L] Enable TypeScript strict mode + Zod API validation + t3-env environment validation
 
 ## signal-studio-frontend (2026-03-06 — Judge Agent v2 refresh)
 **Scores:** revenue=7, strategic=9, completeness=5, urgency=6, effort_remaining=5
@@ -1107,3 +1219,242 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 - [ ] TODO-823: HIGH — Add pagination to all list endpoints
 - [ ] TODO-824: HIGH — Wire webhook delivery to signal run completion
 - [ ] TODO-825: HIGH — Expand translator unit test coverage to 80%+
+
+## invesco-retention (2026-03-08 — Judge Agent v2)
+Scores: revenue_potential=10, strategic_value=10, completeness=6, urgency=10, effort_remaining=5
+$300K/year account at risk. Champions: Megan Weber & Craig Lieb. Target: Brian Kiley. 2-3 week window.
+
+### P0 — Critical (Demo Impact)
+- [ ] [P0/S] #INV-001: Add Salesforce chrome wrapper around meeting brief (nav bar, record layout chrome)
+- [ ] [P0/S] #INV-002: Add Before/After ROI panel on homepage with Invesco-specific ROI numbers
+- [ ] [P0/S] #INV-003: Add personalized Megan/Craig demo persona to mock-data.ts + ?demo=megan URL param
+- [ ] [P0/S] #INV-004: Enhance DemoReset with full state reset + Cmd+Shift+R keyboard shortcut
+- [ ] [P0/XS] #INV-005: Install PostHog analytics to track exactly what Brian/Vanessa click
+- [ ] [P0/XS] #INV-006: Fix express-rate-limit CVE — run `pnpm update shadcn` in demo-app
+- [ ] [P0/M] #INV-007: Create demo script + narration guide for each screen (materials/demo-script.md)
+- [ ] [P0/S] #INV-008: Schedule dry-run demo session with Megan & Craig before Brian sees it
+
+### P1 — High
+- [ ] [P1/M] #INV-009: Add live signal feed to dashboard (timer-driven, new signal every 8-12s)
+- [ ] [P1/M] #INV-010: Add integration story widget (Salesforce ↔ FL ↔ Snowflake | Seismic | Bloomberg animated)
+- [ ] [P1/S] #INV-011: Add in-app screen recording (MediaRecorder API) for leave-behind asset
+- [ ] [P1/S] #INV-012: Enhance mobile PWA — push notification simulation, install prompt
+- [ ] [P1/M] #INV-013: Add Playwright E2E test covering all 4 demo routes
+- [ ] [P1/S] #INV-014: Add GitHub Actions auto-deploy to GitHub Pages on push to main
+
+### P2 — Medium
+- [ ] [P2/S] #INV-015: Create executive 2-pager (Problem/Solution/ROI/Integration/Support)
+- [ ] [P2/S] #INV-016: Write Ten Decoders support model doc (addresses Craig's support concern)
+- [ ] [P2/S] #INV-017: Remove console.log calls from error boundary files
+- [ ] [P2/S] #INV-018: Create shared DemoErrorPage component (eliminates 4 duplicate error pages)
+- [ ] [P2/S] #INV-019: Either implement or remove dead analytics route from app launcher
+- [ ] [P2/S] #INV-020: Add pre-commit secret scanner (gitleaks) to prevent accidental key commits
+- [ ] [P2/S] #INV-021: Verify all URL query params (?advisor=) work correctly in GitHub Pages static export
+
+## signal-studio-templates (added 2026-03-08)
+- [ ] TODO-SST-001: HIGH — Publish package to npm registry (pipeline exists, needs secrets configured)
+- [ ] TODO-SST-002: HIGH — Implement real PostgreSQL/Snowflake DataProvider (currently only mock)
+- [ ] TODO-SST-003: HIGH — Add GitHub Actions CI/CD workflow (build, test, publish)
+- [ ] TODO-SST-004: MEDIUM — Complete React template-gallery component (add Storybook stories)
+- [ ] TODO-SST-005: MEDIUM — Add E2E integration tests with real SQL execution
+- [ ] TODO-SST-006: MEDIUM — Add caching layer for template execution results (Redis)
+- [ ] TODO-SST-007: MEDIUM — Expand template library to 30+ (add 10 more templates)
+- [ ] TODO-SST-008: LOW — Add webhook/event trigger support per template
+- [ ] TODO-SST-009: LOW — Add template versioning and migration support
+- [ ] TODO-SST-010: LOW — Build CLI tool for template management and testing
+
+## signal-studio (2026-03-08 — Judge Agent v2 refresh)
+Scores: revenue_potential=8, strategic_value=9, completeness=7, urgency=7, effort_remaining=6
+Previous items (#816-820) still open. New/refreshed items from AUDIT.md:
+
+### P0 — Critical
+- [ ] [P0/XS] #SS-2026-01: CRITICAL — Remove dump.rdb from git history + rotate Redis secrets (AUDIT-001)
+- [ ] [P0/XS] #SS-2026-02: CRITICAL — Add `pnpm audit --audit-level=high` to bitbucket-pipelines.yml (AUDIT-005)
+- [ ] [P0/XS] #SS-2026-03: CRITICAL — Add gitleaks secret scanning to Bitbucket CI (AUDIT-006)
+- [ ] [P0/S] #816: Replace in-memory LRU rate limiter with Upstash Redis (multi-instance unsafe) (AUDIT-002)
+
+### P1 — High
+- [ ] [P1/M] #817: Add Zod validation to all API POST routes + eliminate ~30 `any` type usages (AUDIT-004)
+- [ ] [P1/XS] #SS-2026-04: Add husky + lint-staged pre-commit hooks (eslint + tsc) (AUDIT-010)
+- [ ] [P1/XS] #SS-2026-05: Archive/delete stale one-shot scripts (fix-*.py, replace-*.py) (AUDIT-007)
+- [ ] [P1/S] #SS-2026-06: Fix duplicate visual-builder/builder vs enhanced pages (~80% code duplication) (AUDIT-008)
+- [ ] [P1/S] #SS-2026-07: Move loose SQL files to scripts/sql/ (AUDIT-019)
+- [ ] [P1/S] #818: Add Sentry error monitoring (@sentry/nextjs, source maps in CI)
+- [ ] [P1/M] #SS-2026-08: Add API route tests for oracle/query, signals/run, chat (MSW mocking) (AUDIT-011)
+- [ ] [P1/S] #SS-2026-09: Add rate-limit.ts + middleware.ts unit tests (AUDIT-011)
+- [ ] [P1/S] #SS-2026-10: Audit CSRF coverage on BFF proxy routes (AUDIT-012)
+
+### P2 — Medium
+- [ ] [P2/S] #819: CSV/PDF export for signal results (papaparse + jspdf)
+- [ ] [P2/M] #820: Playwright E2E tests for login, signal library, easy-button, oracle query
+- [ ] [P2/M] #SS-2026-11: Add OpenTelemetry tracing for Oracle query latency + AI model calls
+- [ ] [P2/M] #SS-2026-12: Set up staging Railway environment + auto-deploy from develop branch
+- [ ] [P2/S] #SS-2026-13: Fix CSP frame-ancestors header for Easy Button Salesforce embed (AUDIT-003 / BRAINSTORM-7.1)
+- [ ] [P2/S] #SS-2026-14: Add database migration runner (node-pg-migrate) for versioned SQL migrations
+- [ ] [P2/M] #SS-2026-15: Build out admin dashboard (users, usage metrics, audit log viewer, Oracle health)
+- [ ] [P2/XS] #SS-2026-16: Add Renovate Bot for weekly automated dependency updates
+
+## signal-builder-backend (Backend — Signal SQL Engine)
+_Added by Judge Agent v2 — 2026-03-08_
+
+### P0 — Critical
+- [ ] [P0/S] #SBB-001: Replace Celery pickle serializer with JSON (RCE risk if Redis compromised) — `core/celery.py:31`, `settings/celery.py:15`
+- [ ] [P0/S] #SBB-002: Replace jsonpickle with standard json for SQL params — `apps/signals/schemas/signal.py:112,129`
+- [ ] [P0/M] #SBB-003: Add multi-tenant isolation tests (verify org A cannot access org B data/signals)
+
+### P1 — High
+- [ ] [P1/S] #SBB-004: Run pip-audit + update SQLAlchemy, fastapi, aiohttp, celery dependencies
+- [ ] [P1/XS] #SBB-005: Enable Celery Beat schedule for analytical DB sync (currently commented out) — `core/celery.py:24`
+- [ ] [P1/S] #SBB-006: Add Redis caching for signal metadata (properties map + tenant lookup) in translators
+- [ ] [P1/M] #SBB-007: Fix N+1 queries in signal validators — batch .selectinload() in `apps/signals/features/signal_construction/cases/validators/`
+- [ ] [P1/S] #SBB-008: Audit sqladmin panel auth — verify /admin requires auth in production
+- [ ] [P1/S] #SBB-009: Add OpenTelemetry/Prometheus metrics endpoint (signal translation latency, cache hits)
+
+### P2 — Medium
+- [ ] [P2/S] #SBB-010: Add signal version diff API endpoint — `GET /api/v1/signals/{id}/versions/{v1}/diff/{v2}`
+- [ ] [P2/M] #SBB-011: Add signal execution result caching (compiled SQL per version+params in Redis)
+- [ ] [P2/S] #SBB-012: Add auth middleware integration tests (JWT refresh revocation E2E through API)
+- [ ] [P2/S] #SBB-013: Add webhook HTTP delivery tests (not just HMAC signing)
+- [ ] [P2/S] #SBB-014: Rewrite README with real setup instructions, architecture overview, env vars
+- [ ] [P2/S] #SBB-015: Fix potential bug in analytical table cleanup query — `analytical_db/queries/prepare_query_service.py:67`
+
+### P3 — Low
+- [ ] [P3/XS] #SBB-016: Remove unused schema/signal node imports — `apps/signals/features/signal_construction/schemas/signal_node.py:10`
+- [ ] [P3/XS] #SBB-017: Fix wildcard import in settings — `settings/__init__.py:3`
+- [ ] [P3/M] #SBB-018: Bulk signal execution endpoint for batch analytics jobs
+- [ ] [P3/M] #SBB-019: Signal templates library — pre-built financial signal patterns
+- [ ] [P3/S] #SBB-020: Secrets rotation runbook (JWT secret, HMAC webhook key, DB credentials)
+
+### P3 — Low
+- [ ] [P3/XS] #SS-2026-17: Deduplicate PR creation scripts (delete .sh + .js, keep .py)
+- [ ] [P3/XS] #SS-2026-18: Move test-repo-access.sh to scripts/ or .gitignore
+- [ ] [P3/M] #SS-2026-19: Signal scheduling & alerting (cron + Slack/email on threshold breach)
+- [ ] [P3/M] #SS-2026-20: Signal version history & diff UI (signal_versions table)
+- [ ] [P3/L] #SS-2026-21: Multi-tenancy (workspace_id on signals/users/oracle_connections, RLS)
+- [ ] [P3/M] #SS-2026-22: AI streaming for long Oracle query results (streamText + useCompletion)
+
+## NarrativeReactor (2026-03-08 — Judge Agent v2 refresh)
+*Scores: revenue_potential=8, strategic_value=9, completeness=8, urgency=6, effort_remaining=7*
+
+### P0 — Revenue Critical
+- [ ] [P0/M] #NR-001 Add quota enforcement middleware — block requests when used_tokens >= quota_tokens, HTTP 429 + upgrade_url → `NR-001-pending-P0-NarrativeReactor-quota-enforcement-middleware.md`
+- [ ] [P0/XS] #NR-003 Add /api/billing/usage self-serve endpoint (used/limit/reset_at/plan) → `NR-003-pending-P0-NarrativeReactor-billing-usage-endpoint.md`
+
+### P1 — High Priority
+- [ ] [P1/M] #NR-002 Stripe metered billing reporting — usage records at period close + invoice.upcoming webhook → `NR-002-pending-P1-NarrativeReactor-stripe-metered-billing.md`
+- [ ] [P1/M] #NR-004 Analytics dashboard React components (engagement trends, campaign ROI, hashtag breakdown) → `NR-004-pending-P1-NarrativeReactor-analytics-dashboard.md`
+- [ ] [P1/S] #NR-006 LinkedIn OAuth2 PKCE flow for native publishing authorization → `NR-006-pending-P1-NarrativeReactor-linkedin-oauth.md`
+- [ ] [P1/S] #NR-007 LinkedIn post publishing via LinkedIn API v2 (profiles + company pages) → `NR-007-pending-P1-NarrativeReactor-linkedin-publishing.md`
+- [ ] [P1/S] #NR-008 Extract asyncHandler middleware — remove 60+ repetitive try/catch blocks from route handlers → `NR-008-pending-P1-NarrativeReactor-async-handler-refactor.md`
+- [ ] [P1/XS] #NR-009 Add SQLite indexes (tenants.api_key_hash, content_library, scheduled_posts, campaigns) → `NR-009-pending-P1-NarrativeReactor-sqlite-indexes.md`
+- [ ] [P1/M] #NR-010 Supertest E2E test suite for full Express HTTP stack (auth, rate limit, billing, scheduler) → `NR-010-pending-P1-NarrativeReactor-supertest-e2e-tests.md`
+- [ ] [P1/XS] #NR-011 Add husky + lint-staged pre-commit hooks (ESLint + tsc) → `NR-011-pending-P1-NarrativeReactor-precommit-hooks.md`
+- [ ] [P1/S] #NR-013 Weekly competitor intelligence digest (AI summary + gap analysis via webhook/email) → `NR-013-pending-P1-NarrativeReactor-competitor-digest.md`
+
+### P2 — Medium Priority
+- [ ] [P2/S] #NR-005 CSV/PDF export for analytics dashboard → `NR-005-pending-P2-NarrativeReactor-analytics-export.md`
+- [ ] [P2/M] #NR-012 AI content calendar auto-fill (postingOptimizer + trendpilotBridge one-click proposal) → `NR-012-pending-P2-NarrativeReactor-ai-calendar-autofill.md`
+- [ ] [P2/S] #NR-014 Slack integration for approval workflow notifications + cost alerts → `NR-014-pending-P2-NarrativeReactor-slack-integration.md`
+- [ ] [P2/S] #NR-015 Replace in-memory rate limiter with Upstash Redis (multi-instance safe) → `NR-015-pending-P2-NarrativeReactor-redis-rate-limiting.md`
+- [ ] [P2/S] #NR-016 Zapier outbound webhooks (content.approved, post.published, quota.warning) → `NR-016-pending-P2-NarrativeReactor-zapier-webhooks.md`
+
+### P3 — Future / Large Scope
+- [ ] [P3/L] #NR-017 Podcast Studio productization (voice profiles, RSS feeds, episode scheduling) → `NR-017-pending-P3-NarrativeReactor-podcast-studio.md`
+- [ ] [P3/XL] #NR-018 White-label agency portal (sub-tenants, custom domain, role-based access) → `NR-018-pending-P3-NarrativeReactor-whitelabel-agency-portal.md`
+- [ ] [P3/M] #NR-019 Content repurposing pipeline (1 long-form asset → full week of multi-platform content) → `NR-019-pending-P3-NarrativeReactor-content-repurposing-pipeline.md`
+
+### Cleanup / Code Quality
+- [ ] [P1/XS] #NR-020 Remove unused @genkit-ai/firebase dependency from package.json → quick cleanup
+- [ ] [P1/XS] #NR-021 Delete debug-exports.js from repo root → quick cleanup
+- [ ] [P1/S] #NR-022 Centralize SQLite DB opens into shared src/lib/db.ts singleton → `NR-022-pending-P1-NarrativeReactor-db-singleton.md`
+- [ ] [P2/S] #NR-023 Replace ~30 `any` types with proper Zod-inferred or unknown + type guard → `NR-023-pending-P2-NarrativeReactor-type-safety.md`
+
+## Signal Builder Frontend (2026-03-08 — Judge Agent v2 refresh)
+*Scores: revenue_potential=8, strategic_value=9, completeness=6, urgency=6, effort_remaining=6*
+
+### P0 — Critical
+- [ ] [P0/M] #SBF-001 Add Playwright E2E test suite for critical user journeys (login → create signal → save → preview) — currently zero E2E coverage
+- [ ] [P0/S] #SBF-002 Add route-level code splitting with React.lazy() for all 8 pages — ReactFlow ~1MB, expected 50%+ bundle reduction
+
+### P1 — High Priority
+- [ ] [P1/M] #SBF-003 Audit and remove jotai — standardize on Redux Toolkit + React Query, eliminate dual state management
+- [ ] [P1/S] #SBF-004 Add nginx CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy headers in nginx.conf
+- [ ] [P1/M] #SBF-005 Expand MSW mock handlers for all API endpoints to enable proper integration testing
+- [ ] [P1/M] #SBF-006 Expand unit test coverage from ~10% to 80% (hooks, utils, page components)
+- [ ] [P1/S] #SBF-007 Remove localStorage auth fallback in getAxiosInstance.ts — XSS risk, cookie-only is safer
+- [ ] [P1/M] #SBF-008 Migrate from deprecated @sentry/tracing to @sentry/browser integration
+- [ ] [P1/M] #SBF-009 Add analytics integration (Mixpanel or Amplitude) for product usage tracking
+
+### P2 — Medium Priority
+- [ ] [P2/M] #SBF-010 Upgrade Redux Toolkit 1.9 → 2.x (major version behind)
+- [ ] [P2/L] #SBF-011 Upgrade Storybook 6 → 8 (EOL, two major versions behind, switch to Vite builder)
+- [ ] [P2/M] #SBF-012 Upgrade TypeScript 4.4 → 5.x and enable strict mode incrementally
+- [ ] [P2/M] #SBF-013 Enhance Bitbucket pipeline: add typecheck + lint + test + bundle-size steps
+- [ ] [P2/M] #SBF-014 Signal Templates Library UI — pre-built signal configs clients can clone
+- [ ] [P2/M] #SBF-015 Signal export feature (JSON/PDF) — low effort, high perceived value
+
+### P3 — Low Priority
+- [ ] [P3/XS] #SBF-016 Fix typo: rename src/proccesses/ → src/processes/ across all configs
+- [ ] [P3/XS] #SBF-017 Delete src/react-app-env.d.ts (CRA leftover, not needed with Vite)
+- [ ] [P3/XS] #SBF-018 Wire up or delete src/reportWebVitals.ts (orphaned file)
+- [ ] [P3/S] #SBF-019 Add Vite bundle analyzer + set bundle size budget in CI
+- [ ] [P3/M] #SBF-020 Mobile responsive audit and fixes across all pages
+
+## Second-Opinion (2026-03-08 — Judge Agent v2 refresh)
+*Scores: revenue_potential=7, strategic_value=8, completeness=7, urgency=5, effort_remaining=6*
+
+### P0 — Critical
+- [ ] [P0/L] #SO-001 Add Stripe payment integration for premium consultations — no monetization path exists, blocking revenue
+- [ ] [P0/M] #SO-002 Implement HIPAA-compliant encryption at rest for all PHI in Firestore — legal requirement for healthcare data
+- [ ] [P0/M] #SO-003 Add rate limiting and abuse prevention to all Cloud Functions — currently open to abuse
+
+### P1 — High Priority
+- [ ] [P1/L] #SO-004 Build B2B provider/doctor dashboard — enables SaaS revenue model targeting clinics
+- [ ] [P1/M] #SO-005 Add comprehensive Playwright E2E test suite for critical medical analysis flow
+- [ ] [P1/M] #SO-006 Optimize bundle size — remove unused dependencies, add code splitting per route
+- [ ] [P1/S] #SO-007 Add proper error boundaries with fallback UI for all async operations
+- [ ] [P1/M] #SO-008 Create SEO-optimized marketing landing page (currently app is gated behind auth)
+- [ ] [P1/M] #SO-009 Add analytics/telemetry (Mixpanel or PostHog) for user journey understanding
+
+### P2 — Medium Priority
+- [ ] [P2/M] #SO-010 Set up proper staging Firebase project separate from production
+- [ ] [P2/M] #SO-011 Implement proper CI/CD pipeline with automated testing before deploy
+- [ ] [P2/M] #SO-012 Add unit tests for all service files (geminiService, specialistRouter, etc.)
+- [ ] [P2/S] #SO-013 Add proper TypeScript strict mode — many implicit any types throughout
+- [ ] [P2/M] #SO-014 Implement consultation session persistence — users lose progress on refresh
+- [ ] [P2/M] #SO-015 Add PDF report export for analysis results — high patient value feature
+
+### P3 — Low Priority
+- [ ] [P3/S] #SO-016 Audit and clean up dead code across 45 components
+- [ ] [P3/S] #SO-017 Add PWA push notifications for analysis completion
+- [ ] [P3/XS] #SO-018 Fix offline.html — currently minimal placeholder
+- [ ] [P3/M] #SO-019 Add patient health record history/timeline across sessions
+- [ ] [P3/S] #SO-020 Integrate with Apple Health / Google Health APIs for richer data intake
+
+## flip-my-era (2026-03-08 — Judge Agent v2 refresh)
+*Scores: revenue_potential=7, strategic_value=6, completeness=7, urgency=5, effort_remaining=6*
+
+### P0 — Critical (Blocking Revenue)
+- [ ] [P0/S] #FME-001 Remove VITE_OPENAI_API_KEY from client bundle — route all OpenAI calls through edge function ⏳ Agent spawned 2026-03-08 08:04 UTC
+- [ ] [P0/S] #FME-002 Remove VITE_GROQ_API_KEY from client bundle — use existing groq-api/groq-storyline edge functions ⏳ Agent spawned 2026-03-08 08:04 UTC
+- [ ] [P0/M] #FME-003 Verify billing.ts stub wired to real create-checkout edge function — checkout returning fake URLs blocks all revenue
+
+### P1 — High Priority
+- [ ] [P1/M] #FME-004 Wire Gallery page to real Supabase ebook data with pagination — users can't see their history
+- [ ] [P1/M] #FME-005 Add social sharing cards for TikTok/Instagram — primary growth channel for teen audience
+- [ ] [P1/S] #FME-006 Guard TestCredits page behind admin feature flag in production
+- [ ] [P1/M] #FME-007 Add E2E Playwright tests for full checkout/credit flow
+- [ ] [P1/M] #FME-008 Implement referral/gifting flow — friend invites for bonus credits (viral mechanic)
+
+### P2 — Medium Priority
+- [ ] [P2/S] #FME-009 Strip 25 console.log statements from production bundle
+- [ ] [P2/S] #FME-010 Remove debug HTML files (debug-image-viewer.html, debug-ultimate.html, etc.)
+- [ ] [P2/M] #FME-011 Complete all 13 Taylor Swift era prompt templates
+- [ ] [P2/M] #FME-012 Add ePub download option alongside PDF
+- [ ] [P2/M] #FME-013 Set up Brevo transactional email — confirm purchase, ebook delivery, welcome flow
+- [ ] [P2/M] #FME-014 Add rate limiting to generation edge functions (abuse prevention)
+
+### P3 — Low Priority
+- [ ] [P3/M] #FME-015 Add A/B test for pricing page ($2.99 vs $4.99 per ebook)
+- [ ] [P3/S] #FME-016 Optimize bundle — lazy-load Gallery and AdminUsers pages (already in progress)
+- [ ] [P3/S] #FME-017 Add missing Vitest unit tests for edge function handlers
