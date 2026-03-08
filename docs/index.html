@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ForwardLane × Invesco — Distribution Intelligence Demo</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #003087;
+      --navy-d: #00245e;
+      --navy-l: #004bb5;
+      --gold:   #DAA520;
+      --green:  #22c55e;
+      --red:    #ef4444;
+      --blue:   #0176D3;
+      --bg:     #f0f4f8;
+      --card:   #ffffff;
+      --text:   #1e293b;
+      --muted:  #64748b;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(145deg, #001a4d 0%, var(--navy) 50%, var(--navy-l) 100%);
+      color: #fff;
+      padding: 64px 24px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(1,118,211,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(1,118,211,.06) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+    .hero-inner { position: relative; max-width: 860px; margin: 0 auto; }
+    .logo-pill {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18);
+      border-radius: 100px; padding: 8px 20px; margin-bottom: 32px;
+      font-size: 13px; font-weight: 600; letter-spacing: .06em; color: rgba(255,255,255,.85);
+    }
+    .logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800; line-height: 1.1; letter-spacing: -.03em; margin-bottom: 20px;
+    }
+    .hero h1 span { color: #60b4ff; }
+    .hero p {
+      font-size: 1.15rem; color: rgba(255,255,255,.72); max-width: 580px;
+      margin: 0 auto 40px; line-height: 1.65;
+    }
+    .badge-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .badge {
+      border: 1px solid rgba(218,165,32,.45);
+      border-radius: 8px; padding: 7px 18px;
+      font-size: 12px; font-weight: 700; letter-spacing: .08em; color: var(--gold);
+      background: rgba(218,165,32,.07);
+    }
+
+    /* ── MAIN CONTAINER ── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── ROI PANEL ── */
+    .roi-section {
+      margin-top: -36px;
+      padding-bottom: 64px;
+    }
+    .roi-header {
+      background: var(--navy);
+      border-radius: 16px 16px 0 0;
+      padding: 20px 32px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .roi-header-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: rgba(255,255,255,.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .roi-header h2 {
+      color: #fff; font-size: 1.25rem; font-weight: 700; letter-spacing: -.01em;
+    }
+    .roi-header p { color: rgba(255,255,255,.6); font-size: 0.8rem; margin-top: 2px; }
+
+    .roi-body {
+      background: var(--card);
+      border-radius: 0 0 16px 16px;
+      box-shadow: 0 8px 40px rgba(0,48,135,.12);
+      overflow: hidden;
+    }
+
+    .roi-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+    }
+
+    .roi-col {
+      padding: 32px;
+    }
+    .roi-col-before { border-right: 1px solid #e8edf4; }
+
+    .col-label {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 800; letter-spacing: .1em;
+      text-transform: uppercase; margin-bottom: 24px;
+    }
+    .col-label-before { color: var(--red); }
+    .col-label-after  { color: var(--green); }
+    .col-dot {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    }
+    .col-dot-before { background: var(--red); }
+    .col-dot-after  { background: var(--green); }
+
+    .metric-card {
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 14px;
+      display: flex; gap: 14px; align-items: flex-start;
+    }
+    .mc-before {
+      background: #fff5f5; border: 1px solid #fee2e2;
+    }
+    .mc-after {
+      background: #f0fdf4; border: 1px solid #bbf7d0;
+    }
+    .mc-icon {
+      width: 38px; height: 38px; border-radius: 9px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 18px;
+    }
+    .mc-icon-before { background: #fee2e2; }
+    .mc-icon-after  { background: #dcfce7; }
+    .mc-content { flex: 1; }
+    .mc-value {
+      font-size: 1.5rem; font-weight: 800; line-height: 1.1; letter-spacing: -.02em;
+    }
+    .mc-value-before { color: var(--red); }
+    .mc-value-after  { color: #16a34a; }
+    .mc-label { font-size: 0.82rem; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+
+    /* ── BANNER STAT ── */
+    .banner-stat {
+      background: linear-gradient(90deg, var(--navy) 0%, var(--navy-l) 100%);
+      padding: 20px 32px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      flex-wrap: wrap;
+    }
+    .banner-stat-number {
+      font-size: 2.5rem; font-weight: 800; color: var(--gold); letter-spacing: -.03em;
+    }
+    .banner-stat-text { color: rgba(255,255,255,.9); font-size: 1rem; font-weight: 600; }
+    .banner-stat-sub  { color: rgba(255,255,255,.55); font-size: 0.82rem; margin-top: 3px; }
+    .banner-stat-right { text-align: right; }
+    .banner-badge {
+      background: rgba(34,197,94,.15); border: 1px solid rgba(34,197,94,.4);
+      border-radius: 100px; padding: 5px 14px;
+      font-size: 12px; font-weight: 700; color: var(--green); letter-spacing: .04em;
+    }
+
+    /* ── SUMMARY ROW ── */
+    .summary-row {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0; border-top: 1px solid #e8edf4;
+    }
+    .summary-item {
+      padding: 22px 28px; text-align: center;
+      border-right: 1px solid #e8edf4;
+    }
+    .summary-item:last-child { border-right: none; }
+    .summary-item .s-val {
+      font-size: 1.6rem; font-weight: 800; color: var(--navy); letter-spacing: -.02em;
+    }
+    .summary-item .s-label { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+    .s-arrow { color: var(--green); margin: 0 4px; }
+
+    /* ── SCENES GRID ── */
+    .scenes-section { padding: 0 0 80px; }
+    .section-title {
+      font-size: 1.4rem; font-weight: 700; color: var(--navy);
+      margin-bottom: 24px; letter-spacing: -.01em;
+    }
+    .scenes-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;
+    }
+    .scene-card {
+      background: var(--card); border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      padding: 22px; transition: box-shadow .2s, transform .2s;
+    }
+    .scene-card:hover { box-shadow: 0 8px 30px rgba(0,48,135,.1); transform: translateY(-2px); }
+    .scene-num {
+      width: 28px; height: 28px; border-radius: 7px;
+      background: var(--navy); color: #fff;
+      font-size: 12px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 12px;
+    }
+    .scene-title { font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+    .scene-benefit { font-size: 0.83rem; color: var(--muted); line-height: 1.5; }
+
+    /* ── CTA ── */
+    .cta-section {
+      text-align: center; padding: 64px 24px 80px;
+      background: linear-gradient(145deg, var(--navy-d) 0%, var(--navy) 100%);
+    }
+    .cta-section h2 { color: #fff; font-size: 2rem; font-weight: 800; margin-bottom: 16px; }
+    .cta-section p { color: rgba(255,255,255,.65); margin-bottom: 32px; }
+    .cta-btn {
+      display: inline-block; background: var(--gold); color: #1a0a00;
+      font-weight: 700; font-size: 1rem; padding: 14px 36px;
+      border-radius: 10px; text-decoration: none; letter-spacing: .01em;
+      transition: opacity .2s;
+    }
+    .cta-btn:hover { opacity: .88; }
+
+    @media (max-width: 680px) {
+      .roi-grid { grid-template-columns: 1fr; }
+      .roi-col-before { border-right: none; border-bottom: 1px solid #e8edf4; }
+      .summary-row { grid-template-columns: 1fr; }
+      .summary-item { border-right: none; border-bottom: 1px solid #e8edf4; }
+      .banner-stat { flex-direction: column; align-items: flex-start; }
+      .banner-stat-right { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="logo-pill">
+      <span class="logo-dot"></span>
+      LIVE DEMO — INVESCO × FORWARDLANE
+    </div>
+    <h1>Distribution Intelligence<br/>for <span>Asset Management</span></h1>
+    <p>AI-powered signals that tell wholesalers exactly who to call, what to say, and when to act — embedded natively in Salesforce.</p>
+    <div class="badge-row">
+      <span class="badge">10 SIGNAL TYPES</span>
+      <span class="badge">SALESFORCE NATIVE</span>
+      <span class="badge">LIVE WITH INVESCO</span>
+      <span class="badge">$0.01 / NL QUERY</span>
+    </div>
+  </div>
+</header>
+
+<!-- ROI PANEL -->
+<section class="roi-section">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="roi-header">
+      <div class="roi-header-icon">📊</div>
+      <div>
+        <h2>ROI Impact — Before &amp; After ForwardLane</h2>
+        <p>Measured across Invesco's wholesaler team · Q1 2025 cohort</p>
+      </div>
+    </div>
+
+    <div class="roi-body">
+
+      <!-- Before / After columns -->
+      <div class="roi-grid">
+
+        <div class="roi-col roi-col-before">
+          <div class="col-label col-label-before">
+            <span class="col-dot col-dot-before"></span>Before ForwardLane
+          </div>
+
+          <div class="metric-card mc-before">
+            <div class="mc-icon mc-icon-before">⏱️</div>
+            <div class="mc-content">
+              <div class="mc-value mc-value-before">3 hrs</div>
+              <div class="mc-label">per advisor per week on manual research — sourcing flows, scanning holdings, building context before calls</div>
+            </div>
+          </div>
+
+          <div class="metric-card mc-before">
+            <div class="mc-icon mc-icon-before">📋</div>
+            <div class="mc-content">
+              <div class="mc-value mc-value-before">42%</div>
+              <div class="mc-label">meeting prep completion rate — majority of advisor calls happened with zero pre-call intelligence</div>
+            </div>
+          </div>
+
+          <div class="metric-card mc-before">
+            <div class="mc-icon mc-icon-before">💸</div>
+            <div class="mc-content">
+              <div class="mc-value mc-value-before">$0</div>
+              <div class="mc-label">signal-driven upsell pipeline — no systematic way to identify cross-sell or expansion opportunities at scale</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="roi-col">
+          <div class="col-label col-label-after">
+            <span class="col-dot col-dot-after"></span>After ForwardLane
+          </div>
+
+          <div class="metric-card mc-after">
+            <div class="mc-icon mc-icon-after">⚡</div>
+            <div class="mc-content">
+              <div class="mc-value mc-value-after">8 min</div>
+              <div class="mc-label">automated pre-call brief — AI surfaces fund-level holdings, signals, talking points, and risk flags before every meeting</div>
+            </div>
+          </div>
+
+          <div class="metric-card mc-after">
+            <div class="mc-icon mc-icon-after">✅</div>
+            <div class="mc-content">
+              <div class="mc-value mc-value-after">94%</div>
+              <div class="mc-label">meeting prep completion — wholesalers walk into every advisor call armed with data-driven context and competitive intel</div>
+            </div>
+          </div>
+
+          <div class="metric-card mc-after">
+            <div class="mc-icon mc-icon-after">🚀</div>
+            <div class="mc-content">
+              <div class="mc-value mc-value-after">$2.3M</div>
+              <div class="mc-label">upsell pipeline generated in first 90 days via rising star, fallen angel, and competitive displacement signals</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Banner stat -->
+      <div class="banner-stat">
+        <div>
+          <div class="banner-stat-number">12</div>
+          <div class="banner-stat-text">Invesco advisors reactivated last quarter via signals</div>
+          <div class="banner-stat-sub">Fallen Angel alerts triggered timely outreach — averaging $1.4M AUM recovered per reactivation</div>
+        </div>
+        <div class="banner-stat-right">
+          <span class="banner-badge">↑ $16.8M AUM RECOVERED</span>
+        </div>
+      </div>
+
+      <!-- Summary row -->
+      <div class="summary-row">
+        <div class="summary-item">
+          <div class="s-val">3 hrs <span class="s-arrow">→</span> 8 min</div>
+          <div class="s-label">Research time per call</div>
+        </div>
+        <div class="summary-item">
+          <div class="s-val">42% <span class="s-arrow">→</span> 94%</div>
+          <div class="s-label">Pre-call prep completion</div>
+        </div>
+        <div class="summary-item">
+          <div class="s-val">$2.3M</div>
+          <div class="s-label">Signal-driven pipeline (90 days)</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- DEMO SCENES -->
+<section class="scenes-section">
+  <div class="container">
+    <div class="section-title">Demo Walkthrough — 8 Capabilities</div>
+    <div class="scenes-grid">
+
+      <div class="scene-card">
+        <div class="scene-num">1</div>
+        <div class="scene-title">Smart Priority Queue</div>
+        <div class="scene-benefit">AI-ranked daily call queue — wholesalers see top opportunities the moment they log in, no spreadsheets required.</div>
+      </div>
+
+      <div class="scene-card">
+        <div class="scene-num">2</div>
+        <div class="scene-title">Rising Star Intelligence</div>
+        <div class="scene-benefit">Identify advisors growing their book by $100K–$5M+ and ride the momentum with fund-level purchase breakdowns.</div>
+      </div>
+
+      <div class="scene-card">
+        <div class="scene-num">3</div>
+        <div class="scene-title">Competitive Displacement Engine</div>
+        <div class="scene-benefit">See exactly which competitor holdings to target, with performance data and a 73% success rate on similar profiles.</div>
+      </div>
+
+      <div class="scene-card">
+        <div class="scene-num">4</div>
+        <div class="scene-title">Natural Language Queries</div>
+        <div class="scene-benefit">Ask questions about your territory in plain English — auto-generated SQL results in 0.3 seconds at $0.01 per query.</div>
+      </div>
+
+      <div class="scene-card">
+        <div class="scene-num">5</div>
+        <div class="scene-title">Defend &amp; Retain — Fallen Angels</div>
+        <div class="scene-benefit">Catch declining advisors before they leave with fund-level at-risk AUM alerts and defensive action recommendations.</div>
+      </div>
+
+      <div class="scene-card">
+        <div class="scene-num">6</div>
+        <div class="scene-title">RIA Greenspace Analysis</div>
+        <div class="scene-benefit">Find RIAs with millions in AUM but zero allocation to your products — $15–25M pure greenfield opportunities per firm.</div>
+      </div>
+
+      <div class="scene-card">
+        <div class="scene-num">7</div>
+        <div class="scene-title">Salesforce Native Integration</div>
+        <div class="scene-benefit">Signals surface inside Salesforce Lightning — no new tool to learn, one-click CRM logging, mobile-ready for field wholesalers.</div>
+      </div>
+
+      <div class="scene-card">
+        <div class="scene-num">8</div>
+        <div class="scene-title">Proven Results</div>
+        <div class="scene-benefit">$2.3M pipeline in 90 days, 12 advisor reactivations, 94% prep completion — numbers your CFO will want in the board deck.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>Ready to see it live in your Salesforce?</h2>
+  <p>ForwardLane deploys in under 30 days with no disruption to existing workflows.</p>
+  <a class="cta-btn" href="mailto:brian@forwardlane.com">Schedule a Live Demo →</a>
+</section>
+
+</body>
+</html>
