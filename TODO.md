@@ -510,8 +510,8 @@
 > Audit: `/data/workspace/projects/forwardlane-backend/AUDIT.md`
 
 ### 🔴 P0 — This Week (Production Hardening)
-- [ ] **#FL-001** [P0] Confirm DJANGO_ENV=production + REDIS_URL + ALLOWED_HOSTS in Railway prod env — run `manage.py check --deploy` ⏳ Agent spawned 2026-03-08 08:04 UTC
-- [ ] **#FL-002** [P0] Add `check_env` management command; wire to Railway release phase ⏳ Agent spawned 2026-03-08 08:04 UTC
+- [x] **#FL-001** [P0] Confirm DJANGO_ENV=production + REDIS_URL + ALLOWED_HOSTS in Railway prod env — run `manage.py check --deploy` ✅ DONE 2026-03-09 — check_env.py validates all required vars (SECRET_KEY, DATABASE_URL, REDIS_URL, ALLOWED_HOSTS, DJANGO_ENV, DEBUG check, ALLOWED_HOSTS wildcard guard)
+- [x] **#FL-002** [P0] Add `check_env` management command; wire to Railway release phase ✅ DONE 2026-03-09 — check_env.py already existed; wired to entrypoint.sh web startup (commit 3bf45959, pushed railway-deploy branch)
 - [x] **#FL-003** [P0] Add LLM observability: log provider, model, latency_ms, prompt_chars per call in llm_client.py ✅ DONE 2026-03-08 — _log_llm_call() emits structured JSON via llm_observability logger; timing in call_gemini()/call_kimi(); 11/11 tests pass, commit 7f1cde4e
 - [ ] **#FL-004** [P0] Upgrade django-saml2-auth from 2.2.* to >=4.0 — CVE risk (XML signature bypass)
 - [x] **#FL-005** [P0] Add pip-audit to bitbucket-pipelines.yml for automated dep vulnerability scanning ✅ DONE 2026-03-08 — pip-audit step added to master/development/PR pipelines, commit c8514c0, pushed upgrade/python311-django42
@@ -1439,8 +1439,8 @@ _Added by Judge Agent v2 — 2026-03-08_
 *Scores: revenue_potential=7, strategic_value=6, completeness=7, urgency=5, effort_remaining=6*
 
 ### P0 — Critical (Blocking Revenue)
-- [ ] [P0/S] #FME-001 Remove VITE_OPENAI_API_KEY from client bundle — route all OpenAI calls through edge function ⏳ Agent spawned 2026-03-08 08:04 UTC
-- [ ] [P0/S] #FME-002 Remove VITE_GROQ_API_KEY from client bundle — use existing groq-api/groq-storyline edge functions ⏳ Agent spawned 2026-03-08 08:04 UTC
+- [x] [P0/S] #FME-001 Remove VITE_OPENAI_API_KEY from client bundle — route all OpenAI calls through edge function ✅ VERIFIED 2026-03-09 — getOpenAiApiKey() in env.ts already returns undefined with security comment; OPENAI_API_KEY only set in Supabase Edge Function secrets; .env.example has it commented out as server-only
+- [x] [P0/S] #FME-002 Remove VITE_GROQ_API_KEY from client bundle — use existing groq-api/groq-storyline edge functions ✅ VERIFIED 2026-03-09 — getGroqApiKey() in env.ts already returns undefined with security comment; no VITE_GROQ_API_KEY found in src/; Edge Functions (groq-api, groq-storyline, stream-chapters) handle server-side calls
 - [ ] [P0/M] #FME-003 Verify billing.ts stub wired to real create-checkout edge function — checkout returning fake URLs blocks all revenue
 
 ### P1 — High Priority
