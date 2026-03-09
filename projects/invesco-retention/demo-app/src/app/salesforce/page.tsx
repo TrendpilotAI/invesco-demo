@@ -120,10 +120,112 @@ function SFBreadcrumb({ advisorName, homeHref = '/' }: { advisorName: string; ho
         <span>Home</span>
       </Link>
       <span className="text-[#C9C7C5]">›</span>
+      <button className="hover:text-[#0176D3] transition-colors">Accounts</button>
+      <span className="text-[#C9C7C5]">›</span>
+      <button className="hover:text-[#0176D3] transition-colors">Invesco</button>
+      <span className="text-[#C9C7C5]">›</span>
       <button className="hover:text-[#0176D3] transition-colors">Contacts</button>
       <span className="text-[#C9C7C5]">›</span>
       <span className="text-[#080707] font-semibold truncate max-w-48">{advisorName}</span>
     </nav>
+  );
+}
+
+// ─── SF Left Sidebar ──────────────────────────────────────────────────────────
+function SFLeftSidebar() {
+  const navItems = [
+    {
+      label: 'Home',
+      icon: (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+      ),
+    },
+    {
+      label: 'Chatter',
+      icon: (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+          <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
+        </svg>
+      ),
+    },
+    {
+      label: 'Accounts',
+      active: true,
+      icon: (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+          <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+        </svg>
+      ),
+    },
+    {
+      label: 'Contacts',
+      icon: (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+        </svg>
+      ),
+    },
+    {
+      label: 'Opportunities',
+      icon: (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+          <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
+        </svg>
+      ),
+    },
+    {
+      label: 'Reports',
+      icon: (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+        </svg>
+      ),
+    },
+    {
+      label: 'Dashboards',
+      icon: (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+          <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+        </svg>
+      ),
+    },
+    {
+      label: 'Tasks',
+      icon: (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+          <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14l-4-4 1.41-1.41L14 14.17l6.59-6.59L22 9l-8 8z"/>
+        </svg>
+      ),
+    },
+    {
+      label: 'Signals',
+      icon: (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+          <path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/>
+        </svg>
+      ),
+    },
+  ];
+
+  return (
+    <div className="w-14 bg-[#16325C] flex flex-col items-center py-3 gap-1 flex-shrink-0 min-h-0 overflow-y-auto" style={{ boxShadow: '2px 0 4px rgba(0,0,0,0.15)' }}>
+      {navItems.map(item => (
+        <button
+          key={item.label}
+          title={item.label}
+          className={`w-10 h-10 flex flex-col items-center justify-center rounded-md gap-0.5 transition-colors group relative ${
+            item.active
+              ? 'bg-white/20 text-white'
+              : 'text-blue-300 hover:bg-white/10 hover:text-white'
+          }`}
+        >
+          {item.icon}
+          <span className="text-[8px] leading-none font-medium truncate w-full text-center px-0.5">{item.label}</span>
+        </button>
+      ))}
+    </div>
   );
 }
 
@@ -473,6 +575,15 @@ function SalesforcePageInner() {
         onSelect={setSelectedId}
         homeHref={appendDemo('/')}
       />
+
+      {/* ── Body: Left Sidebar + Main Content ─────────────── */}
+      <div className="flex flex-1 min-h-0">
+
+      {/* ── SF Left Sidebar ───────────────────────────────── */}
+      <SFLeftSidebar />
+
+      {/* ── Right: Breadcrumb + Record ────────────────────── */}
+      <div className="flex flex-col flex-1 min-w-0">
 
       {/* ── Breadcrumb ────────────────────────────────────── */}
       <SFBreadcrumb advisorName={advisor.name} homeHref={appendDemo('/')} />
@@ -871,6 +982,8 @@ function SalesforcePageInner() {
           </div>
         </div>
       )}
+      </div>{/* end right column */}
+      </div>{/* end body flex */}
     </div>
   );
 }
