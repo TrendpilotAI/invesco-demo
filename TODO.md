@@ -1,6 +1,7 @@
 # TODO.md — Master Project Plan
 
-> Auto-monitored by Honey's cron loops. Last updated: 2026-03-08 07:12 UTC (judge-signalhaus-website: re-scored [revenue:7, strategic:8, completeness:7, urgency:5, effort_remaining:7], refreshed BRAINSTORM/PLAN/AUDIT via swarm agents. Key gaps: Redis rate limiting, CAPTCHA, CRM/HubSpot, newsletter, service detail pages, Cal.com booking, Playwright E2E, 0% test coverage.)
+> Auto-monitored by Honey's cron loops. Last updated: 2026-03-09 07:21 UTC (daily-judge-swarm: 15 Judge Agents completed across all top projects. 15 BRAINSTORM.md + 15 PLAN.md + 15 AUDIT.md files refreshed. Score changes: invesco-retention ↑8.8→9.1, forwardlane-backend ↑8.3→8.6, signal-builder-backend promoted to #3 at 7.9, signal-studio-auth ↓6.9→6.7, Second-Opinion ↓6.6→6.3. CRITICAL security flagged: Ultrafone API keys still exposed in git. 18 stale orchestrator tasks pruned by cleanup agent.)
+> Previously: 2026-03-08 07:12 UTC (judge-signalhaus-website: re-scored [revenue:7, strategic:8, completeness:7, urgency:5, effort_remaining:7], refreshed BRAINSTORM/PLAN/AUDIT via swarm agents. Key gaps: Redis rate limiting, CAPTCHA, CRM/HubSpot, newsletter, service detail pages, Cal.com booking, Playwright E2E, 0% test coverage.)
 > Previously: 2026-03-08 07:08 UTC (judge-signal-studio-data-provider: re-scored [revenue:6, strategic:8, completeness:7, urgency:5, effort_remaining:7], refreshed BRAINSTORM/PLAN/AUDIT, added 14 new TODOs covering SQL injection fix, Snowflake threading, DRY violations, DuckDB provider, Oracle pooling, integration tests, mypy strict, DDL blocklist, SecretStr, BigQuery stub.)
 > Previously: 2026-03-08 07:03 UTC (judge-NarrativeReactor: scored NarrativeReactor [revenue:8, strategic:9, completeness:8, urgency:6, effort_remaining:7], refreshed BRAINSTORM/PLAN/AUDIT, created NR-001 through NR-023 covering quota enforcement, metered billing, LinkedIn publishing, analytics dashboard, E2E tests, SQLite indexes, asyncHandler refactor, and podcast/white-label platform expansion.)
 > Previously: 2026-03-06 13:07 UTC (judge-signal-builder-backend: re-scored signal-builder-backend [revenue:8, strategic:9, completeness:7, urgency:7, effort_remaining:6], refreshed BRAINSTORM/PLAN/AUDIT, created TODO-391-395 covering mypy cleanup, test coverage for schema_builder/translators/analytical_db, Flask dep removal, N+1 batch fix, dev CVE upgrades. Previously: 2026-03-02 08:01 UTC judge-signal-studio: re-scored signal-studio, refreshed BRAINSTORM/PLAN/AUDIT, created TODO-384-388.)
@@ -514,7 +515,7 @@
 - [x] **#FL-003** [P0] Add LLM observability: log provider, model, latency_ms, prompt_chars per call in llm_client.py ✅ DONE 2026-03-08 — _log_llm_call() emits structured JSON via llm_observability logger; timing in call_gemini()/call_kimi(); 11/11 tests pass, commit 7f1cde4e
 - [ ] **#FL-004** [P0] Upgrade django-saml2-auth from 2.2.* to >=4.0 — CVE risk (XML signature bypass)
 - [x] **#FL-005** [P0] Add pip-audit to bitbucket-pipelines.yml for automated dep vulnerability scanning ✅ DONE 2026-03-08 — pip-audit step added to master/development/PR pipelines, commit c8514c0, pushed upgrade/python311-django42
-- [ ] **#FL-006** [P0] Add easy_button + analytical + adapters to pylint scope in tox.ini
+- [x] **#FL-006** [P0] Add easy_button + analytical + adapters to pylint scope in tox.ini ✅ DONE 2026-03-09 — commit 419ab62, pushed upgrade/python311-django42
 
 ### 🟠 P1 — Next Sprint (Stability)
 - [ ] **#FL-007** [P1] Replace urllib.request with httpx in libs/llm_client.py — proper timeout + connection pooling
@@ -1461,3 +1462,33 @@ _Added by Judge Agent v2 — 2026-03-08_
 - [ ] [P3/M] #FME-015 Add A/B test for pricing page ($2.99 vs $4.99 per ebook)
 - [ ] [P3/S] #FME-016 Optimize bundle — lazy-load Gallery and AdminUsers pages (already in progress)
 - [ ] [P3/S] #FME-017 Add missing Vitest unit tests for edge function handlers
+
+
+## signal-studio-frontend (2026-03-09 — Judge Agent v2 refresh)
+
+**Scores:** revenue=8 | strategic=9 | completeness=6 | urgency=7 | effort_remaining=5
+
+### P0 — Critical
+- [ ] [P0/S] #SSF-852 Delete dead rete-editor.tsx (491 lines, zero imports)
+- [ ] [P0/M] #SSF-853 Audit & fix auth on all API routes (unauthenticated Oracle access risk)
+- [ ] [P0/S] #SSF-854 Remove console.log leaking chat messages/request bodies
+- [ ] [P0/M] #SSF-855 Complete CI/CD pipeline (add tests + Vercel auto-deploy)
+
+### P1 — High Priority
+- [ ] [P1/S] #SSF-856 Archive 20+ stale planning docs to docs/archive/
+- [ ] [P1/S] #SSF-857 Add rate limiting to AI chat routes (prevent cost explosion)
+- [ ] [P1/M] #SSF-858 Deploy to production (Vercel + custom domain signalstudio.signalhaus.ai)
+- [ ] [P1/M] #SSF-859 Add Sentry error tracking post-deploy
+- [ ] [P1/L] #SSF-860 Signal sharing & collaboration (team workspaces)
+
+### P2 — Medium Priority
+- [ ] [P2/M] #SSF-861 Add Zod validation to all API route request bodies
+- [ ] [P2/M] #SSF-862 Create structured logger (replace console.log throughout lib/)
+- [ ] [P2/M] #SSF-863 Add E2E tests: auth flow, signal CRUD, Oracle connect
+- [ ] [P2/M] #SSF-864 Add PostHog analytics for feature usage tracking
+- [ ] [P2/M] #SSF-865 Signal alerts & webhook notifications
+
+## Ultrafone (Added 2026-03-09)
+- 🚨 [858] CRITICAL: Rotate exposed API keys (Groq/Deepgram/Twilio/Fish Audio) in .env.development
+- 🚨 [859] CRITICAL: Purge .env.development from git history (git-filter-repo)
+- 🔥 [860] Deploy backend to Railway (railway.toml ready)
