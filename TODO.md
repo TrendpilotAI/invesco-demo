@@ -1,6 +1,7 @@
 # TODO.md — Master Project Plan
 
-> Auto-monitored by Honey's cron loops. Last updated: 2026-03-10 08:07 UTC (todo-progress: #897 ✅ logo.png + RSS link, #898 ✅ branded 404 page for signalhaus-website. Spawned 2 parallel Sonnet agents: NarrativeReactor P0 security batch #878-881 (scrypt hashing + helmet + db singleton + genkit pinning), signalhaus-website #826 (Upstash Redis rate limiter fix).) (judge-signalhaus-website v2: re-scored [revenue:7, strategic:8, completeness:7, urgency:7↑, effort_remaining:7]. Urgency bumped: in-memory rate limiter is LIVE BUG on Vercel. New findings: logo.png missing (JSON-LD 404), ROI calculate() not extracted for testing, no branded 404 page, RSS feed unlinked. Created TODOs 894-899. All three analysis files (BRAINSTORM/PLAN/AUDIT) refreshed.)
+> Auto-monitored by Honey's cron loops. Last updated: 2026-03-10 16:04 UTC (todo-progress: All P0s remain complete ✅. Spawned 3 parallel Sonnet agents: SSA-828+834 (signal-studio-auth rate limiter cache + startup env validation), NR-008+009 (NarrativeReactor asyncHandler middleware + SQLite indexes), EE-894+896+897 (core-entityextraction HTTP status codes + dead code removal + env rate limits + entity_type allowlist). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley (#INV-008).) (todo-progress: Verified EE-890 ✅ EE-891 ✅ EE-892 ✅ EE-893 ✅ SS-816 ✅ SSA-831 ✅ SSA-832 ✅ SSA-833 ✅ SSF-855 ✅ SSPD-469 ✅ SSPD-898 ✅ SSPD-899 ✅ (all done files confirmed from 12:01 UTC agent batch). Spawned 1 Sonnet agent: Ultrafone #878+879 (Twilio webhook signature validation + rate limiting). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley (#INV-008).)
+> Previously: 2026-03-10 08:07 UTC (todo-progress: #897 ✅ logo.png + RSS link, #898 ✅ branded 404 page for signalhaus-website. Spawned 2 parallel Sonnet agents: NarrativeReactor P0 security batch #878-881 (scrypt hashing + helmet + db singleton + genkit pinning), signalhaus-website #826 (Upstash Redis rate limiter fix).) (judge-signalhaus-website v2: re-scored [revenue:7, strategic:8, completeness:7, urgency:7↑, effort_remaining:7]. Urgency bumped: in-memory rate limiter is LIVE BUG on Vercel. New findings: logo.png missing (JSON-LD 404), ROI calculate() not extracted for testing, no branded 404 page, RSS feed unlinked. Created TODOs 894-899. All three analysis files (BRAINSTORM/PLAN/AUDIT) refreshed.)
 > Previously: 2026-03-10 04:12 UTC (todo-progress: NR-001 ✅ smartAuth quota enforcement wired to pipeline routes, NR-003 ✅ billing/usage endpoint verified already live) (daily-judge-swarm: 15 Judge Agents completed across all top projects. 15 BRAINSTORM.md + 15 PLAN.md + 15 AUDIT.md files refreshed. Score changes: invesco-retention ↑8.8→9.1, forwardlane-backend ↑8.3→8.6, signal-builder-backend promoted to #3 at 7.9, signal-studio-auth ↓6.9→6.7, Second-Opinion ↓6.6→6.3. CRITICAL security flagged: Ultrafone API keys still exposed in git. 18 stale orchestrator tasks pruned by cleanup agent.)
 > Previously: 2026-03-08 07:12 UTC (judge-signalhaus-website: re-scored [revenue:7, strategic:8, completeness:7, urgency:5, effort_remaining:7], refreshed BRAINSTORM/PLAN/AUDIT via swarm agents. Key gaps: Redis rate limiting, CAPTCHA, CRM/HubSpot, newsletter, service detail pages, Cal.com booking, Playwright E2E, 0% test coverage.)
 > Previously: 2026-03-08 07:08 UTC (judge-signal-studio-data-provider: re-scored [revenue:6, strategic:8, completeness:7, urgency:5, effort_remaining:7], refreshed BRAINSTORM/PLAN/AUDIT, added 14 new TODOs covering SQL injection fix, Snowflake threading, DRY violations, DuckDB provider, Oracle pooling, integration tests, mypy strict, DDL blocklist, SecretStr, BigQuery stub.)
@@ -29,6 +30,7 @@
 > todo-progress cron 2026-03-07 21:06 UTC: Verified TODO-821 ✅ (jsonpickle removed) TODO-1001 ✅ (retrieve_and_rank deleted) TODO-1003 ✅ (express-rate-limit on auth) TODO-605 ✅ (password reset routes) TODO-723 ✅ (HTTP status codes). Spawned Sonnet agent for TODO-588 (signal_runs Postgres table + run history UI). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley.
 > invesco-sprint cron 2026-03-08 12:01 UTC: Identified 5 fresh Invesco P0s (INV-001 through INV-007, 8 items total). Spawned 5 parallel Sonnet agents: INV-001 (SF chrome wrapper on meeting brief), INV-002 (ROI panel), INV-003 (Megan/Craig demo personas), INV-005+006 (PostHog + CVE fix), INV-007 (demo script). INV-004 (DemoReset enhance) + INV-008 (dry run schedule) queued — INV-008 requires Nathan action. 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley.
 > invesco-sprint cron 2026-03-10 04:15 UTC: ALL INVESCO P0s remain complete ✅. Scanned full TODO.md for open P0s across all projects. Spawned 5 parallel Sonnet agents: FL-004 (django-saml2-auth CVE upgrade), SSA-001+SSA-003 (signal-studio-auth dead code + dep pinning), SS-2026-01+02+03 (signal-studio dump.rdb + pnpm audit + gitleaks CI), SSF-852+854 (signal-studio-frontend dead rete-editor.tsx + console.log removal), SBB-003 (signal-builder-backend multi-tenant isolation tests). SSA-004/005 and SSF-853/855 queued — hit 5-agent cap, will run next cron. 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley (#INV-008).
+> invesco-sprint cron 2026-03-10 12:01 UTC: Verified FL-004 ✅ SBB-003 ✅ SSF-852 ✅ SSF-853 ✅ SSF-854 ✅ SS-2026-01 ✅ SS-2026-02 ✅ SS-2026-03 ✅ SSA-001 ✅ SSA-003 ✅ NR-878 ✅ NR-879 ✅ NR-880 ✅ NR-881 ✅ signalhaus-826 ✅ (all done files confirmed). Spawning 5 fresh parallel Sonnet agents: SSF-855 (signal-studio-frontend CI/CD), SSA-831+832+833 (signal-studio-auth quick-win P0s), SS-816 (signal-studio Upstash Redis rate limiter), SSPD-469+898+899 (signal-studio-data-provider Snowflake SQL injection + asyncio + numpy), EE-890+891+892+893 (core-entityextraction P0 bugs). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley (#INV-008).
 > todo-progress cron 2026-03-10 00:04 UTC: Verified TODO-SBB-002 ✅ (jsonpickle replaced with stdlib json, RCE risk eliminated, commit 16fbd18, pushed Bitbucket feat/p0-todos-352-356).
 > todo-progress cron 2026-03-09 20:08 UTC: All P0s from prior batch agents remain in progress. Spawned 1 Sonnet agent for #FME-003 (flip-my-era billing.ts stub → real Supabase checkout, P0 blocking all subscription revenue). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley (#INV-008).
 > invesco-sprint cron 2026-03-09 20:01 UTC: ALL INVESCO P0s remain complete ✅. Scanned full TODO.md for remaining open P0s across all projects. Spawned 5 parallel Sonnet agents: SSA-001+SSA-003 (signal-studio-auth dead code + dep pinning), SS-2026-01+02+03 (signal-studio git history purge + pnpm audit + gitleaks CI), SBB-002+003 (signal-builder-backend jsonpickle RCE + multi-tenant isolation tests), FL-004 (django-saml2-auth CVE upgrade), SSF-852+853+854 (signal-studio-frontend rete-editor cleanup + auth audit + console.log removal). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley (#INV-008).
@@ -319,10 +321,10 @@
 - **Status:** 🟢 Advanced — 287 tests, CI/CD, Docker+Railway, OpenAPI, React dashboard, billing live
 - **Updated:** 2026-03-10 by Judge Agent v2
 - **CRITICAL SECURITY (P0):**
-  - [ ] #878 Replace SHA-256 with scrypt for API key hashing (`src/services/tenants.ts` line 131) ⏳ Agent spawned 2026-03-10 08:07 UTC
-  - [ ] #879 Add helmet middleware for security headers (CSP, HSTS, X-Frame-Options) ⏳ Agent spawned 2026-03-10 08:07 UTC
-  - [ ] #880 Fix tenants.ts — migrate from better-sqlite3 to db.ts singleton (dual SQLite connections!) ⏳ Agent spawned 2026-03-10 08:07 UTC
-  - [ ] #881 Pin wildcard genkit deps (* → ^X.Y.Z semver) ⏳ Agent spawned 2026-03-10 08:07 UTC
+  - [x] #878 Replace SHA-256 with scrypt for API key hashing (`src/services/tenants.ts` line 131) ✅ DONE 2026-03-10
+  - [x] #879 Add helmet middleware for security headers (CSP, HSTS, X-Frame-Options) ✅ DONE 2026-03-10
+  - [x] #880 Fix tenants.ts — migrate from better-sqlite3 to db.ts singleton (dual SQLite connections!) ✅ DONE 2026-03-10
+  - [x] #881 Pin wildcard genkit deps (* → ^X.Y.Z semver) ✅ DONE 2026-03-10
 - **P1 Quality:**
   - [ ] #882 Add ESLint config to project root (currently only in /dashboard)
   - [ ] #883 Add true supertest HTTP E2E tests (existing e2e tests are mocked unit tests)
@@ -536,7 +538,7 @@
 - [x] **#FL-001** [P0] Confirm DJANGO_ENV=production + REDIS_URL + ALLOWED_HOSTS in Railway prod env — run `manage.py check --deploy` ✅ DONE 2026-03-09 — check_env.py validates all required vars (SECRET_KEY, DATABASE_URL, REDIS_URL, ALLOWED_HOSTS, DJANGO_ENV, DEBUG check, ALLOWED_HOSTS wildcard guard)
 - [x] **#FL-002** [P0] Add `check_env` management command; wire to Railway release phase ✅ DONE 2026-03-09 — check_env.py already existed; wired to entrypoint.sh web startup (commit 3bf45959, pushed railway-deploy branch)
 - [x] **#FL-003** [P0] Add LLM observability: log provider, model, latency_ms, prompt_chars per call in llm_client.py ✅ DONE 2026-03-08 — _log_llm_call() emits structured JSON via llm_observability logger; timing in call_gemini()/call_kimi(); 11/11 tests pass, commit 7f1cde4e
-- [ ] **#FL-004** [P0] Upgrade django-saml2-auth from 2.2.* to >=4.0 — CVE risk (XML signature bypass)
+- [x] **#FL-004** [P0] Upgrade django-saml2-auth from 2.2.* to >=4.0 — CVE risk (XML signature bypass) ✅ DONE 2026-03-10
 - [x] **#FL-005** [P0] Add pip-audit to bitbucket-pipelines.yml for automated dep vulnerability scanning ✅ DONE 2026-03-08 — pip-audit step added to master/development/PR pipelines, commit c8514c0, pushed upgrade/python311-django42
 - [x] **#FL-006** [P0] Add easy_button + analytical + adapters to pylint scope in tox.ini ✅ DONE 2026-03-09 — commit 419ab62, pushed upgrade/python311-django42
 
@@ -680,7 +682,7 @@
 ### 🔴 Critical — v2 additions (2026-03-10)
 - [x] **#897** [P0] Fix missing logo.png + link RSS feed in `<head>` [15min] → ✅ DONE 2026-03-10 — logo.png created (purple brand), RSS link added to layout.tsx head, commit 068c124
 - [x] **#898** [P0] Branded 404 page (not-found.tsx) [30min] → ✅ DONE 2026-03-10 — "Signal Lost in the Noise" branded 404 with violet gradient, quick-links, commit 068c124
-- [ ] **#826** [P0] Upstash Redis rate limiter (in-memory Map LIVE BUG on Vercel) [1h] → TODO-826 ⏳ Agent spawned 2026-03-10 08:07 UTC
+- [x] **#826** [P0] Upstash Redis rate limiter (in-memory Map LIVE BUG on Vercel) [1h] → TODO-826 ✅ DONE 2026-03-10
 - [ ] **#894** [P1] Vitest unit test setup (validateContact, ROI math, MDX parsing) [3h] → TODO-894
 - [ ] **#899** [P1] Extract ROI calculate() to src/lib/roi.ts (prereq for testing) [30min] → TODO-899
 - [ ] **#895** [P2] Zod validation refactor for contact form [1h] → TODO-895
@@ -801,9 +803,9 @@
 - [ ] [MED] Add schema diff event emission on SchemaRegistry.refresh() → TODO 730
 - [ ] [MED] Add tenacity retry logic across all providers → TODO 731
 - [ ] [MED] Add secrets manager integration (AWS SSM / Vault / GCP) → TODO 732
-- [ ] [P0] Fix SQL injection in Snowflake Cortex path (f-string model name interpolation) → TODO-469/861/AUDIT-2026-03-10
-- [ ] [P0] Fix deprecated asyncio.get_event_loop() in snowflake_provider.py (3 occurrences) → TODO-898
-- [ ] [P0] Fix numpy/pandas binary incompatibility — blocks all tests → TODO-899
+- [x] [P0] Fix SQL injection in Snowflake Cortex path (f-string model name interpolation) → TODO-469 ✅ DONE 2026-03-10
+- [x] [P0] Fix deprecated asyncio.get_event_loop() in snowflake_provider.py → TODO-898 ✅ DONE 2026-03-10
+- [x] [P0] Fix numpy/pandas binary incompatibility → TODO-899 ✅ DONE 2026-03-10
 - [ ] [P1] Use Pydantic SecretStr for all password fields in config.py → TODO-590/AUDIT-2026-03-10
 - [ ] [P1] Remove unused `lru_cache` import in snowflake_provider.py line 6 → AUDIT-2026-03-08
 - [ ] [P1] Extract _build_schema_info() DRY violation to providers/_utils.py → AUDIT-2026-03-08
@@ -1025,9 +1027,9 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 - [x] [P0/XS] #SSA-001 Remove dead `_build_rate_limiter()` function ✅ DONE
 - [x] [P0/XS] #SSA-002 Add security headers middleware ✅ DONE 2026-03-09 — commit 790ce14
 - [x] [P0/XS] #SSA-003 Pin dependency versions + run pip-audit ✅ DONE
-- [ ] [P0/XS] #831 Remove duplicate inline security headers in main.py (overwrites class middleware with weaker CSP) → `831-pending-high-signal-studio-auth-remove-duplicate-security-headers.md`
-- [ ] [P0/S] #833 Fix `PasswordUpdateRequest.validate_password_complexity()` — add `@field_validator`, remove inline duplication → `833-pending-high-signal-studio-auth-fix-password-validator.md`
-- [ ] [P0/S] #832 Refactor `/refresh` to call `_rotate_family_token()` — currently duplicates all logic inline → `832-pending-high-signal-studio-auth-use-rotate-family-token-in-refresh.md`
+- [x] [P0/XS] #831 Remove duplicate inline security headers in main.py ✅ DONE 2026-03-10
+- [x] [P0/S] #833 Fix PasswordUpdateRequest.validate_password_complexity() ✅ DONE 2026-03-10
+- [x] [P0/S] #832 Refactor /refresh to call _rotate_family_token() ✅ DONE 2026-03-10
 
 ### P1 — Foundation (This Sprint)
 - [ ] [P1/S] #828 Fix rate limiter — RedisStorage + SlidingWindowRateLimiter created per-request → `828-pending-high-signal-studio-auth-fix-ratelimiter-duplication.md`
@@ -1313,10 +1315,10 @@ Scores: revenue_potential=8, strategic_value=9, completeness=7, urgency=7, effor
 Previous items (#816-820) still open. New/refreshed items from AUDIT.md:
 
 ### P0 — Critical
-- [ ] [P0/XS] #SS-2026-01: CRITICAL — Remove dump.rdb from git history + rotate Redis secrets (AUDIT-001)
-- [ ] [P0/XS] #SS-2026-02: CRITICAL — Add `pnpm audit --audit-level=high` to bitbucket-pipelines.yml (AUDIT-005)
-- [ ] [P0/XS] #SS-2026-03: CRITICAL — Add gitleaks secret scanning to Bitbucket CI (AUDIT-006)
-- [ ] [P0/S] #816: Replace in-memory LRU rate limiter with Upstash Redis (multi-instance unsafe) (AUDIT-002)
+- [x] [P0/XS] #SS-2026-01: CRITICAL — Remove dump.rdb from git history + rotate Redis secrets (AUDIT-001) ✅ DONE 2026-03-10
+- [x] [P0/XS] #SS-2026-02: CRITICAL — Add `pnpm audit --audit-level=high` to bitbucket-pipelines.yml (AUDIT-005) ✅ DONE 2026-03-10
+- [x] [P0/XS] #SS-2026-03: CRITICAL — Add gitleaks secret scanning to Bitbucket CI (AUDIT-006) ✅ DONE 2026-03-10
+- [x] [P0/S] #816: Replace in-memory LRU rate limiter with Upstash Redis ✅ DONE 2026-03-10
 
 ### P1 — High
 - [ ] [P1/M] #817: Add Zod validation to all API POST routes + eliminate ~30 `any` type usages (AUDIT-004)
@@ -1510,10 +1512,10 @@ _Added by Judge Agent v2 — 2026-03-08_
 **Scores:** revenue=8 | strategic=9 | completeness=6 | urgency=7 | effort_remaining=5
 
 ### P0 — Critical
-- [ ] [P0/S] #SSF-852 Delete dead rete-editor.tsx (491 lines, zero imports)
-- [ ] [P0/M] #SSF-853 Audit & fix auth on all API routes (unauthenticated Oracle access risk)
-- [ ] [P0/S] #SSF-854 Remove console.log leaking chat messages/request bodies
-- [ ] [P0/M] #SSF-855 Complete CI/CD pipeline (add tests + Vercel auto-deploy)
+- [x] [P0/S] #SSF-852 Delete dead rete-editor.tsx (491 lines, zero imports) ✅ DONE 2026-03-10
+- [x] [P0/M] #SSF-853 Audit & fix auth on all API routes (unauthenticated Oracle access risk) ✅ DONE 2026-03-10
+- [x] [P0/S] #SSF-854 Remove console.log leaking chat messages/request bodies ✅ DONE 2026-03-10
+- [x] [P0/M] #SSF-855 Complete CI/CD pipeline (add tests + Vercel auto-deploy) ✅ DONE 2026-03-10
 
 ### P1 — High Priority
 - [ ] [P1/S] #SSF-856 Archive 20+ stale planning docs to docs/archive/
@@ -1536,8 +1538,8 @@ _Added by Judge Agent v2 — 2026-03-08_
 
 ## Ultrafone — Added 2026-03-10
 
-- [ ] **P0** Twilio webhook signature validation (878-pending-p0-ultrafone-twilio-webhook-signature-validation.md)
-- [ ] **P0** Rate limiting on webhook endpoints (879-pending-p0-ultrafone-rate-limiting-webhook.md)
+- [ ] **P0** Twilio webhook signature validation (878-pending-p0-ultrafone-twilio-webhook-signature-validation.md) ⏳ Agent spawned 2026-03-10 12:12 UTC
+- [ ] **P0** Rate limiting on webhook endpoints (879-pending-p0-ultrafone-rate-limiting-webhook.md) ⏳ Agent spawned 2026-03-10 12:12 UTC
 - [ ] **P1** Multi-tenant user profiles — remove hardcoded `user_id="nathan"` (880-pending-p1-ultrafone-multi-tenant-user-profiles.md)
 - [ ] **P1** Consolidate 3 TTS services into unified provider (881-pending-p1-ultrafone-tts-provider-abstraction.md)
 - [ ] **P1** Zapier/Make.com webhook bridge (882-pending-p1-ultrafone-zapier-webhook-bridge.md)
@@ -1548,10 +1550,10 @@ _Added by Judge Agent v2 — 2026-03-08_
 **Scores:** revenue_potential=7 | strategic_value=9 | completeness=7 | urgency=5 | effort_remaining=7 | composite=7.0
 
 ### P0 — Critical Bugs & Missing Features
-- [ ] **P0/XS** Fix duplicate filter block bug in match_patterns() (#890)
-- [ ] **P0/S**  Add GET /fixed_lists endpoint — no way to query loaded entities (#891)
-- [ ] **P0/M**  Add ML/spaCy NER integration tests — zero test coverage for NER endpoints (#892)
-- [ ] **P0/XS** Fix persistence.py connection leak in try/else pattern (#893)
+- [x] **P0/XS** Fix duplicate filter block bug in match_patterns() (#890) ✅ DONE 2026-03-10
+- [x] **P0/S** Add GET /fixed_lists endpoint (#891) ✅ DONE 2026-03-10
+- [x] **P0/M** Add ML/spaCy NER integration tests (#892) ✅ DONE 2026-03-10
+- [x] **P0/XS** Fix persistence.py connection leak (#893) ✅ DONE 2026-03-10
 
 ### P1 — Important Fixes
 - [ ] **P1/S**  Fix HTTP status code inconsistency — errors return 200 with status:400 body (#894)

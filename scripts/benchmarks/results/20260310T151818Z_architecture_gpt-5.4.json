@@ -1,0 +1,20 @@
+{
+  "timestamp": "20260310T151818Z",
+  "model_key": "gpt-5.4",
+  "model_id": "gpt-4.1",
+  "model_display": "GPT-4.1",
+  "provider": "openai",
+  "task_key": "architecture",
+  "task_name": "System Design",
+  "max_tokens": 4000,
+  "dry_run": true,
+  "status": "dry_run",
+  "elapsed_ms": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "tokens_per_second": 0,
+  "cost_usd": 0,
+  "content_chars": 0,
+  "content_lines": 0,
+  "content": ""
+}

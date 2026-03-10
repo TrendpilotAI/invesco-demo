@@ -1,0 +1,138 @@
+{
+  "drafts": [
+    {
+      "id": "d19db847",
+      "text": "Just shipped fleet orchestration for our agents. Now they can coordinate tasks, share context, and self-heal when one fails. This is how you scale beyond single bots. #AIagents",
+      "hashtags": [
+        "#AIagents"
+      ],
+      "platform": "twitter",
+      "persona": "enterprise",
+      "persona_label": "Enterprise",
+      "account_id": "13496",
+      "handle": "@NathanStvnsn",
+      "status": "draft",
+      "violations": [],
+      "created_at": "2026-03-10T15:38:25.953154+00:00"
+    },
+    {
+      "id": "4472577a",
+      "text": "Local LLMs are getting shockingly good. Just ran a 7B model on my laptop that outperformed GPT-3.5 on a specific reasoning task. The gap is closing fast. #AI",
+      "hashtags": [
+        "#AI"
+      ],
+      "platform": "twitter",
+      "persona": "enterprise",
+      "persona_label": "Enterprise",
+      "account_id": "13496",
+      "handle": "@NathanStvnsn",
+      "status": "draft",
+      "violations": [],
+      "created_at": "2026-03-10T15:38:28.454030+00:00"
+    },
+    {
+      "id": "c088d5da",
+      "text": "Just shipped our compliance automation module. Agents now handle policy checks, audit trails, and risk assessments autonomously. The future of governance is automated.\n\n#EnterpriseAI",
+      "hashtags": [
+        "#EnterpriseAI"
+      ],
+      "platform": "twitter",
+      "persona": "enterprise",
+      "persona_label": "Enterprise",
+      "account_id": "13496",
+      "handle": "@NathanStvnsn",
+      "status": "draft",
+      "violations": [],
+      "created_at": "2026-03-10T15:38:30.835133+00:00"
+    },
+    {
+      "id": "ebb6b7b6",
+      "text": "Just spent the morning wrangling my AI agent fleet. It's like herding cats, but the cats can write code and book flights.\n\nThe real challenge isn't building one smart agent\u2014it's getting five of them to work together without stepping on each other's digital toes. Orchestration is everything.\n\n#LocalAI #AgentOps #BuildingInPublic",
+      "hashtags": [
+        "#LocalAI",
+        "#AgentOps",
+        "#BuildingInPublic"
+      ],
+      "platform": "threads",
+      "persona": "blend",
+      "persona_label": "Blend",
+      "account_id": "4948",
+      "handle": "@n8.made",
+      "status": "draft",
+      "violations": [],
+      "created_at": "2026-03-10T15:38:34.054002+00:00"
+    },
+    {
+      "id": "5497ce39",
+      "text": "Just ran a 7B parameter model locally on my Mac Mini. It's not GPT-4, but for drafting emails and summarizing docs? It's shockingly capable.\n\nThe gap between \"cloud AI\" and \"local AI\" is closing faster than I thought. You can do real work without sending everything to a server.\n\nFeels like having a quiet, private assistant that doesn't need wifi.\n\n#LocalAI #OpenSource",
+      "hashtags": [
+        "#LocalAI",
+        "#OpenSource"
+      ],
+      "platform": "threads",
+      "persona": "blend",
+      "persona_label": "Blend",
+      "account_id": "4948",
+      "handle": "@n8.made",
+      "status": "draft",
+      "violations": [],
+      "created_at": "2026-03-10T15:38:37.659983+00:00"
+    },
+    {
+      "id": "7266e005",
+      "text": "Managing AI agent fleets at scale is one of the most significant operational challenges emerging in enterprise AI today.\n\nAt ForwardLane, we\u2019re seeing this firsthand as our clients move from piloting single agents to deploying coordinated groups\u2014or fleets\u2014for complex workflows. The initial excitement of a single, capable agent quickly gives way to practical questions: How do you monitor performance across dozens of specialized agents? How do you ensure consistency, handle failures, and manage updates without causing cascading issues?\n\nThis is the shift from building individual AI tools to managing an AI *operating system*. It requires a new layer of infrastructure focused on orchestration, observability, and governance.\n\nOur work with Signal Studio is increasingly centered on this problem. We're helping teams design systems where agents can be assigned, audited, and optimized as a unified resource. Key considerations include:\n*   **Orchestration Logic:** Defining clear handoffs, conflict resolution, and fallback protocols between agents.\n*   **Centralized Observability:** A single pane of glass to track accuracy, cost, latency, and business impact across the entire fleet.\n*   **Lifecycle Management:** Streamlined processes for testing, versioning, and deploying updates to agents in production.\n\nThe goal isn't just more AI; it's reliable, scalable, and governable AI operations. The companies that solve the fleet management puzzle will move faster and with greater confidence.\n\nI'm curious: Is your organization starting to think about agent fleets? What's the biggest hurdle you're facing?\n\n#EnterpriseAI #AIStrategy #AIOps #FinTech",
+      "hashtags": [
+        "#EnterpriseAI",
+        "#AIStrategy",
+        "#AIOps",
+        "#FinTech"
+      ],
+      "platform": "linkedin",
+      "persona": "professional",
+      "persona_label": "Professional",
+      "account_id": "14262",
+      "handle": "Nathan Stevenson",
+      "status": "draft",
+      "violations": [],
+      "created_at": "2026-03-10T15:38:47.285263+00:00"
+    },
+    {
+      "id": "ab6beeb0",
+      "text": "My AI agents are running wild. \ud83d\ude05\n\nJust built a dashboard to manage them all in one place. No more chaos.\n\nLocal LLMs + simple UI = total control.\n\n#AI #Agents #OpenSource #BuildInPublic",
+      "hashtags": [
+        "#AI",
+        "#Agents",
+        "#OpenSource",
+        "#BuildInPublic"
+      ],
+      "platform": "tiktok",
+      "persona": "consumer",
+      "persona_label": "Consumer AI",
+      "account_id": "31967",
+      "handle": "@n8.ai0",
+      "status": "draft",
+      "violations": [],
+      "created_at": "2026-03-10T15:38:49.940322+00:00"
+    },
+    {
+      "id": "93e01ff9",
+      "text": "Local LLMs are getting scary good. Just ran a 7B model on my laptop and it's writing code, answering questions, and summarizing docs. All offline. The future is local. \ud83d\udd25\n\n#AI #OpenSource #LocalAI #LLM #BuildInPublic",
+      "hashtags": [
+        "#AI",
+        "#OpenSource",
+        "#LocalAI",
+        "#LLM",
+        "#BuildInPublic"
+      ],
+      "platform": "tiktok",
+      "persona": "consumer",
+      "persona_label": "Consumer AI",
+      "account_id": "31967",
+      "handle": "@n8.ai0",
+      "status": "draft",
+      "violations": [],
+      "created_at": "2026-03-10T15:38:52.827036+00:00"
+    }
+  ],
+  "generated_at": "2026-03-10T15:38:52.827390+00:00"
+}

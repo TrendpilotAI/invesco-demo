@@ -2,7 +2,7 @@
 
 **Project:** Ultrafone  
 **Priority:** P0 (Security/Cost)  
-**Status:** pending  
+**Status:** completed  
 **Effort:** 2h  
 **Created:** 2026-03-10
 

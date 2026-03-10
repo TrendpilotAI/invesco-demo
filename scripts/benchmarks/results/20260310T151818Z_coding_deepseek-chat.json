@@ -1,0 +1,20 @@
+{
+  "timestamp": "20260310T151818Z",
+  "model_key": "deepseek-chat",
+  "model_id": "deepseek-chat",
+  "model_display": "DeepSeek Chat",
+  "provider": "deepseek",
+  "task_key": "coding",
+  "task_name": "FastAPI CRUD App",
+  "max_tokens": 4000,
+  "dry_run": true,
+  "status": "dry_run",
+  "elapsed_ms": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "tokens_per_second": 0,
+  "cost_usd": 0,
+  "content_chars": 0,
+  "content_lines": 0,
+  "content": ""
+}

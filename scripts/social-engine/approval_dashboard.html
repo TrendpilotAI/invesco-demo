@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bragi — Content Approval</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        enterprise: '#3B82F6',
+        blend: '#8B5CF6',
+        professional: '#1E3A5F',
+        consumer: '#10B981',
+      }
+    }
+  }
+}
+</script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  body { font-family: 'Inter', sans-serif; }
+  .post-card { transition: all 0.2s ease; }
+  .post-card:hover { transform: translateY(-1px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+  .status-badge { font-size: 0.65rem; letter-spacing: 0.05em; }
+  [contenteditable]:focus { outline: 2px solid #3B82F6; outline-offset: 2px; border-radius: 4px; }
+  .char-count { font-variant-numeric: tabular-nums; }
+  .fade-in { animation: fadeIn 0.3s ease-in; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .persona-stripe { width: 4px; border-radius: 2px; }
+</style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen">
+
+<!-- Header -->
+<header class="sticky top-0 z-50 bg-gray-950/80 backdrop-blur-xl border-b border-gray-800/50">
+  <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 bg-gradient-to-br from-amber-400 to-orange-500 rounded-lg flex items-center justify-center text-sm font-bold text-gray-900">B</div>
+      <div>
+        <h1 class="text-lg font-semibold tracking-tight">Bragi</h1>
+        <p class="text-xs text-gray-500">Content Approval Queue</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <span id="stats" class="text-xs text-gray-500 mr-2"></span>
+      <button onclick="approveAll()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-sm font-medium transition-colors">
+        Approve All
+      </button>
+      <button onclick="loadDrafts()" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 rounded-lg text-sm font-medium transition-colors">
+        ↻ Refresh
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Filter Tabs -->
+<div class="max-w-4xl mx-auto px-4 pt-4">
+  <div class="flex gap-1 bg-gray-900 rounded-xl p-1 overflow-x-auto">
+    <button onclick="filterBy('all')" data-filter="all" class="filter-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-gray-800 text-white whitespace-nowrap">All</button>
+    <button onclick="filterBy('draft')" data-filter="draft" class="filter-btn px-3 py-1.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white whitespace-nowrap">📝 Drafts</button>
+    <button onclick="filterBy('approved')" data-filter="approved" class="filter-btn px-3 py-1.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white whitespace-nowrap">✅ Approved</button>
+    <button onclick="filterBy('scheduled')" data-filter="scheduled" class="filter-btn px-3 py-1.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white whitespace-nowrap">📅 Scheduled</button>
+    <button onclick="filterBy('rejected')" data-filter="rejected" class="filter-btn px-3 py-1.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white whitespace-nowrap">❌ Rejected</button>
+  </div>
+</div>
+
+<!-- Posts Container -->
+<main id="posts" class="max-w-4xl mx-auto px-4 py-4 space-y-3">
+  <div class="text-center py-16 text-gray-500">
+    <p class="text-lg">Loading drafts...</p>
+    <p class="text-sm mt-1">Make sure drafts.json is in the same directory</p>
+  </div>
+</main>
+
+<!-- Toast -->
+<div id="toast" class="fixed bottom-4 right-4 bg-gray-800 text-white px-4 py-2 rounded-xl text-sm shadow-xl opacity-0 transition-opacity pointer-events-none"></div>
+
+<script>
+let drafts = [];
+let currentFilter = 'all';
+
+const PLATFORM_ICONS = {
+  twitter: '𝕏',
+  threads: '🧵',
+  linkedin: 'in',
+  tiktok: '♪',
+  youtube: '▶',
+};
+
+const PERSONA_COLORS = {
+  enterprise: { bg: 'bg-blue-500/10', border: 'border-blue-500/30', stripe: 'bg-blue-500', text: 'text-blue-400', badge: 'bg-blue-500/20 text-blue-300' },
+  blend: { bg: 'bg-violet-500/10', border: 'border-violet-500/30', stripe: 'bg-violet-500', text: 'text-violet-400', badge: 'bg-violet-500/20 text-violet-300' },
+  professional: { bg: 'bg-sky-800/10', border: 'border-sky-700/30', stripe: 'bg-sky-700', text: 'text-sky-400', badge: 'bg-sky-800/20 text-sky-300' },
+  consumer: { bg: 'bg-emerald-500/10', border: 'border-emerald-500/30', stripe: 'bg-emerald-500', text: 'text-emerald-400', badge: 'bg-emerald-500/20 text-emerald-300' },
+};
+
+const CHAR_LIMITS = { twitter: 280, threads: 500, linkedin: 3000, tiktok: 300 };
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.opacity = '1';
+  setTimeout(() => t.style.opacity = '0', 2000);
+}
+
+function updateStats() {
+  const counts = { draft: 0, approved: 0, scheduled: 0, rejected: 0 };
+  drafts.forEach(d => { counts[d.status] = (counts[d.status] || 0) + 1; });
+  document.getElementById('stats').textContent =
+    `${counts.draft} draft · ${counts.approved} approved · ${counts.scheduled} scheduled`;
+}
+
+function renderCard(draft, idx) {
+  const colors = PERSONA_COLORS[draft.persona] || PERSONA_COLORS.enterprise;
+  const icon = PLATFORM_ICONS[draft.platform] || '•';
+  const limit = CHAR_LIMITS[draft.platform] || 500;
+  const charCount = (draft.text || '').length;
+  const overLimit = charCount > limit;
+
+  const statusMap = {
+    draft: '<span class="status-badge px-2 py-0.5 rounded-full bg-gray-700 text-gray-300 uppercase">Draft</span>',
+    approved: '<span class="status-badge px-2 py-0.5 rounded-full bg-emerald-900/50 text-emerald-300 uppercase">Approved</span>',
+    rejected: '<span class="status-badge px-2 py-0.5 rounded-full bg-red-900/50 text-red-300 uppercase">Rejected</span>',
+    scheduled: '<span class="status-badge px-2 py-0.5 rounded-full bg-blue-900/50 text-blue-300 uppercase">Scheduled</span>',
+  };
+
+  const actions = draft.status === 'draft' ? `
+    <div class="flex gap-2 pt-2">
+      <button onclick="approve(${idx})" class="flex-1 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-sm font-medium transition-colors">✓ Approve</button>
+      <button onclick="reject(${idx})" class="flex-1 py-2 bg-red-600/80 hover:bg-red-500 rounded-lg text-sm font-medium transition-colors">✗ Reject</button>
+    </div>
+  ` : draft.status === 'approved' ? `
+    <div class="flex gap-2 pt-2">
+      <button onclick="revert(${idx})" class="flex-1 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors">↩ Revert to Draft</button>
+    </div>
+  ` : '';
+
+  return `
+    <div class="post-card fade-in flex gap-0 bg-gray-900 rounded-xl border ${colors.border} overflow-hidden" data-status="${draft.status}" data-persona="${draft.persona}">
+      <div class="persona-stripe ${colors.stripe} flex-shrink-0"></div>
+      <div class="flex-1 p-4">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <span class="w-7 h-7 flex items-center justify-center rounded-lg ${colors.badge} text-xs font-bold">${icon}</span>
+            <span class="text-sm font-medium ${colors.text}">${draft.persona_label || draft.persona}</span>
+            <span class="text-xs text-gray-600">${draft.handle || ''}</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="char-count text-xs ${overLimit ? 'text-red-400 font-medium' : 'text-gray-600'}">${charCount}/${limit}</span>
+            ${statusMap[draft.status] || ''}
+          </div>
+        </div>
+        <div
+          contenteditable="${draft.status === 'draft' ? 'true' : 'false'}"
+          class="text-sm text-gray-200 leading-relaxed whitespace-pre-wrap mb-2 min-h-[2rem] ${draft.status === 'draft' ? 'cursor-text hover:bg-gray-800/50 rounded px-1 -mx-1' : ''}"
+          oninput="updateText(${idx}, this)"
+          data-idx="${idx}"
+        >${escapeHtml(draft.text || '')}</div>
+        ${draft.hashtags?.length ? `<div class="text-xs text-gray-500 mb-2">${draft.hashtags.join(' ')}</div>` : ''}
+        ${draft.violations?.length ? `<div class="text-xs text-amber-400 mb-2">⚠️ ${draft.violations.join(', ')}</div>` : ''}
+        ${draft.scheduled_time ? `<div class="text-xs text-gray-500 mb-2">📅 ${new Date(draft.scheduled_time).toLocaleString()}</div>` : ''}
+        ${actions}
+      </div>
+    </div>
+  `;
+}
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function render() {
+  const container = document.getElementById('posts');
+  const filtered = currentFilter === 'all'
+    ? drafts
+    : drafts.filter(d => d.status === currentFilter);
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div class="text-center py-16 text-gray-500">
+        <p class="text-lg">No ${currentFilter === 'all' ? '' : currentFilter + ' '}posts</p>
+        <p class="text-sm mt-1">Generate content via CLI: python3 cli.py generate</p>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = filtered.map((d, i) => {
+    const realIdx = drafts.indexOf(d);
+    return renderCard(d, realIdx);
+  }).join('');
+
+  updateStats();
+}
+
+function filterBy(status) {
+  currentFilter = status;
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.toggle('bg-gray-800', btn.dataset.filter === status);
+    btn.classList.toggle('text-white', btn.dataset.filter === status);
+    btn.classList.toggle('text-gray-400', btn.dataset.filter !== status);
+  });
+  render();
+}
+
+function updateText(idx, el) {
+  drafts[idx].text = el.textContent;
+  saveDrafts();
+}
+
+function approve(idx) {
+  drafts[idx].status = 'approved';
+  saveDrafts();
+  render();
+  showToast('✅ Post approved');
+}
+
+function reject(idx) {
+  drafts[idx].status = 'rejected';
+  saveDrafts();
+  render();
+  showToast('❌ Post rejected');
+}
+
+function revert(idx) {
+  drafts[idx].status = 'draft';
+  saveDrafts();
+  render();
+  showToast('↩ Reverted to draft');
+}
+
+function approveAll() {
+  let count = 0;
+  drafts.forEach(d => { if (d.status === 'draft') { d.status = 'approved'; count++; } });
+  saveDrafts();
+  render();
+  showToast(`✅ Approved ${count} posts`);
+}
+
+function saveDrafts() {
+  // Save to localStorage as backup (for standalone use)
+  localStorage.setItem('bragi_drafts', JSON.stringify({ drafts, updated_at: new Date().toISOString() }));
+
+  // Try to save back to file via fetch (works when served locally)
+  // In A2UI/canvas mode, the parent can read state via postMessage
+  if (window.parent !== window) {
+    window.parent.postMessage({ type: 'bragi_drafts_update', drafts }, '*');
+  }
+}
+
+async function loadDrafts() {
+  // Try to load from file first
+  try {
+    const resp = await fetch('drafts.json');
+    if (resp.ok) {
+      const data = await resp.json();
+      drafts = data.drafts || [];
+      render();
+      return;
+    }
+  } catch (e) {}
+
+  // Fall back to localStorage
+  try {
+    const stored = localStorage.getItem('bragi_drafts');
+    if (stored) {
+      const data = JSON.parse(stored);
+      drafts = data.drafts || [];
+      render();
+      return;
+    }
+  } catch (e) {}
+
+  // Fall back to demo data
+  drafts = [
+    { id: 'demo1', text: 'Shipped agent fleet management today. The compounding is real.', platform: 'twitter', persona: 'enterprise', persona_label: 'Enterprise', handle: '@NathanStvnsn', account_id: '13496', status: 'draft', hashtags: [], violations: [], created_at: new Date().toISOString() },
+    { id: 'demo2', text: 'Running local LLMs on a Mac Mini and the quality keeps getting better. Self-hosted AI is no longer a compromise. 🔧 #OpenSource #LocalAI', platform: 'threads', persona: 'blend', persona_label: 'Blend', handle: '@n8.made', account_id: '4948', status: 'draft', hashtags: ['#OpenSource', '#LocalAI'], violations: [], created_at: new Date().toISOString() },
+    { id: 'demo3', text: 'At ForwardLane, we\'ve been building AI systems for regulated industries since before it was trendy.\n\nThree principles that haven\'t changed:\n1. Compliance is a design constraint, not a blocker\n2. The best AI disappears into the workflow\n3. Trust is earned through transparency\n\n#EnterpriseAI #FinTech', platform: 'linkedin', persona: 'professional', persona_label: 'Professional', handle: 'Nathan Stevenson', account_id: '14262', status: 'draft', hashtags: ['#EnterpriseAI', '#FinTech'], violations: [], created_at: new Date().toISOString() },
+  ];
+  render();
+}
+
+// Listen for external draft injection (A2UI)
+window.addEventListener('message', (e) => {
+  if (e.data?.type === 'bragi_load_drafts' && e.data.drafts) {
+    drafts = e.data.drafts;
+    render();
+  }
+});
+
+// Init
+loadDrafts();
+</script>
+</body>
+</html>

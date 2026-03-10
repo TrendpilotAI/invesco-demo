@@ -104,7 +104,7 @@ class SnowflakeProvider:
             return cached
 
         # TODO-312: Offload blocking Snowflake I/O to a thread pool so we don't block the asyncio event loop
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         result = await loop.run_in_executor(None, self._execute_query_sync, sql, params)
 
         self._total_credits += result.cost or 0.0
@@ -124,7 +124,7 @@ class SnowflakeProvider:
     async def test_connection(self) -> bool:
         # TODO-312: Offload blocking call to thread pool
         try:
-            loop = asyncio.get_event_loop()
+            loop = asyncio.get_running_loop()
             return await loop.run_in_executor(None, self._test_connection_sync)
         except Exception:
             return False
@@ -187,7 +187,7 @@ class SnowflakeProvider:
         if not data:
             return 0
         # TODO-312: Offload blocking Snowflake I/O to thread pool
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         return await loop.run_in_executor(None, self._write_back_sync, table, data)
 
     async def close(self) -> None:
@@ -197,8 +197,82 @@ class SnowflakeProvider:
 
     # -- Cortex AI helpers -------------------------------------------------
 
+    # SS-3: Allowlist of valid Snowflake Cortex model names.
+    # Only these exact strings may be passed to Cortex SQL functions.
+    # Update this set when Snowflake adds new Cortex models.
+    CORTEX_COMPLETE_MODELS: frozenset[str] = frozenset([
+        # Snowflake proprietary
+        "snowflake-arctic",
+        "snowflake-arctic-instruct",
+        # Meta Llama family
+        "llama2-70b-chat",
+        "llama3-8b",
+        "llama3-70b",
+        "llama3.1-8b",
+        "llama3.1-70b",
+        "llama3.1-405b",
+        "llama3.2-1b",
+        "llama3.2-3b",
+        # Mistral family
+        "mistral-7b",
+        "mistral-large",
+        "mistral-large2",
+        "mixtral-8x7b",
+        # Reka
+        "reka-core",
+        "reka-flash",
+        # AI21
+        "jamba-instruct",
+        "jamba-1.5-mini",
+        "jamba-1.5-large",
+        # Google
+        "gemma-7b",
+    ])
+
+    CORTEX_EMBED_MODELS: frozenset[str] = frozenset([
+        "snowflake-arctic-embed-m",
+        "snowflake-arctic-embed-l",
+        "e5-base-v2",
+        "multilingual-e5-large",
+        "nv-embed-qa-4",
+        "voyage-multilingual-2",
+    ])
+
+    @classmethod
+    def _validate_cortex_model(cls, model: str, *, kind: str = "complete") -> str:
+        """Validate model name against the appropriate Cortex allowlist.
+
+        Args:
+            model: Model name to validate.
+            kind: ``"complete"`` or ``"embed"`` — selects which allowlist to check.
+
+        Raises:
+            ValueError: If *model* is ``None``, empty, or not in the allowlist.
+        """
+        if not model or not isinstance(model, str):
+            raise ValueError("Model name must be a non-empty string")
+
+        allowlist = (
+            cls.CORTEX_COMPLETE_MODELS if kind == "complete"
+            else cls.CORTEX_EMBED_MODELS
+        )
+
+        if model not in allowlist:
+            raise ValueError(
+                f"Invalid Cortex {kind} model {model!r}. "
+                f"Allowed models: {sorted(allowlist)}"
+            )
+        return model
+
     async def cortex_complete(self, model: str, prompt: str) -> str:
-        """Call Snowflake Cortex COMPLETE function."""
+        """Call Snowflake Cortex COMPLETE function.
+
+        The model name is validated against an allowlist before being
+        placed into SQL.  The prompt is always parameterized.
+        """
+        self._validate_cortex_model(model, kind="complete")
+        # SS-3 FIX: model is allowlist-validated above so it is safe to
+        # interpolate.  The prompt is bound via %s parameterization.
         result = await self.execute_query(
             f"SELECT SNOWFLAKE.CORTEX.COMPLETE('{model}', %s) AS response",
             [prompt],
@@ -206,7 +280,14 @@ class SnowflakeProvider:
         return result.rows[0]["RESPONSE"] if result.rows else ""
 
     async def cortex_embed(self, model: str, text: str) -> list[float]:
-        """Call Snowflake Cortex EMBED_TEXT function."""
+        """Call Snowflake Cortex EMBED_TEXT function.
+
+        The model name is validated against an allowlist before being
+        placed into SQL.  The text is always parameterized.
+        """
+        self._validate_cortex_model(model, kind="embed")
+        # SS-3 FIX: model is allowlist-validated above so it is safe to
+        # interpolate.  The text is bound via %s parameterization.
         result = await self.execute_query(
             f"SELECT SNOWFLAKE.CORTEX.EMBED_TEXT_768('{model}', %s) AS embedding",
             [text],
