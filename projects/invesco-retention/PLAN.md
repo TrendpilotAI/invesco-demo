@@ -1,5 +1,5 @@
 # PLAN.md — Invesco Retention Execution Plan
-*Updated by Judge Agent v2 | 2026-03-09*
+*Updated by Judge Agent v2 | 2026-03-10*
 
 ## Architecture Overview
 
@@ -37,6 +37,14 @@ The Invesco retention demo is a **static Next.js 16 app** deployed on GitHub Pag
 **Deployment:** `next build` → static export → GitHub Pages auto-deploy
 **Demo URL:** https://trendpilotai.github.io/invesco-demo/
 **Persona URLs:** ?demo=megan | ?demo=craig
+
+---
+
+## Current Status (2026-03-10)
+**Completed:** INV-001 (SF Lightning chrome), INV-002 (ROI panel), INV-003 (persona URLs), INV-004 (demo reset), INV-005 (PostHog), INV-006 (CVE fix), INV-007 (demo script)
+**Scores:** Revenue 10 | Strategic 10 | Completeness 8 | Urgency 10 | Effort Remaining 7
+**Open P0 TODOs:** #864 (self-serve narration), #865 (ROI calculator), #423 (Seismic content), #321 (private repo), #332 (iPhone test), #333 (exec brief), #334 (objections), #340 (follow-up templates), #380 (E2E tests)
+**Estimated time to demo-ready:** 6-8 hours of focused coding
 
 ---
 

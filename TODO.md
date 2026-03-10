@@ -1,6 +1,7 @@
 # TODO.md — Master Project Plan
 
-> Auto-monitored by Honey's cron loops. Last updated: 2026-03-10 04:12 UTC (todo-progress: NR-001 ✅ smartAuth quota enforcement wired to pipeline routes, NR-003 ✅ billing/usage endpoint verified already live) (daily-judge-swarm: 15 Judge Agents completed across all top projects. 15 BRAINSTORM.md + 15 PLAN.md + 15 AUDIT.md files refreshed. Score changes: invesco-retention ↑8.8→9.1, forwardlane-backend ↑8.3→8.6, signal-builder-backend promoted to #3 at 7.9, signal-studio-auth ↓6.9→6.7, Second-Opinion ↓6.6→6.3. CRITICAL security flagged: Ultrafone API keys still exposed in git. 18 stale orchestrator tasks pruned by cleanup agent.)
+> Auto-monitored by Honey's cron loops. Last updated: 2026-03-10 08:07 UTC (todo-progress: #897 ✅ logo.png + RSS link, #898 ✅ branded 404 page for signalhaus-website. Spawned 2 parallel Sonnet agents: NarrativeReactor P0 security batch #878-881 (scrypt hashing + helmet + db singleton + genkit pinning), signalhaus-website #826 (Upstash Redis rate limiter fix).) (judge-signalhaus-website v2: re-scored [revenue:7, strategic:8, completeness:7, urgency:7↑, effort_remaining:7]. Urgency bumped: in-memory rate limiter is LIVE BUG on Vercel. New findings: logo.png missing (JSON-LD 404), ROI calculate() not extracted for testing, no branded 404 page, RSS feed unlinked. Created TODOs 894-899. All three analysis files (BRAINSTORM/PLAN/AUDIT) refreshed.)
+> Previously: 2026-03-10 04:12 UTC (todo-progress: NR-001 ✅ smartAuth quota enforcement wired to pipeline routes, NR-003 ✅ billing/usage endpoint verified already live) (daily-judge-swarm: 15 Judge Agents completed across all top projects. 15 BRAINSTORM.md + 15 PLAN.md + 15 AUDIT.md files refreshed. Score changes: invesco-retention ↑8.8→9.1, forwardlane-backend ↑8.3→8.6, signal-builder-backend promoted to #3 at 7.9, signal-studio-auth ↓6.9→6.7, Second-Opinion ↓6.6→6.3. CRITICAL security flagged: Ultrafone API keys still exposed in git. 18 stale orchestrator tasks pruned by cleanup agent.)
 > Previously: 2026-03-08 07:12 UTC (judge-signalhaus-website: re-scored [revenue:7, strategic:8, completeness:7, urgency:5, effort_remaining:7], refreshed BRAINSTORM/PLAN/AUDIT via swarm agents. Key gaps: Redis rate limiting, CAPTCHA, CRM/HubSpot, newsletter, service detail pages, Cal.com booking, Playwright E2E, 0% test coverage.)
 > Previously: 2026-03-08 07:08 UTC (judge-signal-studio-data-provider: re-scored [revenue:6, strategic:8, completeness:7, urgency:5, effort_remaining:7], refreshed BRAINSTORM/PLAN/AUDIT, added 14 new TODOs covering SQL injection fix, Snowflake threading, DRY violations, DuckDB provider, Oracle pooling, integration tests, mypy strict, DDL blocklist, SecretStr, BigQuery stub.)
 > Previously: 2026-03-08 07:03 UTC (judge-NarrativeReactor: scored NarrativeReactor [revenue:8, strategic:9, completeness:8, urgency:6, effort_remaining:7], refreshed BRAINSTORM/PLAN/AUDIT, created NR-001 through NR-023 covering quota enforcement, metered billing, LinkedIn publishing, analytics dashboard, E2E tests, SQLite indexes, asyncHandler refactor, and podcast/white-label platform expansion.)
@@ -314,14 +315,32 @@
 - [ ] Dashboard integration (Agent Ops Center)
 
 ### NARRATIVE-001: NarrativeReactor
-- **Why:** Content engine for SignalHaus/ForwardLane (composite 5.8, 30+ services built)
-- **Status:** 🟡 Partially built — TypeScript/Express + Google Genkit, blocked on broken tests
-- **Tasks:**
-- [ ] Fix broken tests (currently blocking CI) — top priority
-- [ ] Wire real DB persistence for content store (currently in-memory)
-- [ ] Configure deployment (Railway or Vercel)
-- [ ] Wire social OAuth flows (scaffolded but not connected to real providers)
-- [ ] Wire real LLM calls for content generation (Genkit + Claude/Gemini configured but stubs remain)
+- **Why:** AI content SaaS for SignalHaus — multi-tenant Stripe billing live, near production-ready (composite 7.6)
+- **Status:** 🟢 Advanced — 287 tests, CI/CD, Docker+Railway, OpenAPI, React dashboard, billing live
+- **Updated:** 2026-03-10 by Judge Agent v2
+- **CRITICAL SECURITY (P0):**
+  - [ ] #878 Replace SHA-256 with scrypt for API key hashing (`src/services/tenants.ts` line 131) ⏳ Agent spawned 2026-03-10 08:07 UTC
+  - [ ] #879 Add helmet middleware for security headers (CSP, HSTS, X-Frame-Options) ⏳ Agent spawned 2026-03-10 08:07 UTC
+  - [ ] #880 Fix tenants.ts — migrate from better-sqlite3 to db.ts singleton (dual SQLite connections!) ⏳ Agent spawned 2026-03-10 08:07 UTC
+  - [ ] #881 Pin wildcard genkit deps (* → ^X.Y.Z semver) ⏳ Agent spawned 2026-03-10 08:07 UTC
+- **P1 Quality:**
+  - [ ] #882 Add ESLint config to project root (currently only in /dashboard)
+  - [ ] #883 Add true supertest HTTP E2E tests (existing e2e tests are mocked unit tests)
+  - [ ] #599 Add pino structured logger (replace 18+ console.log in services)
+  - [ ] #600 Add SQLite indexes on brand_id, status, scheduled_at, api_key_hash
+  - [ ] #602 Content repurposing pipeline (blog → Twitter → LinkedIn → newsletter)
+- **P2 Performance:**
+  - [ ] #884 LRU cache for content generation (same prompt within 5min → skip AI call)
+  - [ ] #885 Async video job queue (Fal.ai video currently blocks HTTP thread 30-120s)
+  - [ ] #603 Pagination middleware for /api/content, /api/campaigns, /api/schedules
+- **Completed ✅:**
+  - ✅ Multi-tenant Stripe billing (checkout/portal/webhooks/quota enforcement)
+  - ✅ SQLite WAL singleton (db.ts)
+  - ✅ JWT sessions with exp claim
+  - ✅ React dashboard auth
+  - ✅ GitHub Actions CI + Docker + Railway
+  - ✅ OpenAPI/Swagger docs
+  - ✅ Sentry error monitoring
 
 ### SECOND-OPP-001: Second-Opinion Post-Competition Hardening
 - **Why:** Submitted to Kaggle MedGemma challenge (Feb 24), now needs productionization (composite 5.1)
@@ -658,6 +677,15 @@
 - [ ] **#447** [P2] FAQ accordion + FAQPage JSON-LD on pricing page [1.5h] → TODO-447
 - [ ] **#448** [P2] Author bio page /team/nathan-stevenson + E-E-A-T [1.5h] → TODO-448
 
+### 🔴 Critical — v2 additions (2026-03-10)
+- [x] **#897** [P0] Fix missing logo.png + link RSS feed in `<head>` [15min] → ✅ DONE 2026-03-10 — logo.png created (purple brand), RSS link added to layout.tsx head, commit 068c124
+- [x] **#898** [P0] Branded 404 page (not-found.tsx) [30min] → ✅ DONE 2026-03-10 — "Signal Lost in the Noise" branded 404 with violet gradient, quick-links, commit 068c124
+- [ ] **#826** [P0] Upstash Redis rate limiter (in-memory Map LIVE BUG on Vercel) [1h] → TODO-826 ⏳ Agent spawned 2026-03-10 08:07 UTC
+- [ ] **#894** [P1] Vitest unit test setup (validateContact, ROI math, MDX parsing) [3h] → TODO-894
+- [ ] **#899** [P1] Extract ROI calculate() to src/lib/roi.ts (prereq for testing) [30min] → TODO-899
+- [ ] **#895** [P2] Zod validation refactor for contact form [1h] → TODO-895
+- [ ] **#896** [P2] Extract src/lib/seo.ts constants (DRY fix) [30min] → TODO-896
+
 
 ## Signal Studio Frontend (signal-studio-frontend) — Added 2026-02-27
 
@@ -746,7 +774,7 @@
 - [ ] 330: Redis caching for validator hot paths (medium)
 - [ ] 331: Signal webhooks / event system (medium)
 
-## signal-studio-data-provider (added 2026-02-28)
+## signal-studio-data-provider (added 2026-02-28 | rescored 2026-03-10: completeness↑7, urgency↓5, composite=6.8)
 - [x] [P0] Fix JWT SQL injection in supabase_provider.py → TODO 311 ✅ FIXED (commit 98ee5a7, local) — needs manual Bitbucket push
 - [x] [P0] Fix Snowflake sync connector blocking asyncio event loop → TODO 312 ✅ FIXED (commit 98ee5a7, local) — needs manual Bitbucket push
 - [x] [P1] Fix table-name SQL injection in write_back() across all providers → TODO 313 ✅ 2026-03-01 — _validate_identifier() added to oracle_provider.py + snowflake_provider.py, validates table+columns before INSERT, 13 tests pass (commit 6fa4272)
@@ -773,9 +801,10 @@
 - [ ] [MED] Add schema diff event emission on SchemaRegistry.refresh() → TODO 730
 - [ ] [MED] Add tenacity retry logic across all providers → TODO 731
 - [ ] [MED] Add secrets manager integration (AWS SSM / Vault / GCP) → TODO 732
-- [ ] [P0] Fix SQL injection in Snowflake Cortex path (f-string user_query interpolation) → AUDIT-2026-03-08
-- [ ] [P0] Fix Snowflake threading (connections not thread-safe; wrap in asyncio.to_thread per-coroutine) → AUDIT-2026-03-08
-- [ ] [P1] Use Pydantic SecretStr for all password fields in config.py → AUDIT-2026-03-08
+- [ ] [P0] Fix SQL injection in Snowflake Cortex path (f-string model name interpolation) → TODO-469/861/AUDIT-2026-03-10
+- [ ] [P0] Fix deprecated asyncio.get_event_loop() in snowflake_provider.py (3 occurrences) → TODO-898
+- [ ] [P0] Fix numpy/pandas binary incompatibility — blocks all tests → TODO-899
+- [ ] [P1] Use Pydantic SecretStr for all password fields in config.py → TODO-590/AUDIT-2026-03-10
 - [ ] [P1] Remove unused `lru_cache` import in snowflake_provider.py line 6 → AUDIT-2026-03-08
 - [ ] [P1] Extract _build_schema_info() DRY violation to providers/_utils.py → AUDIT-2026-03-08
 - [ ] [P1] Extract shared _execute_with_retry() helper to providers/_utils.py → AUDIT-2026-03-08
@@ -986,26 +1015,34 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 - [ ] [P2/S] Update jest to patch glob CVE (DEP-003)
 - [ ] [QUICK] Archive 30+ stale root-level .md files (PR-*.md, PHASE-*.md, etc.)
 
-## signal-studio-auth (2026-03-08 — Judge Agent v2 refresh)
+## signal-studio-auth (2026-03-10 — Planning Agent v2 refresh)
 **Scores:** revenue=7, strategic=8, completeness=7, urgency=6, effort_remaining=7
-**Summary:** FastAPI auth proxy with Redis token rotation + theft detection (603 ✅), RBAC, password reset (605 ✅), org mgmt. Deployment-ready but missing: Docker, CI/CD, MFA, audit logging, security headers.
-**New Findings (AUDIT.md):** Dead `_build_rate_limiter()` code, 4 overlapping rate limiter abstractions, IP spoofing risk in `_client_ip()`, Redis race condition in token rotation, duplicate `_get_caller_role()`.
+**Summary:** FastAPI auth proxy with Redis token rotation + theft detection (603 ✅), RBAC, password reset (605 ✅), org mgmt. Recent: SSA-001 (dead code), SSA-002 (security headers), SSA-003 (dep pinning) all complete.
+**New Findings (2026-03-10):** Duplicate security headers in main.py, `_rotate_family_token()` dead code in /refresh, password validator missing decorator, X-Forwarded-For spoofable, Redis scan not implemented in update_password.
+**Plan:** `/data/workspace/projects/signal-studio-auth/PLAN.md`
 
-### P0 — Critical
-- [ ] [P0/XS] #SSA-001 Remove dead `_build_rate_limiter()` function from auth_routes.py (~70 LOC dead code) ⏳ Agent spawned 2026-03-08 08:04 UTC
-- [x] [P0/XS] #SSA-002 Add security headers middleware (HSTS, CSP, X-Frame-Options, X-Content-Type-Options) ✅ DONE 2026-03-09 — SecurityHeadersMiddleware, 7/7 tests pass, commit 790ce14
-- [ ] [P0/XS] #SSA-003 Pin dependency versions + run pip-audit (requirements.txt uses `>=` ranges) ⏳ Agent spawned 2026-03-08 08:04 UTC
-- [ ] [P0/S] #SSA-004 Create Dockerfile + docker-compose.yml (no deployment config exists)
-- [ ] [P0/M] #SSA-005 GitHub Actions CI/CD (pytest + ruff + mypy + Docker build on PR)
+### P0 — Bug Fixes (Do Now)
+- [x] [P0/XS] #SSA-001 Remove dead `_build_rate_limiter()` function ✅ DONE
+- [x] [P0/XS] #SSA-002 Add security headers middleware ✅ DONE 2026-03-09 — commit 790ce14
+- [x] [P0/XS] #SSA-003 Pin dependency versions + run pip-audit ✅ DONE
+- [ ] [P0/XS] #831 Remove duplicate inline security headers in main.py (overwrites class middleware with weaker CSP) → `831-pending-high-signal-studio-auth-remove-duplicate-security-headers.md`
+- [ ] [P0/S] #833 Fix `PasswordUpdateRequest.validate_password_complexity()` — add `@field_validator`, remove inline duplication → `833-pending-high-signal-studio-auth-fix-password-validator.md`
+- [ ] [P0/S] #832 Refactor `/refresh` to call `_rotate_family_token()` — currently duplicates all logic inline → `832-pending-high-signal-studio-auth-use-rotate-family-token-in-refresh.md`
 
-### P1 — High Priority
-- [ ] [P1/S] #SSA-006 Fix IP spoofing in `_client_ip()` — add TRUSTED_PROXIES env var validation
-- [ ] [P1/S] #SSA-007 Fix Redis race condition in token rotation (use Lua script or pipeline for atomic swap)
-- [ ] [P1/S] #SSA-008 Account lockout policy (10 failed logins → Redis-backed lockout, admin unlock endpoint)
-- [ ] [P1/M] #SSA-009 Audit logging service (structured JSON for every auth event: login, theft, lockout)
-- [ ] [P1/XS] #SSA-010 Pre-commit hooks (pyproject.toml + .pre-commit-config.yaml for ruff + mypy)
+### P1 — Foundation (This Sprint)
+- [ ] [P1/S] #828 Fix rate limiter — RedisStorage + SlidingWindowRateLimiter created per-request → `828-pending-high-signal-studio-auth-fix-ratelimiter-duplication.md`
+- [ ] [P1/S] #834 Add startup env validation — SUPABASE_URL/SERVICE_KEY/JWT_SECRET fail fast if missing → `834-pending-high-signal-studio-auth-startup-env-validation.md`
+- [ ] [P1/XS] #835 Create .env.example file → `835-pending-medium-signal-studio-auth-env-example.md`
+- [ ] [P1/S] #826 Add CORS middleware + ALLOWED_ORIGINS env var → `826-pending-critical-signal-studio-auth-cors-middleware.md`
+- [ ] [P1/S] #827 Dockerfile + docker-compose.yml → `827-pending-critical-signal-studio-auth-dockerfile.md`
+- [ ] [P1/S] #830 GitHub Actions CI (pytest, ruff, bandit, pip-audit) → `830-pending-high-signal-studio-auth-ci-pipeline.md`
+- [ ] [P1/S] #838 Fix X-Forwarded-For spoofing — add TRUSTED_PROXY_IPS validation → `838-pending-high-signal-studio-auth-trusted-proxy-ips.md`
+- [ ] [P1/M] #836 Admin session revocation: DELETE /auth/admin/users/{user_id}/sessions → `836-pending-high-signal-studio-auth-admin-session-revocation.md`
+- [ ] [P1/M] #837 Implement Redis session scan in update_password() — old tokens survive 7 days → `837-pending-high-signal-studio-auth-redis-session-scan-update-password.md`
+- [ ] [P1/M] #829 Structured audit logging (JSON events for all auth actions) → `829-pending-high-signal-studio-auth-audit-logging.md`
 
 ### P2 — Medium Priority
+- [ ] [P2/M] #839 Test gaps: dual-mode auth, concurrent refresh race, token expiry mid-rotation → `839-pending-medium-signal-studio-auth-test-gaps.md`
 - [ ] [P2/M] #SSA-011 MFA/TOTP endpoints (enroll, verify, unenroll via Supabase /auth/v1/factors)
 - [ ] [P2/S] #SSA-012 Session management API (GET/DELETE /auth/sessions — list/revoke active sessions)
 - [ ] [P2/S] #SSA-013 Consolidate rate limiter into middleware/rate_limit.py (remove 4-abstraction mess)
@@ -1496,3 +1533,28 @@ _Added by Judge Agent v2 — 2026-03-08_
 - 🚨 [858] CRITICAL: Rotate exposed API keys (Groq/Deepgram/Twilio/Fish Audio) in .env.development
 - 🚨 [859] CRITICAL: Purge .env.development from git history (git-filter-repo)
 - 🔥 [860] Deploy backend to Railway (railway.toml ready)
+
+## Ultrafone — Added 2026-03-10
+
+- [ ] **P0** Twilio webhook signature validation (878-pending-p0-ultrafone-twilio-webhook-signature-validation.md)
+- [ ] **P0** Rate limiting on webhook endpoints (879-pending-p0-ultrafone-rate-limiting-webhook.md)
+- [ ] **P1** Multi-tenant user profiles — remove hardcoded `user_id="nathan"` (880-pending-p1-ultrafone-multi-tenant-user-profiles.md)
+- [ ] **P1** Consolidate 3 TTS services into unified provider (881-pending-p1-ultrafone-tts-provider-abstraction.md)
+- [ ] **P1** Zapier/Make.com webhook bridge (882-pending-p1-ultrafone-zapier-webhook-bridge.md)
+- [ ] **P2** Android app via Flutter cross-platform build (883-pending-p2-ultrafone-android-app.md)
+
+## core-entityextraction — Added 2026-03-10
+
+**Scores:** revenue_potential=7 | strategic_value=9 | completeness=7 | urgency=5 | effort_remaining=7 | composite=7.0
+
+### P0 — Critical Bugs & Missing Features
+- [ ] **P0/XS** Fix duplicate filter block bug in match_patterns() (#890)
+- [ ] **P0/S**  Add GET /fixed_lists endpoint — no way to query loaded entities (#891)
+- [ ] **P0/M**  Add ML/spaCy NER integration tests — zero test coverage for NER endpoints (#892)
+- [ ] **P0/XS** Fix persistence.py connection leak in try/else pattern (#893)
+
+### P1 — Important Fixes
+- [ ] **P1/S**  Fix HTTP status code inconsistency — errors return 200 with status:400 body (#894)
+- [ ] **P1/M**  Migrate persistence layer to asyncpg (async PostgreSQL) (#895)
+- [ ] **P1/XS** Remove dead code: _locate_entities(), wire Pydantic models to fixed_list endpoints (#896)
+- [ ] **P1/XS** Env-based rate limits + entity_types_list allowlist validation (#897)

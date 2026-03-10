@@ -1,0 +1,42 @@
+{
+  "repos": {
+    "forwardlane-backend": {
+      "starting_coverage": 12.5,
+      "current_coverage": 12.5,
+      "delta": 0.0,
+      "key_modules_covered": [
+        "auth",
+        "api-views"
+      ],
+      "blockers": [],
+      "framework": "pytest",
+      "history": [],
+      "first_seen": "2026-03-10T09:54:31.399893+00:00"
+    },
+    "signal-builder-backend": {
+      "starting_coverage": 8.0,
+      "current_coverage": 8.0,
+      "delta": 0.0,
+      "key_modules_covered": [
+        "translators"
+      ],
+      "blockers": [],
+      "framework": "pytest",
+      "history": [],
+      "first_seen": "2026-03-10T09:54:31.468416+00:00"
+    },
+    "signal-studio": {
+      "starting_coverage": 5.2,
+      "current_coverage": 5.2,
+      "delta": 0.0,
+      "key_modules_covered": [
+        "middleware"
+      ],
+      "blockers": [],
+      "framework": "vitest",
+      "history": [],
+      "first_seen": "2026-03-10T09:54:31.528359+00:00"
+    }
+  },
+  "last_updated": "2026-03-10T09:54:31.528419+00:00"
+}

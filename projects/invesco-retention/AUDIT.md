@@ -1,5 +1,5 @@
 # AUDIT.md — Code Quality Audit
-*Updated by Judge Agent v2 | 2026-03-09*
+*Updated by Judge Agent v2 | 2026-03-10*
 
 ## Summary
 
@@ -61,11 +61,14 @@ Code quality is **good for a demo app** — clean architecture, modern stack (Ne
 ### 3b. Public GitHub Repo with Business Context
 **Severity:** Medium | **Repo:** `TrendpilotAI/invesco-demo`
 - Demo is public on GitHub under `TrendpilotAI` org
-- Review for: Invesco employee names (Megan Weber, Craig Lieb, Brian Kiley) in code
-- `?demo=megan` and `?demo=craig` URL params may be fine (just persona labels) but verify data doesn't include actual employee details
-- Internal deal context (deal size, timeline) should NOT be in public code comments
-- **Fix:** Audit all `.ts/.tsx` files for proper nouns + deal details; move sensitive docs to private repo
-- **Command:** `grep -r "Megan\|Craig\|Brian\|Kiley\|Weber\|Lieb\|300K\|retention" src/ --include="*.ts" --include="*.tsx"`
+- **CONFIRMED:** Real Invesco employee names found in public code:
+  - `src/lib/mock-data.ts:383` — `name: 'Megan Weber'` (actual champion)
+  - `src/lib/mock-data.ts:406` — `name: 'Craig Lieb'` (actual champion)
+  - `src/lib/posthog.ts` — comment mentions "Nathan/Megan to monitor Brian's session"
+- **Risk:** If Invesco discovers their employee names are in a public demo repo, it could derail the deal
+- **Fix (TODO #321):** Rename demo personas to generic names (e.g., "Alex Johnson" / "Taylor Smith") OR make repo private
+- **Immediate action:** `git mv` to private repo is fastest; rename personas as follow-up
+- **Command to verify clean:** `grep -rn "Weber\|Lieb\|Kiley\|Vanessa" src/ --include="*.ts" --include="*.tsx"`
 
 ### 3c. No Authentication on Demo URL
 **Severity:** Low (intentional for demo)

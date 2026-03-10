@@ -1,0 +1,126 @@
+{
+  "_comment": "4. High-Value Coverage Priority — modules ranked by business risk",
+  "priority_tiers": {
+    "critical": {
+      "description": "Must have coverage — security, auth, money, data integrity",
+      "target_coverage": 90,
+      "modules": [
+        {
+          "name": "auth",
+          "repos": ["forwardlane-backend", "signal-studio", "signal-studio-auth", "signal-builder-backend"],
+          "patterns": ["**/auth/**", "**/login/**", "**/session/**", "**/jwt/**", "**/saml/**"],
+          "reason": "Authentication bypass = full system compromise"
+        },
+        {
+          "name": "tenant-isolation",
+          "repos": ["forwardlane-backend", "signal-builder-backend", "signal-studio"],
+          "patterns": ["**/tenant/**", "**/org_id/**", "**/organization/**", "**/permissions/**"],
+          "reason": "Cross-tenant data leak = catastrophic for enterprise clients"
+        },
+        {
+          "name": "meeting-prep",
+          "repos": ["forwardlane-backend", "signal-studio"],
+          "patterns": ["**/meeting_prep/**", "**/meeting-prep/**", "**/easy_button/**"],
+          "reason": "Core Invesco demo deliverable — Craig Lieb's #1 ask"
+        },
+        {
+          "name": "api-contracts",
+          "repos": ["forwardlane-backend", "signal-builder-backend", "signal-studio"],
+          "patterns": ["**/api/**", "**/views/**", "**/routes/**", "**/endpoints/**"],
+          "reason": "API breakage cascades to all consumers including Salesforce"
+        },
+        {
+          "name": "signal-validation",
+          "repos": ["signal-builder-backend", "signal-studio"],
+          "patterns": ["**/signal/**", "**/validation/**", "**/schema_builder/**", "**/translators/**"],
+          "reason": "Core IP — wrong signals = wrong financial advice"
+        },
+        {
+          "name": "injection-security",
+          "repos": ["signal-builder-backend", "signal-studio", "forwardlane-backend"],
+          "patterns": ["**/sql/**", "**/query/**", "**/nl_query/**", "**/sanitize/**"],
+          "reason": "NL→SQL is the crown jewel — SQL injection = game over"
+        }
+      ]
+    },
+    "high": {
+      "description": "Important for reliability and Invesco demo",
+      "target_coverage": 75,
+      "modules": [
+        {
+          "name": "easy-button",
+          "repos": ["forwardlane-backend", "signal-studio"],
+          "patterns": ["**/easy_button/**", "**/actions/**", "**/dashboard/**"],
+          "reason": "Craig Lieb's primary UX requirement"
+        },
+        {
+          "name": "data-pipeline",
+          "repos": ["forwardlane-backend", "signal-builder-backend"],
+          "patterns": ["**/pipeline/**", "**/etl/**", "**/celery/**", "**/tasks/**"],
+          "reason": "Data freshness drives all downstream features"
+        },
+        {
+          "name": "enrichment",
+          "repos": ["signal-studio-backend"],
+          "patterns": ["**/enrichment/**", "**/waterfall/**"],
+          "reason": "Lead enrichment pipeline — revenue feature"
+        },
+        {
+          "name": "salesforce-endpoints",
+          "repos": ["forwardlane-backend", "signal-studio"],
+          "patterns": ["**/advisor/**", "**/client/**", "**/holding/**", "**/signal/**"],
+          "reason": "Salesforce Apex wrapper will call these directly"
+        }
+      ]
+    },
+    "medium": {
+      "description": "Nice to have — improves confidence but not critical path",
+      "target_coverage": 60,
+      "modules": [
+        {
+          "name": "admin-views",
+          "repos": ["forwardlane-backend", "signal-studio"],
+          "patterns": ["**/admin/**"]
+        },
+        {
+          "name": "reporting",
+          "repos": ["forwardlane-backend"],
+          "patterns": ["**/report/**", "**/analytics/**"]
+        },
+        {
+          "name": "notifications",
+          "repos": ["signal-studio"],
+          "patterns": ["**/notification/**", "**/email/**"]
+        }
+      ]
+    }
+  },
+  "salesforce_tagged_paths": {
+    "_comment": "7. Salesforce Integration Lens — code paths that matter for the Apex/LWC wrapper",
+    "meeting_prep_endpoints": {
+      "repos": ["forwardlane-backend"],
+      "paths": ["api/meeting_prep/", "api/easy_button/"],
+      "sf_component": "MeetingPrepController.cls + meetingPrepBrief.lwc"
+    },
+    "advisor_detail_endpoints": {
+      "repos": ["forwardlane-backend"],
+      "paths": ["api/advisors/", "api/clients/"],
+      "sf_component": "AdvisorDetailController.cls + advisorDashboard.lwc"
+    },
+    "signals_endpoints": {
+      "repos": ["signal-builder-backend", "forwardlane-backend"],
+      "paths": ["api/signals/", "api/signal/"],
+      "sf_component": "SignalController.cls + signalExplorer.lwc"
+    },
+    "actions_endpoints": {
+      "repos": ["forwardlane-backend"],
+      "paths": ["api/actions/", "api/easy_button/"],
+      "sf_component": "ActionController.cls + easyButton.lwc"
+    },
+    "auth_session": {
+      "repos": ["forwardlane-backend", "signal-studio-auth"],
+      "paths": ["api/auth/", "api/token/"],
+      "sf_component": "Named Credential + ForwardLaneAuth.cls"
+    }
+  }
+}
