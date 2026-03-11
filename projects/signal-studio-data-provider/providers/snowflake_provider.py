@@ -197,82 +197,29 @@ class SnowflakeProvider:
 
     # -- Cortex AI helpers -------------------------------------------------
 
-    # SS-3: Allowlist of valid Snowflake Cortex model names.
-    # Only these exact strings may be passed to Cortex SQL functions.
-    # Update this set when Snowflake adds new Cortex models.
-    CORTEX_COMPLETE_MODELS: frozenset[str] = frozenset([
-        # Snowflake proprietary
-        "snowflake-arctic",
-        "snowflake-arctic-instruct",
-        # Meta Llama family
-        "llama2-70b-chat",
-        "llama3-8b",
-        "llama3-70b",
-        "llama3.1-8b",
-        "llama3.1-70b",
-        "llama3.1-405b",
-        "llama3.2-1b",
-        "llama3.2-3b",
-        # Mistral family
-        "mistral-7b",
+    # TODO-469/861: Allowlist of valid Cortex model names to prevent SQL injection
+    _CORTEX_MODEL_ALLOWLIST: frozenset[str] = frozenset([
         "mistral-large",
-        "mistral-large2",
+        "llama3-8b",
         "mixtral-8x7b",
-        # Reka
-        "reka-core",
+        "snowflake-arctic",
         "reka-flash",
-        # AI21
         "jamba-instruct",
-        "jamba-1.5-mini",
-        "jamba-1.5-large",
-        # Google
-        "gemma-7b",
-    ])
-
-    CORTEX_EMBED_MODELS: frozenset[str] = frozenset([
-        "snowflake-arctic-embed-m",
-        "snowflake-arctic-embed-l",
-        "e5-base-v2",
-        "multilingual-e5-large",
-        "nv-embed-qa-4",
-        "voyage-multilingual-2",
     ])
 
     @classmethod
-    def _validate_cortex_model(cls, model: str, *, kind: str = "complete") -> str:
-        """Validate model name against the appropriate Cortex allowlist.
-
-        Args:
-            model: Model name to validate.
-            kind: ``"complete"`` or ``"embed"`` — selects which allowlist to check.
-
-        Raises:
-            ValueError: If *model* is ``None``, empty, or not in the allowlist.
-        """
-        if not model or not isinstance(model, str):
-            raise ValueError("Model name must be a non-empty string")
-
-        allowlist = (
-            cls.CORTEX_COMPLETE_MODELS if kind == "complete"
-            else cls.CORTEX_EMBED_MODELS
-        )
-
-        if model not in allowlist:
+    def _validate_cortex_model(cls, model: str) -> str:
+        """Raise ValueError if model is not in the Cortex allowlist."""
+        if model not in cls._CORTEX_MODEL_ALLOWLIST:
             raise ValueError(
-                f"Invalid Cortex {kind} model {model!r}. "
-                f"Allowed models: {sorted(allowlist)}"
+                f"Invalid Cortex model {model!r}. "
+                f"Must be one of: {sorted(cls._CORTEX_MODEL_ALLOWLIST)}"
             )
         return model
 
     async def cortex_complete(self, model: str, prompt: str) -> str:
-        """Call Snowflake Cortex COMPLETE function.
-
-        The model name is validated against an allowlist before being
-        placed into SQL.  The prompt is always parameterized.
-        """
-        self._validate_cortex_model(model, kind="complete")
-        # SS-3 FIX: model is allowlist-validated above so it is safe to
-        # interpolate.  The prompt is bound via %s parameterization.
+        """Call Snowflake Cortex COMPLETE function."""
+        self._validate_cortex_model(model)
         result = await self.execute_query(
             f"SELECT SNOWFLAKE.CORTEX.COMPLETE('{model}', %s) AS response",
             [prompt],
@@ -280,14 +227,8 @@ class SnowflakeProvider:
         return result.rows[0]["RESPONSE"] if result.rows else ""
 
     async def cortex_embed(self, model: str, text: str) -> list[float]:
-        """Call Snowflake Cortex EMBED_TEXT function.
-
-        The model name is validated against an allowlist before being
-        placed into SQL.  The text is always parameterized.
-        """
-        self._validate_cortex_model(model, kind="embed")
-        # SS-3 FIX: model is allowlist-validated above so it is safe to
-        # interpolate.  The text is bound via %s parameterization.
+        """Call Snowflake Cortex EMBED_TEXT function."""
+        self._validate_cortex_model(model)
         result = await self.execute_query(
             f"SELECT SNOWFLAKE.CORTEX.EMBED_TEXT_768('{model}', %s) AS embedding",
             [text],
