@@ -45,7 +45,7 @@ Build a repeatable GTM stack that can be spun up for any new project in hours, n
 ### For Each New Project:
 ```
 1. Landing Page    → Next.js 15 template (Tailwind, dark mode, hero, features, pricing, CTA)
-2. Auth            → Clerk (already used in FlipMyEra)
+2. Auth            → Better Auth (open source, self-hosted, $0/mo at any scale)
 3. Payment         → Stripe Checkout + Stripe Billing (subscriptions)
 4. Database        → Supabase (or Railway Postgres)
 5. Analytics       → PostHog (already configured)
@@ -66,7 +66,7 @@ project-template/
 ├── app/               # Main application
 ├── scripts/
 │   ├── setup-stripe.sh
-│   ├── setup-clerk.sh
+│   ├── setup-better-auth.sh
 │   ├── setup-posthog.sh
 │   └── generate-video.py
 ├── marketing/
@@ -85,7 +85,7 @@ Content (Bragi social posts)
     ↓
 Landing Page (optimized, A/B tested)
     ↓
-Signup / Free Trial (Clerk auth)
+Signup / Free Trial (Better Auth)
     ↓
 Onboarding Email Sequence (Loops/Instantly)
     ↓
@@ -137,7 +137,7 @@ For each project, Bragi generates:
 ### Phase B: Template Stack (Days 3-5)
 - Build reusable Next.js landing page template
 - Integrate Stripe Checkout boilerplate
-- Integrate Clerk auth boilerplate
+- Integrate Better Auth boilerplate
 - Integrate PostHog boilerplate
 - Test: spin up FlipMyEra landing in <2 hours
 

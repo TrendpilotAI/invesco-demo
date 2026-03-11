@@ -147,3 +147,65 @@ Nathan wants to build a **private AI mesh** on Railway — multiple open-source 
 - All on Railway private networking (*.railway.internal)
 - Candidates: Postiz (social media), n8n (automation), plus other AI agents
 - Think of it as an AI team, not just one assistant
+
+## Major Events — 2026-03-10
+
+### Invesco EasyButton — Full Project Setup
+- **Bitbucket**: `forwardlane/invesco-easybutton` — 98 files (Next.js demo, SF LWC, mobile PWA, synthetic data)
+- **Jira**: IEB project — 29 tickets across 4 phases (IEB-1 to IEB-29)
+- **Confluence**: IEB space — 7 pages (PRD, Architecture, Roadmap, Demo Strategy, etc.)
+- Architecture confirmed: Pure Apex + LWC, no Agentforce/Data Cloud, Named Credential callouts to Railway APIs
+- **Timeline: ~10 days** (was 14; no custom objects/data sync needed)
+- All ForwardLane easy-button APIs wrapped: dashboard, clients, signals, actions, meeting-prep, NL-query
+
+### Signal Studio Security Swarm (3 parallel agents, all completed)
+- **SS-2**: Removed `NEXT_PUBLIC_SKIP_AUTH=true` from production → branch `fix/remove-skip-auth-production` (BB)
+- **SS-3**: SQL injection fix in cortex_complete/cortex_embed — 2 typed allowlists, 53 new tests → GH
+- **SS-13+SS-15**: 1,012 lines of tests — tenant isolation (8 classes) + NL→SQL injection prevention (8 classes) → BB
+- Finding: system admin bypass exposes all tenant data if compromised — need audit logging
+- **PRs open, awaiting Nathan's merge review**
+
+### The Æsir Protocol — Norse Agent Fleet Architecture
+| God | Model | Role |
+|-----|-------|------|
+| Odin (Honey) | Opus 4.6 | Orchestrator |
+| Thor | Sonnet 4.6 | Heavy coding |
+| Freya | GPT 5.4 | GTM & analysis |
+| Fenrir | GPT 5.4 Pro | Security & adversarial |
+| Heimdall | DeepSeek | Monitoring |
+| Tyr | Kimi K2.5 | Code review & judging |
+| Huginn & Muninn | GPT-4o-mini | Scout agents |
+| Valkyrie | Sonnet 4.6 | Deployment & release |
+- **Layered framework decision**: Temporal (durability) + Inngest (DX) + LangChain (AI-native) + OpenClaw (cost) — all four
+
+### Competitive Research Completed
+- **Bolt.new**: $40M ARR/5mo, $700M valuation, <40 employees. Replicable: magic moment launch, token pricing, UGC, hackathons
+- **Poolside AI**: $626M+ raised, $3B→$12B val. Replicable: funding-as-marketing, Palantir-style FDRE, AWS channel
+- Unified competitive playbook at `/research/competitive-playbook.md` — token pricing models for FlipMyEra/Ultrafone/Second-Opinion
+
+### FlipMyEra — 6 Agent PRs (all open)
+- PR #78: Gallery wired to real Supabase, billing.ts deleted
+- PR #79: Clerk→auth rename (superseded by #83)
+- PR #80: Bundle optimization (OTel removed -200KB, 5 Radix pkgs -50KB, -1,704 lines)
+- PR #81: 97 new edge function tests
+- PR #82: SEO + analytics polish (5 PostHog funnel events)
+- PR #83: Full BetterAuth migration end-to-end (Netlify Function, AuthProvider, SQL migration)
+- All 568 tests passing after BetterAuth JSDOM `window.location.origin="null"` bug fix
+
+### Repo Sync Risk (active)
+- **3 core repos OUT OF SYNC**: forwardlane-backend, signal-builder-backend, forwardlane_advisor — BB has newer commits (Victor's work)
+- **6 repos GitHub-only**: invesco-demo, NarrativeReactor, flip-my-era, signalhaus-website, signal-studio-auth, entity-extraction-service
+- Victor pushing to BB, agents pushing to GH → merge conflicts inevitable without mirroring
+
+### Jira — ForwardLane Instance
+- Live at `forwardlane.atlassian.net` — 0 users, 0 projects initially
+- `ATLASSIAN_API_KEY` is org admin token, NOT a Jira user API token
+- Nathan's Jira email: `Nathan.stevenson@forwardlane.com` (capital N)
+- User-specific API token needed from id.atlassian.com
+
+### Critical Learnings
+- **GPT 5.4 cannot do long coding sub-agent tasks** — completes in 1-6 seconds with almost no output; use Sonnet for coding
+- **Convex backend empty** — no schema deployed, dashboards show mock data
+- **Temporal on Railway** — connected but NO workflows deployed
+- **Memory compound loop gap** — consolidation writes markdown only, not structured DB (Postgres memory tables not wired)
+- BrowserUse v0.12.1 installed and working at `/scripts/browser-agent/agent.py`

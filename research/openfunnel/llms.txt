@@ -1,0 +1,251 @@
+# OpenFunnel
+
+## Docs
+
+- [New file](https://docs.openfunnel.dev/activity-based-gtm.md): Description of your new file.
+- [OpenFunnel Context Agents](https://docs.openfunnel.dev/agents/openfunne-context-agents.md): OpenFunnel Context Agent stores, infer and use context at every step so that your micro-audience and outreach messages are built with precision and care
+- [OpenFunnel Agents and how they one shot execute any workflow](https://docs.openfunnel.dev/agents/openfunnel-agents.md): OpenFunnel
+- [OpenFunnel Research Agents](https://docs.openfunnel.dev/agents/openfunnel-research-and-qualify-agent.md): Research and Qualify any prospect or company with OpenFunnel Research Agents
+- [OpenFunnel Signal and Trait Search Agents](https://docs.openfunnel.dev/agents/openfunnel-signal-and-trait-search-agent.md): Find companies and people that have the exact signal or trait that you custom define in natural language
+- [Deploy an Agent for any Outreach Campaign in Natural Language](https://docs.openfunnel.dev/agents/people-finder-agent.md): OpenFunnel helps you deploy an Agent for any campaign by describing in natural language
+- [Get Account Search Results](https://docs.openfunnel.dev/api-reference/account-search/get-account-search-results.md): Get search results
+
+Retrieve completed search results from a job.
+
+**Required Headers:**
+- X-API-Key: Your API key
+- X-User-ID: Your email/user ID
+
+**Path Parameters:**
+- job_id: Job ID returned from start-search-job
+
+**Response:**
+- job_id: The job ID
+- status: Job status ("completed")
+- results: Array of matching accounts
+- total_count: Total number of results
+
+**Result Account Fields:**
+- rank: Rank in search results (1 = best match)
+- account_id: Internal account ID
+- account_name: Company name
+- account_url: Company website
+- user_email: User who owns this account
+- employee_count: Number of employees
+- funding_stage: Funding stage (e.g., "Series B")
+- location: Company location
+- reasoning: Why this account matches the query
+- evidence_snippets: Supporting evidence quotes
+- relevance_score: Relevance score (0-10)
+
+**Requirements:**
+- Job must be in "completed" status
+- Use poll-search-job first to ensure job is completed
+
+**Example Request:**
+```
+GET /api/v1/account/get-search-results/550e8400-e29b-41d4-a716-446655440000
+Headers:
+  X-API-Key: your_api_key
+  X-User-ID: user@company.com
+```
+
+**Error Responses:**
+- 400: Job not completed (status is pending/running/failed)
+- 404: Job not found or doesn't belong to user
+- [Poll Account Search Job](https://docs.openfunnel.dev/api-reference/account-search/poll-account-search-job.md): Poll search job status
+
+Check the current status of a search job.
+
+**Required Headers:**
+- X-API-Key: Your API key
+- X-User-ID: Your email/user ID
+
+**Path Parameters:**
+- job_id: Job ID returned from start-search-job
+
+**Response:**
+- job_id: The job ID
+- status: One of "pending", "running", "completed", "failed"
+- created_at: Timestamp when job was created
+- message: Optional error message (for failed jobs)
+
+**Job Status:**
+- pending: Job created but not yet started
+- running: Search is in progress
+- completed: Search finished successfully (ready to get results)
+- failed: Search failed (check message field for error)
+
+**Example Request:**
+```
+GET /api/v1/account/poll-search-job/550e8400-e29b-41d4-a716-446655440000
+Headers:
+  X-API-Key: your_api_key
+  X-User-ID: user@company.com
+```
+
+**Polling Recommendations:**
+- Poll every 5-10 seconds for small searches (top_k < 50)
+- Poll every 10-30 seconds for large searches (top_k > 50)
+- Typical search duration: 2-10 minutes depending on query complexity
+- [Start Account Search Job](https://docs.openfunnel.dev/api-reference/account-search/start-account-search-job.md): Start account signals search job
+
+Creates a new async search job and returns a job_id for polling.
+
+**Required Headers:**
+- X-API-Key: Your API key
+- X-User-ID: Your email/user ID
+
+**Request Body:**
+- query_trait: Search query with traits which describe the companies to find
+- query_activity: Search query with activities which describe the companies to find
+
+**Response:**
+- job_id: UUID to use for polling and retrieving results
+- status: "pending" (job created, not yet running)
+- message: Success message
+
+**Example:**
+```json
+{
+  "query_trait": "Health-tech companies",
+  "query_activity": "Implementing AI agents specifically for enhancing customer experience"
+}
+```
+
+**Usage Flow:**
+1. Call this endpoint to start search → get job_id
+2. Use job_id to poll status with `/poll-search-job`
+3. When status = "completed", get results with `/get-search-results`
+- [Get Summary](https://docs.openfunnel.dev/api-reference/account-timeline/get-summary.md): Get comprehensive account summary for quick overview.
+
+Returns a single-call overview including:
+- Basic account information
+- Signal counts by type
+- Recent signals (last 5)
+- People count and key contacts
+- CRM status
+- Tags
+
+Args:
+    account_id: The account ID to get summary for
+    user_id: Authenticated user ID (from API key)
+
+Returns:
+    AccountSummary with all overview information
+- [Get Timeline](https://docs.openfunnel.dev/api-reference/account-timeline/get-timeline.md): Get chronological activity timeline for an account.
+
+Returns events from account_timeline_insights table within the specified time range.
+
+Args:
+    account_id: The account ID to get timeline for
+    days: How many days back to look (default 30, max 365)
+    alert_types: Optional comma-separated filter ('openfunnel', 'crm')
+    limit: Maximum events per page (default 50, max 500)
+    offset: Number of events to skip for pagination
+    user_id: Authenticated user ID (from API key)
+
+Returns:
+    TimelineResponse with events and pagination metadata
+- [Get Accounts V2](https://docs.openfunnel.dev/api-reference/account-v2/get-accounts-v2.md)
+- [null](https://docs.openfunnel.dev/api-reference/account/get-account.md)
+- [List Accounts](https://docs.openfunnel.dev/api-reference/account/get-account-list.md): List accounts with optional filters and pagination.
+
+**Request Body (optional):**
+- **filters**: Filter accounts by CRM status, employee count, funding stage, etc.
+- **pagination**: Control page size (limit) and offset for pagination.
+  - limit: 1-500, default 50
+  - offset: default 0
+- [Get Accounts](https://docs.openfunnel.dev/api-reference/account/get-accounts.md)
+- [Instant search on traits](https://docs.openfunnel.dev/api-reference/account/instant-search-on-traits.md): Search for companies by describing their traits or characteristics.
+
+Use natural language to find companies matching specific criteria like:
+- **Industry**: "healthcare companies", "fintech startups"
+- **Products**: "companies with voice AI products", "payment processing platforms"
+- **Business model**: "B2B SaaS companies", "companies that sell to restaurants"
+- **Technology**: "companies using Kubernetes", "AI-first startups"
+
+Returns companies ranked by relevance with similarity scores.
+- [List Accounts](https://docs.openfunnel.dev/api-reference/account/list-accounts.md): List accounts with optional filters and pagination.
+
+**Request Body (optional):**
+- **filters**: Filter accounts by CRM status, employee count, funding stage, etc.
+- **pagination**: Control page size (limit) and offset for pagination.
+  - limit: 1-500, default 50
+  - offset: default 0
+- [Search Accounts By Name Or Domain](https://docs.openfunnel.dev/api-reference/account/search-accounts-by-name-or-domain.md): Search accounts by name or domain with fuzzy matching.
+- [Get Audience](https://docs.openfunnel.dev/api-reference/audience/get-audience.md)
+- [List Audiences](https://docs.openfunnel.dev/api-reference/audience/list-audiences.md)
+- [Deep Enrich](https://docs.openfunnel.dev/api-reference/enrich/deep-enrich.md): End-to-end company qualification and people enrichment.
+
+1. Creates or finds the account for the given domain.
+2. Finds intent signals for the company.
+3. Enriches the account with people — finds relevant team members and ICP qualifies them.
+
+Requires either `icp_id` or `target_icp_roles`. Runs in background — use `account_id` to get latest account status. Deep enrichment can take 15-30 minutes to find intent signals and people.
+- [List ICPs](https://docs.openfunnel.dev/api-reference/icp/list-icps.md): List all ICP profiles for the authenticated user.
+- [Insight Detail](https://docs.openfunnel.dev/api-reference/insights/insight-detail.md): Get full detail for a single insight.
+
+Returns the insight with its underlying signal data and related insights
+from the same account.
+- [Insights Feed](https://docs.openfunnel.dev/api-reference/insights/insights-feed.md): Get cross-account insights feed.
+
+Returns insights across all accounts for the authenticated user,
+with optional filtering by date range, alert type, sentiment, and account IDs.
+- [My Alerts](https://docs.openfunnel.dev/api-reference/insights/my-alerts.md): Get alerts (notifications) sent to the authenticated user.
+
+Returns notification history with the actual insights from each alert.
+Always scoped to the individual user who set up the saved view.
+- [null](https://docs.openfunnel.dev/api-reference/root.md)
+- [Get Signal](https://docs.openfunnel.dev/api-reference/signal/get-signal.md)
+- [List Signals](https://docs.openfunnel.dev/api-reference/signal/list-signals.md)
+- [OpenFunnel v Clay](https://docs.openfunnel.dev/comparisons/openfunnel-clay.md): When to use OpenFunnel vs Clay, how they differ, and how they work together
+- [OpenFunnel v Amplemarket](https://docs.openfunnel.dev/comparisons/openfunnel-v-Amplemarket.md): Why customers chose OpenFunnel over AmpleMarket
+- [OpenFunnel v Bombora Intent](https://docs.openfunnel.dev/comparisons/openfunnel-v-Bombora.md)
+- [OpenFunnel vs Common Room](https://docs.openfunnel.dev/comparisons/openfunnel-v-CommonRoom.md): Activity-first Search, reasoning-led intent vs. signal aggregation
+- [OpenFunnel v Rox](https://docs.openfunnel.dev/comparisons/openfunnel-v-Rox.md): Why customers chose OpenFunnel over Rox
+- [OpenFunnel vs Sumble](https://docs.openfunnel.dev/comparisons/openfunnel-v-Sumble.md): Why teams choose OpenFunnel over Sumble
+- [New file](https://docs.openfunnel.dev/comparisons/openfunnel-vs-exa.md): Description of your new file.
+- [Credits Breakdown](https://docs.openfunnel.dev/credits/credit-breakdown.md): OpenFunnel charges only for qualified, high-fit, signal-rich accounts and prospects you can reach out to—with context.
+- [Traits vs Signals](https://docs.openfunnel.dev/essentials/activity-first-gtm.md): Signals show what a prospect is doing; traits describe who the prospect is
+- [How to use OpenFunnel Browser Agents](https://docs.openfunnel.dev/essentials/browser-agent-workflows.md): Browser Agents help you extract fully enriched list of companies (and soon people) and rich context from specific websites 
+- [Creating Outreach Ready Campaigns](https://docs.openfunnel.dev/essentials/campaign.md): How to create a campaign from Account and Prospect Signals 
+- [OpenFunnel Conference Play](https://docs.openfunnel.dev/essentials/conference-signal.md): Find ICP Accounts and Prospects attending a Conference and use it for your outbound
+- [Deploy once and Forget](https://docs.openfunnel.dev/essentials/deploy-and-forget.md): OpenFunnel Agents auto-build your campaigns and sync it to your CRM or your outreach tool on auto-pilot
+- [How OpenFunnel Agents Infer Buying Intent From Deep Job Postings](https://docs.openfunnel.dev/essentials/job-postings.md): Forget surface‑level keywords—see how Reasoning Agents read entire job‑posts, pull the key snippet, and explain *why* it’s a live deal signal.
+- [How LLM based Enrichment could save you a ton of Money!](https://docs.openfunnel.dev/essentials/llm-enrichment.md): LLMs convert unstructured data to structured so you don't depend on static databases
+- [Nurture based selling](https://docs.openfunnel.dev/essentials/nurture-based-selling.md): Your automated sequencing is wasting everyone's time nurture, make your prospects feel good and provide value
+- [New file](https://docs.openfunnel.dev/essentials/openfunnel-at-openfunnel.md): Description of your new file.
+- [Why Funding, 10k and Expansion Signals are Not Really UseFul](https://docs.openfunnel.dev/essentials/relevant-vs-irrelevant-research.md): Relevant vs Irrelevant Signals
+- [Research anything GTM](https://docs.openfunnel.dev/essentials/research-anything-with-openfunnel.md): OpenFunnel GTM Agents can Research Anything!
+- [Autonomously build Micro-Audiences with OpenFunnel](https://docs.openfunnel.dev/essentials/signal.md): OpenFunnel automates lead discovery, research, and micro-audience using traits and signals
+- [Signal Stacking & Why it matters](https://docs.openfunnel.dev/essentials/signal-stacking.md): When multiple Signals surface inside an account, it increases the chances an account is in-market
+- [Why OpenFunnel?](https://docs.openfunnel.dev/index.md): OpenFunnel agents help you find unique insights and nail timing for your GTM.  It's a news channel for every relevant activity in your TAM.
+- [OpenFunnel <> Apollo](https://docs.openfunnel.dev/integrations/apollo.md): Pipe OpenFunnel accounts, prospects & signals into Apollo Lists
+- [OpenFunnel <> Claude](https://docs.openfunnel.dev/integrations/claude.md): Use OpenFunnel directly in Claude to look up companies, find contacts, and research accounts with natural language
+- [OpenFunnel <> Clay](https://docs.openfunnel.dev/integrations/clay.md): Pipe every account, prospect, and live OpenFunnel signal straight into your Clay table to power your outreach
+- [OpenFunnel <> Hubspot](https://docs.openfunnel.dev/integrations/hubspot.md): Bi-directional auto sync between OpenFunnel and HubSpot keeps every account enriched with live signals
+- [OpenFunnel <> Instantly](https://docs.openfunnel.dev/integrations/instantly.md): Pipe OpenFunnel prospects with Signals directly into instantly
+- [New file](https://docs.openfunnel.dev/integrations/lemlist.md): Description of your new file.
+- [How RevOps uses OpenFunnel with their CRM](https://docs.openfunnel.dev/integrations/revopssalesforce.md): RevOps teams use OpenFunnel to auto-surface signal-rich, net-new accounts or prioritize accounts via continuous signal stacking and ready-to-send messaging - and route them to any reps easily and daily on autopilot.
+- [OpenFunnel <> Salesforce](https://docs.openfunnel.dev/integrations/salesforce.md): 2-way sync OpenFunnel and Salesforce so every account is live with signals with Owner Mapping and Assignments handled
+- [How Reps use OpenFunnel with their CRM](https://docs.openfunnel.dev/integrations/sdrssalesforce.md): Deploy custom signals listeners on your named accounts. OpenFunnel’s deep indexing continuously surfaces unique, context-rich insights, far beyond ChatGPT-style research, piped right into your CRM.
+- [New file](https://docs.openfunnel.dev/internal-docs/signal-to-people-mapping-flow.md): Description of your new file.
+- [MCP Overview](https://docs.openfunnel.dev/mcp-reference/overview.md): Use OpenFunnel directly in Claude with the Model Context Protocol
+- [MCP Tools Reference](https://docs.openfunnel.dev/mcp-reference/tools.md): Complete reference for OpenFunnel MCP tools available in Claude
+- [How to Prompt OpenFunnel Agents](https://docs.openfunnel.dev/open-funnel-agents-and-how-to-prompt-them.md)
+- [New file](https://docs.openfunnel.dev/verticalized-database-specs/geo.md): Description of your new file.
+- [New file](https://docs.openfunnel.dev/verticalized-database-specs/voice-ai.md): Description of your new file.
+
+## OpenAPI Specs
+
+- [openapi](https://docs.openfunnel.dev/api-reference/openapi.json)
+
+## Optional
+
+- [Docs](https://docs.openfunnel.dev/)
+- [Go to OpenFunnel](https://app.openfunnel.dev)
+- [Case Studies](https://openfunnel.dev/case-studies)
+
+
+Built with [Mintlify](https://mintlify.com).

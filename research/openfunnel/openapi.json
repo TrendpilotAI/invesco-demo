@@ -1,0 +1,6467 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "V1 Client APIs",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/v1/account/batch": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Get Accounts",
+        "operationId": "get_accounts_api_v1_account_batch_post",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Api-Key"
+            }
+          },
+          {
+            "name": "X-User-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-User-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetAccountBulkRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAccountBulkResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/account/get-account-list": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "List Accounts",
+        "description": "List accounts with optional filters and pagination.\n\n**Request Body (optional):**\n- **filters**: Filter accounts by CRM status, employee count, funding stage, etc.\n- **pagination**: Control page size (limit) and offset for pagination.\n  - limit: 1-500, default 50\n  - offset: default 0",
+        "operationId": "list_accounts_api_v1_account_get_account_list_post",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Api-Key"
+            }
+          },
+          {
+            "name": "X-User-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-User-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetAccountListRequest",
+                "default": {
+                  "pagination": {
+                    "limit": 50,
+                    "offset": 0
+                  }
+                }
+              },
+              "examples": {
+                "with_pagination": {
+                  "summary": "With pagination",
+                  "value": {
+                    "pagination": {
+                      "limit": 50,
+                      "offset": 0
+                    }
+                  }
+                },
+                "with_filters": {
+                  "summary": "With filters and pagination",
+                  "value": {
+                    "filters": {
+                      "is_present_in_crm": false,
+                      "min_employee_count": 50,
+                      "max_employee_count": 500
+                    },
+                    "pagination": {
+                      "limit": 100,
+                      "offset": 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAccountListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/account/search-by-name-or-domain": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Search Accounts By Name Or Domain",
+        "description": "Search accounts by name or domain with fuzzy matching.",
+        "operationId": "search_accounts_by_name_or_domain_endpoint_api_v1_account_search_by_name_or_domain_post",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Api-Key"
+            }
+          },
+          {
+            "name": "X-User-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-User-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchAccountsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchAccountsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/account/search-by-traits": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Instant search on traits",
+        "description": "Search for companies by describing their traits or characteristics.\n\nUse natural language to find companies matching specific criteria like:\n- **Industry**: \"healthcare companies\", \"fintech startups\"\n- **Products**: \"companies with voice AI products\", \"payment processing platforms\"\n- **Business model**: \"B2B SaaS companies\", \"companies that sell to restaurants\"\n- **Technology**: \"companies using Kubernetes\", \"AI-first startups\"\n\nReturns companies ranked by relevance with similarity scores.",
+        "operationId": "search_by_traits_endpoint_api_v1_account_search_by_traits_post",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Api-Key"
+            }
+          },
+          {
+            "name": "X-User-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-User-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TraitSearchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TraitSearchResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/account/batch": {
+      "post": {
+        "tags": [
+          "Account V2"
+        ],
+        "summary": "Get Accounts V2",
+        "operationId": "get_accounts_v2_api_v2_account_batch_post",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Api-Key"
+            }
+          },
+          {
+            "name": "X-User-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-User-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetAccountBulkV2Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAccountV2BulkResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/account/start-search-job": {
+      "post": {
+        "tags": [
+          "Account Search"
+        ],
+        "summary": "Start Account Search Job",
+        "description": "Start account signals search job\n\nCreates a new async search job and returns a job_id for polling.\n\n**Required Headers:**\n- X-API-Key: Your API key\n- X-User-ID: Your email/user ID\n\n**Request Body:**\n- query_trait: Search query with traits which describe the companies to find\n- query_activity: Search query with activities which describe the companies to find\n\n**Response:**\n- job_id: UUID to use for polling and retrieving results\n- status: \"pending\" (job created, not yet running)\n- message: Success message\n\n**Example:**\n```json\n{\n  \"query_trait\": \"Health-tech companies\",\n  \"query_activity\": \"Implementing AI agents specifically for enhancing customer experience\"\n}\n```\n\n**Usage Flow:**\n1. Call this endpoint to start search → get job_id\n2. Use job_id to poll status with `/poll-search-job`\n3. When status = \"completed\", get results with `/get-search-results`",
+        "operationId": "start_account_search_job_api_v1_account_start_search_job_post",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Api-Key"
+            }
+          },
+          {
+            "name": "X-User-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-User-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartSearchJobRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StartSearchJobResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/account/poll-search-job/{job_id}": {
+      "get": {
+        "tags": [
+          "Account Search"
+        ],
+        "summary": "Poll Account Search Job",
+        "description": "Poll search job status\n\nCheck the current status of a search job.\n\n**Required Headers:**\n- X-API-Key: Your API key\n- X-User-ID: Your email/user ID\n\n**Path Parameters:**\n- job_id: Job ID returned from start-search-job\n\n**Response:**\n- job_id: The job ID\n- status: One of \"pending\", \"running\", \"completed\", \"failed\"\n- created_at: Timestamp when job was created\n- message: Optional error message (for failed jobs)\n\n**Job Status:**\n- pending: Job created but not yet started\n- running: Search is in progress\n- completed: Search finished successfully (ready to get results)\n- failed: Search failed (check message field for error)\n\n**Example Request:**\n```\nGET /api/v1/account/poll-search-job/550e8400-e29b-41d4-a716-446655440000\nHeaders:\n  X-API-Key: your_api_key\n  X-User-ID: user@company.com\n```\n\n**Polling Recommendations:**\n- Poll every 5-10 seconds for small searches (top_k < 50)\n- Poll every 10-30 seconds for large searches (top_k > 50)\n- Typical search duration: 2-10 minutes depending on query complexity",
+        "operationId": "poll_account_search_job_api_v1_account_poll_search_job__job_id__get",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          },
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Api-Key"
+            }
+          },
+          {
+            "name": "X-User-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-User-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PollSearchJobResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/account/get-search-results/{job_id}": {
+      "get": {
+        "tags": [
+          "Account Search"
+        ],
+        "summary": "Get Account Search Results",
+        "description": "Get search results\n\nRetrieve completed search results from a job.\n\n**Required Headers:**\n- X-API-Key: Your API key\n- X-User-ID: Your email/user ID\n\n**Path Parameters:**\n- job_id: Job ID returned from start-search-job\n\n**Response:**\n- job_id: The job ID\n- status: Job status (\"completed\")\n- results: Array of matching accounts\n- total_count: Total number of results\n\n**Result Account Fields:**\n- rank: Rank in search results (1 = best match)\n- account_id: Internal account ID\n- account_name: Company name\n- account_url: Company website\n- user_email: User who owns this account\n- employee_count: Number of employees\n- funding_stage: Funding stage (e.g., \"Series B\")\n- location: Company location\n- reasoning: Why this account matches the query\n- evidence_snippets: Supporting evidence quotes\n- relevance_score: Relevance score (0-10)\n\n**Requirements:**\n- Job must be in \"completed\" status\n- Use poll-search-job first to ensure job is completed\n\n**Example Request:**\n```\nGET /api/v1/account/get-search-results/550e8400-e29b-41d4-a716-446655440000\nHeaders:\n  X-API-Key: your_api_key\n  X-User-ID: user@company.com\n```\n\n**Error Responses:**\n- 400: Job not completed (status is pending/running/failed)\n- 404: Job not found or doesn't belong to user",
+        "operationId": "get_account_search_results_api_v1_account_get_search_results__job_id__get",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          },
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Api-Key"
+            }
+          },
+          {
+            "name": "X-User-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-User-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSearchResultsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/signal/": {
+      "post": {
+        "tags": [
+          "Signal"
+        ],
+        "summary": "Get Signal",
+        "operationId": "get_signal_api_v1_signal__post",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Api-Key"
+            }
+          },
+          {
+            "name": "X-User-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-User-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetSignalRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSignalResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/signal/get-signal-list": {
+      "post": {
+        "tags": [
+          "Signal"
+        ],
+        "summary": "List Signals",
+        "operationId": "list_signals_api_v1_signal_get_signal_list_post",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Api-Key"
+            }
+          },
+          {
+            "name": "X-User-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-User-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/GetSignalListRequest"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSignalListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/audience/": {
+      "post": {
+        "tags": [
+          "Audience"
+        ],
+        "summary": "Get Audience",
+        "operationId": "get_audience_api_v1_audience__post",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Api-Key"
+            }
+          },
+          {
+            "name": "X-User-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-User-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetAudienceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAudienceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/audience/get-audience-list": {
+      "post": {
+        "tags": [
+          "Audience"
+        ],
+        "summary": "List Audiences",
+        "operationId": "list_audiences_api_v1_audience_get_audience_list_post",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Api-Key"
+            }
+          },
+          {
+            "name": "X-User-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-User-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/GetAudienceListRequest"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAudienceListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/account/{account_id}/timeline": {
+      "get": {
+        "tags": [
+          "Account Timeline"
+        ],
+        "summary": "Get Timeline",
+        "description": "Get chronological activity timeline for an account.\n\nReturns events from account_timeline_insights table within the specified time range.\n\nArgs:\n    account_id: The account ID to get timeline for\n    days: How many days back to look (default 30, max 365)\n    alert_types: Optional comma-separated filter ('openfunnel', 'crm')\n    limit: Maximum events per page (default 50, max 500)\n    offset: Number of events to skip for pagination\n    user_id: Authenticated user ID (from API key)\n\nReturns:\n    TimelineResponse with events and pagination metadata",
+        "operationId": "get_timeline_api_v1_account__account_id__timeline_get",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Account Id"
+            }
+          },
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 365,
+              "minimum": 1,
+              "description": "Number of days back to look",
+              "default": 30,
+              "title": "Days"
+            },
+            "description": "Number of days back to look"
+          },
+          {
+            "name": "alert_types",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Comma-separated alert types to filter (e.g., 'openfunnel,crm')",
+              "title": "Alert Types"
+            },
+            "description": "Comma-separated alert types to filter (e.g., 'openfunnel,crm')"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 500,
+              "minimum": 1,
+              "description": "Maximum events per page",
+              "default": 50,
+              "title": "Limit"
+            },
+            "description": "Maximum events per page"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of events to skip",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Number of events to skip"
+          },
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Api-Key"
+            }
+          },
+          {
+            "name": "X-User-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-User-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimelineResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/account/{account_id}/summary": {
+      "get": {
+        "tags": [
+          "Account Timeline"
+        ],
+        "summary": "Get Summary",
+        "description": "Get comprehensive account summary for quick overview.\n\nReturns a single-call overview including:\n- Basic account information\n- Signal counts by type\n- Recent signals (last 5)\n- People count and key contacts\n- CRM status\n- Tags\n\nArgs:\n    account_id: The account ID to get summary for\n    user_id: Authenticated user ID (from API key)\n\nReturns:\n    AccountSummary with all overview information",
+        "operationId": "get_summary_api_v1_account__account_id__summary_get",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Account Id"
+            }
+          },
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Api-Key"
+            }
+          },
+          {
+            "name": "X-User-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-User-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountSummary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/insights/feed": {
+      "get": {
+        "tags": [
+          "Insights"
+        ],
+        "summary": "Insights Feed",
+        "description": "Get cross-account insights feed.\n\nReturns insights across all accounts for the authenticated user,\nwith optional filtering by date range, alert type, sentiment, and account IDs.",
+        "operationId": "insights_feed_api_v1_insights_feed_get",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 90,
+              "minimum": 1,
+              "description": "Number of days back to look",
+              "default": 7,
+              "title": "Days"
+            },
+            "description": "Number of days back to look"
+          },
+          {
+            "name": "alert_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by alert type: 'openfunnel' or 'crm'",
+              "title": "Alert Type"
+            },
+            "description": "Filter by alert type: 'openfunnel' or 'crm'"
+          },
+          {
+            "name": "sentiment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by sentiment: 'positive', 'negative', or 'neutral'",
+              "title": "Sentiment"
+            },
+            "description": "Filter by sentiment: 'positive', 'negative', or 'neutral'"
+          },
+          {
+            "name": "account_ids",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Comma-separated account IDs to filter by",
+              "title": "Account Ids"
+            },
+            "description": "Comma-separated account IDs to filter by"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 500,
+              "minimum": 1,
+              "description": "Maximum insights per page",
+              "default": 50,
+              "title": "Limit"
+            },
+            "description": "Maximum insights per page"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of insights to skip",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Number of insights to skip"
+          },
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Api-Key"
+            }
+          },
+          {
+            "name": "X-User-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-User-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InsightFeedResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/insights/alerts": {
+      "get": {
+        "tags": [
+          "Insights"
+        ],
+        "summary": "My Alerts",
+        "description": "Get alerts (notifications) sent to the authenticated user.\n\nReturns notification history with the actual insights from each alert.\nAlways scoped to the individual user who set up the saved view.",
+        "operationId": "my_alerts_api_v1_insights_alerts_get",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 30,
+              "minimum": 1,
+              "description": "Number of days back to look",
+              "default": 1,
+              "title": "Days"
+            },
+            "description": "Number of days back to look"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Maximum alerts per page",
+              "default": 20,
+              "title": "Limit"
+            },
+            "description": "Maximum alerts per page"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of alerts to skip",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Number of alerts to skip"
+          },
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Api-Key"
+            }
+          },
+          {
+            "name": "X-User-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-User-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MyAlertsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/insights/{insight_id}": {
+      "get": {
+        "tags": [
+          "Insights"
+        ],
+        "summary": "Insight Detail",
+        "description": "Get full detail for a single insight.\n\nReturns the insight with its underlying signal data and related insights\nfrom the same account.",
+        "operationId": "insight_detail_api_v1_insights__insight_id__get",
+        "parameters": [
+          {
+            "name": "insight_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Insight Id"
+            }
+          },
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Api-Key"
+            }
+          },
+          {
+            "name": "X-User-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-User-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InsightDetailResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/icp/list": {
+      "get": {
+        "tags": [
+          "ICP"
+        ],
+        "summary": "List ICPs",
+        "description": "List all ICP profiles for the authenticated user.",
+        "operationId": "list_icps_api_v1_icp_list_get",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Api-Key"
+            }
+          },
+          {
+            "name": "X-User-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-User-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListICPsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/enrich/deep-enrich": {
+      "post": {
+        "tags": [
+          "Enrich"
+        ],
+        "summary": "Deep Enrich",
+        "description": "End-to-end company qualification and people enrichment.\n\n1. Creates or finds the account for the given domain.\n2. Finds intent signals for the company.\n3. Enriches the account with people — finds relevant team members and ICP qualifies them.\n\nRequires either `icp_id` or `target_icp_roles`. Runs in background — use `account_id` to get latest account status. Deep enrichment can take 15-30 minutes to find intent signals and people.",
+        "operationId": "deep_enrich_company_api_v1_enrich_deep_enrich_post",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Api-Key"
+            }
+          },
+          {
+            "name": "X-User-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-User-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QualifyAndEnrichRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualifyAndEnrichResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AccountBasicInfo": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "domain": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Domain"
+          },
+          "website": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Website"
+          },
+          "employee_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Employee Count"
+          },
+          "funding_stage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Funding Stage"
+          },
+          "location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Location"
+          },
+          "industry": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Industry"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "title": "AccountBasicInfo",
+        "description": "Basic account information."
+      },
+      "AccountCRMDetails": {
+        "properties": {
+          "connected_crm": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Connected Crm"
+          },
+          "crm_account_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crm Account Id"
+          },
+          "crm_owner_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crm Owner Id"
+          },
+          "crm_owner_email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crm Owner Email"
+          },
+          "crm_lifecyclestage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crm Lifecyclestage"
+          },
+          "crm_latest_opportunity": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crm Latest Opportunity"
+          },
+          "crm_all_opportunities": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crm All Opportunities"
+          },
+          "crm_last_synced_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crm Last Synced Date"
+          },
+          "crm_custom_tracked_fields": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crm Custom Tracked Fields"
+          }
+        },
+        "type": "object",
+        "title": "AccountCRMDetails"
+      },
+      "AccountFilters": {
+        "properties": {
+          "is_imported": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Imported",
+            "description": "Filter by whether the account was imported (true) or discovered (false)"
+          },
+          "is_present_in_crm": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Present In Crm",
+            "description": "Filter by whether the account exists in the connected CRM (true) or not (false)"
+          },
+          "min_employee_count": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min Employee Count",
+            "description": "Minimum employee count (inclusive). Must be >= 0 and <= max_employee_count if both are provided"
+          },
+          "max_employee_count": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Employee Count",
+            "description": "Maximum employee count (inclusive). Must be >= 0 and >= min_employee_count if both are provided"
+          },
+          "funding_stages": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Funding Stages",
+            "description": "List of funding stages to filter by (e.g., ['seed', 'series_a', 'series_b'])"
+          },
+          "hq_country_codes": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hq Country Codes",
+            "description": "Filter by headquarters country codes (e.g., ['US', 'UK', 'CA'])"
+          },
+          "include_audience_ids": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Include Audience Ids",
+            "description": "List of audience IDs to include in the results"
+          },
+          "include_signal_ids": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Include Signal Ids",
+            "description": "List of signal IDs to include in the results"
+          }
+        },
+        "type": "object",
+        "title": "AccountFilters",
+        "description": "Filters for querying accounts.\n\nAll fields are optional. When multiple filters are provided, they are combined with AND logic."
+      },
+      "AccountFirmographics": {
+        "properties": {
+          "employee_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Employee Count"
+          },
+          "funding_stage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Funding Stage"
+          },
+          "location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Location"
+          },
+          "hq_city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hq City"
+          },
+          "hq_region": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hq Region"
+          },
+          "hq_country": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hq Country"
+          },
+          "industry": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Industry"
+          },
+          "revenue_usd": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Revenue Usd"
+          },
+          "linkedin_follower_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Linkedin Follower Count"
+          }
+        },
+        "type": "object",
+        "title": "AccountFirmographics"
+      },
+      "AccountSearchResult": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "domain": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Domain"
+          },
+          "employee_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Employee Count"
+          },
+          "funding_stage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Funding Stage"
+          },
+          "industry": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Industry"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "title": "AccountSearchResult",
+        "description": "Single account in search results."
+      },
+      "AccountSummary": {
+        "properties": {
+          "account": {
+            "$ref": "#/components/schemas/AccountBasicInfo",
+            "description": "Basic account information"
+          },
+          "signal_counts": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Signal Counts",
+            "description": "Counts by signal type: {hiring: 5, funding: 1}"
+          },
+          "recent_signals": {
+            "items": {
+              "$ref": "#/components/schemas/SignalBrief"
+            },
+            "type": "array",
+            "title": "Recent Signals",
+            "description": "Last 5 signals"
+          },
+          "people_count": {
+            "type": "integer",
+            "title": "People Count",
+            "description": "Total number of contacts at account",
+            "default": 0
+          },
+          "key_contacts": {
+            "items": {
+              "$ref": "#/components/schemas/PersonBrief"
+            },
+            "type": "array",
+            "title": "Key Contacts",
+            "description": "Top 3 decision makers"
+          },
+          "crm_status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CRMStatus"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "CRM integration status"
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tags",
+            "description": "Account tags"
+          }
+        },
+        "type": "object",
+        "required": [
+          "account"
+        ],
+        "title": "AccountSummary",
+        "description": "Comprehensive account summary for quick overview."
+      },
+      "AccountTraitDetails": {
+        "properties": {
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          }
+        },
+        "type": "object",
+        "title": "AccountTraitDetails"
+      },
+      "AlertInsightItem": {
+        "properties": {
+          "insight_id": {
+            "type": "integer",
+            "title": "Insight Id"
+          },
+          "account_id": {
+            "type": "integer",
+            "title": "Account Id"
+          },
+          "account_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account Name"
+          },
+          "account_domain": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account Domain"
+          },
+          "alert_text": {
+            "type": "string",
+            "title": "Alert Text"
+          },
+          "alert_type": {
+            "type": "string",
+            "title": "Alert Type"
+          },
+          "alert_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Alert Date"
+          },
+          "sentiment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sentiment"
+          },
+          "is_net_new_account": {
+            "type": "boolean",
+            "title": "Is Net New Account",
+            "description": "True if this account had its first-ever insight within the requested time window",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "insight_id",
+          "account_id",
+          "alert_text",
+          "alert_type"
+        ],
+        "title": "AlertInsightItem",
+        "description": "Single insight within an alert notification."
+      },
+      "AlertItem": {
+        "properties": {
+          "alert_id": {
+            "type": "integer",
+            "title": "Alert Id"
+          },
+          "view_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "View Name"
+          },
+          "saved_view_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Saved View Id"
+          },
+          "notification_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notification Type"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "subject": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subject"
+          },
+          "recipient_email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recipient Email"
+          },
+          "slack_channel_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Slack Channel Id"
+          },
+          "insight_count": {
+            "type": "integer",
+            "title": "Insight Count",
+            "default": 0
+          },
+          "account_count": {
+            "type": "integer",
+            "title": "Account Count",
+            "default": 0
+          },
+          "matched_account_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Matched Account Ids"
+          },
+          "insights": {
+            "items": {
+              "$ref": "#/components/schemas/AlertInsightItem"
+            },
+            "type": "array",
+            "title": "Insights"
+          }
+        },
+        "type": "object",
+        "required": [
+          "alert_id"
+        ],
+        "title": "AlertItem",
+        "description": "Single notification alert with its insights."
+      },
+      "Audience": {
+        "properties": {
+          "audience_id": {
+            "type": "integer",
+            "title": "Audience Id"
+          },
+          "audience_name": {
+            "type": "string",
+            "title": "Audience Name"
+          },
+          "audience_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Audience Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "audience_id",
+          "audience_name"
+        ],
+        "title": "Audience"
+      },
+      "AudiencePeople": {
+        "properties": {
+          "person_id": {
+            "type": "integer",
+            "title": "Person Id"
+          },
+          "person_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Name"
+          },
+          "person_role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Role"
+          },
+          "person_email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Email"
+          },
+          "person_location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Location"
+          },
+          "person_linkedin_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Linkedin Url"
+          },
+          "joined_company_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Joined Company At"
+          },
+          "person_crm_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Crm Status"
+          },
+          "person_salesforce_contact_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Salesforce Contact Id"
+          },
+          "person_salesforce_owner_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Salesforce Owner Id"
+          },
+          "person_team_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Team Name"
+          },
+          "account_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account Id"
+          },
+          "account_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account Name"
+          },
+          "account_domain": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account Domain"
+          },
+          "direct_signals": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Direct Signals"
+          }
+        },
+        "type": "object",
+        "required": [
+          "person_id"
+        ],
+        "title": "AudiencePeople"
+      },
+      "BulkAccount": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "domain": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Domain"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "title": "BulkAccount"
+      },
+      "CRMStatus": {
+        "properties": {
+          "connected_crm": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Connected Crm"
+          },
+          "is_in_crm": {
+            "type": "boolean",
+            "title": "Is In Crm",
+            "default": false
+          },
+          "crm_account_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crm Account Id"
+          },
+          "lifecycle_stage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lifecycle Stage"
+          }
+        },
+        "type": "object",
+        "title": "CRMStatus",
+        "description": "CRM status information."
+      },
+      "GetAccountBulkRequest": {
+        "properties": {
+          "account_ids": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account Ids",
+            "description": "List of account IDs to get details for. Either account_ids or account_domains is required."
+          },
+          "account_domains": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account Domains",
+            "description": "List of account domains to get details for. Either account_ids or account_domains is required."
+          }
+        },
+        "type": "object",
+        "title": "GetAccountBulkRequest"
+      },
+      "GetAccountBulkResponse": {
+        "properties": {
+          "accounts": {
+            "items": {
+              "$ref": "#/components/schemas/GetAccountResponse"
+            },
+            "type": "array",
+            "title": "Accounts"
+          },
+          "total_count": {
+            "type": "integer",
+            "title": "Total Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "accounts",
+          "total_count"
+        ],
+        "title": "GetAccountBulkResponse"
+      },
+      "GetAccountBulkV2Request": {
+        "properties": {
+          "account_ids": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account Ids",
+            "description": "List of account IDs to get details for. Either account_ids or account_domains is required."
+          },
+          "account_domains": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account Domains",
+            "description": "List of account domains to get details for. Either account_ids or account_domains is required."
+          },
+          "icp_people_page": {
+            "type": "integer",
+            "minimum": 1,
+            "title": "Icp People Page",
+            "description": "Page number for icp_people pagination (1-indexed, default 1)",
+            "default": 1
+          },
+          "icp_people_page_size": {
+            "type": "integer",
+            "maximum": 500,
+            "minimum": 1,
+            "title": "Icp People Page Size",
+            "description": "Number of icp_people to return per page (default 100, max 500)",
+            "default": 100
+          }
+        },
+        "type": "object",
+        "title": "GetAccountBulkV2Request",
+        "description": "V2 extension with icp_people pagination."
+      },
+      "GetAccountListRequest": {
+        "properties": {
+          "filters": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AccountFilters"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Optional filters to apply when querying accounts. All filters are combined with AND logic."
+          },
+          "pagination": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PaginationParams"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Pagination parameters for the request"
+          }
+        },
+        "type": "object",
+        "title": "GetAccountListRequest"
+      },
+      "GetAccountListResponse": {
+        "properties": {
+          "accounts": {
+            "items": {
+              "$ref": "#/components/schemas/BulkAccount"
+            },
+            "type": "array",
+            "title": "Accounts"
+          },
+          "total_count": {
+            "type": "integer",
+            "title": "Total Count"
+          },
+          "pagination": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PaginationMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Pagination metadata (included when pagination is requested)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "accounts",
+          "total_count"
+        ],
+        "title": "GetAccountListResponse",
+        "description": "Paginated response for account list."
+      },
+      "GetAccountResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "website": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Website"
+          },
+          "domain": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Domain"
+          },
+          "linkedin_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Linkedin Url"
+          },
+          "is_present_in_crm": {
+            "type": "boolean",
+            "title": "Is Present In Crm"
+          },
+          "crm_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crm Status"
+          },
+          "imported_account": {
+            "type": "boolean",
+            "title": "Imported Account"
+          },
+          "narrative_and_key_signals": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Narrative And Key Signals"
+          },
+          "account_discovered_at": {
+            "type": "string",
+            "title": "Account Discovered At"
+          },
+          "signal_count": {
+            "type": "integer",
+            "title": "Signal Count"
+          },
+          "technographics": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Technographics"
+          },
+          "crm_details": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AccountCRMDetails"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "traits": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AccountTraitDetails"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "firmographics": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AccountFirmographics"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "hiring": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/VerticalHiringSignal"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hiring"
+          },
+          "socials": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/VerticalSocialSignal"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Socials"
+          },
+          "linkedin_engagement": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ICPInteraction"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Linkedin Engagement"
+          },
+          "job_changes": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ICPJobChanges"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Job Changes"
+          },
+          "icp_people": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/VerticalICPPeople"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Icp People"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "is_present_in_crm",
+          "imported_account",
+          "account_discovered_at",
+          "signal_count"
+        ],
+        "title": "GetAccountResponse"
+      },
+      "GetAccountV2BulkResponse": {
+        "properties": {
+          "accounts": {
+            "items": {
+              "$ref": "#/components/schemas/GetAccountV2Response"
+            },
+            "type": "array",
+            "title": "Accounts"
+          },
+          "total_count": {
+            "type": "integer",
+            "title": "Total Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "accounts",
+          "total_count"
+        ],
+        "title": "GetAccountV2BulkResponse"
+      },
+      "GetAccountV2Response": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "website": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Website"
+          },
+          "linkedin_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Linkedin Url"
+          },
+          "is_present_in_crm": {
+            "type": "boolean",
+            "title": "Is Present In Crm"
+          },
+          "crm_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crm Status"
+          },
+          "imported_account": {
+            "type": "boolean",
+            "title": "Imported Account"
+          },
+          "enrichment_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enrichment Status"
+          },
+          "narrative_and_key_signals": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Narrative And Key Signals"
+          },
+          "account_discovered_at": {
+            "type": "string",
+            "title": "Account Discovered At"
+          },
+          "signal_count": {
+            "type": "integer",
+            "title": "Signal Count"
+          },
+          "technographics": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Technographics"
+          },
+          "crm_details": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AccountCRMDetails"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "traits": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AccountTraitDetails"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "firmographics": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AccountFirmographics"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "hiring": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/VerticalHiringSignalV2"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hiring",
+            "description": "Hiring signals keyed by discovered_signal_id. Example: {\"927353\": {discovered_signal_id: 927353, ...}}",
+            "x-key-description": "discovered_signal_id"
+          },
+          "socials": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/VerticalSocialSignalV2"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Socials",
+            "description": "Social signals keyed by discovered_signal_id. Example: {\"927353\": {discovered_signal_id: 927353, ...}}",
+            "x-key-description": "discovered_signal_id"
+          },
+          "linkedin_engagement": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/ICPInteractionV2"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Linkedin Engagement",
+            "description": "LinkedIn engagement signals keyed by discovered_signal_id. Example: {\"927353\": {discovered_signal_id: 927353, ...}}",
+            "x-key-description": "discovered_signal_id"
+          },
+          "job_changes": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/ICPJobChangesV2"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Job Changes",
+            "description": "Job change signals keyed by discovered_signal_id. Example: {\"927353\": {discovered_signal_id: 927353, ...}}",
+            "x-key-description": "discovered_signal_id"
+          },
+          "icp_people": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/SignalPerson"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Icp People"
+          },
+          "icp_people_total_count": {
+            "type": "integer",
+            "title": "Icp People Total Count",
+            "description": "Total number of ICP people (before pagination)",
+            "default": 0
+          },
+          "icp_people_has_more": {
+            "type": "boolean",
+            "title": "Icp People Has More",
+            "description": "Whether there are more ICP people beyond this page",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "is_present_in_crm",
+          "imported_account",
+          "account_discovered_at",
+          "signal_count"
+        ],
+        "title": "GetAccountV2Response"
+      },
+      "GetAudienceListRequest": {
+        "properties": {
+          "pagination": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PaginationParams"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Pagination parameters for the request"
+          }
+        },
+        "type": "object",
+        "title": "GetAudienceListRequest",
+        "description": "Request to list audiences with optional pagination."
+      },
+      "GetAudienceListResponse": {
+        "properties": {
+          "audiences": {
+            "items": {
+              "$ref": "#/components/schemas/Audience"
+            },
+            "type": "array",
+            "title": "Audiences"
+          },
+          "total_count": {
+            "type": "integer",
+            "title": "Total Count"
+          },
+          "pagination": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PaginationMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Pagination metadata (included when pagination is requested)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "audiences",
+          "total_count"
+        ],
+        "title": "GetAudienceListResponse",
+        "description": "Paginated response for audience list."
+      },
+      "GetAudienceRequest": {
+        "properties": {
+          "audience_id": {
+            "type": "integer",
+            "title": "Audience Id",
+            "description": "Audience ID to get details for"
+          }
+        },
+        "type": "object",
+        "required": [
+          "audience_id"
+        ],
+        "title": "GetAudienceRequest"
+      },
+      "GetAudienceResponse": {
+        "properties": {
+          "audience_id": {
+            "type": "integer",
+            "title": "Audience Id"
+          },
+          "audience_name": {
+            "type": "string",
+            "title": "Audience Name"
+          },
+          "audience_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Audience Type"
+          },
+          "account_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Account Ids",
+            "default": []
+          },
+          "total_accounts": {
+            "type": "integer",
+            "title": "Total Accounts"
+          },
+          "audience_people": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/AudiencePeople"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Audience People"
+          },
+          "total_people": {
+            "type": "integer",
+            "title": "Total People"
+          }
+        },
+        "type": "object",
+        "required": [
+          "audience_id",
+          "audience_name",
+          "total_accounts",
+          "total_people"
+        ],
+        "title": "GetAudienceResponse"
+      },
+      "GetSearchResultsResponse": {
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "title": "Job Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/SearchResultAccount"
+            },
+            "type": "array",
+            "title": "Results",
+            "default": []
+          },
+          "total_count": {
+            "type": "integer",
+            "title": "Total Count",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": [
+          "job_id",
+          "status"
+        ],
+        "title": "GetSearchResultsResponse",
+        "description": "Response from getting search results"
+      },
+      "GetSignalFilters": {
+        "properties": {
+          "date_from": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date From",
+            "description": "Date from to filter signals by (Inclusive). Format: YYYY-MM-DD"
+          },
+          "date_to": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date To",
+            "description": "Date to to filter signals by (Non-Inclusive). Format: YYYY-MM-DD"
+          }
+        },
+        "type": "object",
+        "title": "GetSignalFilters"
+      },
+      "GetSignalListRequest": {
+        "properties": {
+          "filters": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SignalFilters"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Optional filters to apply when querying signals. All filters are combined with AND logic."
+          },
+          "pagination": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PaginationParams"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Pagination parameters for the request"
+          }
+        },
+        "type": "object",
+        "title": "GetSignalListRequest"
+      },
+      "GetSignalListResponse": {
+        "properties": {
+          "signals": {
+            "items": {
+              "$ref": "#/components/schemas/Signal"
+            },
+            "type": "array",
+            "title": "Signals"
+          },
+          "total_count": {
+            "type": "integer",
+            "title": "Total Count"
+          },
+          "pagination": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PaginationMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Pagination metadata (included when pagination is requested)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "signals",
+          "total_count"
+        ],
+        "title": "GetSignalListResponse",
+        "description": "Paginated response for signal list."
+      },
+      "GetSignalRequest": {
+        "properties": {
+          "filters": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/GetSignalFilters"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Optional filters to apply when querying signals. All filters are combined with AND logic."
+          },
+          "signal_id": {
+            "type": "integer",
+            "title": "Signal Id",
+            "description": "Signal ID to get details for"
+          }
+        },
+        "type": "object",
+        "required": [
+          "signal_id"
+        ],
+        "title": "GetSignalRequest"
+      },
+      "GetSignalResponse": {
+        "properties": {
+          "signal_id": {
+            "type": "integer",
+            "title": "Signal Id"
+          },
+          "signal_name": {
+            "type": "string",
+            "title": "Signal Name"
+          },
+          "signal_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Type"
+          },
+          "account_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Account Ids",
+            "default": []
+          },
+          "total_accounts": {
+            "type": "integer",
+            "title": "Total Accounts"
+          },
+          "signal_people": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/SignalPeople"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal People"
+          },
+          "total_people": {
+            "type": "integer",
+            "title": "Total People"
+          }
+        },
+        "type": "object",
+        "required": [
+          "signal_id",
+          "signal_name",
+          "total_accounts",
+          "total_people"
+        ],
+        "title": "GetSignalResponse"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ICPInteraction": {
+        "properties": {
+          "signal_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Id"
+          },
+          "signal_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Name"
+          },
+          "post_link": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Post Link"
+          },
+          "post_content": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Post Content"
+          },
+          "interaction_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interaction Type"
+          },
+          "interacted_with": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interacted With"
+          },
+          "posted_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Posted At"
+          },
+          "detected_by_openfunnel_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detected By Openfunnel At"
+          },
+          "interactor_details": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PersonDetails"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ICPInteraction"
+      },
+      "ICPInteractionV2": {
+        "properties": {
+          "signal_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Id"
+          },
+          "signal_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Name"
+          },
+          "post_link": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Post Link"
+          },
+          "post_content": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Post Content"
+          },
+          "interaction_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interaction Type"
+          },
+          "posted_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Posted At"
+          },
+          "detected_by_openfunnel_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detected By Openfunnel At"
+          },
+          "interactor_details": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SignalPerson"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "discovered_signal_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Discovered Signal Id"
+          },
+          "signal_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Date"
+          },
+          "context": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Context"
+          },
+          "people": {
+            "items": {
+              "$ref": "#/components/schemas/SignalPerson"
+            },
+            "type": "array",
+            "title": "People"
+          }
+        },
+        "type": "object",
+        "title": "ICPInteractionV2"
+      },
+      "ICPItem": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "target_roles": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Roles"
+          },
+          "min_employee": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min Employee"
+          },
+          "max_employee": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Employee"
+          },
+          "min_funding": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min Funding"
+          },
+          "max_funding": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Funding"
+          },
+          "location": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Location"
+          },
+          "sub_locations": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sub Locations"
+          },
+          "people_locations": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "People Locations"
+          },
+          "people_sub_locations": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "People Sub Locations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "title": "ICPItem"
+      },
+      "ICPJobChanges": {
+        "properties": {
+          "signal_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Id"
+          },
+          "signal_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Name"
+          },
+          "change_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Change Type"
+          },
+          "detected_by_openfunnel_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detected By Openfunnel At"
+          },
+          "activity_context": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Activity Context"
+          },
+          "person_details": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PersonDetails"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ICPJobChanges"
+      },
+      "ICPJobChangesV2": {
+        "properties": {
+          "signal_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Id"
+          },
+          "signal_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Name"
+          },
+          "change_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Change Type"
+          },
+          "detected_by_openfunnel_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detected By Openfunnel At"
+          },
+          "person_details": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SignalPerson"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "discovered_signal_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Discovered Signal Id"
+          },
+          "signal_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Date"
+          },
+          "context": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Context"
+          },
+          "people": {
+            "items": {
+              "$ref": "#/components/schemas/SignalPerson"
+            },
+            "type": "array",
+            "title": "People"
+          }
+        },
+        "type": "object",
+        "title": "ICPJobChangesV2"
+      },
+      "InsightDetailInsight": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "account_id": {
+            "type": "integer",
+            "title": "Account Id"
+          },
+          "account_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account Name"
+          },
+          "account_domain": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account Domain"
+          },
+          "alert_text": {
+            "type": "string",
+            "title": "Alert Text"
+          },
+          "alert_type": {
+            "type": "string",
+            "title": "Alert Type"
+          },
+          "alert_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Alert Date"
+          },
+          "sentiment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sentiment"
+          },
+          "deal_stage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deal Stage"
+          },
+          "amount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amount"
+          },
+          "crm_opportunity_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crm Opportunity Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "account_id",
+          "alert_text",
+          "alert_type"
+        ],
+        "title": "InsightDetailInsight",
+        "description": "The main insight object within the detail response."
+      },
+      "InsightDetailResponse": {
+        "properties": {
+          "insight": {
+            "$ref": "#/components/schemas/InsightDetailInsight"
+          },
+          "underlying_signal": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UnderlyingSignal"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "related_insights": {
+            "items": {
+              "$ref": "#/components/schemas/RelatedInsight"
+            },
+            "type": "array",
+            "title": "Related Insights"
+          }
+        },
+        "type": "object",
+        "required": [
+          "insight"
+        ],
+        "title": "InsightDetailResponse",
+        "description": "Full detail response for a single insight with underlying signal and related insights."
+      },
+      "InsightFeedItem": {
+        "properties": {
+          "insight_id": {
+            "type": "integer",
+            "title": "Insight Id"
+          },
+          "account_id": {
+            "type": "integer",
+            "title": "Account Id"
+          },
+          "account_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account Name"
+          },
+          "account_domain": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account Domain"
+          },
+          "alert_text": {
+            "type": "string",
+            "title": "Alert Text"
+          },
+          "alert_type": {
+            "type": "string",
+            "title": "Alert Type",
+            "description": "'openfunnel' or 'crm'"
+          },
+          "alert_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Alert Date"
+          },
+          "sentiment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sentiment",
+            "description": "'positive', 'negative', or 'neutral'"
+          },
+          "discovered_signal_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Discovered Signal Id"
+          },
+          "deal_stage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deal Stage"
+          },
+          "amount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amount"
+          },
+          "signal_link": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Link"
+          }
+        },
+        "type": "object",
+        "required": [
+          "insight_id",
+          "account_id",
+          "alert_text",
+          "alert_type"
+        ],
+        "title": "InsightFeedItem",
+        "description": "Single insight in the cross-account feed."
+      },
+      "InsightFeedResponse": {
+        "properties": {
+          "total_insights": {
+            "type": "integer",
+            "title": "Total Insights",
+            "description": "Total matching insights",
+            "default": 0
+          },
+          "accounts_represented": {
+            "type": "integer",
+            "title": "Accounts Represented",
+            "description": "Number of distinct accounts in results",
+            "default": 0
+          },
+          "has_more": {
+            "type": "boolean",
+            "title": "Has More",
+            "description": "Whether more results exist beyond this page",
+            "default": false
+          },
+          "insights": {
+            "items": {
+              "$ref": "#/components/schemas/InsightFeedItem"
+            },
+            "type": "array",
+            "title": "Insights"
+          }
+        },
+        "type": "object",
+        "title": "InsightFeedResponse",
+        "description": "Cross-account insights feed response."
+      },
+      "ListICPsResponse": {
+        "properties": {
+          "icps": {
+            "items": {
+              "$ref": "#/components/schemas/ICPItem"
+            },
+            "type": "array",
+            "title": "Icps"
+          },
+          "total_count": {
+            "type": "integer",
+            "title": "Total Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "icps",
+          "total_count"
+        ],
+        "title": "ListICPsResponse"
+      },
+      "MyAlertsResponse": {
+        "properties": {
+          "total_alerts": {
+            "type": "integer",
+            "title": "Total Alerts",
+            "default": 0
+          },
+          "has_more": {
+            "type": "boolean",
+            "title": "Has More",
+            "default": false
+          },
+          "net_new_account_count": {
+            "type": "integer",
+            "title": "Net New Account Count",
+            "description": "Number of accounts appearing for the first time in this time window",
+            "default": 0
+          },
+          "alerts": {
+            "items": {
+              "$ref": "#/components/schemas/AlertItem"
+            },
+            "type": "array",
+            "title": "Alerts"
+          }
+        },
+        "type": "object",
+        "title": "MyAlertsResponse",
+        "description": "Response for get_my_alerts — user's notification history with insights."
+      },
+      "PaginationMetadata": {
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "title": "Limit",
+            "description": "Number of items requested per page"
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset",
+            "description": "Number of items skipped"
+          },
+          "total_count": {
+            "type": "integer",
+            "title": "Total Count",
+            "description": "Total number of items available"
+          },
+          "has_more": {
+            "type": "boolean",
+            "title": "Has More",
+            "description": "Whether there are more items after this page"
+          }
+        },
+        "type": "object",
+        "required": [
+          "limit",
+          "offset",
+          "total_count",
+          "has_more"
+        ],
+        "title": "PaginationMetadata",
+        "description": "Pagination metadata included in paginated responses."
+      },
+      "PaginationParams": {
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "maximum": 500,
+            "minimum": 1,
+            "title": "Limit",
+            "description": "Maximum number of items to return per page (1-500)",
+            "default": 50
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Offset",
+            "description": "Number of items to skip before starting to return results",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "PaginationParams",
+        "description": "Standard pagination parameters for list endpoints.\n\nUse limit and offset for paginated queries. Defaults to returning 50 items\nstarting from the beginning of the result set."
+      },
+      "PersonBrief": {
+        "properties": {
+          "person_id": {
+            "type": "integer",
+            "title": "Person Id"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Role"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email"
+          }
+        },
+        "type": "object",
+        "required": [
+          "person_id"
+        ],
+        "title": "PersonBrief",
+        "description": "Brief person information for summaries."
+      },
+      "PersonDetails": {
+        "properties": {
+          "person_id": {
+            "type": "integer",
+            "title": "Person Id"
+          },
+          "person_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Name"
+          },
+          "person_role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Role"
+          },
+          "person_email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Email"
+          },
+          "person_location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Location"
+          },
+          "person_linkedin_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Linkedin Url"
+          },
+          "joined_company_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Joined Company At"
+          },
+          "person_crm_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Crm Status"
+          },
+          "person_salesforce_contact_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Salesforce Contact Id"
+          },
+          "person_salesforce_owner_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Salesforce Owner Id"
+          },
+          "person_team_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Team Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "person_id"
+        ],
+        "title": "PersonDetails"
+      },
+      "PollSearchJobResponse": {
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "title": "Job Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "job_id",
+          "status",
+          "created_at"
+        ],
+        "title": "PollSearchJobResponse",
+        "description": "Response from polling job status"
+      },
+      "QualifyAndEnrichRequest": {
+        "properties": {
+          "domain": {
+            "type": "string",
+            "title": "Domain",
+            "description": "Company website domain (e.g. 'stripe.com')"
+          },
+          "goal": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Goal",
+            "description": "Search goal (overrides default pitch)"
+          },
+          "icp_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Icp Id",
+            "description": "ICP ID to fetch target roles from"
+          },
+          "target_icp_roles": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Icp Roles",
+            "description": "Target ICP roles (overrides icp_id roles)"
+          },
+          "timeframe": {
+            "type": "integer",
+            "maximum": 365,
+            "minimum": 1,
+            "title": "Timeframe",
+            "description": "Timeframe in days to search back",
+            "default": 90
+          },
+          "max_jobs_to_check": {
+            "type": "integer",
+            "maximum": 500,
+            "minimum": 1,
+            "title": "Max Jobs To Check",
+            "description": "Max jobs to check for relevance",
+            "default": 200
+          },
+          "campaign_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Campaign Name",
+            "description": "Campaign name to create for enriched people"
+          },
+          "people_locations": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "People Locations",
+            "description": "Target people locations (overrides ICP)"
+          },
+          "people_sub_locations": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "People Sub Locations",
+            "description": "Target people sub-locations (overrides ICP)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "domain"
+        ],
+        "title": "QualifyAndEnrichRequest",
+        "description": "Request model for end-to-end company qualification and people enrichment."
+      },
+      "QualifyAndEnrichResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "account_id": {
+            "type": "integer",
+            "title": "Account Id"
+          },
+          "domain": {
+            "type": "string",
+            "title": "Domain"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "account_id",
+          "domain",
+          "message"
+        ],
+        "title": "QualifyAndEnrichResponse"
+      },
+      "RelatedInsight": {
+        "properties": {
+          "insight_id": {
+            "type": "integer",
+            "title": "Insight Id"
+          },
+          "alert_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Alert Text"
+          },
+          "alert_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Alert Date"
+          },
+          "sentiment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sentiment"
+          }
+        },
+        "type": "object",
+        "required": [
+          "insight_id"
+        ],
+        "title": "RelatedInsight",
+        "description": "Brief insight for the related insights list."
+      },
+      "SearchAccountsRequest": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Query",
+            "description": "Search query to match against account name or domain"
+          },
+          "limit": {
+            "type": "integer",
+            "maximum": 50,
+            "minimum": 1,
+            "title": "Limit",
+            "description": "Maximum number of results to return (1-50)",
+            "default": 10
+          }
+        },
+        "type": "object",
+        "required": [
+          "query"
+        ],
+        "title": "SearchAccountsRequest",
+        "description": "Request to search accounts by name or domain."
+      },
+      "SearchAccountsResponse": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "title": "Query",
+            "description": "The search query that was executed"
+          },
+          "matches": {
+            "items": {
+              "$ref": "#/components/schemas/AccountSearchResult"
+            },
+            "type": "array",
+            "title": "Matches",
+            "description": "List of matching accounts"
+          },
+          "total_matches": {
+            "type": "integer",
+            "title": "Total Matches",
+            "description": "Total number of matches found",
+            "default": 0
+          },
+          "unique_domains": {
+            "type": "integer",
+            "title": "Unique Domains",
+            "description": "Number of unique domains in results",
+            "default": 0
+          },
+          "needs_clarification": {
+            "type": "boolean",
+            "title": "Needs Clarification",
+            "description": "True if multiple accounts with different domains match - user should clarify which one",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "query"
+        ],
+        "title": "SearchAccountsResponse",
+        "description": "Response for account search."
+      },
+      "SearchResultAccount": {
+        "properties": {
+          "rank": {
+            "type": "integer",
+            "title": "Rank"
+          },
+          "account_id": {
+            "type": "integer",
+            "title": "Account Id"
+          },
+          "account_name": {
+            "type": "string",
+            "title": "Account Name"
+          },
+          "account_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account Url"
+          },
+          "user_email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User Email"
+          },
+          "employee_count": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Employee Count"
+          },
+          "funding_stage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Funding Stage"
+          },
+          "location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Location"
+          },
+          "reasoning": {
+            "type": "string",
+            "title": "Reasoning"
+          },
+          "evidence_snippets": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Evidence Snippets",
+            "default": []
+          },
+          "relevance_score": {
+            "type": "number",
+            "title": "Relevance Score"
+          }
+        },
+        "type": "object",
+        "required": [
+          "rank",
+          "account_id",
+          "account_name",
+          "reasoning",
+          "relevance_score"
+        ],
+        "title": "SearchResultAccount",
+        "description": "Single account in search results"
+      },
+      "Signal": {
+        "properties": {
+          "signal_id": {
+            "type": "integer",
+            "title": "Signal Id"
+          },
+          "signal_name": {
+            "type": "string",
+            "title": "Signal Name"
+          },
+          "signal_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "signal_id",
+          "signal_name"
+        ],
+        "title": "Signal"
+      },
+      "SignalBrief": {
+        "properties": {
+          "signal_id": {
+            "type": "integer",
+            "title": "Signal Id"
+          },
+          "signal_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Type"
+          },
+          "signal_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Date"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          }
+        },
+        "type": "object",
+        "required": [
+          "signal_id"
+        ],
+        "title": "SignalBrief",
+        "description": "Brief signal information for summaries."
+      },
+      "SignalFilters": {
+        "properties": {
+          "signal_types": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Types",
+            "description": "List of signal types to filter by (e.g., ['hiring', 'socials', 'linkedin_engagement', 'job_change'])"
+          }
+        },
+        "type": "object",
+        "title": "SignalFilters"
+      },
+      "SignalPeople": {
+        "properties": {
+          "person_id": {
+            "type": "integer",
+            "title": "Person Id"
+          },
+          "person_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Name"
+          },
+          "person_role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Role"
+          },
+          "person_email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Email"
+          },
+          "person_location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Location"
+          },
+          "person_linkedin_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Linkedin Url"
+          },
+          "joined_company_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Joined Company At"
+          },
+          "person_crm_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Crm Status"
+          },
+          "person_salesforce_contact_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Salesforce Contact Id"
+          },
+          "person_salesforce_owner_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Salesforce Owner Id"
+          },
+          "person_team_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Team Name"
+          },
+          "account_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account Id"
+          },
+          "account_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account Name"
+          },
+          "account_domain": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account Domain"
+          },
+          "direct_signals": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Direct Signals"
+          }
+        },
+        "type": "object",
+        "required": [
+          "person_id"
+        ],
+        "title": "SignalPeople"
+      },
+      "SignalPerson": {
+        "properties": {
+          "person_id": {
+            "type": "integer",
+            "title": "Person Id"
+          },
+          "person_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Name"
+          },
+          "person_role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Role"
+          },
+          "person_email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Email"
+          },
+          "person_location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Location"
+          },
+          "person_linkedin_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Linkedin Url"
+          },
+          "joined_company_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Joined Company At"
+          },
+          "person_crm_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Crm Status"
+          },
+          "person_salesforce_contact_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Salesforce Contact Id"
+          },
+          "person_salesforce_owner_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Salesforce Owner Id"
+          },
+          "person_team_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Team Name"
+          },
+          "context": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Context"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          }
+        },
+        "type": "object",
+        "required": [
+          "person_id"
+        ],
+        "title": "SignalPerson",
+        "description": "Person in V2 API — extends PersonDetails with scoring and reasoning."
+      },
+      "StartSearchJobRequest": {
+        "properties": {
+          "query_trait": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Query Trait",
+            "description": "Search query describing accounts to find"
+          },
+          "query_activity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Query Activity",
+            "description": "Search query describing accounts to find"
+          }
+        },
+        "type": "object",
+        "title": "StartSearchJobRequest",
+        "description": "Request to start account signals search job"
+      },
+      "StartSearchJobResponse": {
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "title": "Job Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "pending"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Search job created successfully"
+          }
+        },
+        "type": "object",
+        "required": [
+          "job_id"
+        ],
+        "title": "StartSearchJobResponse",
+        "description": "Response from starting search job"
+      },
+      "TimelineEvent": {
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "title": "Event Id",
+            "description": "Unique event identifier"
+          },
+          "event_type": {
+            "type": "string",
+            "title": "Event Type",
+            "description": "Type of event: 'signal', 'crm_activity', 'person_added'"
+          },
+          "event_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Event Date",
+            "description": "ISO format datetime when the event occurred"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "Brief event title"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "description": "Detailed event description",
+            "default": ""
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source",
+            "description": "URL or source of the event"
+          },
+          "metadata": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Metadata",
+            "description": "Additional event-specific data"
+          }
+        },
+        "type": "object",
+        "required": [
+          "event_id",
+          "event_type",
+          "title"
+        ],
+        "title": "TimelineEvent",
+        "description": "A single event in an account's timeline."
+      },
+      "TimelineResponse": {
+        "properties": {
+          "account_id": {
+            "type": "integer",
+            "title": "Account Id",
+            "description": "Account ID"
+          },
+          "account_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account Name",
+            "description": "Account name"
+          },
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/TimelineEvent"
+            },
+            "type": "array",
+            "title": "Events",
+            "description": "List of timeline events"
+          },
+          "total_events": {
+            "type": "integer",
+            "title": "Total Events",
+            "description": "Total number of events",
+            "default": 0
+          },
+          "pagination": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PaginationMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Pagination metadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "account_id"
+        ],
+        "title": "TimelineResponse",
+        "description": "Response containing account timeline events."
+      },
+      "TraitSearchRequest": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Query",
+            "description": "Describe the type of companies you're looking for",
+            "examples": [
+              "healthcare companies with voice AI products",
+              "fintech startups with payment processing",
+              "B2B SaaS companies in cybersecurity",
+              "companies that sell to restaurants"
+            ]
+          },
+          "limit": {
+            "type": "integer",
+            "maximum": 100,
+            "minimum": 1,
+            "title": "Limit",
+            "description": "Maximum number of results to return (1-100)",
+            "default": 25
+          }
+        },
+        "type": "object",
+        "required": [
+          "query"
+        ],
+        "title": "TraitSearchRequest",
+        "description": "Request to search companies by traits/characteristics.",
+        "examples": [
+          {
+            "limit": 25,
+            "query": "healthcare companies with voice AI products"
+          },
+          {
+            "limit": 10,
+            "query": "fintech startups in payments"
+          }
+        ]
+      },
+      "TraitSearchResponse": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "title": "Query",
+            "description": "The search query that was executed"
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/TraitSearchResult"
+            },
+            "type": "array",
+            "title": "Results",
+            "description": "List of matching accounts ranked by relevance"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total",
+            "description": "Total number of results returned"
+          }
+        },
+        "type": "object",
+        "required": [
+          "query",
+          "results",
+          "total"
+        ],
+        "title": "TraitSearchResponse",
+        "description": "Response for trait search."
+      },
+      "TraitSearchResult": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "description": "Account ID"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name",
+            "description": "Company name"
+          },
+          "domain": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Domain",
+            "description": "Company domain"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Company description used for matching"
+          },
+          "similarity": {
+            "type": "number",
+            "title": "Similarity",
+            "description": "Relevance score (0-1, higher is more relevant)"
+          },
+          "technographics": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Technographics",
+            "description": "Technologies used by the company"
+          },
+          "in_crm": {
+            "type": "boolean",
+            "title": "In Crm",
+            "description": "Whether this account exists in your CRM",
+            "default": false
+          },
+          "is_exported": {
+            "type": "boolean",
+            "title": "Is Exported",
+            "description": "Whether this account has been exported to a campaign",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "similarity"
+        ],
+        "title": "TraitSearchResult",
+        "description": "Single account in trait search results."
+      },
+      "UnderlyingSignal": {
+        "properties": {
+          "signal_id": {
+            "type": "integer",
+            "title": "Signal Id"
+          },
+          "signal_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Type"
+          },
+          "activity_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Activity Type"
+          },
+          "signal_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Date"
+          },
+          "signal_link": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Link"
+          },
+          "context_summary": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Context Summary"
+          },
+          "context": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Context"
+          },
+          "signal_content": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Content"
+          }
+        },
+        "type": "object",
+        "required": [
+          "signal_id"
+        ],
+        "title": "UnderlyingSignal",
+        "description": "Full signal data linked to an insight."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "VerticalHiringSignal": {
+        "properties": {
+          "signal_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Id"
+          },
+          "signal_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Name"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url"
+          },
+          "job_title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Job Title"
+          },
+          "job_location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Job Location"
+          },
+          "job_posting": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Job Posting"
+          },
+          "posting_qualification_reasoning": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Posting Qualification Reasoning"
+          },
+          "job_posted_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Job Posted At"
+          },
+          "detected_by_openfunnel_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detected By Openfunnel At"
+          },
+          "extracted_team_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extracted Team Name"
+          }
+        },
+        "type": "object",
+        "title": "VerticalHiringSignal"
+      },
+      "VerticalHiringSignalV2": {
+        "properties": {
+          "signal_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Id"
+          },
+          "signal_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Name"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url"
+          },
+          "job_title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Job Title"
+          },
+          "job_location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Job Location"
+          },
+          "job_posting": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Job Posting"
+          },
+          "job_posted_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Job Posted At"
+          },
+          "detected_by_openfunnel_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detected By Openfunnel At"
+          },
+          "extracted_team_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extracted Team Name"
+          },
+          "discovered_signal_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Discovered Signal Id"
+          },
+          "signal_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Date"
+          },
+          "context": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Context"
+          },
+          "people": {
+            "items": {
+              "$ref": "#/components/schemas/SignalPerson"
+            },
+            "type": "array",
+            "title": "People"
+          }
+        },
+        "type": "object",
+        "title": "VerticalHiringSignalV2"
+      },
+      "VerticalICPPeople": {
+        "properties": {
+          "person_id": {
+            "type": "integer",
+            "title": "Person Id"
+          },
+          "person_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Name"
+          },
+          "person_role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Role"
+          },
+          "person_email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Email"
+          },
+          "person_location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Location"
+          },
+          "person_linkedin_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Linkedin Url"
+          },
+          "joined_company_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Joined Company At"
+          },
+          "person_crm_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Crm Status"
+          },
+          "person_salesforce_contact_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Salesforce Contact Id"
+          },
+          "person_salesforce_owner_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Salesforce Owner Id"
+          },
+          "person_team_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Person Team Name"
+          },
+          "direct_signals": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Direct Signals"
+          },
+          "qualification_reasoning": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Qualification Reasoning"
+          }
+        },
+        "type": "object",
+        "required": [
+          "person_id"
+        ],
+        "title": "VerticalICPPeople"
+      },
+      "VerticalSocialSignal": {
+        "properties": {
+          "signal_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Id"
+          },
+          "signal_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Name"
+          },
+          "platform": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Platform"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url"
+          },
+          "post_content": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Post Content"
+          },
+          "signal_context": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Context"
+          },
+          "posted_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Posted At"
+          },
+          "detected_by_openfunnel_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detected By Openfunnel At"
+          },
+          "is_poster_person": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Poster Person"
+          },
+          "poster_person": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PersonDetails"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "extracted_team_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extracted Team Name"
+          }
+        },
+        "type": "object",
+        "title": "VerticalSocialSignal"
+      },
+      "VerticalSocialSignalV2": {
+        "properties": {
+          "signal_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Id"
+          },
+          "signal_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Name"
+          },
+          "platform": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Platform"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url"
+          },
+          "post_content": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Post Content"
+          },
+          "posted_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Posted At"
+          },
+          "detected_by_openfunnel_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detected By Openfunnel At"
+          },
+          "is_poster_person": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Poster Person"
+          },
+          "poster_person": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SignalPerson"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "extracted_team_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extracted Team Name"
+          },
+          "discovered_signal_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Discovered Signal Id"
+          },
+          "signal_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Date"
+          },
+          "context": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Context"
+          },
+          "people": {
+            "items": {
+              "$ref": "#/components/schemas/SignalPerson"
+            },
+            "type": "array",
+            "title": "People"
+          }
+        },
+        "type": "object",
+        "title": "VerticalSocialSignalV2"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.openfunnel.dev"
+    }
+  ]
+}
