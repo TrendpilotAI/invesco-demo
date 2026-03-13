@@ -1,6 +1,6 @@
 # TODO.md — Master Project Plan
 
-> Auto-monitored by Honey's cron loops. Last updated: 2026-03-11 04:04 UTC (todo-progress: All P0s remain complete ✅. In-flight from prior runs: SSA-826+827+830 (signal-studio-auth CORS+Dockerfile+CI), Ultrafone-880 (multi-tenant), NR-882+883 (ESLint+E2E). Spawned 3 NEW parallel Sonnet agents: SSA-828+834 (rate limiter fix + startup env validation), NR-008+009 (asyncHandler middleware + SQLite indexes), EE-894+896+897 (HTTP status codes + dead code + env-based rate limits + entity_type allowlist). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley (#INV-008).)
+> Auto-monitored by Honey's cron loops. Last updated: 2026-03-13 04:08 UTC (todo-progress: NR-020 ✅ removed @genkit-ai/firebase + firebase-admin unused deps, NR-021 ✅ deleted debug-exports.js — both committed + pushed to NarrativeReactor main (commit 3818c75). Agents still running from prior spawn: SSA-835 (.env.example), EE-895 (asyncpg migration). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley (#INV-008).) (invesco-sprint: ALL P0s REMAIN COMPLETE ✅. Verified done files: SSA-826 ✅ (CORS middleware), SSA-827 ✅ (Dockerfile), SSA-828 ✅ (rate limiter fix), SSA-830 ✅ (CI pipeline), SSA-834 ✅ (startup env validation), NR-008 ✅ (asyncHandler), NR-009 ✅ (SQLite indexes), NR-882 ✅ (ESLint root config), NR-883 ✅ (supertest E2E), EE-894 ✅ (HTTP status codes), EE-896 ✅ (dead code cleanup), EE-897 ✅ (env rate limits + allowlist), Ultrafone-880 ✅ (multi-tenant user profiles). Spawned 3 NEW parallel Sonnet agents: SSA-835 (.env.example docs), EE-895 (asyncpg migration), NR-009-indexes-genkit (SQLite indexes + pin Genkit deps). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley (#INV-008).)
 > Previously: 2026-03-11 00:04 UTC (todo-progress: All P0s remain complete ✅. Spawned 3 parallel Sonnet agents: SSA-826+827+830 (signal-studio-auth CORS middleware + Dockerfile + GitHub Actions CI), Ultrafone-880 (multi-tenant user profiles — remove hardcoded user_id="nathan"), NR-882+883 (NarrativeReactor ESLint root config + Supertest E2E tests). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley (#INV-008).)
 > Previously: 2026-03-10 20:01 UTC (invesco-sprint: ALL P0s CONFIRMED COMPLETE ✅. Verified done files: TODO-1020 ✅ (Watson NLC → LLM gateway, commit 6bf45d7), ultrafone-878 ✅ (Twilio webhook signature validation), ultrafone-879 ✅ (rate limiting on webhooks), SBB-003 ✅ (multi-tenant isolation tests). No new P0 agents spawned — all P0s complete across all projects. P1 agents already running from prior todo-progress cron: SSA-828+834 (signal-studio-auth rate limiter cache + startup env validation), NR-008+009 (NarrativeReactor asyncHandler middleware + SQLite indexes), EE-894+896+897 (core-entityextraction HTTP status codes + dead code + env rate limits + entity_type allowlist). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley (#INV-008).) (todo-progress: All P0s remain complete ✅. Spawned 3 parallel Sonnet agents: SSA-828+834 (signal-studio-auth rate limiter cache + startup env validation), NR-008+009 (NarrativeReactor asyncHandler middleware + SQLite indexes), EE-894+896+897 (core-entityextraction HTTP status codes + dead code removal + env rate limits + entity_type allowlist). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley (#INV-008).) (todo-progress: Verified EE-890 ✅ EE-891 ✅ EE-892 ✅ EE-893 ✅ SS-816 ✅ SSA-831 ✅ SSA-832 ✅ SSA-833 ✅ SSF-855 ✅ SSPD-469 ✅ SSPD-898 ✅ SSPD-899 ✅ (all done files confirmed from 12:01 UTC agent batch). Spawned 1 Sonnet agent: Ultrafone #878+879 (Twilio webhook signature validation + rate limiting). 🚨 CRITICAL still required from Nathan: (1) Rotate Ultrafone API keys #622 (2) Deploy SignalHaus to Vercel with custom domain #222 (3) Email Megan+Craig → schedule Invesco dry run with Brian Kiley (#INV-008).)
 > Previously: 2026-03-10 08:07 UTC (todo-progress: #897 ✅ logo.png + RSS link, #898 ✅ branded 404 page for signalhaus-website. Spawned 2 parallel Sonnet agents: NarrativeReactor P0 security batch #878-881 (scrypt hashing + helmet + db singleton + genkit pinning), signalhaus-website #826 (Upstash Redis rate limiter fix).) (judge-signalhaus-website v2: re-scored [revenue:7, strategic:8, completeness:7, urgency:7↑, effort_remaining:7]. Urgency bumped: in-memory rate limiter is LIVE BUG on Vercel. New findings: logo.png missing (JSON-LD 404), ROI calculate() not extracted for testing, no branded 404 page, RSS feed unlinked. Created TODOs 894-899. All three analysis files (BRAINSTORM/PLAN/AUDIT) refreshed.)
@@ -1034,12 +1034,12 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 - [x] [P0/S] #832 Refactor /refresh to call _rotate_family_token() ✅ DONE 2026-03-10
 
 ### P1 — Foundation (This Sprint)
-- [ ] [P1/S] #828 Fix rate limiter — RedisStorage + SlidingWindowRateLimiter created per-request → `828-pending-high-signal-studio-auth-fix-ratelimiter-duplication.md`
-- [ ] [P1/S] #834 Add startup env validation — SUPABASE_URL/SERVICE_KEY/JWT_SECRET fail fast if missing → `834-pending-high-signal-studio-auth-startup-env-validation.md`
+- [x] [P1/S] #828 Fix rate limiter — RedisStorage + SlidingWindowRateLimiter created per-request ✅ DONE 2026-03-13
+- [x] [P1/S] #834 Add startup env validation — SUPABASE_URL/SERVICE_KEY/JWT_SECRET fail fast if missing ✅ DONE 2026-03-13
 - [ ] [P1/XS] #835 Create .env.example file → `835-pending-medium-signal-studio-auth-env-example.md`
-- [ ] [P1/S] #826 Add CORS middleware + ALLOWED_ORIGINS env var → `826-pending-critical-signal-studio-auth-cors-middleware.md`
-- [ ] [P1/S] #827 Dockerfile + docker-compose.yml → `827-pending-critical-signal-studio-auth-dockerfile.md`
-- [ ] [P1/S] #830 GitHub Actions CI (pytest, ruff, bandit, pip-audit) → `830-pending-high-signal-studio-auth-ci-pipeline.md`
+- [x] [P1/S] #826 Add CORS middleware + ALLOWED_ORIGINS env var ✅ DONE 2026-03-13
+- [x] [P1/S] #827 Dockerfile + docker-compose.yml ✅ DONE 2026-03-13
+- [x] [P1/S] #830 GitHub Actions CI (pytest, ruff, bandit, pip-audit) ✅ DONE 2026-03-13
 - [ ] [P1/S] #838 Fix X-Forwarded-For spoofing — add TRUSTED_PROXY_IPS validation → `838-pending-high-signal-studio-auth-trusted-proxy-ips.md`
 - [ ] [P1/M] #836 Admin session revocation: DELETE /auth/admin/users/{user_id}/sessions → `836-pending-high-signal-studio-auth-admin-session-revocation.md`
 - [ ] [P1/M] #837 Implement Redis session scan in update_password() — old tokens survive 7 days → `837-pending-high-signal-studio-auth-redis-session-scan-update-password.md`
@@ -1394,8 +1394,8 @@ _Added by Judge Agent v2 — 2026-03-08_
 - [ ] [P1/M] #NR-004 Analytics dashboard React components (engagement trends, campaign ROI, hashtag breakdown) → `NR-004-pending-P1-NarrativeReactor-analytics-dashboard.md`
 - [ ] [P1/S] #NR-006 LinkedIn OAuth2 PKCE flow for native publishing authorization → `NR-006-pending-P1-NarrativeReactor-linkedin-oauth.md`
 - [ ] [P1/S] #NR-007 LinkedIn post publishing via LinkedIn API v2 (profiles + company pages) → `NR-007-pending-P1-NarrativeReactor-linkedin-publishing.md`
-- [ ] [P1/S] #NR-008 Extract asyncHandler middleware — remove 60+ repetitive try/catch blocks from route handlers → `NR-008-pending-P1-NarrativeReactor-async-handler-refactor.md`
-- [ ] [P1/XS] #NR-009 Add SQLite indexes (tenants.api_key_hash, content_library, scheduled_posts, campaigns) → `NR-009-pending-P1-NarrativeReactor-sqlite-indexes.md`
+- [x] [P1/S] #NR-008 Extract asyncHandler middleware — remove 60+ repetitive try/catch blocks ✅ DONE 2026-03-13
+- [x] [P1/XS] #NR-009 Add SQLite indexes (tenants.api_key_hash, content_library, scheduled_posts, campaigns) ✅ DONE 2026-03-13
 - [ ] [P1/M] #NR-010 Supertest E2E test suite for full Express HTTP stack (auth, rate limit, billing, scheduler) → `NR-010-pending-P1-NarrativeReactor-supertest-e2e-tests.md`
 - [ ] [P1/XS] #NR-011 Add husky + lint-staged pre-commit hooks (ESLint + tsc) → `NR-011-pending-P1-NarrativeReactor-precommit-hooks.md`
 - [ ] [P1/S] #NR-013 Weekly competitor intelligence digest (AI summary + gap analysis via webhook/email) → `NR-013-pending-P1-NarrativeReactor-competitor-digest.md`
@@ -1413,8 +1413,8 @@ _Added by Judge Agent v2 — 2026-03-08_
 - [ ] [P3/M] #NR-019 Content repurposing pipeline (1 long-form asset → full week of multi-platform content) → `NR-019-pending-P3-NarrativeReactor-content-repurposing-pipeline.md`
 
 ### Cleanup / Code Quality
-- [ ] [P1/XS] #NR-020 Remove unused @genkit-ai/firebase dependency from package.json → quick cleanup
-- [ ] [P1/XS] #NR-021 Delete debug-exports.js from repo root → quick cleanup
+- [x] [P1/XS] #NR-020 Remove unused @genkit-ai/firebase dependency from package.json → ✅ DONE 2026-03-13 (commit 3818c75, also removed firebase-admin)
+- [x] [P1/XS] #NR-021 Delete debug-exports.js from repo root → ✅ DONE 2026-03-13 (commit 3818c75)
 - [ ] [P1/S] #NR-022 Centralize SQLite DB opens into shared src/lib/db.ts singleton → `NR-022-pending-P1-NarrativeReactor-db-singleton.md`
 - [ ] [P2/S] #NR-023 Replace ~30 `any` types with proper Zod-inferred or unknown + type guard → `NR-023-pending-P2-NarrativeReactor-type-safety.md`
 
@@ -1542,7 +1542,7 @@ _Added by Judge Agent v2 — 2026-03-08_
 
 - [x] **P0** Twilio webhook signature validation (878-pending-p0-ultrafone-twilio-webhook-signature-validation.md) ✅ DONE 2026-03-10 (done file confirmed)
 - [x] **P0** Rate limiting on webhook endpoints (879-pending-p0-ultrafone-rate-limiting-webhook.md) ✅ DONE 2026-03-10 (done file confirmed)
-- [ ] **P1** Multi-tenant user profiles — remove hardcoded `user_id="nathan"` (880-pending-p1-ultrafone-multi-tenant-user-profiles.md)
+- [x] **P1** Multi-tenant user profiles — remove hardcoded `user_id="nathan"` ✅ DONE 2026-03-13
 - [ ] **P1** Consolidate 3 TTS services into unified provider (881-pending-p1-ultrafone-tts-provider-abstraction.md)
 - [ ] **P1** Zapier/Make.com webhook bridge (882-pending-p1-ultrafone-zapier-webhook-bridge.md)
 - [ ] **P2** Android app via Flutter cross-platform build (883-pending-p2-ultrafone-android-app.md)
@@ -1558,7 +1558,7 @@ _Added by Judge Agent v2 — 2026-03-08_
 - [x] **P0/XS** Fix persistence.py connection leak (#893) ✅ DONE 2026-03-10
 
 ### P1 — Important Fixes
-- [ ] **P1/S**  Fix HTTP status code inconsistency — errors return 200 with status:400 body (#894)
-- [ ] **P1/M**  Migrate persistence layer to asyncpg (async PostgreSQL) (#895)
-- [ ] **P1/XS** Remove dead code: _locate_entities(), wire Pydantic models to fixed_list endpoints (#896)
-- [ ] **P1/XS** Env-based rate limits + entity_types_list allowlist validation (#897)
+- [x] **P1/S**  Fix HTTP status code inconsistency — errors return 200 with status:400 body (#894) ✅ DONE 2026-03-13
+- [ ] **P1/M**  Migrate persistence layer to asyncpg (async PostgreSQL) (#895) ⏳ Agent spawned 2026-03-13
+- [x] **P1/XS** Remove dead code: _locate_entities(), wire Pydantic models to fixed_list endpoints (#896) ✅ DONE 2026-03-13
+- [x] **P1/XS** Env-based rate limits + entity_types_list allowlist validation (#897) ✅ DONE 2026-03-13
