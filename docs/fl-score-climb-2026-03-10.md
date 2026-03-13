@@ -30,3 +30,62 @@
 
 ### signal-studio
 - Next wins after this run: CSRF coverage audit/fixes, `signal_runs` persistence, and reactflow dedup.
+
+---
+
+## Follow-on run — 2026-03-13 12:27 UTC
+
+## Prioritized queue used for this run
+1. `signal-studio` — finish and validate the high-risk CSRF/header-centralization work already in progress
+2. `signal-studio-auth` — validate and harden explicit CORS allowlisting + password complexity work already in progress
+3. `signal-builder-backend` — attempt to validate webhook/rate-limit/auth-bypass test work already in progress
+4. `forwardlane-backend` — inspect branch state and leave for a dedicated Python/Django upgrade-safe pass unless there was an obvious low-risk win
+
+## Work completed
+### signal-studio
+- Validated the in-progress CSRF/header-centralization changes already on branch:
+  - `lib/api-client.ts` now injects CSRF headers for same-origin state-changing `/api/*` calls
+  - `lib/auth-context.tsx`, `components/ai-chat-template.tsx`, and `components/visual-editor/visual-builder-chat.tsx` now use CSRF-aware fetch helpers on high-risk POST flows
+- Ran targeted Jest validation:
+  - `pnpm test -- --runInBand __tests__/lib/api-client.test.ts`
+  - Result: **3/3 tests passing**
+- Net effect: closes a concrete audit gap with low regression risk and improves confidence on auth/session-sensitive routes
+
+### signal-studio-auth
+- Validated the in-progress branch changes for:
+  - explicit `CORS_ALLOWED_ORIGINS` allowlisting in `main.py`
+  - signup password complexity enforcement in `routes/auth_routes.py`
+- Added missing test/dependency support:
+  - `tests/test_cors_and_signup_validation.py`
+  - `requirements.txt` now includes `fakeredis==2.34.1` because the existing redis integration tests depend on it
+- Ran full pytest suite after the additions:
+  - Result: **109 passed, 1 warning**
+- Net effect: this repo moved from “security hardening in progress” to “security hardening implemented and validated” for the CORS/password-complexity slice
+
+### signal-builder-backend
+- Reviewed the in-progress branch focused on webhook auth bypass correctness, rate-limiter resilience, and targeted test repairs
+- Attempted to run targeted pytest validation for:
+  - `tests/test_health.py`
+  - `tests/test_webhooks.py`
+  - `tests/test_signal_preview.py`
+  - `tests/test_audit_log.py`
+- Blocker found: the repo currently expects a project-specific dependency/runtime stack (notably Pydantic v1-compatible auth dependencies such as `fastapi-jwt-auth`), while the shared validation environment here is Pydantic v2-oriented. This causes import-time failures before the tests themselves execute.
+- Net effect: branch changes look directionally right, but this repo still needs validation inside its native pinned environment before I’d count the score lift as real
+
+### forwardlane-backend
+- Re-read plan/audit context and checked branch state
+- Current repo is already scored above 8.0 in the orchestrator snapshot and is mid-flight on `upgrade/python311-django42`
+- Left it untouched this run because the highest-leverage remaining work there is not “tiny safe tweak” territory — it is targeted `easy_button` / `analytical` test + auth + SQL-safety work that deserves a dedicated branch-safe pass in the repo’s own environment
+
+## Updated recommendations / next queue
+1. `signal-builder-backend`
+   - run the current branch’s targeted tests inside the repo’s native pinned environment (Pydantic v1 / Pipfile-driven stack)
+   - if green, commit the webhook auth-bypass + limiter-resilience test bundle
+2. `signal-studio`
+   - land `signal_runs` persistence next for compliance/audit-score lift
+   - then remove legacy `reactflow` after import migration and bundle verification
+3. `signal-studio-auth`
+   - add one small deployment note documenting `CORS_ALLOWED_ORIGINS` examples for staging/prod
+   - optional next hardening: login/signup/invite E2E smoke tests
+4. `forwardlane-backend`
+   - next dedicated pass should focus on real `easy_button` / `analytical` safety tests, not broad coverage-chasing
