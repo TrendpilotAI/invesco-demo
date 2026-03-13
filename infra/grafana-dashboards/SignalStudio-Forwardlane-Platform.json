@@ -1,0 +1,16 @@
+{
+  "dashboard": {
+    "title": "Signal Studio & ForwardLane Mesh - Platform Health",
+    "panels": [
+      { "type": "graph", "title": "Agent Uptime & Heartbeats", "metrics": ["openclaw.agent.uptime", "openclaw.agent.heartbeat"] },
+      { "type": "heatmap", "title": "Error/Incident Heatmap", "metrics": ["openclaw.errors", "openclaw.approval.escalation"] },
+      { "type": "table", "title": "P0 Tickets (Jira/Linear)", "metrics": ["tickets.p0.count", "tasks.p0.status"] },
+      { "type": "stat", "title": "API Rate Limits", "metrics": ["platform.api.ratelimit"] },
+      { "type": "gauge", "title": "Redis Queue Size", "metrics": ["redis.queue.size"] },
+      { "type": "stat", "title": "Postgres Query Latency", "metrics": ["postgres.query.latency"] },
+      { "type": "stat", "title": "Temporal Workflow Status", "metrics": ["temporal.workflow.active", "temporal.workflow.failed"] },
+      { "type": "table", "title": "Multi-Tenant Health Overview", "metrics": ["tenant.health.status", "tenant.incidents.unresolved"] },
+      { "type": "stat", "title": "LLM Cost & Usage", "metrics": ["openclaw.llm.tokens", "openclaw.llm.cost"] }
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "dashboards": [
+    {
+      "name": "Signal Studio Mesh Events",
+      "filters": [
+        { "event": "pageview", "where": { "path_contains": "/signal-studio" } },
+        { "event": "task_created", "properties": { "origin": "agent" } },
+        { "event": "approval_flow", "status": "escalated" },
+        { "event": "llm_ticket_claim" },
+        { "event": "security_policy_update" }
+      ]
+    },
+    {
+      "name": "Agent Mesh Adoption Funnel",
+      "steps": [
+        "dashboard_visit",
+        "ticket_claimed",
+        "task_complete",
+        "review_approved",
+        "ticket_synced_jira"
+      ]
+    }
+  ]
+}
