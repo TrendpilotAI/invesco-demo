@@ -1,0 +1,166 @@
+{
+  "batch": "T2",
+  "generated_at": "2026-03-13T17:45:00Z",
+  "repos": [
+    {
+      "repo": "signal-studio-frontend",
+      "overall_score": 6.4,
+      "scores": {
+        "revenue_potential": 8,
+        "strategic_value": 9,
+        "completeness": 6,
+        "urgency": 8,
+        "effort_remaining": 5,
+        "ci_pipeline": 5,
+        "test_quality": 4
+      },
+      "strengths": [
+        "High GTM alignment (enterprise signal platform + Salesforce embed path)",
+        "Modern stack (Next.js 16, TypeScript, AI SDK multi-provider support)",
+        "Security primitives already present (JWT middleware + CSRF pattern)"
+      ],
+      "bugs": [
+        "Auth/token propagation edge cases on embed/easy-button routes",
+        "UI reliability gaps on demo-visible routes (loading/error/fallback paths)",
+        "Insufficient E2E coverage for critical flows"
+      ],
+      "risks": [
+        "Demo reliability risk before client-facing sessions",
+        "Limited CI depth (no E2E gating/preview env), increases regression risk",
+        "Complex Oracle/vector integrations with sparse failure-mode testing"
+      ],
+      "recommendations": [
+        "Prioritize demo hardening + route-level error boundaries this sprint",
+        "Enable Playwright smoke flows in CI and block merges on failures",
+        "Add embed contract tests (token passthrough + postMessage handshake)"
+      ]
+    },
+    {
+      "repo": "forwardlane_advisor",
+      "overall_score": 5.6,
+      "scores": {
+        "revenue_potential": 4,
+        "strategic_value": 6,
+        "completeness": 7,
+        "urgency": 3,
+        "effort_remaining": 8
+      },
+      "strengths": [
+        "Deep domain/IP coverage across portfolios, recommendations, compliance",
+        "Feature-complete legacy behavior with broad route/model surface",
+        "Recent critical hardening landed (Node 20 move + Dockerfile secret-exfil fix)"
+      ],
+      "bugs": [
+        "Legacy dependency CVE exposure remains (Sequelize 3.x and related packages)",
+        "Deprecated SDK/library usage (`request`, legacy Watson stack, older validators)",
+        "Test depth low relative to codebase age and complexity"
+      ],
+      "risks": [
+        "Modernization blast radius is high; incremental upgrades likely brittle",
+        "Residual security debt in old transitive dependency graph",
+        "Architecture drag: route-heavy legacy patterns impede velocity"
+      ],
+      "recommendations": [
+        "Treat as extraction + strangler migration, not full in-place modernization",
+        "Execute Sequelize v6+ migration plan behind adapter boundaries",
+        "Stand up baseline CI security gates (audit/SCA + smoke tests)"
+      ]
+    },
+    {
+      "repo": "NarrativeReactor",
+      "overall_score": 6.8,
+      "scores": {
+        "product_readiness": 6,
+        "security": 4,
+        "reliability": 6,
+        "revenue_upside": 8,
+        "execution_urgency": 8,
+        "effort_remaining": 7
+      },
+      "strengths": [
+        "Strong feature ambition and broad AI workflow coverage",
+        "Good foundation choices (TypeScript, partial SQLite migration, Genkit flows)",
+        "Meaningful monetization upside with scheduling + multi-tenant path"
+      ],
+      "bugs": [
+        "Wildcard CORS still represented as a critical security gap",
+        "Remaining in-memory/JSON persistence patterns risk state loss and race conditions",
+        "Missing scheduling execution engine leaves promised automation incomplete"
+      ],
+      "risks": [
+        "Security posture (auth/CORS/token handling) can block external launch",
+        "Operational observability gaps increase MTTR for AI pipeline failures",
+        "Single-tenant assumptions cap SaaS commercialization"
+      ],
+      "recommendations": [
+        "P0: lock CORS + token storage/refresh + endpoint validation",
+        "Migrate all critical state to SQLite (transactional repos)",
+        "Ship async scheduler/job status loop before growth-facing features"
+      ]
+    },
+    {
+      "repo": "signal-builder-frontend",
+      "overall_score": 6.1,
+      "scores": {
+        "revenue_potential": 7,
+        "strategic_value": 8,
+        "completeness": 6,
+        "urgency": 7,
+        "effort_remaining": 6,
+        "ci_pipeline": 4,
+        "test_quality": 4
+      },
+      "strengths": [
+        "Modern FE baseline (Vite + React 18 + TypeScript + RTK + React Query)",
+        "Clear modular architecture conventions in source layout",
+        "Lint/typecheck/test scripts and Storybook scaffolding already present"
+      ],
+      "bugs": [
+        "Type safety debt (multiple TODOs around API-layer `any` elimination)",
+        "Coverage depth appears thin (few repo-owned tests)",
+        "Dependency/upgrade lag (React Query v4, TypeScript 4.x, ReactFlow 11)"
+      ],
+      "risks": [
+        "Regression risk due to weak CI enforcement and sparse integration tests",
+        "Performance risk from pending route code-splitting/bundle optimization work",
+        "Security risk from unresolved dependency audit and env handling tasks"
+      ],
+      "recommendations": [
+        "Add CI gates: typecheck + unit + MSW integration tests on PR",
+        "Prioritize API contract typing (zod schemas + generated client types)",
+        "Execute dependency modernization wave (React Query v5, TS5, ReactFlow v12)"
+      ]
+    },
+    {
+      "repo": "Ultrafone",
+      "overall_score": 6.6,
+      "scores": {
+        "revenue_potential": 8,
+        "strategic_value": 9,
+        "completeness": 6,
+        "urgency": 7,
+        "effort_remaining": 5
+      },
+      "strengths": [
+        "Compelling product thesis (AI call screening + social engineering defense)",
+        "Core telephony/LLM/STT/TTS pipeline integrated across providers",
+        "Clear path to consumer monetization with subscription model"
+      ],
+      "bugs": [
+        "No comprehensive test harness for production call-path reliability",
+        "Known secrets-management incidents require continued remediation verification",
+        "Mobile app experience remains largely scaffold-level"
+      ],
+      "risks": [
+        "Production launch risk without full e2e telephony validation",
+        "Security/compliance risk from telephony + PII handling if controls lag",
+        "Operational risk from provider-latency and failover behavior under load"
+      ],
+      "recommendations": [
+        "Run structured red-team call dataset + confidence tuning for scam detection",
+        "Enforce CI security baseline (secret scanning, SAST, dependency audit)",
+        "Ship MVP iOS workflows (auth, call log, notification loop) before scale push"
+      ]
+    }
+  ]
+}

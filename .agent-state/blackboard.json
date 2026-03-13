@@ -7,5 +7,373 @@
     "project": "test",
     "written_at": 1772646033,
     "expires_at": null
+  },
+  "judge-results/t2-audit-2026-03-13": {
+    "value": {
+      "batch": "T2",
+      "repos": 5,
+      "status": "complete"
+    },
+    "agent": "honey",
+    "project": "judge-swarm",
+    "written_at": 1773423939,
+    "expires_at": null
+  },
+  "judge-results/signal-studio-frontend": {
+    "value": {
+      "project": "signal-studio-frontend",
+      "repo_path": "/data/workspace/projects/signal-studio-frontend",
+      "tech_stack": "Next.js 16 / TypeScript / React 18 / Tailwind / shadcn/ui / React Flow / AI SDK / JWT / PostgreSQL",
+      "scores": {
+        "code_quality": 6.0,
+        "test_coverage": 4.0,
+        "security": 4.0,
+        "documentation": 7.0,
+        "architecture": 6.5,
+        "business_value": 7.5,
+        "composite": 6.35
+      },
+      "tier": 2,
+      "bugs": [
+        {
+          "severity": "critical",
+          "description": "32/44 API routes have NO authentication \u2014 middleware bypasses all /api/ routes"
+        },
+        {
+          "severity": "critical",
+          "description": "CI pipeline does not run tests \u2014 undetected regressions shipping to prod"
+        },
+        {
+          "severity": "high",
+          "description": "TypeScript strict mode disabled \u2014 masking type safety bugs across codebase"
+        },
+        {
+          "severity": "high",
+          "description": "No runtime input validation (Zod schemas missing on POST/PUT routes)"
+        },
+        {
+          "severity": "medium",
+          "description": "20+ stale markdown docs and debug scripts cluttering project root"
+        },
+        {
+          "severity": "medium",
+          "description": "Duplicate middleware files (root vs src/middleware.ts) \u2014 confusion risk"
+        }
+      ],
+      "risks": [
+        "Unauthenticated API access in production \u2014 data exposure / manipulation risk",
+        "Demo-stage features exposed publicly could break during client demos",
+        "No preview environments \u2014 all QA is manual before demos",
+        "Oracle ML and vectorization agents have untested failure modes",
+        "Low test coverage (24 tests for 25 pages + 30 components + 44 API routes)"
+      ],
+      "strengths": [
+        "Strong recent improvements: ReactFlow v12 migration, Next.js CVE patches, dead code cleanup",
+        "Comprehensive feature set: 25 pages, AI chat, visual editor, Oracle ML, admin console, Salesforce embed",
+        "JWT auth with CSRF double-submit pattern implemented",
+        "GitHub Actions CI/CD pipeline exists (lint + build)",
+        "High strategic value \u2014 core enterprise product for ForwardLane/SignalHaus"
+      ],
+      "recommendations": [
+        "P0: Add requireAuth() middleware to all 32 unprotected API routes immediately",
+        "P0: Fix CI pipeline to run tests, add Playwright smoke tests, enforce coverage thresholds",
+        "P1: Enable TypeScript strict mode and fix resulting type errors",
+        "P1: Add Zod schema validation on all POST/PUT API routes",
+        "P2: Archive stale root docs, increase test coverage to 60%+",
+        "P3: Add API documentation (OpenAPI), implement feature flags"
+      ]
+    },
+    "agent": "honey",
+    "project": "signal-studio-frontend",
+    "written_at": 1773423945,
+    "expires_at": null
+  },
+  "judge-results/signal-builder-frontend": {
+    "value": {
+      "project": "signal-builder-frontend",
+      "repo_path": "/data/workspace/projects/signal-builder-frontend",
+      "tech_stack": "React 18 / Vite / TypeScript / Redux Toolkit / React Query / Axios / Storybook / nginx",
+      "scores": {
+        "code_quality": 6.0,
+        "test_coverage": 3.0,
+        "security": 4.0,
+        "documentation": 5.0,
+        "architecture": 7.0,
+        "business_value": 7.0,
+        "composite": 5.8
+      },
+      "tier": 2,
+      "bugs": [
+        {
+          "severity": "critical",
+          "description": "Bitbucket pipeline uses REACT_APP_* env vars instead of VITE_* \u2014 deployed builds cannot connect to API"
+        },
+        {
+          "severity": "critical",
+          "description": "Axios response interceptor returns error object instead of Promise.reject \u2014 React Query errors silently swallowed"
+        },
+        {
+          "severity": "high",
+          "description": "localStorage auth token storage \u2014 XSS vulnerability, should use httpOnly cookies"
+        },
+        {
+          "severity": "medium",
+          "description": "Storybook uses webpack bundler alongside Vite \u2014 unnecessary bloat and confusing"
+        },
+        {
+          "severity": "medium",
+          "description": "Vite config has typo alias @proccesses alongside @processes"
+        },
+        {
+          "severity": "low",
+          "description": "Duplicate Navigation export in shared/widgets/index.ts"
+        },
+        {
+          "severity": "low",
+          "description": "@types/react-router v5 types conflicting with react-router-dom v6"
+        }
+      ],
+      "risks": [
+        "Deployed demo/QA environments completely broken due to env var prefix mismatch",
+        "Silent API error swallowing means users get no feedback on failures",
+        "XSS attack could steal auth tokens from localStorage",
+        "~15-20% test coverage \u2014 regressions ship undetected",
+        "nginx config missing critical security headers (CSP, HSTS, X-Frame-Options)"
+      ],
+      "strengths": [
+        "Successful CRA\u2192Vite migration completed (10x faster builds)",
+        "Redux Toolkit + React Query architecture is modern and well-structured",
+        "Sentry error monitoring integrated",
+        "Clean Feature-Sliced Design architecture",
+        "Active CI pipeline exists in Bitbucket"
+      ],
+      "recommendations": [
+        "P0: Fix Bitbucket pipeline env vars: rename all REACT_APP_* to VITE_* (immediate \u2014 prod is broken)",
+        "P0: Fix Axios interceptor to return Promise.reject(error) instead of error object",
+        "P1: Remove localStorage auth token fallback \u2014 use httpOnly cookies only",
+        "P1: Add Playwright E2E tests for critical flows",
+        "P1: Add nginx security headers (CSP, HSTS, X-Frame-Options, X-Content-Type-Options)",
+        "P2: Migrate Storybook to Vite builder, increase test coverage to 50%+"
+      ]
+    },
+    "agent": "honey",
+    "project": "signal-builder-frontend",
+    "written_at": 1773423945,
+    "expires_at": null
+  },
+  "judge-results/forwardlane_advisor": {
+    "value": {
+      "project": "forwardlane_advisor",
+      "repo_path": "/data/workspace/projects/forwardlane_advisor",
+      "tech_stack": "Node.js 20 / Express 4 / Sequelize 3 / MySQL / Jade / Gulp / PM2 / Passport / RabbitMQ / AWS SDK v2",
+      "scores": {
+        "code_quality": 5.0,
+        "test_coverage": 3.5,
+        "security": 4.5,
+        "documentation": 5.0,
+        "architecture": 5.0,
+        "business_value": 6.0,
+        "composite": 5.0
+      },
+      "tier": 2,
+      "bugs": [
+        {
+          "severity": "high",
+          "description": "Sequelize 3.x has multiple known CVEs and is unmaintained"
+        },
+        {
+          "severity": "high",
+          "description": "Watson NLC dead code references still scattered across 10+ files despite LLM gateway replacement"
+        },
+        {
+          "severity": "high",
+          "description": "express-validator 2.x severely outdated with known issues"
+        },
+        {
+          "severity": "medium",
+          "description": "Duplicate Morningstar integration (morning_star/ AND morningstar_funds/ directories)"
+        },
+        {
+          "severity": "medium",
+          "description": "lodash 4.17.4 needs update to 4.17.21+ for prototype pollution fixes"
+        },
+        {
+          "severity": "medium",
+          "description": "Test rig config files in production config directory"
+        },
+        {
+          "severity": "low",
+          "description": "WATSON_DIALOG_PASSWORD env var still referenced in config/express.js"
+        }
+      ],
+      "risks": [
+        "Sequelize 3 \u2192 6+ upgrade is a massive breaking change affecting 40+ models",
+        "Legacy Node.js 0.10 patterns still pervasive despite v20 upgrade",
+        "Near-zero test coverage \u2014 any change risks breaking undocumented behavior",
+        "50+ npm audit vulnerabilities expected",
+        "AWS SDK v2 reaching end of life",
+        "Jade template engine deprecated (renamed Pug), no security patches"
+      ],
+      "strengths": [
+        "Rich domain model: 40+ Sequelize models covering clients, portfolios, instruments, strategies, recommendations, alerts",
+        "Recent significant improvements: Node 20 upgrade, LLM gateway replacing Watson NLC, SSH exfil removal, security hardening",
+        "63 unit tests added for core adviser logic",
+        "Extensive feature set: 20+ route modules covering full financial advisor workflow",
+        "Strategic IP value \u2014 contains core ForwardLane business logic and domain knowledge"
+      ],
+      "recommendations": [
+        "P0: Remove all remaining Watson dead code (10+ files with NLC references)",
+        "P0: Add streaming LLM dialog features",
+        "P1: Upgrade Sequelize 3\u21926 with migration testing (biggest risk/reward item)",
+        "P1: Upgrade AWS SDK v2\u2192v3, implement Redis session store",
+        "P1: Achieve 40%+ test coverage, set up CI/CD pipeline",
+        "P2: Merge duplicate Morningstar directories, add rate limiting and health checks",
+        "Decision point: Consider extracting domain logic for modern rebuild vs incremental upgrade"
+      ]
+    },
+    "agent": "honey",
+    "project": "forwardlane_advisor",
+    "written_at": 1773423945,
+    "expires_at": null
+  },
+  "judge-results/NarrativeReactor": {
+    "value": {
+      "project": "NarrativeReactor",
+      "repo_path": "/data/workspace/projects/NarrativeReactor",
+      "tech_stack": "TypeScript / Express / Genkit / Claude / Gemini / fal.ai / SQLite / Stripe / Docker / Railway",
+      "scores": {
+        "code_quality": 7.0,
+        "test_coverage": 7.0,
+        "security": 5.5,
+        "documentation": 7.5,
+        "architecture": 7.0,
+        "business_value": 8.0,
+        "composite": 7.15
+      },
+      "tier": 2,
+      "bugs": [
+        {
+          "severity": "critical",
+          "description": "tenants.ts uses better-sqlite3 directly, bypassing WAL singleton in db.ts \u2014 lock contention on every API auth call"
+        },
+        {
+          "severity": "high",
+          "description": "SHA-256 API key hashing is brute-forceable \u2014 should use scrypt"
+        },
+        {
+          "severity": "high",
+          "description": "Wildcard genkit dependencies (^*) are a breaking-change time bomb"
+        },
+        {
+          "severity": "medium",
+          "description": "Unreachable service trendpilotBridge.ts \u2014 no route consumer found"
+        },
+        {
+          "severity": "medium",
+          "description": "@types/better-sqlite3 in prod dependencies instead of devDependencies"
+        },
+        {
+          "severity": "low",
+          "description": "Full lodash import (~70KB) instead of modular imports"
+        }
+      ],
+      "risks": [
+        "Dual SQLite connections can cause database locks under concurrent tenant auth + content operations",
+        "Weak API key hashing allows brute-force if database file is compromised",
+        "Unpinned genkit deps could break builds on any upstream release",
+        "No frontend \u2014 product is API-only, limiting non-technical user adoption",
+        "Content scheduling engine exists but execution reliability needs validation"
+      ],
+      "strengths": [
+        "Strongest test suite in T2 set: 287 tests, integration tests, CI/CD pipeline",
+        "Multi-tenant Stripe billing already implemented",
+        "Comprehensive AI pipeline: content generation, video, audio/podcasts, brand management, campaigns",
+        "SQLite migration system with proper WAL mode (mostly)",
+        "OpenAPI documentation in place",
+        "Docker + Railway deployment configured",
+        "Solid architecture with Genkit flows, quota enforcement, smart auth"
+      ],
+      "recommendations": [
+        "P0: Migrate tenants.ts to centralized db.ts singleton (eliminate dual SQLite connections)",
+        "P0: Replace SHA-256 hashing with scrypt for API keys",
+        "P0: Pin wildcard genkit dependencies to fixed versions",
+        "P1: Add SQLite indexes on hot columns, implement pino structured logging",
+        "P2: Build React dashboard frontend for content pipeline management",
+        "P2: Implement LRU cache for AI generation flows to reduce API costs"
+      ]
+    },
+    "agent": "honey",
+    "project": "NarrativeReactor",
+    "written_at": 1773423945,
+    "expires_at": null
+  },
+  "judge-results/Ultrafone": {
+    "value": {
+      "project": "Ultrafone",
+      "repo_path": "/data/workspace/projects/Ultrafone",
+      "tech_stack": "Python / FastAPI / Pipecat / Groq Llama 3.3 70B / Deepgram / Fish Audio / ElevenLabs / Twilio / Supabase / React 19 / Flutter",
+      "scores": {
+        "code_quality": 8.0,
+        "test_coverage": 8.0,
+        "security": 5.0,
+        "documentation": 8.0,
+        "architecture": 8.0,
+        "business_value": 7.0,
+        "composite": 7.3
+      },
+      "tier": 2,
+      "bugs": [
+        {
+          "severity": "critical",
+          "description": "LEAKED API KEYS in git history \u2014 .env.development contains real Groq, Deepgram, Twilio, Fish Audio keys, JWT secret, and personal phone number"
+        },
+        {
+          "severity": "high",
+          "description": "Hardcoded user_id='nathan' in receptionist.py \u2014 blocks multi-tenancy"
+        },
+        {
+          "severity": "high",
+          "description": "Security analyzer has TODO stubs for database lookup \u2014 caller history not persisted"
+        },
+        {
+          "severity": "medium",
+          "description": "Flutter iOS app is scaffold only \u2014 no Dart implementation files"
+        },
+        {
+          "severity": "medium",
+          "description": "No end-to-end integration tests for full call pipeline"
+        }
+      ],
+      "risks": [
+        "All exposed API keys must be considered compromised \u2014 immediate rotation required",
+        "Personal phone number in git history \u2014 privacy breach",
+        "iOS app is empty scaffold \u2014 significant effort to reach App Store submission",
+        "No deployment config beyond Dockerfile \u2014 Railway/Fly.io setup needed",
+        "AI call screening market heating up \u2014 window for differentiation narrowing"
+      ],
+      "strengths": [
+        "Highest composite score in T2 set (7.3/10)",
+        "Excellent code quality and test coverage (8.0 each)",
+        "Innovative product: AI call screening with social engineering detection \u2014 real market need",
+        "Strong tech stack: Pipecat + Groq + Deepgram + Fish Audio well-integrated",
+        "Comprehensive feature set: caller reputation, spam screening, DND modes, contact sync (Google/HubSpot/iCloud)",
+        "React 19 frontend with glassmorphic UI",
+        "Twilio webhook signature validation + two-party consent implemented",
+        "Clear B2C SaaS potential with $10-30/mo subscription model"
+      ],
+      "recommendations": [
+        "P0: ROTATE ALL LEAKED API KEYS IMMEDIATELY (Groq, Deepgram, Twilio, Fish Audio, JWT Secret)",
+        "P0: Purge git history to remove .env.development, add pre-commit secret scanning",
+        "P1: Deploy to Railway with PostgreSQL + Redis, configure Twilio webhook",
+        "P1: Build out Flutter iOS app, connect to live backend",
+        "P1: End-to-end integration test: real Twilio call \u2192 Pipecat \u2192 Groq \u2192 Fish Audio",
+        "P2: Implement feedback loop for caller reputation, add admin analytics dashboard",
+        "P3: Stripe billing integration, App Store submission prep"
+      ]
+    },
+    "agent": "honey",
+    "project": "Ultrafone",
+    "written_at": 1773423945,
+    "expires_at": null
   }
 }

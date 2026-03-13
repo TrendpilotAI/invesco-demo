@@ -142,5 +142,17 @@
     "tests_passed": 0,
     "tests_failed": 0,
     "wave": "unknown"
+  },
+  {
+    "timestamp": "2026-03-13T17:48:05.645666Z",
+    "agent": "judge-swarm-t2-opus",
+    "status": "success",
+    "tasks_completed": 5,
+    "tasks_total": 5,
+    "details": "T2 audit complete: signal-studio-frontend(6.35), signal-builder-frontend(5.8), forwardlane_advisor(5.0), NarrativeReactor(7.15), Ultrafone(7.3). Wrote to blackboard + score-projects + judge-results JSON. Convex deploy blocked (invalid admin key), Postgres blocked (no credentials).",
+    "files_changed": 0,
+    "tests_passed": 0,
+    "tests_failed": 0,
+    "wave": "unknown"
   }
 ]

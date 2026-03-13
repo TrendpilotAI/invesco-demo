@@ -1,0 +1,188 @@
+{
+  "convex_url": "http://convex-backend.railway.internal:3210/api/mutation",
+  "reason_pending": "BadAdminKey with current OPENCLAW_CONVEX_SECRET",
+  "mutations": [
+    {
+      "path": "compoundLearnings:record",
+      "args": {
+        "category": "judge_swarm_audit",
+        "subcategory": "tier3",
+        "title": "Judge Swarm T3 Audit \u2014 signalhaus-website",
+        "content": "{\"repo\": \"signalhaus-website\", \"overall_score\": 6.7, \"scores\": {\"business_value\": 9, \"architecture\": 8, \"documentation\": 8, \"code_quality\": 7, \"test_coverage\": 4, \"security\": 4}, \"strengths\": [\"Strong business relevance as primary SignalHaus marketing funnel\", \"Clean Next.js App Router architecture and solid project structure\", \"Comprehensive deployment-focused README\"], \"bugs\": [\"In-memory rate limiting in serverless API route is bypassable\", \"Contact form bot-protection is insufficient\", \"Missing referenced static asset (logo.png)\"], \"risks\": [\"Production abuse/spam risk on contact endpoint\", \"Security posture mismatch for public marketing site\", \"Low automated test coverage increases regression probability\"], \"recommendations\": [\"Migrate rate limiting to durable backend (e.g., Upstash Redis)\", \"Add CAPTCHA/challenge + abuse telemetry on contact form\", \"Add API/component smoke tests in CI\"]}",
+        "project": "signalhaus-website",
+        "task": "t3_repo_audit",
+        "sessionKey": "judge-swarm-codex-T3",
+        "agent": "codex-subagent",
+        "model": "openai/gpt-5.3-codex",
+        "trigger": "subagent_task",
+        "confidence": 0.82,
+        "impact": "medium",
+        "tags": [
+          "judge-swarm",
+          "tier3",
+          "repo-audit",
+          "bugs",
+          "risks",
+          "recommendations"
+        ]
+      },
+      "format": "json"
+    },
+    {
+      "path": "compoundLearnings:record",
+      "args": {
+        "category": "judge_swarm_audit",
+        "subcategory": "tier3",
+        "title": "Judge Swarm T3 Audit \u2014 core-entityextraction",
+        "content": "{\"repo\": \"core-entityextraction\", \"overall_score\": 7.1, \"scores\": {\"test_coverage\": 8, \"business_value\": 8, \"security\": 7, \"documentation\": 7, \"code_quality\": 6, \"architecture\": 6}, \"strengths\": [\"Comprehensive API/auth/health extraction test coverage\", \"Useful NLP entity-extraction service with clear business utility\", \"Good FastAPI baseline with service-level reliability\"], \"bugs\": [\"Connection cleanup paths in persistence.py can leak resources on exceptions\", \"712-line main.py indicates monolithic routing/business-logic coupling\", \"Dead code and duplicate entity-location paths present\"], \"risks\": [\"Resource leaks can degrade availability under sustained load\", \"Monolith file shape slows safe iteration and onboarding\", \"Unnecessary duplicated logic increases divergence risk\"], \"recommendations\": [\"Refactor main.py into router/service layers\", \"Use try/finally connection handling in persistence functions\", \"Delete dead paths and unify duplicate extraction/location logic\"]}",
+        "project": "core-entityextraction",
+        "task": "t3_repo_audit",
+        "sessionKey": "judge-swarm-codex-T3",
+        "agent": "codex-subagent",
+        "model": "openai/gpt-5.3-codex",
+        "trigger": "subagent_task",
+        "confidence": 0.82,
+        "impact": "medium",
+        "tags": [
+          "judge-swarm",
+          "tier3",
+          "repo-audit",
+          "bugs",
+          "risks",
+          "recommendations"
+        ]
+      },
+      "format": "json"
+    },
+    {
+      "path": "compoundLearnings:record",
+      "args": {
+        "category": "judge_swarm_audit",
+        "subcategory": "tier3",
+        "title": "Judge Swarm T3 Audit \u2014 signal-studio-auth",
+        "content": "{\"repo\": \"signal-studio-auth\", \"overall_score\": 6.3, \"scores\": {\"business_value\": 9, \"test_coverage\": 8, \"architecture\": 6, \"documentation\": 6, \"code_quality\": 5, \"security\": 3}, \"strengths\": [\"Critical auth service with good platform fit\", \"Strong test coverage across RBAC/rate-limit/security areas\", \"Reasonable FastAPI structure and middleware modularization intent\"], \"bugs\": [\"Duplicate security-header middleware causes weaker headers to overwrite stricter ones\", \"X-Frame-Options conflict (DENY vs SAMEORIGIN) introduces clickjacking exposure\", \"Documentation gap for deployment/integration beyond audit notes\"], \"risks\": [\"Active production security downgrade in authentication boundary\", \"Clickjacking policy inconsistency may violate expected compliance posture\", \"Operational integration risk due to thin canonical README\"], \"recommendations\": [\"Remove duplicate inline middleware and keep single strict security-header source\", \"Normalize X-Frame-Options and CSP policy defaults\", \"Publish full README with auth flows, env vars, and deployment hardening\"]}",
+        "project": "signal-studio-auth",
+        "task": "t3_repo_audit",
+        "sessionKey": "judge-swarm-codex-T3",
+        "agent": "codex-subagent",
+        "model": "openai/gpt-5.3-codex",
+        "trigger": "subagent_task",
+        "confidence": 0.82,
+        "impact": "high",
+        "tags": [
+          "judge-swarm",
+          "tier3",
+          "repo-audit",
+          "bugs",
+          "risks",
+          "recommendations"
+        ]
+      },
+      "format": "json"
+    },
+    {
+      "path": "compoundLearnings:record",
+      "args": {
+        "category": "judge_swarm_audit",
+        "subcategory": "tier3",
+        "title": "Judge Swarm T3 Audit \u2014 signal-studio-data-provider",
+        "content": "{\"repo\": \"signal-studio-data-provider\", \"overall_score\": 7.4, \"scores\": {\"documentation\": 9, \"architecture\": 9, \"code_quality\": 8, \"business_value\": 8, \"security\": 6, \"test_coverage\": 5}, \"strengths\": [\"Excellent provider abstraction/factory architecture\", \"Strong documentation and migration guidance\", \"High-leverage multi-database integration layer\"], \"bugs\": [\"Test runner instability blocks reliable validation\", \"Mock-only tests with little/no integration coverage\", \"Sensitive config fields not consistently protected as SecretStr\"], \"risks\": [\"Data-layer regressions may reach production undetected\", \"Credential exposure risk via accidental logging/stringification\", \"Dependency pinning inconsistencies can break CI/runtime parity\"], \"recommendations\": [\"Repair pytest execution and add DB-backed integration tests\", \"Migrate secrets in config models to SecretStr\", \"Pin compatible numpy/pandas/test deps and enforce lockstep CI\"]}",
+        "project": "signal-studio-data-provider",
+        "task": "t3_repo_audit",
+        "sessionKey": "judge-swarm-codex-T3",
+        "agent": "codex-subagent",
+        "model": "openai/gpt-5.3-codex",
+        "trigger": "subagent_task",
+        "confidence": 0.82,
+        "impact": "medium",
+        "tags": [
+          "judge-swarm",
+          "tier3",
+          "repo-audit",
+          "bugs",
+          "risks",
+          "recommendations"
+        ]
+      },
+      "format": "json"
+    },
+    {
+      "path": "compoundLearnings:record",
+      "args": {
+        "category": "judge_swarm_audit",
+        "subcategory": "tier3",
+        "title": "Judge Swarm T3 Audit \u2014 Second-Opinion",
+        "content": "{\"repo\": \"Second-Opinion\", \"overall_score\": 6.8, \"scores\": {\"business_value\": 9, \"security\": 6, \"code_quality\": 7, \"architecture\": 7, \"test_coverage\": 3, \"documentation\": 8}, \"strengths\": [\"High-value medical-AI product direction\", \"Modern React/TypeScript implementation with clean component separation\", \"Strong planning/docs discipline\"], \"bugs\": [\"HIPAA BAA prerequisite unresolved for PHI production handling\", \"Firebase security rules lack sufficient automated verification\", \"Coverage is low for core analysis/business logic\"], \"risks\": [\"Legal/compliance blocker for real patient-data onboarding\", \"Potential PHI leak paths (e.g., logging and weak auth controls)\", \"Regression risk due to sparse unit/integration tests\"], \"recommendations\": [\"Execute BAA process before any PHI production workload\", \"Implement Firebase rules tests in emulator CI\", \"Prioritize tests for useAnalysisPipeline and core diagnostic workflows\"]}",
+        "project": "Second-Opinion",
+        "task": "t3_repo_audit",
+        "sessionKey": "judge-swarm-codex-T3",
+        "agent": "codex-subagent",
+        "model": "openai/gpt-5.3-codex",
+        "trigger": "subagent_task",
+        "confidence": 0.82,
+        "impact": "medium",
+        "tags": [
+          "judge-swarm",
+          "tier3",
+          "repo-audit",
+          "bugs",
+          "risks",
+          "recommendations"
+        ]
+      },
+      "format": "json"
+    },
+    {
+      "path": "compoundLearnings:record",
+      "args": {
+        "category": "judge_swarm_audit",
+        "subcategory": "tier3",
+        "title": "Judge Swarm T3 Audit \u2014 flip-my-era",
+        "content": "{\"repo\": \"flip-my-era\", \"overall_score\": 6.0, \"scores\": {\"business_value\": 8, \"documentation\": 7, \"code_quality\": 6, \"architecture\": 6, \"test_coverage\": 6, \"security\": 3}, \"strengths\": [\"Clear niche audience + monetization path\", \"Modern FE stack with baseline test coverage\", \"Reasonable modular structure and product scope\"], \"bugs\": [\"Client-exposed VITE API keys/security tokens\", \"Stripe checkout path stubbed (non-functional payments)\", \"Duplicate module trees (creator vs creators) increase maintenance noise\"], \"risks\": [\"Immediate secret abuse and billing exposure\", \"Revenue blocked by fake checkout implementation\", \"Codebase divergence risk from duplicate feature modules\"], \"recommendations\": [\"Move all AI/billing calls server-side (edge functions) and rotate keys\", \"Implement real Stripe checkout flow end-to-end\", \"Consolidate duplicate creator modules into single canonical path\"]}",
+        "project": "flip-my-era",
+        "task": "t3_repo_audit",
+        "sessionKey": "judge-swarm-codex-T3",
+        "agent": "codex-subagent",
+        "model": "openai/gpt-5.3-codex",
+        "trigger": "subagent_task",
+        "confidence": 0.82,
+        "impact": "high",
+        "tags": [
+          "judge-swarm",
+          "tier3",
+          "repo-audit",
+          "bugs",
+          "risks",
+          "recommendations"
+        ]
+      },
+      "format": "json"
+    },
+    {
+      "path": "compoundLearnings:record",
+      "args": {
+        "category": "judge_swarm_audit",
+        "subcategory": "tier3",
+        "title": "Judge Swarm T3 Audit \u2014 Trendpilot",
+        "content": "{\"repo\": \"Trendpilot\", \"overall_score\": 5.1, \"scores\": {\"test_coverage\": 7, \"business_value\": 6, \"documentation\": 6, \"code_quality\": 5, \"architecture\": 5, \"security\": 2}, \"strengths\": [\"Large test corpus exists as a starting quality asset\", \"Market fit potential in newsletter/analytics automation\", \"Foundational platform pieces are present\"], \"bugs\": [\"Protected APIs missing auth middleware\", \"SSO callback logic accepts hardcoded/unverified identity\", \"Heavy synchronous file I/O in request paths\"], \"risks\": [\"Critical unauthorized access/data exposure\", \"Authentication bypass enables account takeover vector\", \"Event-loop blocking and in-memory persistence threaten reliability/data durability\"], \"recommendations\": [\"Apply authGuard/apiKeyAuth consistently across all sensitive routes\", \"Disable or fix SAML/OAuth callbacks with strict token/signature validation\", \"Migrate sync file persistence to async DB-backed storage\"]}",
+        "project": "Trendpilot",
+        "task": "t3_repo_audit",
+        "sessionKey": "judge-swarm-codex-T3",
+        "agent": "codex-subagent",
+        "model": "openai/gpt-5.3-codex",
+        "trigger": "subagent_task",
+        "confidence": 0.82,
+        "impact": "high",
+        "tags": [
+          "judge-swarm",
+          "tier3",
+          "repo-audit",
+          "bugs",
+          "risks",
+          "recommendations"
+        ]
+      },
+      "format": "json"
+    }
+  ]
+}
