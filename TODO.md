@@ -1037,7 +1037,7 @@ Active FastAPI backend — 653 tests passing, rate limiting + security CI in pla
 ### P1 — Foundation (This Sprint)
 - [x] [P1/S] #828 Fix rate limiter — RedisStorage + SlidingWindowRateLimiter created per-request ✅ DONE 2026-03-13
 - [x] [P1/S] #834 Add startup env validation — SUPABASE_URL/SERVICE_KEY/JWT_SECRET fail fast if missing ✅ DONE 2026-03-13
-- [ ] [P1/XS] #835 Create .env.example file → `835-pending-medium-signal-studio-auth-env-example.md`
+- [x] [P1/XS] #835 Create .env.example file → `835-pending-medium-signal-studio-auth-env-example.md` ✅ DONE 2026-03-14 — file created by Honey, covers all required env vars for onboarding/dev
 - [x] [P1/S] #826 Add CORS middleware + ALLOWED_ORIGINS env var ✅ DONE 2026-03-13
 - [x] [P1/S] #827 Dockerfile + docker-compose.yml ✅ DONE 2026-03-13
 - [x] [P1/S] #830 GitHub Actions CI (pytest, ruff, bandit, pip-audit) ✅ DONE 2026-03-13
