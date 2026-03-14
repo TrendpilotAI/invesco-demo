@@ -113,6 +113,10 @@ if __name__ == "__main__":
         print(json.dumps(result, indent=2))
     elif len(sys.argv) > 1 and sys.argv[1] == "update":
         # Usage: score-projects.py update <name> <json_scores>
+        if len(sys.argv) < 4:
+            print("Error: Missing arguments for update command.")
+            print("Usage: score-projects.py update <name> <json_scores>")
+            sys.exit(1)
         name = sys.argv[2]
         scores = json.loads(sys.argv[3])
         update_project_score(name, scores)
