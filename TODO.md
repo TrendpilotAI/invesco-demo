@@ -1399,6 +1399,7 @@ _Added by Judge Agent v2 — 2026-03-08_
 - [x] [P1/XS] #NR-009 Add SQLite indexes (tenants.api_key_hash, content_library, scheduled_posts, campaigns) ✅ DONE 2026-03-13
 - [x] [P1/M] #NR-010 Supertest E2E test suite for full Express HTTP stack (auth, rate limit, billing, scheduler) → Initial E2E test `src/tests/e2e/billing.test.ts` created by Honey 2026-03-14. Covers /api/billing/usage for auth + structure. src/tests/e2e/content.test.ts created by Honey 2026-03-15 — covers /api/content: unauthorized (401), valid key (200), malformed post (400). [expand further endpoints in next run]
 - [x] [P1/XS] #NR-011 Add husky + lint-staged pre-commit hooks (ESLint + tsc) ✅ DONE 2026-03-13 — husky ^9.1.7 + lint-staged ^15.5.2 added, pre-commit hook runs eslint --fix + tsc --noEmit on src/**/*.ts, commit 3a7772e
+- [x] [P1/S] #NR-010 Supertest E2E test suite for /api/content (GET/POST/invalid cases) expanded ✅ DONE 2026-03-15 — Added valid POST, no-key POST, bad body POST checks in content.test.ts, commit e5e1608, pushed.
 - [ ] [P1/S] #NR-013 Weekly competitor intelligence digest (AI summary + gap analysis via webhook/email) → `NR-013-pending-P1-NarrativeReactor-competitor-digest.md`
 
 ### P2 — Medium Priority

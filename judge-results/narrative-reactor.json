@@ -1,132 +1,37 @@
 {
   "project": "NarrativeReactor",
-  "description": "AI-powered content generation platform for Signal Studio — generates multi-platform social content (X, LinkedIn, Threads), video, audio/podcasts, brand management, campaign orchestration, and competitive intelligence via Genkit flows, Claude, Gemini, and fal.ai",
-  "analysis_date": "2025-07-14",
-  "file_count": 64964,
-  "src_files_reviewed": 35,
-  "improvements": [
-    {
-      "id": 1,
-      "title": "Replace wildcard CORS with allowlist origins",
-      "problem": "The Express server uses `cors({ origin: '*' })` globally AND on the Genkit flow server. This allows any domain to make authenticated API calls if a user's browser has the API key cached or if the key leaks. Combined with the single static API key auth, this is a direct path to unauthorized content generation, social media posting, and data exfiltration. An attacker can craft a malicious page that makes requests to the NarrativeReactor API from any origin.",
-      "solution": "Replace `cors({ origin: '*' })` with an explicit allowlist loaded from env (`ALLOWED_ORIGINS=https://studio.signalhaus.ai,http://localhost:3010`). Use a function-based origin check that returns 403 for unrecognized origins. Apply the same restriction to the Genkit flow server. In production, enforce HTTPS-only origins.",
-      "priority": "MUST",
-      "effort_days": 0.5,
-      "revenue_impact": "low",
-      "security_risk": "high",
-      "ux_improvement": "low"
-    },
-    {
-      "id": 2,
-      "title": "Migrate remaining in-memory Maps to SQLite persistence",
-      "problem": "While `contentPipeline`, `agentComm`, `campaigns`, and `approvalWorkflow` were migrated to SQLite, several critical services still use in-memory Maps that are lost on every process restart: `voiceCloner.ts` (VoiceProfile Map), `videoStitcher.ts` (VideoProject Map), plus ~7 services using flat JSON files (`performanceTracker`, `costTracker`, `contentLibrary`, `brandManager`, `competitorTracker`, `teamCollab`, `calendar`). This means voice profiles vanish on restart, video project state is ephemeral, and the JSON-file services have race conditions under concurrent writes (no locking).",
-      "solution": "Add SQLite tables for voice_profiles and video_projects in the migration system (version 2). Migrate the JSON-file services (performance, costs, content_library, brands, competitors, team_collab, calendar) to SQLite repos following the exact pattern already established in `db.ts` with `importLegacy()` for zero-downtime migration. This eliminates data loss, race conditions, and gives you transactional consistency.",
-      "priority": "MUST",
-      "effort_days": 3,
-      "revenue_impact": "high",
-      "security_risk": "medium",
-      "ux_improvement": "high"
-    },
-    {
-      "id": 3,
-      "title": "Add OAuth token refresh and encrypted storage for social integrations",
-      "problem": "Social provider access tokens (X/Twitter, LinkedIn) are stored in a plain JSON file (`data/integrations.json`) with no encryption. Tokens are never refreshed — when they expire, all social posting silently fails. The X provider stores refresh tokens but never uses them. LinkedIn tokens expire in 60 days with no renewal path. This means: (1) plaintext credentials on disk, (2) social posting breaks silently after token expiry, (3) no audit trail of token usage.",
-      "solution": "Encrypt tokens at rest using `crypto.createCipheriv` with a key derived from a `TOKEN_ENCRYPTION_KEY` env var. Implement automatic token refresh: X/Twitter supports refresh_token grant — add a `refreshIfExpired()` method that checks `expiresIn` and refreshes proactively. For LinkedIn, implement re-auth notification flow. Store token metadata (issued_at, expires_at, last_used) in SQLite. Add a health check endpoint that reports integration status without exposing tokens.",
-      "priority": "MUST",
-      "effort_days": 2,
-      "revenue_impact": "high",
-      "security_risk": "high",
-      "ux_improvement": "high"
-    },
-    {
-      "id": 4,
-      "title": "Add structured logging with request tracing",
-      "problem": "The entire application uses raw `console.log/warn/error` (28+ instances in src/) with no structured format, no log levels, no request correlation IDs, and no way to trace a content generation request through the pipeline (research → generation → compliance → publish). When something fails in production, there's no way to correlate which request triggered which error, and logs are unqueryable.",
-      "solution": "Add `pino` (fast, structured JSON logger) with a request-scoped `requestId` middleware that attaches a UUID to every incoming request. Replace all `console.*` calls with structured logger calls (`logger.info({ requestId, episodeId }, 'Generating content')`, `logger.error({ requestId, err }, 'Claude API failed')`). Add log levels configurable via `LOG_LEVEL` env var. This enables log aggregation (CloudWatch, Datadog) and makes production debugging possible.",
-      "priority": "SHOULD",
-      "effort_days": 2,
-      "revenue_impact": "medium",
-      "security_risk": "medium",
-      "ux_improvement": "medium"
-    },
-    {
-      "id": 5,
-      "title": "Implement content scheduling execution engine (cron-based auto-publisher)",
-      "problem": "The calendar/scheduling system (`calendar.ts`) can CREATE scheduled posts and list them, but there's no execution engine — nothing actually publishes posts at their scheduled time. Users schedule posts expecting them to go out automatically, but they never do unless someone manually calls the publish endpoint. This is the single biggest gap between what the product promises and what it delivers.",
-      "solution": "Add a lightweight scheduler using `node-cron` or a simple `setInterval` (check every 60s) that queries scheduled posts where `scheduledAt <= now AND status = 'scheduled'`. For each, call `publishToAll()`, update status to 'published' or 'failed', and log the result. Add retry logic (3 attempts with exponential backoff). Add a `/api/calendar/status` endpoint showing upcoming scheduled posts and last execution results. This transforms NarrativeReactor from a content generator into a true content automation platform.",
-      "priority": "MUST",
-      "effort_days": 2,
-      "revenue_impact": "high",
-      "security_risk": "low",
-      "ux_improvement": "high"
-    },
-    {
-      "id": 6,
-      "title": "Add input validation and sanitization on all API endpoints",
-      "problem": "API routes do basic 'field exists' checks but no input validation or sanitization. The `/api/chat` endpoint passes user messages directly to LLM prompts (prompt injection risk). The `/api/generate` endpoint accepts any string as `episodeId` with no validation. Social posting endpoints pass messages directly to Twitter/LinkedIn APIs with no content filtering. The `/api/video/subtitles` endpoint accepts arbitrary `videoUrl` which could be used for SSRF if `embedSubtitles` makes server-side requests.",
-      "solution": "Add Zod validation schemas for every route input (you already have Zod as a dependency). Sanitize LLM inputs by escaping control sequences and adding system-level prompt guards. Validate `episodeId` against known episode patterns. Add URL allowlist validation for `videoUrl` and `imageUrl` parameters. Add request body size limits per endpoint (e.g., 10KB for chat, 50KB for content). This prevents prompt injection, SSRF, and malformed data from reaching services.",
-      "priority": "MUST",
-      "effort_days": 3,
-      "revenue_impact": "low",
-      "security_risk": "high",
-      "ux_improvement": "medium"
-    },
-    {
-      "id": 7,
-      "title": "Add multi-tenant support with user/org-scoped data isolation",
-      "problem": "The entire system is single-tenant — one API key, one set of brands, one content library, one set of campaigns. There's no concept of users or organizations. This means: (1) the product can only serve one customer (Signal Studio), (2) no monetization path beyond internal use, (3) the approval workflow's `reviewerId` is just a string with no auth backing, (4) team collaboration features (`assignTask`, `addComment`) have no real user identity. Every feature assumes a single user.",
-      "solution": "Add a `tenants` table and `tenant_id` column to all existing tables. Implement JWT-based auth (replace single API key) with user identity and tenant scoping. Add middleware that extracts tenant/user from JWT and injects into request context. Scope all queries by `tenant_id`. Add a `/api/auth/register` and `/api/auth/login` flow (or integrate with an OAuth provider like Auth0/Clerk for speed). This unlocks SaaS monetization — charge per-tenant for content generation volume.",
-      "priority": "SHOULD",
-      "effort_days": 8,
-      "revenue_impact": "high",
-      "security_risk": "high",
-      "ux_improvement": "high"
-    },
-    {
-      "id": 8,
-      "title": "Add cost guardrails with per-operation budgets and alerting",
-      "problem": "The `costTracker` records costs after the fact but has no prevention mechanism. There are no spending limits — a single runaway loop or malicious API caller could generate unlimited fal.ai video calls at $0.10+ each or Claude calls at $0.03+ each. The cost tracking also only covers webhook-triggered calls (in `webhooks.ts`) — direct API calls to `/api/generate`, `/api/video`, and `/api/chat` are NOT tracked. Real costs are invisible.",
-      "solution": "Add cost tracking to ALL generation endpoints (not just webhooks) by wrapping `generateImage`, `generateVideo`, and `generateCopyClaude` with automatic cost recording. Implement configurable budget limits: `MAX_DAILY_SPEND`, `MAX_MONTHLY_SPEND`, `MAX_SINGLE_OPERATION` env vars. Before each AI call, check current spend against limits and reject with 429 if exceeded. Add a `/api/costs/alerts` endpoint and optional webhook notification when spend exceeds 80% of budget. This prevents bill shock from runaway usage.",
-      "priority": "MUST",
-      "effort_days": 2,
-      "revenue_impact": "medium",
-      "security_risk": "medium",
-      "ux_improvement": "medium"
-    },
-    {
-      "id": 9,
-      "title": "Build a React dashboard frontend for content pipeline management",
-      "problem": "The platform is API-only with a static HTML page in `/public/index.html`. Content creators must use API calls (curl/Postman) to generate content, review drafts, manage campaigns, schedule posts, and monitor performance. This makes the product unusable for non-technical users (marketing teams, content managers) — the primary target audience. The approval workflow, brand management, and campaign features are effectively invisible without a UI.",
-      "solution": "Build a Next.js or Vite+React dashboard with: (1) Content Pipeline view — topic input → see research → review 3 format drafts → approve/reject/edit, (2) Campaign Manager — create/advance/monitor campaigns with calendar view, (3) Publishing Dashboard — schedule posts with drag-and-drop calendar, see post status, (4) Analytics — performance metrics, cost tracking, best content, (5) Brand Manager — configure brands, voice profiles, run compliance checks. Use the existing API endpoints. Deploy on Vercel for zero-config hosting. This is the difference between a developer tool and a sellable product.",
-      "priority": "SHOULD",
-      "effort_days": 15,
-      "revenue_impact": "high",
-      "security_risk": "low",
-      "ux_improvement": "high"
-    },
-    {
-      "id": 10,
-      "title": "Add webhook delivery system for real-time status updates and n8n bidirectional integration",
-      "problem": "The n8n webhook integration is one-directional — n8n can trigger content generation, but NarrativeReactor has no way to notify n8n (or any external system) when async operations complete. Video generation via fal.ai can take 30-120 seconds, but the webhook endpoint blocks the HTTP response waiting for completion. There's no async job queue, no status polling endpoint, and no outbound webhook delivery. This makes it impossible to build reliable automation pipelines.",
-      "solution": "Implement an async job system: (1) POST endpoints return immediately with a `jobId` and 202 status, (2) add a `/api/jobs/:id` polling endpoint, (3) add a `webhooks_config` table where users register callback URLs for events (content.generated, video.completed, campaign.advanced, publish.succeeded, publish.failed), (4) implement reliable webhook delivery with retry logic (3 attempts, exponential backoff, HMAC signing). This enables true automation: n8n triggers content generation → NarrativeReactor generates async → calls n8n webhook when done → n8n continues the workflow.",
-      "priority": "SHOULD",
-      "effort_days": 5,
-      "revenue_impact": "high",
-      "security_risk": "low",
-      "ux_improvement": "high"
-    }
+  "judged_at": "2026-03-15T07:20:00Z",
+  "composite_score": 8.3,
+  "category": "PRODUCT",
+  "scores": {
+    "code_quality": 8.0,
+    "test_coverage": 7.0,
+    "security": 8.5,
+    "documentation": 8.0,
+    "architecture": 8.5,
+    "business_value": 8.5
+  },
+  "critical_flags": [
+    "No structured logger — 22 console.log/error in production services",
+    "No true HTTP E2E tests — e2e test file uses vi.mock, supertest not installed",
+    "Test runner broken locally — vitest constructor error"
   ],
-  "summary": {
-    "must_count": 5,
-    "should_count": 4,
-    "could_count": 1,
-    "total_effort_days": 42.5,
-    "critical_security_issues": 4,
-    "top_3_revenue_impact": [
-      "Implement content scheduling execution engine (auto-publisher)",
-      "Build React dashboard frontend",
-      "Add multi-tenant support with user/org-scoped data"
-    ],
-    "architecture_notes": "Solid foundation: TypeScript, Genkit flows, SQLite persistence (partially migrated), Zod schemas, production guards. Main risks: wildcard CORS + single API key auth, data loss from in-memory state, no async job handling for expensive AI operations, no frontend for non-technical users. The product is ~60% of the way to being sellable as a SaaS — the core AI generation pipeline works, but persistence, security, and UX need hardening."
-  }
+  "resolved_since_last": [
+    "SHA-256 → scrypt API key hashing (with migration)",
+    "helmet middleware active",
+    "tenants.ts DB singleton fix (better-sqlite3 removed)",
+    "Wildcard genkit deps pinned",
+    "ESLint root config + husky pre-commit",
+    "SQLite indexes on hot columns",
+    "trendpilotBridge wired to routes"
+  ],
+  "top_priorities": [
+    "P0: Fix vitest test runner (constructor error)",
+    "P0: Replace console.log with pino structured logger",
+    "P1: supertest HTTP E2E tests",
+    "P1: Stripe webhook signature tests",
+    "P1: Request audit logging middleware"
+  ],
+  "previous_composite": 7.8,
+  "delta": "+0.5"
 }
