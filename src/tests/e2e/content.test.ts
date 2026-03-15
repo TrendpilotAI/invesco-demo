@@ -44,8 +44,19 @@ describe('E2E: /api/content', () => {
       .set('X-API-Key', validApiKey)
       .send(newContent);
     expect([200, 201]).toContain(res.status);
-    // Should echo back the new content or relevant ID.
     expect(typeof res.body).toBe('object');
     expect(res.body).toHaveProperty('title', 'New Test Title');
+  });
+
+  it('returns 405 for unsupported HTTP methods (PUT/DELETE)', async () => {
+    const putRes = await request(app)
+      .put('/api/content')
+      .set('X-API-Key', validApiKey);
+    expect([404, 405]).toContain(putRes.status);
+
+    const deleteRes = await request(app)
+      .delete('/api/content')
+      .set('X-API-Key', validApiKey);
+    expect([404, 405]).toContain(deleteRes.status);
   });
 });

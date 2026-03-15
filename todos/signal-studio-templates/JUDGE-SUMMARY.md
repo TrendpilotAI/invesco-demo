@@ -15,75 +15,52 @@
 
 ## 🎯 Assessment Summary
 
-**Signal Studio Templates is a well-architected TypeScript library powering ForwardLane's intelligence platform.** The codebase demonstrates solid engineering practices with comprehensive SQL injection protection, proper JWT authentication, and a clean provider pattern architecture. However, **the project is currently blocked from production deployment** due to missing PostgreSQL/Snowflake data providers.
+**Signal Studio Templates is a well-architected TypeScript library powering ForwardLane's template intelligence layer.** 20 pre-built templates across 5 categories (meeting-prep, sales-intelligence, risk-compliance, product-marketing, management). Clean provider pattern with DataProvider/AIProvider interfaces, SQL injection hardening, JWT auth, Express router with rate limiting.
+
+**PRODUCTION BLOCKED** — only MockDataProvider exists. No PostgreSQL or Snowflake provider. Cannot demo with real Invesco data.
 
 ### Strengths
-- ✅ **20 production-ready templates** across 5 business categories (meeting-prep, sales-intelligence, risk-compliance, product-marketing, management)
-- ✅ **Robust security foundation** — SQL parameterization, JWT auth with audience validation, rate limiting, CORS
-- ✅ **Clean architecture** — DataProvider/AIProvider interfaces, ESM/CJS dual build, Express router factory
-- ✅ **Comprehensive testing** — 35 tests across 4 suites, all passing, SQL safety thoroughly validated
-- ✅ **AI integration** — OpenAI talking points generation with mock fallback
-- ✅ **CI/CD pipeline** — GitHub Actions with typecheck→lint→test→build→publish
+- ✅ 20 production-ready templates with SQL, NL prompts, talking points, visual builder nodes
+- ✅ SQL parameterization via `buildQuery`, `sanitizeIdentifier`, `parameterizeLegacyTemplate`
+- ✅ JWT auth with audience validation, rate limiting (100/15min + 20/60s execute), CORS
+- ✅ GitHub Actions CI/CD (typecheck→test→build→publish on tag)
+- ✅ OpenAI AI provider + Mock AI provider for dev/test
+- ✅ ESM/CJS dual build with proper exports map
+- ✅ 35 tests across 4 suites, all passing
+- ✅ Thorough documentation (README, BRAINSTORM, PLAN, AUDIT)
 
 ### Critical Blockers
 
-#### 🔴 P0: PostgreSQL DataProvider Missing
-- **Impact**: Cannot deploy to production or demo with real Invesco data
-- **Status**: Only MockDataProvider exists
-- **Effort**: Large (~2 days)
-- **Revenue Impact**: Blocks entire Invesco engagement
+| Issue | Severity | Impact |
+|-------|----------|--------|
+| PostgreSQL DataProvider missing | 🔴 P0 | Blocks ALL production use and Invesco demo |
+| Template engine core untested | 🔴 P0 | `execute()`, `validate()`, `customize()` zero coverage |
+| No Zod validation on POST bodies | 🟡 P1 | Prototype pollution + arbitrary SQL via customize |
+| No query execution timeout | 🟡 P1 | Slow query blocks API worker indefinitely |
+| No Redis caching | 🟡 P1 | Expensive aggregation queries re-run every request |
 
-#### 🟡 P0: Template Engine Core Untested
-- **Impact**: Core execution path (`TemplateEngine.execute()`) has zero unit tests
-- **Risk**: SQL injection hardening is tested, but engine orchestration is not
-- **Coverage**: Estimated 35-40%, needs 70%+
+### No Changes Since Last Assessment
+- No new commits since last review (latest: `3a2c400` ESM/CJS dual build fix)
+- All scores remain unchanged from 2026-03-14 assessment
+- P0 PostgreSQL DataProvider still unstarted
 
-#### 🟡 P1: Security Gaps in API Layer
-- **Risk**: POST body validation missing (Zod), customize endpoint accepts arbitrary SQL
-- **Exposure**: Type confusion, prototype pollution, SQL injection via customize→execute path
-- **Fix**: Add Zod schemas + field whitelisting
+## 📈 Score Trajectory
 
-## 🚨 Top 5 TODO Priorities
+| Date | Composite | Key Change |
+|------|-----------|------------|
+| 2026-03-08 | 7.9 | Initial assessment |
+| 2026-03-10 | 8.0 | CI/CD + tests + JWT hardening done |
+| 2026-03-14 | 7.5 | Recalibrated with weighted scoring |
+| 2026-03-15 | 7.4 | No changes; slight decay for stale P0 blockers |
 
-### P0 — Critical (Production Blockers)
-1. **PostgreSQL DataProvider Implementation** — Cannot go live without real DB connector (`postgres.js`, connection pooling, query timeout)
-2. **Template Engine Unit Tests** — Core execution path completely untested (execute, validate, customize methods)
+## 🔄 Path to 8.5+
 
-### P1 — High Priority (Security & Scale)
-3. **Zod Request Validation + Query Timeouts** — API hardening (prevent SQL injection via customize, add 30s timeout)
-4. **Redis Caching Layer** — Required for Invesco scale (expensive aggregation queries re-run on every request)
-5. **Integration Tests with Real Database** — End-to-end SQL validation against Postgres with seed data
+1. **PostgreSQL DataProvider** → +0.5 (unblocks production, test coverage via integration tests)
+2. **Template Engine unit tests** → +0.3 (coverage 35%→65%)
+3. **Zod validation + query timeout** → +0.2 (security hardening)
+4. **Redis caching** → +0.1 (performance at scale)
 
-## 🔧 Technical Debt Assessment
-
-**Medium Technical Debt Load**
-- 5 identical category index files (DRY violation)
-- All 20 templates use legacy `{{param}}` instead of `buildQuery` tagged literals
-- `Record<string, any>` overuse loses type safety
-- No ESLint config (lint script exists but will fail)
-- Missing error class hierarchy (uses generic `Error` with string matching)
-
-**Debt Priority**: Address after P0/P1 items. The legacy SQL parameterization works safely but should migrate to `buildQuery` for maintainability.
-
-## 📈 Business Impact
-
-**High Revenue Potential**: This is the core intelligence layer for Signal Studio's template system. Success directly enables:
-- Invesco production deployment ($X revenue)
-- Signal Studio competitive differentiation vs. generic analytics
-- Template marketplace potential (20→100+ templates)
-- Usage-based billing opportunities with analytics layer
-
-**Current State**: Ready for demo with mock data, blocked from production by missing PostgreSQL provider.
-
-## 🔄 Next Sprint Focus
-
-1. **Implement PostgreSQL DataProvider** — Unblocks everything else
-2. **Add comprehensive Template Engine unit tests** — De-risks production deployment  
-3. **Secure API layer** — Zod validation, customize field whitelist
-4. **Add Redis caching** — Required before Invesco scale testing
-
-**Target**: Move from 7.4→8.5 composite score by addressing P0 blockers and achieving 70% test coverage.
+**Target: 8.5 composite after P0+P1 items complete (~2 weeks of focused work)**
 
 ---
-
-*Last updated: 2026-03-15 | Next review: After PostgreSQL provider completion*
+*Scored by Judge Agent | 2026-03-15 16:00 UTC*

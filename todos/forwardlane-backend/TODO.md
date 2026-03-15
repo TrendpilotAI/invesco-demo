@@ -1,17 +1,17 @@
 # TODO — forwardlane-backend
-> Judge Swarm Tier 1 | Updated: 2026-03-14 | Score: 7.2/10
+> Judge Swarm Tier 1 | Updated: 2026-03-15 | Score: 7.2/10
 > Business Priority: 🔴 HIGH — Core Django backend, all clients depend on it
 
-## 📊 Score Card (2026-03-14)
+## 📊 Score Card (2026-03-15)
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Code Quality | 7.0/10 | Good Django structure; circular deps fixed, SSE streaming, but ~75 TODOs and wildcard deps |
-| Test Coverage | 5.0/10 | 30.5% actual line coverage (22.7K/74K lines); 50% target unmet; analytical/LLM flows untested |
-| Security | 6.5/10 | pysaml2 CVE fixed, pip-audit in CI; missing audit logging, rate limiting gaps, demo auth weakness |
-| Documentation | 4.5/10 | Generic README, no OpenAPI spec (drf-yasg PR merged but incomplete), no deployment guide |
-| Architecture | 7.5/10 | Solid Django + Celery + multi-tenant; LLM fallback chains; analytical psycopg2 leak unresolved |
+| Code Quality | 7.0/10 | Good Django structure; circular deps fixed, SSE streaming, but ~75 TODOs, wildcard imports, no mypy |
+| Test Coverage | 4.5/10 | 30.5% actual line coverage (22.7K/74K lines); target 75% unmet; LLM/analytical flows untested |
+| Security | 6.5/10 | pysaml2 CVE fixed, pip-audit in CI; missing audit logging, demo auth weak, rate limiting gaps |
+| Documentation | 4.5/10 | Generic README, incomplete OpenAPI spec, no deployment guide, no architecture doc |
+| Architecture | 7.5/10 | Solid Django + Celery + multi-tenant; LLM fallback chains; psycopg2 connection leak unresolved |
 | Business Value | 9.0/10 | Revenue-critical — all ForwardLane + Invesco clients depend on this |
-| **Composite** | **7.2/10** | Slight dip from 7.7 — coverage measurement refined (30.5% actual vs claimed 50%) |
+| **Composite** | **7.2/10** | Strong architecture, high business value, but critical production bugs and low coverage drag score |
 
 ---
 
@@ -85,6 +85,10 @@
 - [ ] **#590** Pin wildcard deps (numpy, pandas, scipy — remove unpinned `>=` constraints)
 - [ ] **#314** Sentry integration improvements
 - [ ] **#339** NL-SQL Redis cache (expensive query caching)
+- [ ] **NEW** Add mypy to CI (type checker enforcement — start non-strict)
+- [ ] **NEW** Archive stale perf scripts in `scripts/` → `scripts/archive/`
+- [ ] **NEW** Replace wildcard imports in `client_ranking/business_rules/__init__.py` and `document_ranking/business_rules/__init__.py`
+- [ ] **NEW** Groom remaining ~75 inline TODO/FIXME markers
 
 ## Done (Recent)
 
@@ -105,4 +109,4 @@
 - [x] SAML2 auth upgrade (FL-004) ✅
 
 ---
-*Scored by Judge Swarm v2 | 2026-03-14 16:01 UTC | Tier 1*
+*Scored by Judge Swarm v2 | 2026-03-15 16:00 UTC | Tier 1*

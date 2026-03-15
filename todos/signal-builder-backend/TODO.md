@@ -117,4 +117,5 @@
 - [x] sqlglot SQL validation gate (validate_select_only) ✅
 
 ---
-*Scored by Judge Subagent | 2026-03-14 16:01 UTC | Tier 1*
+*Scored by Judge Subagent | 2026-03-15 16:00 UTC | Tier 1 — CORE*
+*No new commits since last assessment — scores and TODOs unchanged*
