@@ -1,71 +1,71 @@
 # core-entityextraction — P1 IMPORTANT TODOs
+> Updated: 2026-03-15 | Scored by Honey 🍯
 
-> Generated: 2026-03-14 | Source: AUDIT.md + code review
+## 🧹 [CLEANUP] Delete Remaining Dead Code
+- **`utils/logger.py`** — Flask `current_app.logger` wrapper, raises RuntimeError in FastAPI. Not imported by main.py.
+- **`services/ml_entity_extraction_service/`** — MLEntityExtractionService class with broken imports (references nonexistent `spacy_entity_extraction_service`). ML logic is inlined in main.py.
+- **`seeds/`** — Seeds use Flask app context and SQLite `get_db()`. Incompatible with current Postgres stack.
+- **Effort:** XS
+- **Status:** ❌ PENDING
 
-## 🟡 TODO-894: Fix HTTP Status Code Inconsistency
-**File:** `main.py`  
-**Effort:** S (30 min)  
-**Description:** All error paths return `status_code=200` with `{"status": 400}` in body. Breaks monitoring, alerting, and standard HTTP clients.  
-**Fix:** Use `HTTPException(status_code=400)` or `JSONResponse(..., status_code=400)`.  
-**Affected endpoints:** `/regex_entity_extraction`, `/ml_entity_extraction`, `/spacy_entity_extraction`, `/fixed_lists` DELETE  
-**⚠️ Risk:** May break clients that parse body status. Audit API consumers first.
+## 🏗️ [ARCHITECTURE] Deduplicate Entity Constants
+- **Issue:** 17 `ENTITY_*` constants defined both in `main.py` (lines 40-56) and `constants/entities.py`. Two sources of truth.
+- **Fix:** In `main.py`, replace inline definitions with `from constants.entities import *` and delete the duplicate block.
+- **Add startup assertion:** `assert set(entity_store.keys()) == set(ENTITY_OPTIONS.keys())`
+- **Effort:** XS
+- **Status:** ❌ PENDING
 
----
+## ⚡ [PERFORMANCE] Cache Compiled Regex Patterns
+- **File:** `main.py`, `match_patterns()` / `_build_entity_patterns()`
+- **Issue:** Every call rebuilds all regex patterns from scratch — O(n) per request with thousands of entities.
+- **Fix:** Cache compiled `re.Pattern` objects at module level. Invalidate on `/fixed_lists` write. Estimated 10-50x speedup.
+- **Effort:** S (2 hours)
+- **Status:** ❌ PENDING
 
-## 🟡 TODO-895: Migrate psycopg2 → asyncpg
-**File:** `persistence.py`  
-**Effort:** M (2-3h)  
-**Description:** FastAPI is async-native; sync `psycopg2.ThreadedConnectionPool` blocks the event loop on every DB call. Replace with `asyncpg` + async connection pool for true async I/O.  
-**Dependencies:** TODO-893 (fix connection leak first)
+## 🛠️ [DEVOPS] Add Pre-commit Hooks
+- **Fix:** Add `.pre-commit-config.yaml` with: `ruff` (lint), `mypy` (types), `bandit` (security scan)
+- **Effort:** S
+- **Status:** ❌ PENDING
 
----
+## 🛠️ [DEVOPS] Fix CI Pipeline (bitbucket-pipelines.yml)
+- **Issue:** CI only triggers external deploy pipeline. Missing: lint, test, type check, security scan, Docker build verification. Spurious `redis` service declared but unused.
+- **Fix:** Add lint → test → security scan steps. Remove redis service. Add coverage gate (≥60%).
+- **Effort:** S
+- **Status:** ❌ PENDING
 
-## 🟡 TODO-896: Dead Code Cleanup + Wire Pydantic Models
-**File:** `main.py`  
-**Effort:** XS-S (20 min)  
-**Tasks:**
-1. Remove dead `_locate_entities()` function (non-compiled slow path, never called since TODO-232)
-2. Wire `FixedListsUpdateRequest` and `FixedListsDeleteRequest` as endpoint parameters instead of `await request.json()`
-3. Extract `special_characters` tuple to module-level constant (DRY)
+## 🚀 [FEATURE] Batch Extraction Endpoints
+- **Issue:** Callers must make N API calls for N texts. Bottleneck for document-heavy workflows.
+- **Fix:** Add `POST /batch_regex_entity_extraction` and `POST /batch_ml_entity_extraction` accepting `{"texts": [...]}`. Process with `asyncio.gather`.
+- **Effort:** S
+- **Status:** ❌ PENDING
 
----
+## 🚀 [FEATURE] Entity Confidence Scores
+- **Issue:** ML/spaCy predictions return no confidence score. Callers can't threshold or rank.
+- **Fix:** Return `confidence` field from spaCy NER scores. For regex matches return `confidence: 1.0`.
+- **Effort:** M
+- **Status:** ❌ PENDING
 
-## 🟡 TODO-897: Env-Based Rate Limits + Allowlist Validation
-**File:** `main.py`  
-**Effort:** XS (20 min)  
-**Tasks:**
-1. Replace hardcoded `@limiter.limit("100/minute")` with `os.environ.get("RATE_LIMIT_REGEX", "100/minute")`
-2. Same for ML endpoint with `RATE_LIMIT_ML`
-3. Add `entity_types_list` allowlist validation — unknown types should return HTTP 422, not silently match nothing
+## 🏗️ [ARCHITECTURE] DRY: Refactor Duplicate Error Response Pattern
+- **Issue:** Every endpoint repeats identical `try/except → JSONResponse({"response": str(exc), "status": 400})` blocks.
+- **Fix:** Create FastAPI `@app.exception_handler(Exception)` or shared decorator.
+- **Effort:** XS
+- **Status:** ❌ PENDING
 
----
+## ⚡ [PERFORMANCE] Async Model Loading at Startup
+- **File:** `main.py`, `startup_event()`
+- **Issue:** `spacy.load()` reads multi-MB binary files synchronously in the async event loop, blocking health checks for 2-10 seconds.
+- **Fix:** Wrap with `await asyncio.to_thread(_load_ml_model)`. Add warm-up call after load.
+- **Effort:** XS
+- **Status:** ❌ PENDING
 
-## 🟡 TODO-898: Persistence Layer Tests
-**File:** `tests/`  
-**Effort:** S (1h)  
-**Description:** Zero tests for `persistence.py`. Need:
-- `init_db()` returns False without DATABASE_URL
-- `save_entities` called on fixed_lists update
-- `delete_entities` called on fixed_lists delete
-- Connection pool retry on transient failures
+## 🔒 [SECURITY] API Key Rotation Support
+- **Issue:** Single `ENTITY_EXTRACTION_API_KEY` env var. Rotating requires downtime.
+- **Fix:** Support comma-separated keys: `VALID_KEYS = set(os.environ.get("ENTITY_EXTRACTION_API_KEY", "").split(","))`
+- **Effort:** XS
+- **Status:** ❌ PENDING
 
----
-
-## 🟡 TODO-899: CORS Middleware
-**File:** `main.py`  
-**Effort:** XS (10 min)  
-**Description:** Add `CORSMiddleware` for browser-based clients. Use `CORS_ORIGINS` env var.
-
----
-
-## 🟡 TODO-900: Prometheus Metrics
-**File:** `main.py`, `requirements.txt`  
-**Effort:** S (1h)  
-**Description:** Add `prometheus-fastapi-instrumentator` for request rate/latency, ML prediction latency, entity store size gauge.
-
----
-
-## 🟡 TODO-901: Pre-commit Hooks + CI Linting
-**Files:** `.pre-commit-config.yaml`, `bitbucket-pipelines.yml`  
-**Effort:** S (30 min)  
-**Description:** Add ruff + mypy pre-commit hooks. Add linting step to CI pipeline. Add coverage reporting.
+## 🏷️ [QUALITY] Add Type Annotations
+- **Files:** `main.py`, remaining utils
+- **Issue:** `match_patterns()` returns `List[Dict]` — should be `List[EntityMatch]` with Pydantic model. Several functions missing return types.
+- **Effort:** S
+- **Status:** ❌ PENDING

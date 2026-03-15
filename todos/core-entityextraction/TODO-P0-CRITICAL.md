@@ -1,45 +1,41 @@
 # core-entityextraction — P0 CRITICAL TODOs
+> Updated: 2026-03-15 | Scored by Honey 🍯
 
-> Generated: 2026-03-14 | Source: AUDIT.md + code review
+## 🐛 [BUG] Fix off-by-one in ExcludeRules.is_start_of_sentence
+- **File:** `main.py` line 104
+- **Issue:** `range(start_index, 1, -1)` starts at the entity's own first character instead of the character before it. Loop checks entity char (never punctuation), exits via `break`, returns `False` — incorrectly marking entities as NOT at sentence start.
+- **Fix:** Change to `range(start_index - 1, 0, -1)`
+- **Impact:** Causes incorrect entity extraction results in production. Entities at sentence boundaries are misclassified.
+- **Effort:** XS (1-line fix)
+- **Status:** ❌ PENDING
 
-## 🔴 TODO-890: Fix Duplicate Filter Block in `match_patterns()`
-**File:** `main.py`  
-**Severity:** P0 — Bug  
-**Effort:** XS (5 min)  
-**Description:** The `include_entity_types` filtering block is applied TWICE in `match_patterns()`. The second block is identical and redundant. Currently idempotent but a maintenance hazard — if either block is modified independently, behavior diverges silently.  
-**Fix:** Remove the second `if isinstance(include_entity_types, bool):` block entirely.
+## 🧪 [QUALITY] Add Test Suite — ZERO Coverage
+- **Issue:** Production NLP service with 0% test coverage. No test files exist (only `tests/__pycache__/`).
+- **Priority test cases:**
+  - `test_pattern_matching.py` — `_locate_entities`, `_build_entity_patterns`, ExcludeRules edge cases
+  - `test_api.py` — pytest + httpx AsyncClient for all FastAPI endpoints
+  - `test_persistence.py` — async mock tests for asyncpg persistence layer
+  - `test_ml_extraction.py` — mock spaCy model, assert response structure
+  - `conftest.py` — shared fixtures (test app, mock entity store, mock DB)
+- **Tooling:** pytest, pytest-asyncio, httpx, pytest-mock
+- **Effort:** M (1-2 days)
+- **Status:** ❌ PENDING
 
----
+## 🔒 [SECURITY] Add CORS Middleware
+- **File:** `main.py`
+- **Issue:** No `CORSMiddleware` configured. Browser clients cannot call the API (blocked by CORS policy).
+- **Fix:** Add `app.add_middleware(CORSMiddleware, allow_origins=[env-configured origins], allow_methods=["*"], allow_headers=["*"])`
+- **Effort:** XS (5 lines)
+- **Status:** ❌ PENDING
 
-## 🔴 TODO-893: Fix Connection Leak in persistence.py
-**File:** `persistence.py`  
-**Severity:** P0 — Bug  
-**Effort:** XS (15 min)  
-**Description:** Multiple functions (`load_all`, `save_entities`, `delete_entities`) use `try/except/else` with `_put_conn(conn)` in the `else` clause. If an exception occurs after the `try` succeeds but before `else` runs, the connection is never returned to the pool, causing connection pool exhaustion under load.  
-**Fix:** Move `_put_conn(conn)` to a `finally` block to unconditionally return connections.
+## 📖 [DOCS] Rewrite README.md — Completely Stale
+- **Issue:** README references Flask, SQLite, Python 3.6.5, `flask run`, `db.sqlite`, Swagger via Flasgger. The live service is FastAPI + asyncpg + Railway. Every instruction is wrong.
+- **Fix:** Rewrite with: FastAPI overview, `DATABASE_URL` config, Docker Compose, Railway deploy, API endpoint docs, env var reference
+- **Effort:** S
+- **Status:** ❌ PENDING
 
----
-
-## 🔴 TODO-892: Add ML/spaCy Integration Tests
-**File:** `tests/`  
-**Severity:** P0 — Quality  
-**Effort:** M (2h)  
-**Description:** Zero tests exist for `/ml_entity_extraction` and `/spacy_entity_extraction` endpoints (note: `test_ml_extraction.py` exists at 256 lines but needs verification of actual coverage). Need:
-- Test endpoint returns 404 when model not loaded (mock `_ml_nlp = None`)
-- Test with known financial sentences against nermodel3
-- Test `entity_types_list` filtering for ML results
-- Test `include_entity_types=False` exclusion
-- Test spaCy endpoint with `ENABLE_SPACY_ENTITY_EXTRACTION` toggle
-
----
-
-## 🔴 TODO-891: Add GET /fixed_lists Endpoint
-**File:** `main.py`  
-**Severity:** P0 — Feature  
-**Effort:** S (30 min)  
-**Description:** No way to query what entities are currently loaded. Essential for debugging, admin UIs, and integration tests that verify load state.  
-**API:**
-```
-GET /fixed_lists → all entity types with counts
-GET /fixed_lists?entity_type=Ticker → {"Ticker": ["AAPL", ...], "count": N}
-```
+## 📖 [DOCS] Replace .env.example with FastAPI-relevant variables
+- **Issue:** `.env.example` contains `FLASK_APP=app:create`, `FLASK_ENV`, `SECRET_KEY`, `DATABASE=db.sqlite` — all meaningless to FastAPI.
+- **Fix:** Replace with: `DATABASE_URL`, `ENTITY_EXTRACTION_API_KEY`, `ENABLE_SPACY_ENTITY_EXTRACTION`, `SPACY_MODEL`, `DB_POOL_MIN`, `DB_POOL_MAX`, `RATE_LIMIT_REGEX`, `RATE_LIMIT_ML`
+- **Effort:** XS
+- **Status:** ❌ PENDING

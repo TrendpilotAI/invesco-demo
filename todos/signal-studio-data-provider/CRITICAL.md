@@ -1,13 +1,13 @@
 # 🔴 CRITICAL ISSUES — signal-studio-data-provider
 
-**Flagged:** 2026-03-14
+**Updated:** 2026-03-15
 
 ---
 
 ## 1. RUNTIME BREAKAGE: SecretStr fields accessed without `.get_secret_value()`
 
-**Impact:** All provider connections will CRASH at runtime  
-**Root cause:** `config.py` was updated to use `pydantic.SecretStr` for passwords/keys, but provider code still accesses them as plain `str`.
+**Impact:** All provider connections CRASH at runtime — nothing works  
+**Root cause:** `config.py` uses `pydantic.SecretStr` for passwords/keys, but provider code still accesses them as plain `str`.
 
 **Affected files:**
 | File | Line | Code | Fix |
@@ -32,6 +32,31 @@
 
 ---
 
+## 3. CORTEX SQL INJECTION — Vulnerable Pattern
+
+**Impact:** Model name interpolated into f-string SQL despite allowlist existing  
+**Files:** `providers/snowflake_provider.py` lines ~224, ~233  
+**Details:** `_CORTEX_MODEL_ALLOWLIST` frozenset exists (line 201) and validation exists (line 213), but `cortex_complete()` and `cortex_embed()` still use f-string interpolation:
+```python
+f"SELECT SNOWFLAKE.CORTEX.COMPLETE('{model}', %s) AS response"
+```
+**Risk:** If validation is bypassed or model name contains quotes, SQL injection is possible.  
+**Fix:** Verify `_validate_cortex_model()` is called before interpolation in both methods. Consider using parameterized queries if Snowflake supports it for function names.
+
+---
+
+## 4. DEPRECATED asyncio.get_event_loop() — Snowflake Provider
+
+**Impact:** DeprecationWarning in Python 3.10+, will break in future Python versions  
+**Files:** `providers/snowflake_provider.py` lines 108, 128, 191  
+**Fix:** Replace with `asyncio.to_thread()` (same pattern Oracle already uses)  
+**Effort:** 15 minutes
+
+---
+
 ## Resolution Priority
 
-Fix #1 FIRST — it's a regression from the SecretStr security improvement that creates a worse problem (nothing works) than the original issue (credentials could leak in logs).
+1. Fix #1 FIRST — SecretStr regression makes ALL providers non-functional
+2. Fix #2 — Unblocks test verification for all other fixes
+3. Fix #3 — Security vulnerability in enterprise tier
+4. Fix #4 — Deprecated API, ticking time bomb

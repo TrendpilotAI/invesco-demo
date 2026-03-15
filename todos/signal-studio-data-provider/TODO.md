@@ -1,122 +1,132 @@
 # TODO — signal-studio-data-provider
 
-**Updated:** 2026-03-14  
-**Composite Score:** 7.2/10  
-**Category:** CORE
+**Updated:** 2026-03-15  
+**Composite Score:** 6.3/10  
+**Category:** Infrastructure / Data Layer  
+**Location:** `/data/workspace/projects/signal-studio-data-provider`
 
 ---
 
-## 🔴 CRITICAL — Fix Immediately
+## Dimension Scores
 
-### 1. SecretStr `.get_secret_value()` Missing in Providers
-**Severity:** CRITICAL — Runtime crash  
-**Files:**
-- `providers/snowflake_provider.py:71` — `password=self._sf.password` (SecretStr, not str)
-- `providers/oracle_provider.py:49` — `password=self._ora.password`
-- `providers/supabase_provider.py:43` — `self._sb.database_url` (SecretStr)
-**Problem:** Config fields were changed to `SecretStr` but providers still access them as plain strings. All provider connections will fail at runtime.
-**Fix:** Change to `self._sf.password.get_secret_value()` etc. everywhere a SecretStr field is passed to a connector.
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| **Documentation** | 9/10 | Excellent BRAINSTORM.md, PLAN.md, AUDIT.md with detailed architecture |
+| **Architecture** | 8/10 | Protocol-based design, factory pattern, clean provider separation |
+| **Business Value** | 7/10 | Critical multi-DB data layer for Signal Studio (Snowflake/Supabase/Oracle) |
+| **Code Quality** | 6/10 | SecretStr adoption incomplete, DRY violations, deprecated asyncio usage |
+| **Security** | 5/10 | Cortex injection pattern still risky, SecretStr not wired through providers |
+| **Test Coverage** | 4/10 | 570 lines of tests but runner broken; mock-only; no integration tests |
 
-### 2. Fix Test Runner — numpy/pandas Binary Incompatibility
-**Severity:** CRITICAL — Zero tests running  
-**Problem:** `ValueError: numpy.dtype size changed` kills pytest before any test runs.
-**Fix:** `pip install --upgrade numpy pandas` in `.venv` OR pin compatible versions in `pyproject.toml`.
+---
 
-### 3. No Integration Tests for Data Abstraction Layer
-**Severity:** HIGH — Mock-only tests for a DB abstraction = false confidence  
-**Fix:** Add `tests/integration/` with testcontainers (PostgreSQL, Oracle XE).
+## 🔴 CRITICAL — Fix Immediately (see CRITICAL.md)
+
+1. **SecretStr `.get_secret_value()` missing** — all providers crash at runtime
+2. **Test runner broken** — numpy/pandas incompatibility, zero tests executing
+3. **Cortex SQL injection pattern** — f-string interpolation despite allowlist
+4. **Deprecated `asyncio.get_event_loop()`** — 3 occurrences in Snowflake provider
 
 ---
 
 ## 🟡 HIGH — Fix This Sprint
 
-### 4. Remove Unused `lru_cache` Import
-**File:** `providers/snowflake_provider.py:8`  
-**Fix:** Delete `from functools import lru_cache`. Zero risk, 1 minute.
+### 5. Factory Cache Race Condition
+**File:** `factory.py`  
+**Problem:** `_provider_cache` dict accessed without async lock. Concurrent requests can race to create duplicate providers.  
+**Fix:** Add `asyncio.Lock()` with double-check pattern.  
+**Effort:** 30 minutes
 
-### 5. Replace `run_in_executor` with `asyncio.to_thread()`
-**File:** `providers/snowflake_provider.py:107,127,190`  
-**Current:** `loop = asyncio.get_running_loop(); await loop.run_in_executor(None, ...)`  
-**Fix:** `await asyncio.to_thread(...)` — matches Oracle provider pattern. More idiomatic, simpler.
+### 6. DRY: Extract `_validate_identifier` to shared module
+**Files:** All 3 providers define identical `_SAFE_IDENTIFIER_RE` + `_validate_identifier()`  
+**Fix:** Create `providers/_utils.py`, import from all 3.  
+**Effort:** 1 hour
 
-### 6. DRY — Extract `_validate_identifier` to `providers/_utils.py`
-**Files:** All 3 providers define identical `_SAFE_IDENTIFIER_RE` + `_validate_identifier()`.
-**Fix:** Create `providers/_utils.py`, import from all three.
+### 7. DRY: Extract `build_schema_info` helper
+**Problem:** All 3 providers implement identical `get_schema()` pattern.  
+**Fix:** Extract to `providers/_utils.py` as shared coroutine.  
+**Effort:** 1 hour
 
-### 7. DRY — Extract `build_schema_info` helper
-All 3 providers have identical `get_schema()` → `get_tables()` → `SchemaInfo(...)` pattern.
-**Fix:** Add to `providers/_utils.py`.
-
-### 8. Factory Cache Race Condition
-**File:** `factory.py` — `_provider_cache` dict has no async locking.
-**Fix:** Add `asyncio.Lock()` with double-check pattern.
-
-### 9. Schema Registry — Sequential Column Fetch
-**File:** `schema/registry.py:37-41` — fetches columns per table in a loop.
-**Fix:** Use `asyncio.gather()` for parallel column fetching. Major perf win for large schemas.
+### 8. Remove unused `lru_cache` import
+**File:** `providers/snowflake_provider.py` line 8  
+**Fix:** Delete `from functools import lru_cache`  
+**Effort:** 1 minute
 
 ---
 
 ## 🟢 MEDIUM — Next Sprint
 
-### 10. Deterministic Cache Keys for Snowflake
-**File:** `providers/snowflake_provider.py:104`  
-`cache_key = f"{sql}|{params}"` — list vs tuple produces different keys for same query.
-**Fix:** Use `hashlib.sha256(json.dumps(...)).hexdigest()`.
+### 9. Integration Tests via Testcontainers
+**Problem:** All tests are mock-only. Critical data layer needs real DB verification.  
+**Fix:** Add `tests/integration/` with PostgreSQL container (Supabase), Oracle XE container.  
+**Effort:** 1 sprint
 
-### 11. Shared Cache Backend (Redis)
-Only Snowflake has TTL cache (in-memory, lost on restart). Supabase/Oracle have none.
-**Fix:** Create `cache.py` with `CacheBackend` protocol + `InMemoryCache` + `RedisCache`.
+### 10. Security Fuzzing Tests
+**Problem:** No property-based tests for SQL identifier validation.  
+**Fix:** Add `tests/test_security.py` using `hypothesis` library.  
+**Effort:** 4 hours
 
-### 12. Security Fuzzing Tests
-Add `tests/test_security.py` with `hypothesis` property-based tests for `_validate_identifier`.
+### 11. DataProvider Contract Tests
+**Problem:** No shared test suite verifying all 3 providers implement the same contract.  
+**Fix:** Parameterized test suite across all providers.  
+**Effort:** 4 hours
 
-### 13. DataProvider Contract Tests
-Parameterized test suite verifying all 3 providers implement `DataProvider` protocol consistently.
+### 12. Schema Registry Parallel Column Fetch
+**File:** `schema/registry.py`  
+**Problem:** Sequential column fetch per table — O(n) network round trips.  
+**Fix:** `asyncio.gather()` for concurrent column fetch.  
+**Effort:** 2 hours
 
-### 14. Async Context Manager Support
-Add `__aenter__`/`__aexit__` to all providers for `async with` usage.
+### 13. Deterministic Snowflake Cache Key
+**File:** `providers/snowflake_provider.py`  
+**Problem:** `cache_key = f"{sql}|{params}"` — list vs tuple produces different keys.  
+**Fix:** Use `hashlib.sha256(json.dumps(...)).hexdigest()`.  
+**Effort:** 1 hour
 
-### 15. Shared Retry Decorator
-Create `providers/_retry.py` with exponential backoff. Currently no retry logic in any provider.
+### 14. Shared Retry Decorator
+**Problem:** No retry/backoff logic in any provider. Transient DB errors cause immediate failure.  
+**Fix:** Create `providers/_retry.py` with exponential backoff decorator.  
+**Effort:** 4 hours
 
 ---
 
 ## ⚪ LOW — Backlog
 
-### 16. Query Audit Log
-Append `execute_query()` calls to structured audit log (compliance for financial clients).
+### 15. Async Context Manager (`__aenter__`/`__aexit__`)
+Enable `async with get_provider(config) as provider:` usage pattern.
 
-### 17. OpenTelemetry Instrumentation
-Wrap provider methods with OTel spans for observability.
+### 16. Redis Cache Backend
+Shared `CacheBackend` protocol with `InMemoryCache` + `RedisCache`. Currently only Snowflake has caching (in-memory TTL).
 
-### 18. Streaming Query Results
-Add `execute_query_stream()` yielding `AsyncIterator[list[dict]]` for large result sets.
+### 17. Streaming Query Results
+`execute_query_stream()` yielding `AsyncIterator[list[dict]]` for large result sets.
 
-### 19. Query Cost Pre-Estimation
-Run `EXPLAIN` before execution; block queries exceeding `max_query_cost`.
+### 18. Query Audit Log
+Structured logging of every query: timestamp, org_id, sql, row_count, execution_time_ms.
 
-### 20. Bulk Upsert for `write_back()`
-Current INSERT-only. Add ON CONFLICT DO UPDATE / MERGE support.
+### 19. OpenTelemetry Instrumentation
+Wrap providers with OTel spans for observability.
 
-### 21. Supabase Realtime Subscriptions
+### 20. Query Cost Pre-Estimation
+`EXPLAIN`-based cost estimation before execution. Block queries exceeding `max_query_cost`.
+
+### 21. DuckDB Provider
+Local/edge analytics provider for on-premise deployments.
+
+### 22. PyPI Publication
+Package already structured with `pyproject.toml`. Publish for client engineer integration.
+
+### 23. Supabase Realtime Subscriptions
 `subscribe()` currently raises `NotImplementedError`.
 
-### 22. DuckDB Provider
-Local/edge analytics provider for on-premise Signal Studio deployments.
-
-### 23. PyPI Publication
-Package already structured. Publish to PyPI for client engineer integration.
+### 24. Bulk Upsert for `write_back()`
+Currently INSERT-only. Add MERGE/ON CONFLICT DO UPDATE support.
 
 ---
 
-## Score Breakdown
+## Stats
 
-| Dimension | Score | Notes |
-|-----------|-------|-------|
-| Architecture | 9/10 | Excellent Protocol-based design, factory routing, clean separation |
-| Documentation | 9/10 | Thorough README, BRAINSTORM, PLAN, AUDIT docs |
-| Business Value | 8/10 | Critical infrastructure for Signal Studio multi-DB support |
-| Code Quality | 7/10 | Good overall, but DRY violations and dead imports |
-| Security | 7/10 | Cortex injection fixed, SecretStr added but not wired properly |
-| Test Coverage | 4/10 | Test runner broken, mock-only, no integration tests |
+- **Source lines:** ~988 (providers, schema, factory, config, adapters)
+- **Test lines:** ~570 (all mock-based, currently broken)
+- **Providers:** 3 (Snowflake, Supabase, Oracle)
+- **Last audit:** 2026-03-10 (AUDIT.md v3)

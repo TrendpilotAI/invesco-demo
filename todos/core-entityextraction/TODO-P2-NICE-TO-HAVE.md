@@ -1,74 +1,65 @@
 # core-entityextraction — P2 NICE-TO-HAVE TODOs
+> Updated: 2026-03-15 | Scored by Honey 🍯
 
-> Generated: 2026-03-14 | Source: BRAINSTORM.md + AUDIT.md
+## 🚀 [FEATURE] Multi-Tenancy Foundation
+- API Key → Tenant mapping in Postgres (replace single static key)
+- Per-tenant entity stores (scoped `/fixed_lists`)
+- Tenant usage analytics (`extraction_events` table)
+- **Effort:** M-L | **Status:** ❌ PENDING
 
-## 🟢 TODO-902: Split main.py into Service Modules
-**File:** `main.py` (712 lines)  
-**Effort:** M (3h)  
-**Description:** Monolithic main.py combines entity store, pattern matching, ML services, endpoints, middleware, and models. Split into:
-```
-services/pattern_service.py    ← ReplaceRule, ExcludeRules, match_patterns, cache
-services/ml_service.py         ← _load_ml_model, ml_predict, spacy_predict
-services/entity_store.py       ← entity_store dict, entity_count
-main.py                        ← FastAPI app, endpoints only (~150 lines)
-```
+## 🚀 [FEATURE] Entity Versioning
+- Version-stamped entity stores with `effective_from` timestamps
+- Entity changelog API for compliance audit trails
+- Reproducible extraction via optional `entity_store_version` param
+- **Effort:** M | **Status:** ❌ PENDING
 
----
+## 🚀 [FEATURE] Entity Normalization / Canonicalization
+- Map "Goldman Sachs" / "Goldman" / "GS" → canonical form
+- Tickers → exchange symbol, funds → ISIN/CUSIP
+- **Effort:** M | **Status:** ❌ PENDING
 
-## 🟢 TODO-903: Combined Extraction Endpoint
-**Effort:** S  
-**Description:** `/combined_entity_extraction` runs regex + ML in parallel, merges results with source tagging and deduplication by (type, value, span).
+## 🚀 [FEATURE] Extraction Explainability
+- Return match_source (pattern vs ml_model), confidence, context_window
+- `explain=true` query param for verbose mode
+- **Effort:** M | **Status:** ❌ PENDING
 
----
+## 🚀 [FEATURE] Macro Event Entity Type
+- Add `MACRO_EVENT` for FOMC meetings, CPI releases, earnings dates
+- Temporal context extraction: "Q3 earnings" → `{temporal: "Q3_2026"}`
+- **Effort:** S | **Status:** ❌ PENDING
 
-## 🟢 TODO-904: Entity Confidence Scores from ML NER
-**Effort:** M  
-**Description:** Expose per-entity confidence scores from spaCy. Regex/fixed_list results return `confidence: 1.0`.
+## 🧪 [QUALITY] Golden Dataset Regression Tests
+- Curate 50-100 financial text samples with known-correct annotations
+- Run as regression suite on every PR, alert on F1 drop > 2%
+- **Effort:** M | **Status:** ❌ PENDING
 
----
+## 🛠️ [DEVOPS] Docker Multi-stage Build
+- Current Dockerfile likely installs dev deps in prod. Add multi-stage: spaCy model download → slim runtime.
+- **Effort:** S | **Status:** ❌ PENDING
 
-## 🟢 TODO-905: Batch Extraction Endpoint
-**Effort:** S  
-**Description:** `POST /batch_entity_extraction` accepting `{"texts": [...], "mode": "regex|ml|spacy|combined"}`.
+## 🔒 [SECURITY] Dependency Vulnerability Scan
+- Add `pip-audit` to CI pipeline
+- **Effort:** XS | **Status:** ❌ PENDING
 
----
+## 🔒 [SECURITY] Verify docker/.env not committed with real secrets
+- Check if `docker/.env` contains real credentials. Add to `.gitignore` if needed.
+- **Effort:** XS | **Status:** ❌ PENDING
 
-## 🟢 TODO-906: Entity Stats / Health Detail
-**Effort:** XS  
-**Description:** `GET /stats` returning entity counts by type, cache version, model status, DB connectivity. Useful for K8s readiness probes.
+## ⚡ [PERFORMANCE] Redis Pattern Cache for Multi-Instance
+- Replace in-process pattern cache with Redis for shared invalidation across Railway instances
+- **Effort:** M | **Status:** ❌ PENDING
 
----
+## ⚡ [PERFORMANCE] spaCy Pipeline Optimization
+- Disable unused pipeline components (`parser`, `lemmatizer`) for pure NER tasks
+- Use `nlp.select_pipes(enable=["ner"])` for 2-3x speed improvement
+- **Effort:** XS | **Status:** ❌ PENDING
 
-## 🟢 TODO-907: MacroEvent Entity Type
-**Effort:** M  
-**Description:** Add `MacroEvent` type (e.g., "Federal Reserve meeting", "FOMC decision"). Seeds + regex patterns.
+## 🚀 [FEATURE] Extraction Feedback Loop
+- `POST /feedback` endpoint for correction capture
+- Feeds retraining data flywheel
+- **Effort:** L | **Status:** ❌ PENDING
 
----
-
-## 🟢 TODO-908: Redis Entity Store Cache
-**Effort:** M  
-**Description:** Multi-instance deployments diverge when entities updated via one instance. Add Redis write-through with pubsub invalidation.
-
----
-
-## 🟢 TODO-909: Model Versioning Strategy
-**Effort:** M  
-**Description:** nermodel3 baked into repo. Store models in S3/R2 by version tag, `MODEL_VERSION` env var selects at startup.
-
----
-
-## 🟢 TODO-910: Async spaCy Model Loading
-**Effort:** S  
-**Description:** Model loading blocks startup 2-5s. Use `asyncio.get_event_loop().run_in_executor()`.
-
----
-
-## 🟢 TODO-911: Request ID Middleware
-**Effort:** XS  
-**Description:** Add `X-Request-ID` header generation/propagation for distributed tracing.
-
----
-
-## 🟢 TODO-912: Property-Based Testing (Hypothesis)
-**Effort:** M  
-**Description:** Use `hypothesis` to generate random financial text and verify regex patterns don't false-positive.
+## 🚀 [FEATURE] LLM Fallback for Low-Confidence Entities
+- When ML confidence < threshold, fall back to GPT-4o structured extraction
+- Cache results in Redis, log fallback rates to guide retraining
+- **Effort:** L | **Status:** ❌ PENDING

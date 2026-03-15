@@ -1,36 +1,39 @@
-# Second-Opinion - Tier 3 Score Summary
+# Second-Opinion — Score Summary
 
-## Current Composite Score: **6.8/10**
+**Last Scored:** 2026-03-15
+**Category:** PRODUCT
+**Composite Score:** 7.9/10
 
-## Dimension Breakdown
-- **Business Value**: 9/10 - High-value medical AI with clear healthcare applications
-- **Security**: 6/10 - Good HIPAA planning but critical gaps in implementation
-- **Code Quality**: 7/10 - Well-structured React/TypeScript with modern patterns
-- **Architecture**: 7/10 - Clean component separation, proper routing, lazy loading
-- **Test Coverage**: 3/10 - Very low coverage (~15%), mostly E2E scripts
-- **Documentation**: 8/10 - Excellent documentation, comprehensive planning
+## Dimension Scores
 
-## Top 3 Priority Items
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Code Quality | 7.5 | TypeScript throughout, good patterns, ~22.5K LOC. Some lib/ artifacts committed. |
+| Test Coverage | 6.5 | 23 test files (~3600 LOC) across components/hooks/services/integration. CI ignores failures (|| true). |
+| Security | 8.0 | Excellent Firestore+Storage rules, AES-GCM encryption, RBAC, tenant isolation. Missing BAA, CSP headers. |
+| Documentation | 9.0 | Outstanding — README, ARCHITECTURE, SECURITY, HIPAA, DEPLOYMENT, CONTRIBUTING, CODE_REVIEW, multiple writeups. |
+| Architecture | 8.5 | Agentic multi-model consensus pipeline, clean separation (components/hooks/services/functions), i18n, PWA. |
+| Business Value | 8.0 | Kaggle MedGemma competition entry with live demo. Strong GTM narrative ($0.02 vs $200+ traditional). |
 
-### 🔴 CRITICAL #1: HIPAA BAA Requirements
-- **Issue**: No Business Associate Agreement with Google Cloud/Firebase
-- **Impact**: Cannot legally store real patient data without BAA
-- **Action**: Sign BAA at https://console.cloud.google.com/support before accepting real patient data
+## Business Metrics
 
-### 🔴 CRITICAL #2: Security Rules Audit
-- **Issue**: Firebase Security Rules not tested, potential for overly permissive access
-- **Impact**: Patient data could be exposed
-- **Action**: Run `firebase emulators:start` and implement comprehensive rules testing
+| Metric | Score |
+|--------|-------|
+| Revenue Potential | 7/10 |
+| Strategic Value | 8/10 |
+| Completeness | 7/10 |
+| Urgency | 6/10 |
+| Effort Remaining | 5/10 |
 
-### 🟠 HIGH #3: Test Coverage Implementation
-- **Issue**: Only ~15% test coverage, no unit tests for core business logic
-- **Impact**: High risk of regressions, difficult to maintain
-- **Action**: Write unit tests for `useAnalysisPipeline` hook and core components
+## 🚨 CRITICAL Issues
 
-## Critical Flags
-- ⚠️ **HIPAA BLOCKING**: Missing BAA prevents production PHI handling
-- ⚠️ **PHI LEAK RISK**: Console.log statements could expose patient data
-- ⚠️ **AUTH GAPS**: Rate limiting needed on expensive AI analysis endpoints
+1. **CI test enforcement disabled** — `npm test || true` means broken tests are silently ignored. Any regression could ship.
+2. **No HIPAA BAA executed** — Cannot legally handle real PHI on Firebase without a Business Associate Agreement with Google Cloud.
 
-## Category: Medical AI
-**Tier**: 3 | **Last Updated**: 2026-03-11
+## Stack
+
+- **Frontend:** React 19, TypeScript 5.x, Tailwind CSS, Framer Motion, Vite
+- **Backend:** Firebase Cloud Functions v2 (Node.js 20)
+- **AI Models:** MedGemma 4B/27B, MedSigLIP, Gemini Flash/Pro
+- **Infra:** Firebase (Hosting/Auth/Firestore/Storage), Modal (GPU), Stripe
+- **Testing:** Vitest + Testing Library + Playwright
