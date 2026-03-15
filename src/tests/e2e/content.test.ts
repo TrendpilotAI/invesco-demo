@@ -1,4 +1,3 @@
-// src/tests/e2e/content.test.ts
 import request from 'supertest';
 import app from '../../src/app';
 
@@ -20,7 +19,7 @@ describe('E2E: /api/content', () => {
     expect(Array.isArray(res.body.data) || Array.isArray(res.body.contents)).toBe(true);
   });
 
-  it('returns 400 for malformed request (if params required)', async () => {
+  it('returns 400 for malformed POST request (missing fields)', async () => {
     const res = await request(app)
       .post('/api/content')
       .set('X-API-Key', validApiKey)
@@ -28,5 +27,25 @@ describe('E2E: /api/content', () => {
 
     expect([400, 404, 405]).toContain(res.status);
     expect(res.body).toHaveProperty('error');
+  });
+
+  it('returns 401 for POST with missing API key', async () => {
+    const res = await request(app)
+      .post('/api/content')
+      .send({ title: 'Test Title', body: 'Hello world' });
+    expect(res.status).toBe(401);
+    expect(res.body).toHaveProperty('error');
+  });
+
+  it('returns 200 for valid POST (create content)', async () => {
+    const newContent = { title: 'New Test Title', body: 'Automated test content', type: 'article' };
+    const res = await request(app)
+      .post('/api/content')
+      .set('X-API-Key', validApiKey)
+      .send(newContent);
+    expect([200, 201]).toContain(res.status);
+    // Should echo back the new content or relevant ID.
+    expect(typeof res.body).toBe('object');
+    expect(res.body).toHaveProperty('title', 'New Test Title');
   });
 });
